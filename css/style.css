@@ -1,0 +1,430 @@
+/* ===== 共通 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0e0e10;
+  color: #e0e0ff;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== ヘッダー ===== */
+/* ヘッダー全体 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 10 !important; /* canvasより上に来るように強制 */
+  position: relative;
+  top: 0;
+  animation: fadeSlideIn 1.2s ease-in-out;
+}
+
+/* サイトタイトル */
+.site-title a {
+  font-size: 2rem;
+  color: #e0e0e0;
+  text-decoration: none;
+  font-family: 'Noto Serif JP', serif;
+}
+
+/* メニューリスト */
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu li a {
+  color: #e0e0e0;
+  text-decoration: none;
+  position: relative;
+  padding: 5px 0;
+  font-size: 1rem;
+  transition: color 0.3s;
+  font-family: 'Noto Serif JP', serif;
+}
+
+/* ホバー時の光のライン */
+.nav-menu li a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #77ddff, #ffffff);
+  transition: width 0.3s ease;
+}
+
+.nav-menu li a:hover::after {
+  width: 100%;
+}
+
+/* ホバー時の色変化 */
+.nav-menu li a:hover {
+  color: #ffffff;
+}
+
+/* アニメーション */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== アニメーション ===== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+  will-change: opacity, transform; /* パフォーマンス向上 */
+}
+
+.fade-in.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== メインコンテンツ共通 ===== */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* ===== インデックスページ ===== */
+.welcome-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  text-align: center;
+  flex-direction: column;
+}
+
+.welcome-section h1 {
+  font-size: 2rem;
+  color: #c0e8ff;
+  opacity: 0;
+  animation: fadeIn 2s ease-in forwards;
+}
+
+/* ===== 各ページ共通コンテナ ===== */
+.page-container,
+.privacy-container,
+.terms-container {
+  max-width: 900px;
+  width: 100%;
+  background: rgba(20, 20, 30, 0.3);
+  border-radius: 20px;
+  padding: 3rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: mysticalGlow 3s ease-in-out infinite alternate;
+}
+
+/* 神秘的な光のエフェクト */
+@keyframes mysticalGlow {
+  0% {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(135, 206, 250, 0.1);
+  }
+  100% {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(135, 206, 250, 0.2);
+  }
+}
+
+/* ===== タイトル・見出しスタイル ===== */
+h1 {
+  font-size: 2.5rem;
+  color: #c0e8ff;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 20px rgba(192, 232, 255, 0.5);
+  font-family: 'Noto Serif JP', serif;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #77ddff, transparent);
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: #9ecfff;
+  margin: 2rem 0 1rem;
+  text-shadow: 0 0 15px rgba(158, 207, 255, 0.3);
+  font-family: 'Noto Serif JP', serif;
+}
+
+/* ===== 段落とリストスタイル ===== */
+p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: #e0e0ff;
+  text-shadow: 0 0 10px rgba(224, 224, 255, 0.2);
+}
+
+p.en {
+  font-style: italic;
+  color: #b8b8d0;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+ul li {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+  color: #e0e0ff;
+  text-shadow: 0 0 10px rgba(224, 224, 255, 0.2);
+}
+
+ul li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: #77ddff;
+  font-size: 1.2rem;
+  text-shadow: 0 0 15px rgba(119, 221, 255, 0.8);
+}
+
+/* ===== セクション ===== */
+section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: rgba(30, 30, 50, 0.2);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(119, 221, 255, 0.1);
+}
+
+/* ===== 背景アニメーション ===== */
+#particle-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: #0a0a0a; /* 黒背景 */
+}
+
+/* ===== フッター ===== */
+.site-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-top: auto;
+}
+
+.footer-links {
+  margin: 0.5rem 0;
+}
+
+.footer-links a {
+  color: #aaa;
+  text-decoration: none;
+  margin: 0 0.4rem;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.credit {
+  font-size: 0.75rem;
+  margin-top: 1rem;
+  opacity: 0.7;
+}
+
+.brand {
+  color: #87cefa;
+  font-weight: bold;
+}
+
+/* ===== 上部画像（index専用） ===== */
+.hero-image {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 4rem auto 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 0 100px 60px rgba(255, 255, 255, 0.08);
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: blur(0.3px) opacity(0.92);
+}
+
+/* ===== SNSリンク（幻想的なボタン） ===== */
+.social-links {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.social-links a {
+  display: inline-block;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, rgba(119, 221, 255, 0.1), rgba(192, 232, 255, 0.05));
+  border: 2px solid rgba(119, 221, 255, 0.3);
+  border-radius: 25px;
+  color: #9ecfff;
+  font-size: 1.1rem;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 10px rgba(158, 207, 255, 0.5);
+}
+
+/* 光る背景エフェクト */
+.social-links a::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(119, 221, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  transition: all 0.6s ease;
+  opacity: 0;
+}
+
+.social-links a:hover::before {
+  animation: shimmer 0.8s ease-in-out;
+  opacity: 1;
+}
+
+/* シマーアニメーション */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.social-links a:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, rgba(119, 221, 255, 0.2), rgba(255, 255, 255, 0.1));
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(119, 221, 255, 0.4), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.2),
+              0 0 30px rgba(119, 221, 255, 0.3);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+/* 押下時のエフェクト */
+.social-links a:active {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 5px 15px rgba(119, 221, 255, 0.3), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* ===== フェードインアニメーション ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== レスポンシブデザイン ===== */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 15px 20px;
+  }
+  
+  .nav-menu {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .page-container,
+  .privacy-container,
+  .terms-container {
+    padding: 2rem;
+    margin: 1rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .hero-image {
+    width: 200px;
+    height: 200px;
+  }
+}

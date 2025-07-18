@@ -1,11 +1,61 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>ArcaHortus</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arca Hortus Universe Research Organization | 箱庭世界研究機構</title>
+  <meta name="description" content="Arca Hortusは、神秘と創造の交差点にある箱庭研究所です。" />
+  <meta name="keywords" content="Arca Hortus, 箱庭研究所, 創作, 研究, ダークファンタジー" />
+  <meta name="author" content="ArcaHortus Lab" />
+
+  <!-- OGP -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Arca Hortus Universe Research Organization | 箱庭世界研究機構" />
+  <meta property="og:description" content="神秘的な研究機関、箱庭研究所へようこそ。" />
+  <meta property="og:image" content="https://www.arcahortus.com/images/og-image.jpg" />
+  <meta property="og:url" content="https://www.arcahortus.com/" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Arca Hortus Universe Research Organization" />
+  <meta name="twitter:description" content="創作と神秘の交差点『箱庭研究所』へようこそ。" />
+  <meta name="twitter:image" content="https://www.arcahortus.com/images/og-image.jpg" />
+
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
-  <h1>ようこそ、箱庭へ。</h1>
-  <p>これは ArcaHortus の最初のホームページです。</p>
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- ヘッダー読み込み先 -->
+  <div id="header"></div>
+
+    <main class="welcome-section">
+
+<!-- ヒーロー画像＋テキスト -->
+<div class="hero-image fade-in">
+  <img src="images/sample.png" alt="Hero Image">
+</div>
+
+    <h1>Welcome to...</h1>
+    <p>Arca Hortus Universe Research Organization</p>
+
+    <div class="social-links fade-in">
+      <a href="https://x.com/ShinoAlbino" target="_blank">Twitter</a>
+      <!--<a href="https://your.booth.pm" target="_blank">BOOTH</a>-->
+      <!--<a href="https://youtube.com/your_channel" target="_blank">YouTube</a>-->
+    </div>
+  </main>
+
+  <!-- フッター読み込み先（ここに移動！） -->
+  <div id="footer-container"></div>
+
+  <!-- JS -->
+  <script src="js/particles.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/load-footer.js"></script>
 </body>
 </html>
