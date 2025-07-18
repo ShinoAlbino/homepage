@@ -1,4 +1,23 @@
-/* ===== 共通 ===== */
+section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(119, 221, 255, 0.1);
+}
+
+/* ===== 段落とリストスタイル ===== */
+p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: #e0e0ff;
+  text-shadow: 0 0 10px rgba(224, 224, 255, 0.2);
+}
+
+p.en {
+  font-style: italic;
+  color: #b8b8d0;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}/* ===== 共通 ===== */
 * {
   margin: 0;
   padding: 0;
@@ -114,6 +133,16 @@ main {
   text-align: center;
   padding: 2rem;
   animation: fadeIn 1.5s ease-in-out;
+  min-height: 70vh; /* 最小高さを確保 */
+}
+
+/* about、privacy、termsページ専用の中央揃え */
+.about-page main,
+.privacy-page main,
+.terms-page main {
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
 }
 
 /* ===== インデックスページ ===== */
@@ -146,6 +175,7 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   animation: mysticalGlow 3s ease-in-out infinite alternate;
+  margin: auto;
 }
 
 /* 神秘的な光のエフェクト */
