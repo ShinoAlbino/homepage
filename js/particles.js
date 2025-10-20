@@ -69,8 +69,8 @@ class ShootingStar {
     const halfH = canvas.height * 0.5;
     this.x = reverse ? random(halfW, canvas.width) : random(0, halfW);
     this.y = random(0, halfH); // 出現範囲を上半分に限定
-    this.len = random(80, 120);// 長さ
-    this.speed = random(4, 8);// 速度
+    this.len = random(60, 120);// 長さ
+    this.speed = random(4, 10);// 速度
     this.angle = random(0, Math.PI / 2);// 方向
     this.opacity = 1;
   }
