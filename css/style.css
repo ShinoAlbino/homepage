@@ -591,61 +591,90 @@ section:hover {
 
 /* --- 手作りAmazonウィジェット用デザイン --- */
 
-.product-link-wrapper {
-    text-decoration: none;
-    color: inherit;
-    display: block;
+/* --- 推奨品録：レスポンシブ・ハイブリッドデザイン --- */
+
+/* 1. グリッド全体の構造 */
+.grid-container {
+    display: grid;
+    /* スマホ：最小2カラム */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px;
+    margin-bottom: 50px;
 }
 
+/* 画面が広くなるにつれて列を増やす */
+@media (min-width: 768px) {
+    .grid-container { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+}
+@media (min-width: 1024px) {
+    .grid-container { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1400px) {
+    /* 5カラムだと1つが狭くなりすぎるため、最大4カラムが横長には最適です */
+    .grid-container { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* 2. カードのレイアウト切替（ここがポイント） */
 .manual-amazon-widget {
-    background: #fff; /* 商品を白背景で目立たせる */
+    background: #fff;
     border-radius: 8px;
-    padding: 15px;
+    padding: 12px;
     display: flex;
+    /* デフォルト（スマホ）は縦積み */
+    flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
+    height: 100%;
     transition: background 0.3s;
 }
 
-/* サイトのホバーエフェクトと連動 */
-.product-card:hover .manual-amazon-widget {
-    background: #f0f8ff; 
+/* PC・タブレット（横幅が広い時）は横長に戻す */
+@media (min-width: 768px) {
+    .manual-amazon-widget {
+        flex-direction: row; /* 画像が左、説明が右 */
+        align-items: flex-start;
+        text-align: left;
+    }
 }
 
+/* 3. 画像とテキストのサイズ調整 */
 .product-img {
     width: 100px;
     height: 100px;
     object-fit: contain;
+    flex-shrink: 0; /* 画像が潰れないように固定 */
 }
 
 .product-details {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    text-align: left;
+    width: 100%;
 }
 
+@media (min-width: 768px) {
+    .product-details {
+        align-items: flex-start;
+    }
+}
+
+/* 商品名の省略設定 */
 .product-name {
     color: #333;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: bold;
     margin-bottom: 5px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 1.3;
 }
 
 .price-display {
     color: #b12704;
     font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-}
-
-.price-display small {
-    font-size: 0.6rem;
-    color: #888;
+    font-size: 1rem;
+    margin-bottom: 8px;
 }
 
 .amazon-btn {
@@ -654,19 +683,137 @@ section:hover {
     color: #fff !important;
     padding: 5px 12px;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-align: center;
-    width: fit-content;
     font-weight: bold;
+    text-decoration: none;
+    width: fit-content;
 }
 
-/* スマホ対応：横並びだと狭いので縦に並べる */
-@media (max-width: 480px) {
-    .manual-amazon-widget {
+/* スマホの時だけボタンを横いっぱいに */
+@media (max-width: 767px) {
+    .amazon-btn { width: 100%; }
+    .product-details { align-items: center; text-align: center; }
+}
+
+/* コメント欄 */
+.comment-box {
+    margin-top: 10px;
+    padding: 0 5px;
+}
+
+
+/* ===== ヘッダーハンバーガーメニュー専用スタイル ===== */
+
+/* デフォルト（PC）ではボタンを隠す */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001; /* ヘッダーより上に */
+}
+
+.menu-toggle .bar {
+    display: block;
+    width: 25px;
+    height: 2px;
+    margin: 5px 0;
+    background-color: #77ddff; /* サイトのテーマカラー */
+    transition: 0.3s;
+}
+
+/* スマホ版（900px以下）のスタイル：上から出てくる形式 */
+@media (max-width: 900px) {
+.menu-toggle {
+        display: block; 
+        position: relative;
+        z-index: 2000; /* nav-container(1000)より大きい数字にする */
+    }
+
+.nav-container {
+        position: fixed;
+        top: -100vh;
+        left: 0;
+        width: 100%;
+        height: auto;
+        background: rgba(14, 14, 16, 0.98);
+        backdrop-filter: blur(15px);
+        
+        /* padding-top をヘッダーの高さ以上に設定する */
+        padding: 120px 0 60px; 
+        
+        transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000; /* ボタンより背面に設定 */
+        border-bottom: 1px solid rgba(119, 221, 255, 0.3);
+    }
+
+    /* メニューが開いている時 */
+.nav-container.is-active {
+        top: 0;
+    }
+
+    .nav-menu {
         flex-direction: column;
-        text-align: center;
-    }
-    .product-details {
         align-items: center;
+        gap: 30px;
     }
+    
+    /* リンクの文字を少し大きく、タップしやすく */
+    .nav-menu li a {
+        font-size: 1.2rem;
+        letter-spacing: 0.2em;
+    }
+}
+
+    /* ボタンのアニメーション（三本線が×になる） */
+    .menu-toggle.is-active .bar:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .menu-toggle.is-active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle.is-active .bar:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+
+    /* Aboutページ詳細
+    /* 組織概要のテーブル */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: #b8b8d0;
+}
+.info-table th, .info-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(119, 221, 255, 0.1);
+    text-align: left;
+}
+.info-table th {
+    width: 30%;
+    color: #77ddff;
+}
+
+/* セクションタグ */
+.section-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #77ddff;
+    border: 1px solid #77ddff;
+    display: inline-block;
+    padding: 2px 8px;
+    margin-bottom: 10px;
+    letter-spacing: 0.1em;
+}
+
+/* ドキュメント番号 */
+.doc-number {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #555;
+    text-align: right;
 }
