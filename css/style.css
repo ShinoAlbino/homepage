@@ -817,3 +817,172 @@ section:hover {
     color: #555;
     text-align: right;
 }
+
+
+/* Nexus ページ専用のグリッドレイアウト */
+.nexus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.nexus-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.link-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* リンクボタンのスタイル */
+.nexus-link {
+    display: block;
+    padding: 15px;
+    background: rgba(119, 221, 255, 0.05);
+    border: 1px solid rgba(119, 221, 255, 0.2);
+    text-decoration: none;
+    color: #e0e0ff;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.nexus-link:hover {
+    background: rgba(119, 221, 255, 0.15);
+    border-color: #77ddff;
+    transform: translateX(5px);
+}
+
+.link-title {
+    display: block;
+    font-weight: bold;
+    color: #77ddff;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.link-desc {
+    display: block;
+    font-size: 0.85rem;
+    color: #b8b8d0;
+    line-height: 1.4;
+}
+
+/* Nexusページ：バラバラから集まってくるアニメーションのベース */
+.nexus-card {
+    opacity: 0;
+    filter: blur(10px);
+    /* 2.0秒かけて移動・変化する設定。後半ゆっくり止まるカーブ */
+    transition: all 2.0s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* 登場時の移動距離も大きくして、より「遠くから来る」感じに */
+.nexus-card:nth-child(1) { transform: translate(-150px, -100px); }
+.nexus-card:nth-child(2) { transform: translate(0, 150px); }
+.nexus-card:nth-child(3) { transform: translate(150px, -100px); }
+
+.nexus-card.is-visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(0, 0) !important;
+}
+
+/* --- Nexus 演出用追加 --- */
+
+/* 初期：わざとバラバラに飛ばしておく */
+.nexus-card {
+    opacity: 0;
+    filter: blur(10px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 1番目は左上から、2番目は下から、3番目は右上から */
+.nexus-card:nth-child(1) { transform: translate(-80px, -50px); }
+.nexus-card:nth-child(2) { transform: translate(0, 80px); }
+.nexus-card:nth-child(3) { transform: translate(80px, -50px); }
+
+/* 集結：JSでこのクラスがつくと中心に戻る */
+.nexus-card.is-visible {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(0, 0) !important;
+}
+
+
+/* 協力機関セクション全体 */
+.affiliates-section {
+    margin-top: 80px;
+    padding: 20px 10px;
+    border-top: 1px solid rgba(119, 221, 255, 0.1);
+}
+
+.affiliates-title {
+    font-size: 0.75rem;
+    color: #555;
+    letter-spacing: 0.2em;
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+/* グリッド配置：画面幅に合わせて自動調整 */
+.affiliates-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* 画面が狭い時は折り返す */
+    gap: 15px;       /* 間隔を少し詰める */
+    max-width: 100%;
+}
+
+/* 各アイテムのスタイル */
+.affiliate-item {
+    display: flex;
+    flex-direction: row; /* 横並び（ロゴ＋テキスト） */
+    align-items: center;
+    width: auto;         /* 幅固定を解除 */
+    min-width: 160px;    /* 最小幅を小さく設定 */
+    padding: 5px 10px;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.02); /* 薄い枠線を入れるとバナー感が出ます */
+    border: 1px solid rgba(119, 221, 255, 0.05);
+}
+
+.affiliate-item:hover {
+    opacity: 0.8;
+    filter: grayscale(0%);
+    transform: translateX(5px); /* 右に少し動く演出 */
+}
+
+/* ロゴのサイズ固定 */
+.affiliate-logo {
+    width: 16px;
+    height: 16px;
+    margin-bottom: 0;
+    object-fit: contain;
+}
+
+/* テキスト部分 */
+.affiliate-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.affiliate-name {
+    font-size: 0.7rem;   /* 0.85remから縮小 */
+    line-height: 1.1;
+    font-weight: bold;
+    color: #b8b8d0;
+    white-space: nowrap;
+}
+
+.affiliate-en {
+    font-size: 0.55rem;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}

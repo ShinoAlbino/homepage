@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // ヘッダーが画面に現れた「直後」にメニュー機能を起動する
       initHamburgerMenu();
+      // Nexus表示演出
+      animateNexusCards();
     });
 
   // 2. フッターの読み込み
@@ -50,3 +52,19 @@ function initHamburgerMenu() {
     }
   });
 }
+
+// Nexus表示演出
+function animateNexusCards() {
+    const cards = document.querySelectorAll('.nexus-card');
+    if (cards.length === 0) return;
+
+    cards.forEach((card, index) => {
+        // 0.6秒(600ms)ずつ間隔を空けて、ゆっくりスタートさせる
+        setTimeout(() => {
+            card.classList.add('is-visible');
+        }, 300 + (600 * index)); 
+    });
+}
+
+// 既存の DOMContentLoaded の中、あるいは window.onload で実行
+window.addEventListener('load', animateNexusCards);

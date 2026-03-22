@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FATAL ERROR | Arca Hortus</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body.error-body {
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* 動くノイズ背景（速度アップ） */
+    body.error-body::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: 
+            radial-gradient(#151515 10%, transparent 10%),
+            radial-gradient(#151515 10%, transparent 10%);
+        background-size: 3px 3px;
+        background-position: 0 0, 1.5px 1.5px;
+        opacity: 0.2;
+        animation: noise 0.05s infinite;
+        z-index: 1;
+    }
+
+    /* --- [新規] サブリミナル演出 --- */
+    body.error-body::after {
+        content: "OUT OF BOUNDARY"; /* 箱庭の崩壊:好きな文字に変えられます */
+        position: absolute;
+        font-family: serif;
+        font-weight: bold;
+        font-size: 5vw;
+        color: rgba(255, 0, 0, 0.4);
+        opacity: 0;
+        z-index: 100;
+        pointer-events: none;
+        animation: subliminal 8s infinite;
+    }
+
+    @keyframes subliminal {
+        0%, 94% { opacity: 0; transform: scale(1); filter: blur(10px); }
+        95% { opacity: 1; transform: scale(1.1); filter: blur(0); } /* 一瞬だけ表示 */
+        96% { opacity: 0; transform: scale(1.2); }
+    }
+
+    .error-wrapper {
+        text-align: center;
+        border: 1px solid #ff3232;
+        padding: 60px 40px;
+        background: rgba(5, 0, 0, 0.95);
+        box-shadow: 0 0 50px rgba(255, 0, 0, 0.2);
+        position: relative;
+        z-index: 10; /* コンテンツを最前面に */
+        max-width: 90%;
+    }
+
+    /* 強力なグリッチ文字 (404) */
+    .glitch-code {
+        font-family: monospace;
+        font-size: clamp(5rem, 15vw, 10rem);
+        font-weight: bold;
+        color: #ff3232;
+        position: relative;
+        display: inline-block;
+        animation: glitch-anim 0.2s infinite alternate;
+    }
+
+    .glitch-code::before,
+    .glitch-code::after {
+        content: "404";
+        position: absolute;
+        left: 0; top: 0; width: 100%; height: 100%;
+    }
+
+    .glitch-code::before {
+        color: #00fff0;
+        left: -3px;
+        text-shadow: -2px 0 #00fff0;
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim-2 0.3s infinite linear alternate-reverse;
+    }
+
+    .glitch-code::after {
+        color: #ff00c1;
+        left: 3px;
+        text-shadow: -2px 0 #ff00c1;
+        clip: rect(10px, 450px, 30px, 0);
+        animation: glitch-anim 0.5s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim {
+        0% { clip: rect(20px, 9999px, 10px, 0); transform: translate(-2px, -2px); }
+        20% { clip: rect(80px, 9999px, 90px, 0); transform: translate(2px, 2px); }
+        40% { clip: rect(40px, 9999px, 50px, 0); transform: translate(-2px, 2px); }
+        60% { clip: rect(10px, 9999px, 30px, 0); transform: translate(2px, -2px); }
+        100% { clip: rect(70px, 9999px, 80px, 0); transform: translate(0); }
+    }
+
+    @keyframes noise {
+        0% { transform: translate(0,0); }
+        100% { transform: translate(2px, 2px); }
+    }
+
+    .error-status {
+        color: #ff3232;
+        font-size: 1.2rem;
+        letter-spacing: 0.5em;
+        margin-bottom: 30px;
+    }
+
+    .warning-box {
+        color: #e0e0ff;
+        font-size: 0.9rem;
+        text-align: left;
+        border-left: 2px solid #ff3232;
+        padding-left: 20px;
+        margin: 20px 0;
+        line-height: 1.8;
+    }
+
+    .back-btn {
+        display: inline-block;
+        margin-top: 30px;
+        color: #ff3232;
+        text-decoration: none;
+        border: 1px solid #ff3232;
+        padding: 12px 24px;
+        transition: 0.3s;
+        font-weight: bold;
+    }
+
+    .back-btn:hover {
+        background: #ff3232;
+        color: #000;
+        box-shadow: 0 0 20px #ff3232;
+    }
+  </style>
+</head>
+<body class="error-body">
+  <div class="error-wrapper">
+    <div class="glitch-code">404</div>
+    <div class="error-status">Entity Not Found</div>
+    
+    <div class="warning-box">
+        警告：指定された接続先は現在、当機構の観測圏内に存在しません。<br>
+        要求されたページは収容外（Out of Range）、あるいは上位権限によって実体そのものが消去（Redacted）された可能性があります。
+    </div>
+
+    <div class="warning-box" style="border-color: #555; color: #888;">
+        [Internal Log]<br>
+        - 接続元IPの特定中...<br>
+        - 精神波形パターンの照合中...<br>
+        - 記憶処理プロトコル待機状態...
+    </div>
+
+    <p class="scanning">DANGER: Unauthorized access to classified sectors is punishable by narrative reconstruction.</p>
+    
+    <a href="index.html" class="back-btn">現在へ帰還</a>
+  </div>
+</body>
+</html>
