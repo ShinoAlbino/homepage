@@ -612,6 +612,50 @@ a.news-item:hover .news-arrow { opacity: 1; transform: translateX(0); }
   margin-top: 10px;
 }
 
+/* ===== ニュース：開閉アコーディオン ===== */
+.news-accordion { max-width: 820px; margin: 0 auto; }
+.news-accordion-summary {
+  cursor: pointer;
+  list-style: none;
+  text-align: center;
+  padding: 4px 0;
+}
+.news-accordion-summary::-webkit-details-marker { display: none; }
+.news-accordion-summary .en {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.news-accordion-summary h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 900;
+  color: var(--green-900);
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+  text-wrap: balance;
+}
+.news-accordion-arrow {
+  display: inline-block;
+  font-size: 0.62em;
+  color: var(--accent);
+  transition: transform 0.25s;
+}
+.news-accordion[open] .news-accordion-arrow { transform: rotate(180deg); }
+.news-accordion-body { margin-top: clamp(20px, 4vw, 30px); }
+.news-accordion-body .sub {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  max-width: 640px;
+  margin: 0 auto 20px;
+}
+
 /* ===== レイアウト ===== */
 main { display: block; }
 .section {

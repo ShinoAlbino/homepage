@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "serifu": [
+    {
+      "id": "greet_first_01",
+      "category": "greeting",
+      "conditions": { "visitor": "first" },
+      "text": "……あ。はじめて見る顔、だね。ようこそ、此芽の観測室へ。ゆっくりしていって",
+      "voice": "greet_first_01.ogg",
+      "expression": "neutral",
+      "weight": 3
+    },
+    {
+      "id": "greet_morning_01",
+      "category": "greeting",
+      "conditions": { "hourJST": [5, 11], "visitor": "repeat" },
+      "text": "……ん、おはよう。今日も観測、始めるね",
+      "voice": "greet_morning_01.ogg",
+      "expression": "neutral",
+      "weight": 2
+    },
+    {
+      "id": "greet_day_01",
+      "category": "greeting",
+      "conditions": { "hourJST": [11, 18], "visitor": "repeat" },
+      "text": "おかえり。……お昼の箱庭は、わりと平和だよ。今のところは、だけど",
+      "voice": "greet_day_01.ogg",
+      "expression": "neutral",
+      "weight": 2
+    },
+    {
+      "id": "greet_night_01",
+      "category": "greeting",
+      "conditions": { "hourJST": [18, 25], "visitor": "repeat" },
+      "text": "……いらっしゃい。夜はね、記録がよく進むの。あなたも静かにしててくれると、助かる",
+      "voice": "greet_night_01.ogg",
+      "expression": "neutral",
+      "weight": 2
+    },
+    {
+      "id": "greet_midnight_01",
+      "category": "greeting",
+      "conditions": { "hourJST": [1, 5], "visitor": "repeat" },
+      "text": "……こんな時間に来るなんて。まあ、いいけど。眠れないなら、一緒に観測する？",
+      "voice": "greet_midnight_01.ogg",
+      "expression": "neutral",
+      "weight": 2
+    },
+    {
+      "id": "greet_any_01",
+      "category": "greeting",
+      "conditions": { "visitor": "repeat" },
+      "text": "……ん、また来たんだ。じゃあ、続きから観測しよっか",
+      "voice": "greet_any_01.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+
+    {
+      "id": "idle_01",
+      "category": "idle",
+      "text": "……第7次元の空、今日はすこし赤いね。夕焼けとは、別のなにかだと思う",
+      "voice": "idle_01.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "idle_02",
+      "category": "idle",
+      "text": "羽織の鈴？　……鳴ったら、なにかが『こっちを見た』合図。今日はまだ、鳴ってない",
+      "voice": "idle_02.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "idle_03",
+      "category": "idle",
+      "text": "観測記録、つけてるとね。世界は書いたぶんだけ、ちゃんと続いてくれる気がするの",
+      "voice": "idle_03.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "idle_04",
+      "category": "idle",
+      "text": "……ふぁ。ごめん、ちょっとだけ眠い。観測者にも、休憩は必要だから……",
+      "voice": "idle_04.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+
+    {
+      "id": "click_01",
+      "category": "click",
+      "text": "わ……っ。急に触らないで。鈴が鳴っちゃうでしょ",
+      "voice": "click_01.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "click_02",
+      "category": "click",
+      "text": "……なに？　観測の邪魔をするなら、記録に残すよ。『本日、不審な接触あり』って",
+      "voice": "click_02.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "click_03",
+      "category": "click",
+      "text": "耳は……さわっちゃ、だめ。それだけは、だめ",
+      "voice": "click_03.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "click_04",
+      "category": "click",
+      "text": "ん。……呼んだ？　観測なら、ちゃんと続けてるよ",
+      "voice": "click_04.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+
+    {
+      "id": "prog_morning_01",
+      "category": "program:morning",
+      "text": "朝の観測はね、境界線が一番きれいに見えるの。……起きた甲斐は、あると思う",
+      "voice": "prog_morning_01.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "prog_morning_02",
+      "category": "program:morning",
+      "text": "朝ごはん？　……お茶漬け。観測室だと、それくらいしか作れないから",
+      "voice": "prog_morning_02.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "prog_morning_03",
+      "category": "program:morning",
+      "text": "今日の予定を読み上げるね。……観測、記録、お昼寝、観測。うん、完璧な計画",
+      "voice": "prog_morning_03.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+
+    {
+      "id": "prog_daytime_01",
+      "category": "program:daytime",
+      "text": "ひるの雑記の時間。……昨日ね、箱庭の住人が変な歌を流行らせてた。記録すべきか、迷ってる",
+      "voice": "prog_daytime_01.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "prog_daytime_02",
+      "category": "program:daytime",
+      "text": "お昼のこの時間は、観測対象もお昼寝してることが多いの。……つまり、平和ってこと",
+      "voice": "prog_daytime_02.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "prog_daytime_03",
+      "category": "program:daytime",
+      "text": "管理者から差し入れが届いてた。……封筒に『機密』って書いてあるお菓子って、どうなの",
+      "voice": "prog_daytime_03.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+
+    {
+      "id": "prog_night_01",
+      "category": "program:night",
+      "text": "夜の観測録、はじめるね。……今夜は、第3層の灯りがいつもより多い。お祭りかも",
+      "voice": "prog_night_01.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "prog_night_02",
+      "category": "program:night",
+      "text": "夜は、記録がよく進む。……そのかわり、たまに『記録じゃないもの』も混ざるけど",
+      "voice": "prog_night_02.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "prog_night_03",
+      "category": "program:night",
+      "text": "……ねえ、窓の外。いま、なにか横切らなかった？　……気のせいなら、いいの",
+      "voice": "prog_night_03.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+
+    {
+      "id": "prog_midnight_01",
+      "category": "program:midnight",
+      "text": "……静かな時間。この時間の箱庭は、ページをめくる音だけがする",
+      "voice": "prog_midnight_01.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "prog_midnight_02",
+      "category": "program:midnight",
+      "text": "眠くなったら、寝ていいからね。……観測は、わたしが続けておくから",
+      "voice": "prog_midnight_02.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "prog_midnight_03",
+      "category": "program:midnight",
+      "text": "深夜の観測はね、内緒だけど……すこしだけ、こわい。だから居てくれると、うれしい",
+      "voice": "prog_midnight_03.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+
+    {
+      "id": "promo_01",
+      "category": "promo",
+      "text": "……観測室の維持には、その、資材が要るの。支援してくれたら、鈴を一回鳴らしてあげる",
+      "voice": "promo_01.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "promo_02",
+      "category": "promo",
+      "text": "下の『観測を支援する』……あれは押しても爆発しないよ。むしろ、箱庭が少し広がる",
+      "voice": "promo_02.ogg",
+      "expression": "neutral",
+      "weight": 1
+    },
+    {
+      "id": "promo_03",
+      "category": "promo",
+      "text": "支援者の名前はね、観測記録の最後のページに書いてるの。……大事な、名簿だから",
+      "voice": "promo_03.ogg",
+      "expression": "neutral",
+      "weight": 1
+    }
+  ]
+}

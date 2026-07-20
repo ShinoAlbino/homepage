@@ -131,25 +131,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- 狩猟・ジビエ関連ニュース（自動更新） -->
+  <!-- 狩猟・ジビエ関連ニュース（自動更新・開閉式） -->
   <section class="section tight" id="news">
-    <div class="section-head fade-up">
-      <span class="en">Hunting News</span>
-      <h2>狩猟・ジビエ関連ニュース</h2>
-      <p class="sub">
-        <span class="news-live-badge"><i></i>自動更新</span>
-        Google Newsから「狩猟」「ジビエ」「有害鳥獣」に関する最新記事を自動収集しています（約45分ごとに更新）。
-      </p>
-    </div>
-    <div class="news-panel fade-up">
-      <div class="news-list" id="news-list">
-        <div class="news-skel"><div class="bar w60"></div><div class="bar w30"></div></div>
-        <div class="news-skel"><div class="bar w60"></div><div class="bar w30"></div></div>
-        <div class="news-skel"><div class="bar w60"></div><div class="bar w30"></div></div>
-        <div class="news-skel"><div class="bar w60"></div><div class="bar w30"></div></div>
+    <details class="news-accordion fade-up">
+      <summary class="news-accordion-summary">
+        <span class="en">Hunting News</span>
+        <h2>狩猟・ジビエ関連ニュース<span class="news-accordion-arrow" aria-hidden="true">▽</span></h2>
+      </summary>
+      <div class="news-accordion-body">
+        <p class="sub">
+          <span class="news-live-badge"><i></i>自動更新</span>
+          Google Newsから「狩猟」「ジビエ」「有害鳥獣」に関する最新記事を自動収集しています（約45分ごとに更新）。
+        </p>
+        <div class="news-panel">
+          <div class="news-list" id="news-list">
+            <div class="news-skel"><div class="bar w60"></div><div class="bar w30"></div></div>
+            <div class="news-skel"><div class="bar w60"></div><div class="bar w30"></div></div>
+            <div class="news-skel"><div class="bar w60"></div><div class="bar w30"></div></div>
+            <div class="news-skel"><div class="bar w60"></div><div class="bar w30"></div></div>
+          </div>
+        </div>
+        <p class="news-updated" id="news-updated"></p>
       </div>
-    </div>
-    <p class="news-updated" id="news-updated"></p>
+    </details>
   </section>
 
   <!-- 導入リード -->

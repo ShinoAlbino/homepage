@@ -9,16 +9,29 @@
   var toggle = document.querySelector('.nav-toggle');
   var links = document.querySelector('.nav-links');
   if (toggle && links) {
-    toggle.addEventListener('click', function () {
+    var closeNav = function () {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = '☰';
+    };
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
       var open = links.classList.toggle('open');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       toggle.textContent = open ? '✕' : '☰';
     });
     links.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') {
-        links.classList.remove('open');
-        toggle.textContent = '☰';
+      if (e.target.tagName === 'A') closeNav();
+    });
+    /* メニュー以外をタップ／クリックした時に閉じる */
+    document.addEventListener('click', function (e) {
+      if (links.classList.contains('open') && !links.contains(e.target) && !toggle.contains(e.target)) {
+        closeNav();
       }
+    });
+    /* Escキーで閉じる */
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && links.classList.contains('open')) closeNav();
     });
   }
 

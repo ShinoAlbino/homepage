@@ -1,0 +1,8 @@
+{
+  "programs": [
+    { "id": "morning",  "name": "朝の観測",   "hours": [6, 11],  "bgm": "morning.ogg" },
+    { "id": "daytime",  "name": "ひるの雑記", "hours": [11, 18], "bgm": "day.ogg" },
+    { "id": "night",    "name": "夜の観測録", "hours": [18, 25], "bgm": "night.ogg" },
+    { "id": "midnight", "name": "静かな時間", "hours": [1, 6],   "bgm": null }
+  ]
+}
