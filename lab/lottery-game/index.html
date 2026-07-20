@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>抽選ゲーム|忘年会・二次会・結婚式で盛り上がる無料の景品抽選アプリ(スロット・レース・イルミ・ロケット)</title>
+<meta name="description" content="宴会・忘年会・新年会・二次会・結婚式の景品抽選が盛り上がる無料の抽選ゲーム。スロット・競馬風レース・イルミネーション点灯・ロケット発射の4種類の演出から選べて、賞品を登録するだけでルーレットやビンゴの代わりに使えます。ハズレ枠・確率(順位)設定・当選賞品の自動除外・途中追加に対応。スマホ/タブレット/PC対応。">
+<meta name="keywords" content="抽選ゲーム,宴会,忘年会,新年会,二次会,結婚式,景品,抽選アプリ,ルーレット,くじ引き,ガラポン,ビンゴ,無料,スロット,盛り上がる,余興">
+<meta property="og:title" content="抽選ゲーム|忘年会・二次会で盛り上がる無料の景品抽選アプリ">
+<meta property="og:description" content="スロット・レース・イルミネーション・ロケットの4演出で景品抽選が盛り上がる!賞品を登録するだけ。ハズレ枠・確率設定・当選賞品の自動除外対応。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta name="theme-color" content="#14003a">
+<style>
+:root{
+  --cell: clamp(64px, 19vw, 110px);
+  --gold: #ffd24a;
+  --gold2: #b8860b;
+  --red: #ff3b5c;
+  --bg1: #14003a;
+  --bg2: #3b0a5e;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;
+  background:radial-gradient(ellipse at 50% 0%, var(--bg2), var(--bg1) 70%);
+  color:#fff; overflow-x:hidden; min-height:100dvh;
+  display:flex; flex-direction:column; align-items:center;
+  user-select:none;
+}
+/* ===== header ===== */
+header{width:100%;max-width:560px;padding:12px 14px 4px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
+h1{
+  font-size:clamp(19px,5.4vw,28px);font-weight:900;letter-spacing:.04em;
+  background:linear-gradient(180deg,#fff6c0,var(--gold) 55%,#e08b00);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 8px rgba(255,210,74,.55));
+  animation:titleGlow 2.2s ease-in-out infinite;
+}
+@keyframes titleGlow{50%{filter:drop-shadow(0 0 16px rgba(255,210,74,.95))}}
+.hbtns{display:flex;gap:8px}
+.iconbtn{
+  border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);
+  color:#fff;border-radius:12px;padding:8px 12px;font-size:14px;font-weight:700;cursor:pointer;
+}
+.iconbtn:active{transform:scale(.94)}
+
+/* ===== speed lines (サイズ上限付き・GPU負荷対策) ===== */
+#speedlines{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s;overflow:hidden;
+}
+#speedlines::before{
+  content:"";position:absolute;left:50%;top:50%;
+  width:min(150vmax,1200px);height:min(150vmax,1200px);border-radius:50%;
+  background:repeating-conic-gradient(rgba(255,255,255,.09) 0 2deg, transparent 2deg 9deg);
+  transform:translate(-50%,-50%) rotate(0deg);
+  animation:slSpin 6s linear infinite;
+  will-change:transform;
+}
+#speedlines.show{opacity:1}
+#speedlines.atsui::before{
+  background:repeating-conic-gradient(rgba(255,210,74,.16) 0 3deg, transparent 3deg 9deg);
+  animation-duration:1.6s;
+}
+@keyframes slSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* ===== machine ===== */
+#machine{
+  position:relative;margin:10px 12px 0;padding:calc(var(--cell)*.22) 14px 16px;
+  border-radius:26px;width:min(94vw,540px);z-index:1;
+  background:linear-gradient(180deg,#5d0f14,#8f1a1a 30%,#5d0f14);
+  border:4px solid var(--gold2);
+  box-shadow:0 0 0 3px #3a0505,0 0 40px rgba(255,80,80,.35),inset 0 0 24px rgba(0,0,0,.6);
+  transition:filter .5s;
+}
+#machine.dim{filter:brightness(.32) saturate(.4)}
+#machine.rainbow{
+  animation:rainbowGlow .5s linear infinite;
+  box-shadow:0 0 0 3px #3a0505,0 0 46px rgba(255,210,74,.55),inset 0 0 24px rgba(0,0,0,.6);
+}
+/* box-shadowアニメは再描画負荷が高くコマ落ちの原因になるため、border-colorのみ変化させる */
+@keyframes rainbowGlow{
+  0%{border-color:#ff3b5c}25%{border-color:#ffd24a}50%{border-color:#4affd2}75%{border-color:#4a9bff}100%{border-color:#ff3b5c}
+}
+#machine.shakeHard{animation:shakeHard .45s ease}
+@keyframes shakeHard{
+  0%,100%{transform:translate(0,0)}15%{transform:translate(-12px,6px)}30%{transform:translate(11px,-7px)}
+  45%{transform:translate(-9px,-5px)}60%{transform:translate(8px,6px)}75%{transform:translate(-5px,3px)}
+}
+#machine.trembling{animation:tremble .09s linear infinite}
+@keyframes tremble{0%,100%{transform:translate(0,0)}25%{transform:translate(-2px,1px)}50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,-1px)}}
+/* marquee lights */
+#machine::before,#machine::after{
+  content:"";position:absolute;left:10px;right:10px;height:12px;border-radius:8px;
+  background-image:radial-gradient(circle 5px at 10px 6px,var(--gold) 60%,transparent 62%);
+  background-size:26px 12px;background-repeat:repeat-x;
+  animation:marquee .5s steps(2) infinite;
+}
+#machine::before{top:6px}
+#machine::after{bottom:6px}
+@keyframes marquee{50%{filter:brightness(.25)}}
+#machine.frenzy::before,#machine.frenzy::after{animation-duration:.18s}
+
+#reels{
+  display:flex;gap:8px;justify-content:center;margin-top:14px;
+  background:#1a0505;border-radius:16px;padding:10px;
+  border:3px solid #000;box-shadow:inset 0 6px 18px rgba(0,0,0,.9);
+}
+.reel{
+  position:relative;flex:1;max-width:calc(var(--cell)*1.6);height:calc(var(--cell)*3);
+  overflow:hidden;border-radius:10px;
+  background:linear-gradient(180deg,#cfcfcf,#fff 30%,#fff 70%,#bdbdbd);
+}
+.reel .strip{position:absolute;left:0;right:0;top:0;will-change:transform}
+.reel.blur .strip{filter:blur(2.5px)}
+.cell{
+  height:var(--cell);display:flex;align-items:center;justify-content:center;
+  color:#1c1c3a;font-weight:900;text-align:center;padding:2px 4px;line-height:1.15;
+  border-bottom:1px solid rgba(0,0,0,.12);overflow:hidden;
+}
+.cell span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-all}
+.cell.hz{color:#8a8a8a}
+.reel::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 30%,transparent 70%,rgba(0,0,0,.55));
+}
+.reel::after{
+  content:"";position:absolute;left:0;right:0;top:var(--cell);height:var(--cell);
+  pointer-events:none;z-index:2;border-top:2px solid rgba(255,59,92,.65);border-bottom:2px solid rgba(255,59,92,.65);
+}
+.reel.hit::after{background:rgba(255,210,74,.28);animation:hitFlash .35s ease 4}
+@keyframes hitFlash{50%{background:rgba(255,210,74,.55)}}
+.reel.strobe::after{animation:strobeC .18s linear infinite}
+@keyframes strobeC{
+  0%{background:rgba(255,59,92,.5)}33%{background:rgba(255,210,74,.5)}66%{background:rgba(74,255,210,.5)}100%{background:rgba(74,155,255,.5)}
+}
+.reel.glow{box-shadow:0 0 18px 4px rgba(255,210,74,.9)}
+.reel.bounce .strip{animation:bounce .3s ease}
+@keyframes bounce{0%{margin-top:-10px}60%{margin-top:5px}100%{margin-top:0}}
+
+/* reach banner */
+#reach{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:5;pointer-events:none}
+#reach.show{display:flex}
+#reach b{
+  font-size:clamp(34px,11vw,72px);font-style:italic;font-weight:900;letter-spacing:.05em;
+  will-change:transform;
+  color:var(--red);-webkit-text-stroke:2px #fff;white-space:nowrap;
+  text-shadow:0 0 22px rgba(255,59,92,.9),0 4px 0 #7a0020;
+  animation:reachPulse .38s ease-in-out infinite;
+}
+#reach b.atsui{
+  color:var(--gold);text-shadow:0 0 26px rgba(255,210,74,1),0 4px 0 #7a4a00;
+  animation:reachPulse .22s ease-in-out infinite;
+}
+@keyframes reachPulse{50%{transform:scale(1.22) rotate(-3deg)}}
+#faux{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:5;pointer-events:none;
+  font-size:clamp(30px,10vw,60px);font-weight:900;color:#7d8ea0;letter-spacing:.1em;
+  text-shadow:0 3px 8px #000;
+}
+#faux.show{display:flex;animation:fauxIn .8s ease}
+@keyframes fauxIn{from{opacity:0;transform:translateY(18px)}}
+
+/* ===== カットイン ===== */
+#cutin{position:fixed;inset:0;z-index:56;display:none;align-items:center;justify-content:center;pointer-events:none;overflow:hidden}
+#cutin.show{display:flex}
+#cutinBand{
+  position:absolute;left:-10%;right:-10%;height:clamp(110px,26vw,190px);
+  transform:skewY(-6deg);display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(90deg,transparent,rgba(180,0,40,.96) 12%,rgba(120,0,20,.96) 88%,transparent);
+  border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);
+  animation:bandIn 1.25s cubic-bezier(.15,1,.3,1) both;
+}
+#cutin.gold #cutinBand{background:linear-gradient(90deg,transparent,rgba(200,140,0,.97) 12%,rgba(140,90,0,.97) 88%,transparent);border-color:#fff}
+@keyframes bandIn{
+  0%{transform:skewY(-6deg) translateX(-110%)}
+  18%{transform:skewY(-6deg) translateX(0)}
+  82%{transform:skewY(-6deg) translateX(0)}
+  100%{transform:skewY(-6deg) translateX(110%)}
+}
+#cutinText{
+  font-size:clamp(44px,15vw,104px);font-weight:900;font-style:italic;letter-spacing:.06em;color:#fff;white-space:nowrap;
+  -webkit-text-stroke:2px #300;text-shadow:0 0 30px rgba(255,210,74,1),0 6px 0 rgba(0,0,0,.5);
+  animation:ctPop 1.25s ease both;
+}
+@keyframes ctPop{0%,14%{transform:scale(0) rotate(-8deg)}26%{transform:scale(1.25) rotate(2deg)}36%{transform:scale(1)}80%{transform:scale(1.06)}100%{transform:scale(1)}}
+
+/* 稲妻フラッシュ */
+#flash{position:fixed;inset:0;background:#fff;opacity:0;z-index:58;pointer-events:none}
+@keyframes flashA{0%{opacity:.95}100%{opacity:0}}
+#bolt{
+  position:fixed;inset:0;z-index:57;pointer-events:none;display:none;
+  align-items:center;justify-content:center;font-size:clamp(120px,42vw,300px);
+  filter:drop-shadow(0 0 40px #ffe680);
+}
+#bolt.show{display:flex;animation:boltA .55s ease both}
+@keyframes boltA{0%{opacity:0;transform:scale(2.4)}25%{opacity:1;transform:scale(1)}70%{opacity:1}100%{opacity:0}}
+
+/* ===== spin button ===== */
+#spinBtn{
+  line-height:1.25;
+  margin:18px 0 6px;width:min(78vw,340px);padding:18px 10px;border:none;border-radius:60px;cursor:pointer;
+  font-size:clamp(20px,6vw,27px);font-weight:900;letter-spacing:.14em;color:#4a1500;position:relative;z-index:1;
+  background:linear-gradient(180deg,#ffe680,var(--gold) 45%,#ff9b00);
+  box-shadow:0 6px 0 #a55e00,0 10px 26px rgba(255,155,0,.5);
+  animation:btnBeat 1.4s ease-in-out infinite;
+}
+@keyframes btnBeat{50%{transform:scale(1.045);box-shadow:0 6px 0 #a55e00,0 12px 34px rgba(255,155,0,.8)}}
+#spinBtn:active{transform:translateY(4px);box-shadow:0 2px 0 #a55e00}
+#spinBtn:disabled{filter:grayscale(.75) brightness(.75);animation:none;cursor:default}
+
+/* ===== game tabs ===== */
+#tabs{display:flex;gap:6px;width:min(94vw,540px);margin:8px 12px 0;position:relative;z-index:1}
+.tab{
+  flex:1;padding:9px 2px;border-radius:14px;border:2px solid var(--gold2);
+  background:rgba(255,255,255,.06);color:#fff;font-weight:800;font-size:11px;cursor:pointer;opacity:.55;white-space:nowrap;
+}
+.tab.on{background:linear-gradient(180deg,#ffe680,var(--gold));color:#4a1500;opacity:1}
+
+/* ===== race ===== */
+#raceWrap{width:min(94vw,540px);margin:10px 12px 0;position:relative;z-index:1}
+#raceTrack{
+  position:relative;overflow:hidden;border-radius:18px;
+  background:linear-gradient(180deg,#2e8b2e,#1c5c1c 60%,#164a16);
+  border:4px solid var(--gold2);
+  box-shadow:0 0 0 3px #143214,0 0 30px rgba(80,255,120,.25),inset 0 0 24px rgba(0,0,0,.5);
+  padding:6px 0;
+}
+#raceTrack.shakeHard{animation:shakeHard .45s ease}
+#raceTrack::after{
+  content:"";position:absolute;right:7%;top:0;bottom:0;width:9px;opacity:.95;
+  background:repeating-linear-gradient(45deg,#fff 0 6px,#111 6px 12px);
+}
+.lane{position:relative;height:var(--laneH,44px);border-bottom:1px dashed rgba(255,255,255,.22)}
+.lane:last-child{border-bottom:none}
+.runner{
+  position:absolute;left:6px;top:50%;transform:translate3d(0,-50%,0);
+  display:flex;align-items:center;gap:3px;will-change:transform;
+}
+.runner .emoji{font-size:calc(var(--laneH,44px)*.68);transform:scaleX(-1);display:inline-block;filter:drop-shadow(0 2px 2px rgba(0,0,0,.5))}
+.runner.dash .emoji{animation:gallop .16s linear infinite}
+@keyframes gallop{50%{transform:scaleX(-1) translateY(-4px) rotate(-5deg)}}
+.rname{
+  font-size:10px;font-weight:700;color:#fff;background:rgba(0,0,0,.6);
+  padding:1px 6px;border-radius:6px;white-space:nowrap;max-width:96px;overflow:hidden;text-overflow:ellipsis;
+}
+#commentary{
+  min-height:46px;margin-top:8px;padding:9px 12px;border-radius:12px;
+  background:rgba(0,0,0,.55);border:1px solid rgba(255,210,74,.45);
+  font-weight:800;font-size:14.5px;line-height:1.4;
+}
+#commentary.hot{color:var(--gold);animation:comPulse .3s ease-in-out infinite}
+@keyframes comPulse{50%{transform:scale(1.02);text-shadow:0 0 12px rgba(255,210,74,.9)}}
+/* 画面ドンの叫びテロップ */
+#raceShout,#illumiShout,#rocketShout,#casinoShout{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:6;pointer-events:none}
+#raceShout.show,#illumiShout.show,#rocketShout.show,#casinoShout.show{display:flex}
+#raceShout b,#illumiShout b,#rocketShout b,#casinoShout b{
+  font-size:clamp(44px,15vw,96px);font-weight:900;font-style:italic;letter-spacing:.06em;white-space:nowrap;
+  color:var(--gold);-webkit-text-stroke:2px #fff;will-change:transform;
+  text-shadow:0 0 28px rgba(255,210,74,1),0 6px 0 #7a4a00;
+  animation:shoutPop .95s ease both;
+}
+@keyframes shoutPop{
+  0%{transform:scale(0) rotate(-8deg);opacity:0}
+  16%{transform:scale(1.35) rotate(2deg);opacity:1}
+  30%{transform:scale(1)}
+  78%{transform:scale(1.07);opacity:1}
+  100%{transform:scale(1.7);opacity:0}
+}
+/* 観客のガヤ声援 */
+.gaya{
+  position:absolute;z-index:5;pointer-events:none;font-weight:900;white-space:nowrap;
+  text-shadow:0 2px 4px rgba(0,0,0,.75);
+  animation:gayaUp 1.15s ease-out both;
+}
+@keyframes gayaUp{
+  0%{opacity:0;transform:translateY(12px) scale(.6) rotate(var(--rot,0deg))}
+  20%{opacity:1;transform:translateY(0) scale(1) rotate(var(--rot,0deg))}
+  75%{opacity:1}
+  100%{opacity:0;transform:translateY(-20px) scale(1.08) rotate(var(--rot,0deg))}
+}
+
+/* ===== illumination ===== */
+#illumiWrap{width:min(94vw,540px);margin:10px 12px 0;position:relative;z-index:1}
+#forestBox{
+  position:relative;border-radius:18px;overflow:hidden;
+  background:linear-gradient(180deg,#050514,#0a0a2e 55%,#101040);
+  border:4px solid var(--gold2);
+  box-shadow:0 0 0 3px #101020,0 0 30px rgba(120,140,255,.25),inset 0 0 30px rgba(0,0,0,.7);
+  padding:12px 6px 52px;
+  transition:filter .6s;
+}
+#forestBox.dark{filter:brightness(.12)}
+#forestBox.shakeHard{animation:shakeHard .45s ease}
+#forestBox::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.85;
+  background-image:
+    radial-gradient(circle 1px at 12% 16%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 34% 7%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1.5px at 58% 13%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 78% 5%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 91% 20%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 22% 27%,#fff 50%,transparent 51%);
+}
+#forest{display:flex;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.tree{position:relative;display:flex;flex-direction:column;align-items:center;padding:2px 1px}
+.tree svg{width:100%;max-width:118px;display:block;position:relative;z-index:1}
+.tree .trunk{stroke:#54402e;stroke-width:5.5;stroke-linecap:round;fill:none}
+.tree .limbs{stroke:#4a3a2c;stroke-width:3.2;stroke-linecap:round;fill:none}
+.tree .twigs{stroke:#42342a;stroke-width:1.9;stroke-linecap:round;fill:none}
+.lt{fill:#20203a;transition:fill .12s}
+.tree.allon .lt{animation:twinkle .45s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:1}to{opacity:.45}}
+.tree.zap{animation:treeZap .28s linear 4}
+@keyframes treeZap{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.tname{
+  font-size:10.5px;font-weight:700;color:#cfd6ff;background:rgba(0,0,0,.55);
+  padding:1px 7px;border-radius:7px;max-width:96%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.tree.winlit .tname{color:#3a1e00;background:var(--gold);box-shadow:0 0 10px rgba(255,210,74,.85)}
+/* 並木の街路と配線(幹線・フィーダー・各列ワイヤー・引き込み線) */
+#ground{position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(180deg,#181830,#252540);border-top:1px solid rgba(160,170,220,.22)}
+#busWire{position:absolute;left:56px;right:12px;bottom:26px;height:3px;border-radius:2px;background:#3a3a52;z-index:1}
+#feeder{position:absolute;left:24px;bottom:28px;top:16px;width:3px;border-radius:2px;background:#3a3a52;z-index:0}
+.trow{display:flex;justify-content:center;position:relative;width:100%;padding-bottom:14px}
+.trow::after{content:"";position:absolute;left:6%;right:3%;bottom:7px;height:3px;border-radius:2px;background:#3a3a52}
+.tree::after{content:"";position:absolute;left:50%;bottom:-8px;width:3px;height:16px;background:#3a3a52;transform:translateX(-50%);z-index:0}
+#busWire.live,#forestBox.live .trow::after,#forestBox.live .tree::after,#forestBox.live #feeder{
+  background:linear-gradient(90deg,#ffe2b0,#ffc46a);
+  box-shadow:0 0 9px rgba(255,205,130,.85);
+  animation:wirePulse .5s linear infinite;
+}
+@keyframes wirePulse{50%{filter:brightness(1.7)}}
+/* 上下式ブレーカー(上=ON) */
+#breaker{
+  position:absolute;left:6px;bottom:8px;width:46px;height:68px;border-radius:8px;z-index:2;
+  background:linear-gradient(180deg,#707070,#383838);border:2px solid #171717;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:inset 0 2px 6px rgba(255,255,255,.15),0 2px 6px rgba(0,0,0,.6);
+}
+#breaker::before{content:"ON";order:0;font-size:8px;font-weight:900;color:#6f6;letter-spacing:.05em}
+#breaker::after{content:"OFF";order:2;font-size:8px;font-weight:900;color:#f66}
+#breakerLever{
+  order:1;width:18px;height:30px;border-radius:5px;margin:2px 0;
+  background:linear-gradient(180deg,#d22,#7a0000);border:2px solid #3d0000;
+  box-shadow:0 2px 4px rgba(0,0,0,.6);
+  transform:translateY(7px);
+  transition:transform .14s cubic-bezier(.5,-.4,.5,1.4);
+}
+#breaker.on #breakerLever{
+  transform:translateY(-7px);
+  background:linear-gradient(180deg,#3d3,#065f06);border-color:#033d03;
+}
+#spark{
+  position:absolute;width:12px;height:12px;border-radius:50%;bottom:24px;left:60px;z-index:3;
+  background:#fff;box-shadow:0 0 16px 6px rgba(255,220,160,.95);display:none;
+}
+#spark.show{display:block;animation:sparkJit .12s linear infinite}
+@keyframes sparkJit{50%{transform:translateY(-2px) scale(1.15)}}
+
+/* ===== rocket ===== */
+#rocketWrap{width:min(94vw,540px);margin:10px 12px 0;position:relative;z-index:1}
+#spaceBox{
+  position:relative;border-radius:18px;overflow:hidden;min-height:380px;
+  background:radial-gradient(circle at 72% 14%, #1c1c52, #0a0a24 55%, #050510);
+  border:4px solid var(--gold2);
+  box-shadow:0 0 0 3px #101020,0 0 30px rgba(120,140,255,.25),inset 0 0 30px rgba(0,0,0,.7);
+  padding:12px 6px 120px;
+}
+#spaceBox.shakeHard{animation:shakeHard .45s ease}
+#spaceBox::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.9;
+  background-image:
+    radial-gradient(circle 1px at 10% 22%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 30% 55%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1.5px at 55% 34%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 76% 62%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 88% 18%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 18% 78%,#fff 50%,transparent 51%),
+    radial-gradient(circle 1px at 64% 84%,#fff 50%,transparent 51%);
+}
+#planets{display:flex;flex-wrap:wrap;justify-content:center;row-gap:8px;position:relative;z-index:1}
+.planet{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 6px}
+.pbody{width:52px;height:52px;border-radius:50%;position:relative;box-shadow:inset -6px -8px 14px rgba(0,0,0,.45)}
+.planet.ring .pbody::before{
+  content:"";position:absolute;left:-13px;right:-13px;top:50%;height:16px;
+  transform:translateY(-50%) rotate(-18deg);
+  border:3px solid rgba(255,220,150,.55);border-radius:50%;
+}
+.planet.bh .pbody{
+  background:radial-gradient(circle,#000 34%,#2a0a4a 58%,rgba(90,40,140,.3) 72%,transparent 78%);
+  box-shadow:0 0 18px 5px rgba(140,80,255,.5);
+}
+.planet.bh .pbody::after{content:"";position:absolute;inset:-7px;border:2px dashed rgba(170,110,255,.65);border-radius:50%;animation:bhSwirl 2.4s linear infinite}
+@keyframes bhSwirl{to{transform:rotate(360deg)}}
+.planet.landed .pbody{animation:planetGlow .45s ease-in-out infinite alternate;box-shadow:0 0 26px 9px rgba(255,210,74,.9)}
+@keyframes planetGlow{from{filter:brightness(1)}to{filter:brightness(1.7)}}
+.pname{
+  font-size:10.5px;font-weight:700;color:#cfd6ff;background:rgba(0,0,0,.55);
+  padding:1px 7px;border-radius:7px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.planet.landed .pname{color:#3a1e00;background:var(--gold);box-shadow:0 0 10px rgba(255,210,74,.85)}
+#pad{
+  position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:2;
+  width:84px;height:10px;border-radius:4px;background:linear-gradient(180deg,#777,#333);
+  box-shadow:0 4px 0 #222,0 0 10px rgba(255,255,255,.15);
+}
+#rocket{
+  position:absolute;font-size:34px;z-index:4;left:50%;top:80%;
+  transform:translate(-50%,-50%) rotate(-45deg);
+  will-change:left,top,transform;
+  filter:drop-shadow(0 0 7px rgba(255,180,80,.75));
+}
+#rocket span{display:inline-block}
+#rocket.spin span{animation:rSpin .7s linear infinite}
+@keyframes rSpin{to{transform:rotate(360deg)}}
+.puff{
+  position:absolute;z-index:3;width:12px;height:12px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(#fff,#ffb066 55%,transparent 75%);
+  animation:puffA .6s ease-out both;
+}
+@keyframes puffA{to{transform:scale(2.8);opacity:0}}
+
+/* グリッチ暴走・ワープ */
+#spaceBox.glitch{animation:glitchFx .12s steps(2) infinite}
+@keyframes glitchFx{
+  0%{filter:none;transform:translate(0,0)}
+  25%{filter:invert(.75) hue-rotate(90deg);transform:translate(-3px,2px)}
+  50%{filter:contrast(1.8) saturate(2.5)}
+  75%{filter:invert(.15) hue-rotate(-60deg);transform:translate(3px,-2px)}
+}
+#rocket.charge{animation:chargeFx .15s linear infinite}
+@keyframes chargeFx{50%{filter:drop-shadow(0 0 18px #7df) brightness(2.2)}}
+#rocket.warpout{animation:warpOut .38s ease-in both}
+@keyframes warpOut{to{transform:translate(-50%,-50%) scaleX(5) scaleY(.06);opacity:0}}
+#rocket.warpin{animation:warpIn .38s ease-out both}
+@keyframes warpIn{
+  from{transform:translate(-50%,-50%) scaleX(5) scaleY(.06);opacity:0}
+  to{transform:translate(-50%,-50%) rotate(-45deg);opacity:1}
+}
+.streak{
+  position:absolute;left:0;right:0;height:3px;z-index:5;pointer-events:none;
+  background:linear-gradient(90deg,transparent,#9df,#fff,#9df,transparent);
+  box-shadow:0 0 14px #7df;animation:streakFx .5s ease-out both;
+}
+@keyframes streakFx{to{opacity:0;transform:scaleY(3)}}
+
+/* ===== casino roulette ===== */
+#casinoWrap{width:min(94vw,540px);margin:10px 12px 0;position:relative;z-index:1}
+#feltBox{
+  display:flex;justify-content:center;padding:18px 10px 22px;border-radius:18px;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 30%, #0f6b3a, #084a26 70%, #06331b);
+  border:4px solid var(--gold2);
+  box-shadow:0 0 0 3px #052a15,0 0 30px rgba(20,160,90,.3),inset 0 0 40px rgba(0,0,0,.55);
+}
+#feltBox::before{
+  content:"── PLACE YOUR BETS ──";
+  position:absolute;top:5px;left:0;right:0;text-align:center;
+  font-size:10px;letter-spacing:.3em;color:rgba(255,220,150,.5);font-weight:700;
+}
+#wheelBox{position:relative;width:min(84vw,330px);aspect-ratio:1}
+#wheelSVG{width:100%;height:100%;display:block;filter:drop-shadow(0 6px 14px rgba(0,0,0,.6))}
+.wlabel{fill:#f5eedd;font-weight:700;letter-spacing:.02em}
+svg path.pocket{transition:fill .2s}
+svg path.winPocket{fill:var(--gold);animation:pocketFlash .3s ease 6}
+@keyframes pocketFlash{50%{fill:#fff}}
+#ball{
+  position:absolute;width:14px;height:14px;border-radius:50%;display:none;z-index:3;pointer-events:none;
+  background:radial-gradient(circle at 35% 30%,#fff,#cfcfcf 60%,#8a8a8a);
+  box-shadow:0 2px 4px rgba(0,0,0,.6),0 0 6px rgba(255,255,255,.5);
+}
+#ball.show{display:block}
+
+/* ===== chips ===== */
+#status{font-size:13px;opacity:.85;margin:4px 0 6px;position:relative;z-index:1}
+#chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:0 14px 20px;max-width:560px;position:relative;z-index:1}
+.chip{font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,210,74,.5)}
+.chip.won{opacity:.4;text-decoration:line-through;border-color:rgba(255,255,255,.25)}
+.chip.hz{border-style:dashed;border-color:#9aa;color:#cdd}
+
+/* ===== overlays ===== */
+.overlay{
+  position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;
+  background:rgba(5,0,20,.86);backdrop-filter:blur(3px);padding:18px;
+}
+.overlay.show{display:flex}
+#resultCard{text-align:center;animation:popIn .45s cubic-bezier(.2,1.6,.4,1);position:relative;z-index:2}
+@keyframes popIn{from{transform:scale(.2);opacity:0}}
+#resultLabel{font-size:clamp(30px,10vw,58px);font-weight:900;letter-spacing:.1em;margin-bottom:10px}
+#resultLabel.win{
+  color:var(--gold);text-shadow:0 0 30px rgba(255,210,74,.95),0 0 60px rgba(255,150,0,.6);
+  animation:winZoom .6s ease-in-out infinite alternate;
+}
+#resultLabel.super{animation:winZoom .4s ease-in-out infinite alternate, superHue 1.2s linear infinite}
+@keyframes superHue{to{filter:hue-rotate(360deg)}}
+@keyframes winZoom{to{transform:scale(1.12)}}
+#resultLabel.lose{color:#8fa3b8}
+#resultPrize{
+  font-size:clamp(26px,9vw,52px);font-weight:900;line-height:1.25;word-break:break-all;
+  padding:18px 22px;border-radius:20px;max-width:88vw;
+  background:linear-gradient(180deg,rgba(255,210,74,.16),rgba(255,210,74,.05));
+  border:3px solid var(--gold);box-shadow:0 0 34px rgba(255,210,74,.45);
+}
+#resultCard.super #resultPrize{animation:rainbowGlow .4s linear infinite}
+#resultCard.lose #resultPrize{border-color:#5a6b7d;box-shadow:none;color:#b9c6d4}
+#resultNext{
+  margin-top:26px;padding:14px 44px;border:none;border-radius:50px;font-size:18px;font-weight:900;cursor:pointer;
+  background:linear-gradient(180deg,#fff,#ddd);color:#222;box-shadow:0 4px 0 #999;
+}
+#resultNext:active{transform:translateY(3px);box-shadow:none}
+#rays{position:absolute;width:150vmax;height:150vmax;pointer-events:none;opacity:.25;
+  background:repeating-conic-gradient(var(--gold) 0 9deg,transparent 9deg 18deg);
+  animation:spinRays 14s linear infinite;display:none}
+#resultOverlay.showWin #rays{display:block}
+#resultOverlay.showSuper #rays{display:block;opacity:.4;animation-duration:5s}
+@keyframes spinRays{to{transform:rotate(360deg)}}
+
+/* ===== settings ===== */
+#settings{align-items:flex-start;overflow-y:auto}
+#settingsCard{
+  width:min(96vw,560px);margin:20px auto;background:#1d1040;border:2px solid var(--gold2);
+  border-radius:20px;padding:18px 16px 22px;
+}
+#settingsCard h2{font-size:19px;color:var(--gold);margin-bottom:12px}
+.modeRow{display:flex;gap:8px;margin-bottom:14px}
+.modeRow button{
+  flex:1;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.06);color:#fff;font-weight:700;font-size:14px;cursor:pointer;
+}
+.modeRow button.on{background:var(--gold);color:#3a1e00;border-color:var(--gold)}
+.addRow{display:flex;gap:6px;margin-bottom:6px}
+.addRow input[type=text]{
+  flex:1;min-width:0;padding:11px;border-radius:10px;border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.1);color:#fff;font-size:16px;
+}
+.addRow input::placeholder{color:rgba(255,255,255,.45)}
+.addRow button{padding:0 18px;border:none;border-radius:10px;font-weight:900;font-size:15px;cursor:pointer;background:var(--gold);color:#3a1e00}
+.addOpts{display:flex;align-items:center;gap:14px;font-size:13px;margin-bottom:14px;opacity:.9}
+.addOpts input[type=number]{width:64px;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:15px}
+#plist{display:flex;flex-direction:column;gap:8px}
+.prow{
+  display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:12px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+}
+.prow.won{opacity:.5}
+.prow .nm{flex:1;font-weight:700;font-size:15px;word-break:break-all;line-height:1.25}
+.prow .nm small{display:block;font-weight:400;font-size:11px;opacity:.7}
+.prow .rk{width:58px;padding:6px 4px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:15px;text-align:center}
+.prow .pct{font-size:12px;color:var(--gold);width:52px;text-align:right}
+.prow button{border:none;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer;color:#fff}
+.prow .del{background:#8b2030}
+.prow .revive{background:#2e7d4f}
+.tagHz{font-size:10px;border:1px dashed #9aa;color:#cdd;border-radius:6px;padding:1px 5px;margin-left:4px}
+.setFoot{display:flex;gap:8px;margin-top:16px}
+.setFoot button{flex:1;padding:13px;border-radius:12px;border:none;font-weight:900;font-size:15px;cursor:pointer}
+#closeSet{background:var(--gold);color:#3a1e00}
+#resetAll{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3)!important}
+.hint{font-size:11.5px;opacity:.6;margin-top:10px;line-height:1.6}
+
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:70;
+  background:rgba(255,255,255,.95);color:#222;font-weight:700;font-size:14px;
+  padding:10px 20px;border-radius:99px;display:none;white-space:nowrap;
+}
+.shake{animation:shake .5s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="speedlines"></div>
+
+<header>
+  <h1>🎉 抽選ゲーム</h1>
+  <div class="hbtns">
+    <button class="iconbtn" id="sndBtn">🔊</button>
+    <button class="iconbtn" id="setBtn">⚙️ 賞品</button>
+  </div>
+</header>
+
+<div id="tabs">
+  <button class="tab on" id="tabSlot">🎰 スロット</button>
+  <button class="tab" id="tabCasino">🎡 カジノ</button>
+  <button class="tab" id="tabRace">🏇 レース</button>
+  <button class="tab" id="tabRocket">🚀 ロケット</button>
+  <button class="tab" id="tabIllumi">💡 イルミ</button>
+</div>
+
+<div id="machine">
+  <div id="reels">
+    <div class="reel" id="r0"><div class="strip"></div></div>
+    <div class="reel" id="r1"><div class="strip"></div></div>
+    <div class="reel" id="r2"><div class="strip"></div></div>
+  </div>
+  <div id="reach"><b>リーチ!!</b></div>
+  <div id="faux">ざんねん…</div>
+</div>
+
+<div id="raceWrap" style="display:none">
+  <div id="raceTrack"></div>
+  <div id="commentary">🎤 出走賞品が入場! スタートボタンでレース開始!</div>
+  <div id="raceShout"><b></b></div>
+</div>
+
+<div id="illumiWrap" style="display:none">
+  <div id="forestBox">
+    <div id="ground"></div>
+    <div id="feeder"></div>
+    <div id="forest"></div>
+    <div id="busWire"></div>
+    <div id="breaker"><div id="breakerLever"></div></div>
+    <div id="spark"></div>
+  </div>
+  <div id="illumiShout"><b></b></div>
+</div>
+
+<div id="rocketWrap" style="display:none">
+  <div id="spaceBox">
+    <div id="planets"></div>
+    <div id="pad"></div>
+    <div id="rocket"><span>🚀</span></div>
+  </div>
+  <div id="rocketShout"><b></b></div>
+</div>
+
+<div id="casinoWrap" style="display:none">
+  <div id="feltBox">
+    <div id="wheelBox">
+      <svg id="wheelSVG" viewBox="0 0 320 320"></svg>
+      <div id="ball"></div>
+    </div>
+  </div>
+  <div id="casinoShout"><b></b></div>
+</div>
+
+<button id="spinBtn">🎲 抽選スタート</button>
+<div id="status"></div>
+<div id="chips"></div>
+
+<div id="cutin"><div id="cutinBand"><span id="cutinText"></span></div></div>
+<div id="bolt">⚡</div>
+<div id="flash"></div>
+
+<div class="overlay" id="resultOverlay">
+  <div id="rays"></div>
+  <div id="resultCard">
+    <div id="resultLabel"></div>
+    <div id="resultPrize"></div>
+    <button id="resultNext">次の抽選へ ▶</button>
+  </div>
+</div>
+
+<div class="overlay" id="settings">
+  <div id="settingsCard">
+    <h2>⚙️ 賞品の登録・管理</h2>
+    <div class="modeRow">
+      <button id="modeEq">🎲 等確率モード</button>
+      <button id="modeWt">🏆 順位確率モード</button>
+    </div>
+    <div class="addRow">
+      <input type="text" id="newName" placeholder="賞品名を入力(例: 温泉旅行ペアチケット)" maxlength="30">
+      <button id="addBtn">追加</button>
+    </div>
+    <div class="addOpts">
+      <label>順位 <input type="number" id="newRank" value="1" min="1" step="1" inputmode="numeric"></label>
+      <label><input type="checkbox" id="newHz"> ハズレ枠として登録</label>
+    </div>
+    <div id="plist"></div>
+    <div class="setFoot">
+      <button id="resetAll">↺ 当選状況リセット</button>
+      <button id="closeSet">閉じる</button>
+    </div>
+    <div class="hint">
+      ・順位確率モードでは<b>順位が小さいほど当たりにくく</b>なります。特賞=1位、2等=2位…と<b>豪華な賞品順に番号を振るだけ</b>でOK(同順位は同確率。実際の%は自動計算されて表示)。<br>
+      ・当選した賞品は自動で抽選対象から外れます。「復活」で戻せます。<br>
+      ・ハズレ枠は当選しても消えず、残念演出になります。<br>
+      ・演出(スロー/逆回転/滑り/戻り/復活/全回転/激アツフェイク等)は自動でランダム発生。結果は演出に関係なく最初の抽選で確定しています。<br>
+      ・リーチした賞品がそのまま当たるとは限りません。別賞品のリーチから復活・全回転で本命が当選したり、そのままハズレることもあります。
+    </div>
+  </div>
+</div>
+
+<canvas id="confetti"></canvas>
+<div id="toast"></div>
+
+<script>
+"use strict";
+/* ================= state ================= */
+let prizes = [];           // {id,name,rank,hz,won}
+let mode = 'equal';        // 'equal' | 'rank'
+let soundOn = true;
+let spinning = false;
+let uid = 1;
+
+const $ = s => document.querySelector(s);
+const reels = [ $('#r0'), $('#r1'), $('#r2') ];
+reels.forEach(r => { r.seq = []; r.offset = 0; });
+
+function save(){ try{ localStorage.setItem('enkaiSlot', JSON.stringify({prizes,mode})); }catch(e){} }
+function load(){
+  try{
+    const d = JSON.parse(localStorage.getItem('enkaiSlot'));
+    if(d && Array.isArray(d.prizes)){
+      /* 保存データが壊れていても起動できるよう、型を正規化してから取り込む */
+      prizes = d.prizes.filter(p => p && typeof p === 'object').map(p => ({
+        id  : Number.isFinite(+p.id) ? +p.id : 0,
+        name: String(p.name ?? '(名称なし)'),
+        rank: Math.min(9999, Math.max(1, Math.round(+p.rank) || 1)),
+        hz  : !!p.hz,
+        won : !!p.won
+      }));
+      mode = (d.mode==='rank'||d.mode==='weighted') ? 'rank' : 'equal';
+      uid = prizes.reduce((m,p)=>Math.max(m, Number.isFinite(+p.id) ? +p.id : 0), 0)+1;
+    }
+  }catch(e){}
+}
+
+/* ================= audio ================= */
+let AC = null;
+function initAudio(){
+  if(!AC){ try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+  if(AC && AC.state === 'suspended') AC.resume();
+}
+function tone(freq, dur, type='square', vol=0.07, delay=0, glideTo=null){
+  if(!AC || !soundOn) return;
+  if(!isFinite(freq) || freq<=0 || !isFinite(dur)) return;
+  const t = AC.currentTime + delay;
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type = type; o.frequency.setValueAtTime(freq, t);
+  if(glideTo) o.frequency.exponentialRampToValueAtTime(glideTo, t+dur);
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+  o.connect(g); g.connect(AC.destination);
+  o.start(t); o.stop(t+dur+0.05);
+}
+let lastTick = 0;
+function sTick(){ const n = performance.now(); if(n-lastTick<45) return; lastTick=n; tone(650+Math.random()*250, .03, 'square', .04); }
+function sTickRev(){ const n = performance.now(); if(n-lastTick<45) return; lastTick=n; tone(400+Math.random()*120, .04, 'sawtooth', .05); }
+function sStop(){ tone(170, .16, 'triangle', .2); tone(120, .2, 'sine', .15, .02); }
+function sReach(i, lv){ tone(i%2? (lv===2?1046:880):(lv===2?784:660), .13, 'square', .09); }
+function sHeart(){ tone(65, .18, 'sine', .4); tone(60, .16, 'sine', .32, .2); }
+function sKoma(){ tone(240, .09, 'square', .18); tone(120, .12, 'triangle', .2, .01); }
+function sZen(cc){ const notes=[523,659,784,1047,1319]; tone(notes[cc%5], .3, 'triangle', .07); tone(notes[cc%5]*2, .3, 'sine', .03); }
+function sFanfare(){
+  const seq = [523,659,784,1047,784,1047,1319];
+  seq.forEach((f,i)=> tone(f, .28, 'square', .09, i*.13));
+  seq.forEach((f,i)=> tone(f*2, .28, 'triangle', .05, i*.13));
+  tone(1568, .9, 'sawtooth', .05, seq.length*.13);
+}
+function sSuperFanfare(){
+  sFanfare();
+  [1047,1319,1568,2093,1568,2093,2637].forEach((f,i)=> tone(f, .22, 'triangle', .06, .9+i*.1));
+  tone(2093, 1.2, 'sawtooth', .04, 1.7);
+}
+function sLose(){ tone(300, .5, 'sawtooth', .1, 0, 90); tone(220, .7, 'sawtooth', .08, .35, 60); }
+function sCrash(){
+  if(!AC || !soundOn) return;
+  const len = Math.floor(AC.sampleRate*0.4);
+  const buf = AC.createBuffer(1, len, AC.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i] = (Math.random()*2-1)*Math.pow(1-i/len,2);
+  const s = AC.createBufferSource(); s.buffer = buf;
+  const g = AC.createGain(); g.gain.value = .3;
+  s.connect(g); g.connect(AC.destination); s.start();
+  tone(55, .5, 'sine', .3);
+}
+function sRiser(){ tone(180, 1.0, 'sawtooth', .09, 0, 1400); tone(180, 1.0, 'square', .05, .05, 1400); }
+function sZuru(){ tone(500, .25, 'sawtooth', .12, 0, 240); }
+
+/* ================= helpers ================= */
+const active = () => prizes.filter(p=>!p.won);
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function cellH(){ return (reels[0].clientHeight/3) || 90; }
+function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.style.display='block';
+  clearTimeout(t._tm); t._tm=setTimeout(()=>t.style.display='none',2200);
+}
+function vibrate(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
+function esc(s){ return s.replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function weightOf(p){ const w = Math.round(+p.rank); return Math.min(9999, Math.max(1, Number.isFinite(w) ? w : 1)); }
+function drawWinner(){
+  const act = active();
+  if(mode==='equal') return pick(act);
+  const tot = act.reduce((s,p)=>s+weightOf(p),0);
+  let r = Math.random()*tot;
+  for(const p of act){ r -= weightOf(p); if(r<0) return p; }
+  return act[act.length-1];
+}
+
+/* ================= reels ================= */
+function fontFor(name){
+  const L=[...name].length;
+  return L<=3? '22px' : L<=6? '17px' : L<=10? '13px' : '11px';
+}
+function stripHTML(seq){
+  return seq.concat(seq).map(p =>
+    `<div class="cell${p.hz?' hz':''}" style="font-size:${fontFor(p.name)}"><span>${esc(p.name)}</span></div>`
+  ).join('');
+}
+function buildStrip(reel){
+  const act = active();
+  let seq = [];
+  while(seq.length < Math.max(14, act.length*3)) seq = seq.concat(shuffle(act));
+  reel.seq = seq;
+  reel.querySelector('.strip').innerHTML = stripHTML(seq);
+  setOffset(reel, Math.random()*seq.length*cellH());
+}
+/* 全回転用: 3リール同一配列・同一位置 */
+function buildStripSync(){
+  const act = active();
+  let seq = [];
+  while(seq.length < Math.max(14, act.length*3)) seq = seq.concat(shuffle(act));
+  const off = Math.random()*seq.length*cellH();
+  reels.forEach(r=>{
+    r.seq = seq;
+    r.querySelector('.strip').innerHTML = stripHTML(seq);
+    setOffset(r, off);
+  });
+}
+function setOffset(reel, y){
+  const H = reel.seq.length*cellH();
+  if(!isFinite(y) || H<=0) return;
+  reel.offset = ((y % H) + H) % H;
+  reel.querySelector('.strip').style.transform = `translate3d(0,${-reel.offset}px,0)`;
+}
+function occOf(reel, id){
+  const idxs = [];
+  reel.seq.forEach((p,i)=>{ if(p.id===id) idxs.push(i); });
+  return idxs.length ? pick(idxs) : 1;
+}
+/* dir=1で順回転、-1で逆回転 */
+function spinTo(reel, targetIdx, duration, loops, dir=1){
+  return new Promise(res=>{
+    const ch = cellH(), n = reel.seq.length, H = n*ch;
+    if(H<=0 || !isFinite(H)){ res(); return; }
+    const fin = ((((targetIdx ?? 1)-1)*ch) % H + H) % H;
+    const start = isFinite(reel.offset) ? reel.offset : 0;
+    const fwd = ((fin - start) % H + H) % H;
+    const bwd = ((start - fin) % H + H) % H;
+    const dist = loops*H + (dir===1 ? fwd : bwd);
+    let t0 = performance.now(), prevF = t0;
+    let lastC = -1;
+    reel.classList.add('blur');
+    (function frame(now){
+      try{
+        if(now - prevF > 250) t0 += now - prevF - 16;
+        prevF = now;
+        const t = Math.min(1, (now-t0)/duration);
+        const e = 1 - Math.pow(1-t, 3);
+        if(t > 0.72) reel.classList.remove('blur');
+        setOffset(reel, start + dir*dist*e);
+        const cc = Math.floor(dist*e/ch);
+        if(cc !== lastC){ lastC = cc; dir===1 ? sTick() : sTickRev(); }
+        if(t < 1) requestAnimationFrame(frame);
+        else {
+          setOffset(reel, fin);
+          reel.classList.remove('blur');
+          sStop();
+          reel.classList.add('bounce');
+          setTimeout(()=>reel.classList.remove('bounce'), 320);
+          res();
+        }
+      }catch(err){ try{ setOffset(reel, fin); reel.classList.remove('blur'); }catch(e2){} res(); }
+    })(performance.now());
+  });
+}
+/* 1コマだけ動かす(dir=1:進む / -1:戻る) */
+function slideCell(reel, dir=1, dur=340){
+  return new Promise(res=>{
+    const ch = cellH(), start = isFinite(reel.offset)?reel.offset:0, t0 = performance.now();
+    (function f(now){
+      const t = Math.min(1,(now-t0)/dur);
+      const e = 1 - Math.pow(1-t,2);
+      setOffset(reel, start + dir*ch*e);
+      if(t<1) requestAnimationFrame(f);
+      else { sStop(); reel.classList.add('bounce'); setTimeout(()=>reel.classList.remove('bounce'),300); res(); }
+    })(t0);
+  });
+}
+/* 全回転: 3リール同期でゆっくり回して同時に止める */
+function zenSpin(targetIdx, duration, loops){
+  return new Promise(res=>{
+    const ch = cellH(), H = reels[0].seq.length*ch;
+    if(H<=0 || !isFinite(H)){ res(); return; }
+    const fin = ((((targetIdx ?? 1)-1)*ch) % H + H) % H;
+    const start = isFinite(reels[0].offset) ? reels[0].offset : 0;
+    const dist = loops*H + ((fin - start) % H + H) % H;
+    let t0 = performance.now(), prevF = t0;
+    let lastC = -1;
+    (function frame(now){
+      try{
+        if(now - prevF > 250) t0 += now - prevF - 16;
+        prevF = now;
+        const t = Math.min(1, (now-t0)/duration);
+        /* 7割まで等速 → 残りで減速 */
+        const e = t < 0.7 ? (t/0.7)*0.85 : 0.85 + 0.15*(1 - Math.pow(1-(t-0.7)/0.3, 3));
+        const pos = start + dist*e;
+        reels.forEach(r=>setOffset(r, pos));
+        const cc = Math.floor(dist*e/ch);
+        if(cc !== lastC){ lastC = cc; sZen(cc); }
+        if(t < 1) requestAnimationFrame(frame);
+        else {
+          reels.forEach(r=>{
+            setOffset(r, fin);
+            r.classList.add('bounce');
+            setTimeout(()=>r.classList.remove('bounce'), 300);
+          });
+          sStop();
+          res();
+        }
+      }catch(err){ try{ reels.forEach(r=>setOffset(r, fin)); }catch(e2){} res(); }
+    })(performance.now());
+  });
+}
+/* コマ送りスロー: steps コマ手前から1コマずつ溜めて進む */
+async function crawlSteps(reel, steps){
+  $('#machine').classList.add('trembling');
+  for(let i=0;i<steps;i++){
+    await wait(430 + i*330);
+    sHeart(); vibrate(80);
+    sKoma();
+    await slideCell(reel, 1, 330);
+  }
+  $('#machine').classList.remove('trembling');
+}
+
+/* ================= 演出パーツ ================= */
+let reachTimer = null, reachI = 0;
+function showReach(level, text, mute){
+  const b = $('#reach b');
+  b.textContent = text || (level===2 ? '激アツ!!' : 'リーチ!!');
+  b.classList.toggle('atsui', level===2);
+  $('#reach').classList.add('show');
+  const sl = $('#speedlines');
+  sl.classList.add('show'); sl.classList.toggle('atsui', level===2);
+  if(level===2) $('#machine').classList.add('rainbow');
+  clearInterval(reachTimer);
+  if(!mute){
+    reachI = 0;
+    reachTimer = setInterval(()=>sReach(reachI++, level), level===2?190:260);
+  }
+  vibrate(level===2 ? [60,50,60,50,60,50,150] : [60,60,60,60,120]);
+}
+function upgradeReach(text){ flashWhite(); sRiser(); showReach(2, text); }
+function hideReach(){
+  clearInterval(reachTimer); reachTimer = null;
+  $('#reach').classList.remove('show');
+  $('#speedlines').classList.remove('show','atsui');
+  $('#machine').classList.remove('rainbow');
+}
+function flashWhite(){
+  const f = $('#flash');
+  f.style.animation = 'none'; void f.offsetWidth;
+  f.style.animation = 'flashA .5s ease-out';
+}
+function lightning(){
+  sCrash(); flashWhite();
+  const b = $('#bolt');
+  b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+  $('#machine').classList.remove('shakeHard'); void $('#machine').offsetWidth;
+  $('#machine').classList.add('shakeHard');
+  vibrate([200,80,200]);
+  setTimeout(()=>{ b.classList.remove('show'); $('#machine').classList.remove('shakeHard'); }, 600);
+}
+function cutIn(text, gold){
+  return new Promise(res=>{
+    const c = $('#cutin');
+    $('#cutinText').textContent = text;
+    c.classList.toggle('gold', !!gold);
+    c.classList.remove('show'); void c.offsetWidth; c.classList.add('show');
+    lightning();
+    setTimeout(()=>{ c.classList.remove('show'); res(); }, 1300);
+  });
+}
+function strobeReels(on){ reels.forEach(r=>r.classList.toggle('strobe', on)); }
+function hit(i){ reels[i].classList.add('hit'); }
+
+/* ================= 抽選フロー ================= */
+function pickScenario(winner, act){
+  if(act.length===1) return 'solo';
+  const goodOthers = act.filter(p=>p.id!==winner.id && !p.hz);
+  if(winner.hz){
+    const r = Math.random();
+    if(goodOthers.length && r < 0.5) return 'teaseLose';
+    return r < 0.75 ? 'slowLose' : 'normalLose';
+  }
+  /* 直当たり系(リーチ=当選賞品)は約半分。残りは別賞品リーチからの発展当選 */
+  const r = Math.random();
+  if(r < 0.09) return 'normal';
+  if(r < 0.17) return 'long';
+  if(r < 0.24) return 'suberi';
+  if(r < 0.31) return 'slow';
+  if(r < 0.38) return 'reverse';
+  if(r < 0.45) return 'modori';
+  if(r < 0.52) return 'longSuberi';
+  if(r < 0.78) return 'fukkatsu';
+  if(r < 0.90) return 'zenswitch';
+  return 'zenkaisen';
+}
+
+/* フリーズ対策: 演出が例外や描画詰まりで止まっても必ず結果を出す保険 */
+let spinDone = false;
+function emergencyRecover(winner){
+  if(spinDone) return;
+  spinDone = true;
+  try{
+    hideReach(); strobeReels(false);
+    $('#machine').classList.remove('dim','trembling');
+    $('#faux').classList.remove('show');
+    reels.forEach(r=>{
+      r.classList.remove('blur','glow');
+      if(!r.seq.length || !r.seq.some(p=>p.id===winner.id)) buildStrip(r);
+      setOffset(r, (occOf(r,winner.id)-1)*cellH());
+      r.classList.add('hit');
+    });
+  }catch(e){}
+  vibrate(200);
+  setTimeout(()=> showResult(winner, false), 400);
+}
+
+async function spin(){
+  if(spinning) return;
+  const act = active();
+  if(act.length===0){ toast('賞品がありません。登録してください'); openSettings(); return; }
+  initAudio();
+  spinning = true; spinDone = false;
+  $('#spinBtn').disabled = true;
+  $('#machine').classList.add('frenzy');
+  vibrate(30);
+
+  const winner = drawWinner();
+  reels.forEach(buildStrip);
+  const sc = pickScenario(winner, act);
+  const guard = setTimeout(()=> emergencyRecover(winner), 25000);
+  try{ await runScenario(sc, winner, act); }
+  catch(e){ emergencyRecover(winner); }
+  clearTimeout(guard);
+}
+
+async function runScenario(sc, winner, act){
+  const others = act.filter(p=>p.id!==winner.id);
+  const goodOthers = others.filter(p=>!p.hz);
+  const rnd = n => n + Math.random()*300;
+  const land = p => reels.map(r=>occOf(r, p.id));
+
+  /* --- 賞品1個: サクッと --- */
+  if(sc==='solo'){
+    const [a,b,c] = land(winner);
+    await Promise.all([spinTo(reels[0],a,rnd(1200),3), spinTo(reels[1],b,rnd(1600),4), spinTo(reels[2],c,rnd(2100),5)]);
+    reels.forEach(r=>r.classList.add('hit'));
+    return finish(winner, false);
+  }
+
+  /* --- 全回転リーチ(プレミア) --- */
+  if(sc==='zenkaisen'){
+    /* 一瞬回り始めてから稲妻→全回転へ */
+    const dummy = reels.map((r,i)=> spinTo(r, occOf(r,winner.id), 900+i*150, 2));
+    await Promise.all(dummy);
+    await cutIn('全回転!!', true);
+    buildStripSync();
+    showReach(2, '⚡全回転⚡', true);
+    reels.forEach(r=>r.classList.add('glow'));
+    await zenSpin(occOf(reels[0], winner.id), 6000, 2);
+    reels.forEach(r=>r.classList.remove('glow'));
+    hideReach();
+    reels.forEach(r=>r.classList.add('hit'));
+    return finish(winner, true);
+  }
+
+  /* --- ノーマル/ロング --- */
+  if(sc==='normal' || sc==='long'){
+    const [a,b,c] = land(winner);
+    const d3 = sc==='long' ? rnd(6100) : rnd(3900);
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2],c,d3, sc==='long'?11:8);
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(1);
+    if(sc==='long') setTimeout(()=>upgradeReach(), 1600);
+    await p2;
+    hideReach(); hit(2);
+    return finish(winner, sc==='long' && Math.random()<0.3);
+  }
+
+  /* --- 滑り: 1コマ手前→ズルッ --- */
+  if(sc==='suberi'){
+    const [a,b] = [occOf(reels[0],winner.id), occOf(reels[1],winner.id)];
+    const cIdx = occOf(reels[2], winner.id);
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2], cIdx-1, rnd(4300), 8);
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(1);
+    await p2;
+    await wait(650);
+    sZuru();
+    await slideCell(reels[2], 1, 340);
+    flashWhite();
+    hideReach(); hit(2);
+    return finish(winner, false);
+  }
+
+  /* --- 激アツロング×滑り: 昇格リーチの末に1コマ手前→ズルッ --- */
+  if(sc==='longSuberi'){
+    const [a,b] = [occOf(reels[0],winner.id), occOf(reels[1],winner.id)];
+    const cIdx = occOf(reels[2], winner.id);
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2], cIdx-1, rnd(6100), 11);
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(1);
+    setTimeout(()=>upgradeReach(), 1600);
+    await p2;
+    await wait(750);
+    sZuru();
+    await slideCell(reels[2], 1, 340);
+    flashWhite();
+    hideReach(); hit(2);
+    return finish(winner, Math.random()<0.35);
+  }
+
+  /* --- スロー: コマ送りで1コマずつ迫る --- */
+  if(sc==='slow'){
+    const [a,b] = [occOf(reels[0],winner.id), occOf(reels[1],winner.id)];
+    const cIdx = occOf(reels[2], winner.id);
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2], cIdx-3, rnd(4100), 8);   // 3コマ手前で停止
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(1);
+    await p2;
+    upgradeReach('スロー!!');
+    await crawlSteps(reels[2], 3);                        // ドクン…ドクン…と1コマずつ
+    flashWhite();
+    hideReach(); hit(2);
+    return finish(winner, Math.random()<0.25);
+  }
+
+  /* --- 逆回転リーチ --- */
+  if(sc==='reverse'){
+    const [a,b] = [occOf(reels[0],winner.id), occOf(reels[1],winner.id)];
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2], occOf(reels[2],winner.id), rnd(5400), 7, -1);  // 逆回転
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(2, '逆回転!!');
+    await p2;
+    hideReach(); hit(2);
+    return finish(winner, Math.random()<0.3);
+  }
+
+  /* --- 戻り: 行き過ぎて逆戻り --- */
+  if(sc==='modori'){
+    const [a,b] = [occOf(reels[0],winner.id), occOf(reels[1],winner.id)];
+    const cIdx = occOf(reels[2], winner.id);
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2], cIdx+1, rnd(4300), 8);   // わざと1コマ行き過ぎ
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(1);
+    await p2;
+    await wait(700);                                      // 「通り過ぎた!?」の間
+    sZuru();
+    await slideCell(reels[2], -1, 400);                   // ガコンと逆戻り
+    flashWhite();
+    hideReach(); hit(2);
+    return finish(winner, false);
+  }
+
+  /* --- 復活: 別賞品でリーチ→ズレて「ざんねん…」→稲妻→全リール再回転で本命当選 --- */
+  if(sc==='fukkatsu'){
+    const decoy = pick(others);                           // リーチは当選賞品とは別物
+    const p0 = spinTo(reels[0], occOf(reels[0],decoy.id), rnd(1700),4);
+    const p1 = spinTo(reels[1], occOf(reels[1],decoy.id), rnd(2900),6);
+    const p2 = spinTo(reels[2], occOf(reels[2],winner.id), rnd(4600), 9);  // 3列目にさりげなく本命
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(Math.random()<0.5 ? 2 : 1);
+    await p2;
+    hideReach();
+    $('#machine').classList.add('dim');
+    $('#faux').classList.add('show');
+    sLose();
+    await wait(1600);
+    $('#faux').classList.remove('show');
+    $('#machine').classList.remove('dim');
+    reels.forEach(r=>r.classList.remove('hit'));
+    await cutIn('復活!!', false);
+    showReach(2);
+    strobeReels(true);
+    const [x,y,z] = land(winner);
+    await Promise.all([                                   // 全リール再回転!!
+      spinTo(reels[0],x,rnd(1000),3),
+      spinTo(reels[1],y,rnd(1300),4),
+      spinTo(reels[2],z,rnd(1700),5),
+    ]);
+    strobeReels(false);
+    hideReach();
+    reels.forEach(r=>r.classList.add('hit'));
+    return finish(winner, true);
+  }
+
+  /* --- 全回転発展: 別賞品でリーチ→ズレて沈黙→全回転で本命当選 --- */
+  if(sc==='zenswitch'){
+    const decoy = pick(others);
+    const p0 = spinTo(reels[0], occOf(reels[0],decoy.id), rnd(1700),4);
+    const p1 = spinTo(reels[1], occOf(reels[1],decoy.id), rnd(2900),6);
+    const p2 = spinTo(reels[2], occOf(reels[2],winner.id), rnd(4300), 8);
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(1);
+    await p2;
+    hideReach();
+    await wait(900);                                      // 「外れた…?」の沈黙
+    reels.forEach(r=>r.classList.remove('hit'));
+    await cutIn('全回転!!', true);
+    buildStripSync();
+    showReach(2, '⚡全回転⚡', true);
+    reels.forEach(r=>r.classList.add('glow'));
+    await zenSpin(occOf(reels[0], winner.id), 6000, 2);
+    reels.forEach(r=>r.classList.remove('glow'));
+    hideReach();
+    reels.forEach(r=>r.classList.add('hit'));
+    return finish(winner, true);
+  }
+
+  /* --- 激アツフェイク→ハズレ --- */
+  if(sc==='teaseLose'){
+    const decoy = pick(goodOthers);
+    const [a,b] = [occOf(reels[0],decoy.id), occOf(reels[1],decoy.id)];
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2], occOf(reels[2],winner.id), rnd(5300), 10);
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(2);
+    await p2;
+    hideReach();
+    return finish(winner, false);
+  }
+
+  /* --- スローで迫って…ハズレ --- */
+  if(sc==='slowLose'){
+    const [a,b] = [occOf(reels[0],winner.id), occOf(reels[1],winner.id)];
+    const cIdx = occOf(reels[2], winner.id);
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2], cIdx-2, rnd(4100), 8);
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(1);
+    await p2;
+    upgradeReach('スロー!!');
+    await crawlSteps(reels[2], 2);
+    hideReach(); hit(2);
+    return finish(winner, false);
+  }
+
+  /* --- normalLose: ハズレで素直に揃う --- */
+  {
+    const [a,b,c] = land(winner);
+    const p0 = spinTo(reels[0],a,rnd(1700),4);
+    const p1 = spinTo(reels[1],b,rnd(2900),6);
+    const p2 = spinTo(reels[2],c,rnd(3900),8);
+    await p0; hit(0);
+    await p1; hit(1);
+    showReach(1);
+    await p2;
+    hideReach(); hit(2);
+    return finish(winner, false);
+  }
+}
+
+function finish(winner, isSuper){
+  if(spinDone) return;
+  spinDone = true;
+  vibrate(200);
+  setTimeout(()=> showResult(winner, isSuper), 650);
+}
+
+function showResult(winner, isSuper){
+  const ov = $('#resultOverlay'), card = $('#resultCard'),
+        lbl = $('#resultLabel'), prz = $('#resultPrize');
+  /* 結果を出した時点で当選を確定・保存する(「次へ」前にリロードされても消えない) */
+  if(!winner.hz && !winner.won){ winner.won = true; save(); }
+  prz.textContent = winner.name;
+  ov.classList.remove('showWin','showSuper');
+  if(winner.hz){
+    card.className = 'lose';
+    lbl.className = 'lose'; lbl.textContent = 'ざんねん…';
+    card.classList.add('shake');
+    setTimeout(()=>card.classList.remove('shake'), 600);
+    sLose();
+  } else if(isSuper){
+    card.className = 'super'; ov.classList.add('showSuper');
+    lbl.className = 'win super'; lbl.textContent = '⚡超大当たり!!⚡';
+    sSuperFanfare();
+    superBurst();
+    vibrate([120,60,120,60,120,60,400]);
+  } else {
+    card.className = ''; ov.classList.add('showWin');
+    lbl.className = 'win'; lbl.textContent = '🎉 大当たり!! 🎉';
+    sFanfare();
+    burst(innerWidth/2, innerHeight*0.45, 180);
+    vibrate([100,50,100,50,300]);
+  }
+  ov.classList.add('show');
+  ov._winner = winner;
+}
+
+$('#resultNext').addEventListener('click', ()=>{
+  const ov = $('#resultOverlay');
+  const w = ov._winner;
+  if(w && !w.hz && !w.won){ w.won = true; save(); }
+  ov.classList.remove('show','showWin','showSuper');
+  reels.forEach(r=>r.classList.remove('hit','strobe','glow','blur'));
+  $('#machine').classList.remove('frenzy','dim','rainbow','trembling');
+  $('#faux').classList.remove('show');
+  hideReach();
+  spinning = false;
+  $('#spinBtn').disabled = false;
+  renderChips(); renderList();
+  if(gameView==='race') buildLanes(active());
+  if(gameView==='illumi') buildForest(active());
+  if(gameView==='rocket') buildSpace(active());
+  if(gameView==='casino') buildWheel(active());
+  const act = active();
+  if(act.length===0) toast('🎊 全賞品が当選しました!');
+  else if(act.every(p=>p.hz)) toast('残りはハズレ枠のみです。賞品を追加できます');
+});
+
+/* ================= confetti / 花火 ================= */
+const cv = $('#confetti'), cx = cv.getContext('2d');
+let parts = [], confRunning = false;
+const COLORS = ['#ffd24a','#ff3b5c','#4affd2','#4a9bff','#ff8b3b','#e14aff','#fff'];
+function ensureLoop(){
+  if(confRunning) return;
+  confRunning = true;
+  cv.width = innerWidth; cv.height = innerHeight;
+  (function loop(){
+    cx.clearRect(0,0,cv.width,cv.height);
+    let alive = false;
+    for(const p of parts){
+      if(p.life-- <= 0) continue;
+      alive = true;
+      p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.vx *= .99;
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.r);
+      cx.fillStyle = p.c; cx.globalAlpha = Math.min(1, p.life/40);
+      cx.fillRect(-p.w/2,-p.h/2,p.w,p.h); cx.restore();
+    }
+    if(alive) requestAnimationFrame(loop);
+    else { confRunning = false; cx.clearRect(0,0,cv.width,cv.height); parts = []; }
+  })();
+}
+function burst(x, y, n){
+  for(let i=0;i<n;i++){
+    parts.push({
+      x: x+(Math.random()-.5)*120, y,
+      vx: (Math.random()-.5)*14, vy: -6-Math.random()*11,
+      w: 6+Math.random()*7, h: 4+Math.random()*6, g: .22,
+      r: Math.random()*Math.PI, vr: (Math.random()-.5)*.35,
+      c: COLORS[i%COLORS.length], life: 160+Math.random()*80
+    });
+  }
+  ensureLoop();
+}
+function goldRain(dur){
+  const t0 = performance.now();
+  (function drop(){
+    for(let i=0;i<5;i++){
+      parts.push({
+        x: Math.random()*innerWidth, y: -12,
+        vx: (Math.random()-.5)*1.6, vy: 2.5+Math.random()*3.5,
+        w: 4+Math.random()*4, h: 8+Math.random()*8, g: .05,
+        r: Math.random()*Math.PI, vr: (Math.random()-.5)*.25,
+        c: Math.random()<.7 ? '#ffd24a' : '#fff6c0', life: 220
+      });
+    }
+    ensureLoop();
+    if(performance.now()-t0 < dur) setTimeout(drop, 60);
+  })();
+}
+function superBurst(){
+  burst(innerWidth/2, innerHeight*0.45, 200);
+  setTimeout(()=>burst(innerWidth*0.22, innerHeight*0.3, 120), 400);
+  setTimeout(()=>burst(innerWidth*0.78, innerHeight*0.3, 120), 800);
+  setTimeout(()=>burst(innerWidth/2, innerHeight*0.25, 150), 1200);
+  goldRain(2600);
+}
+
+/* ================= UI ================= */
+function renderChips(){
+  const act = active();
+  $('#status').textContent = act.length
+    ? `残り賞品: ${act.filter(p=>!p.hz).length}個` + (act.some(p=>p.hz)?` + ハズレ枠`:``) + (mode==='rank'?'(順位確率モード)':'(等確率モード)')
+    : '賞品を登録してください(⚙️ 賞品ボタン)';
+  $('#chips').innerHTML = prizes.map(p=>
+    `<span class="chip${p.won?' won':''}${p.hz?' hz':''}">${p.hz?'💀 ':''}${esc(p.name)}</span>`
+  ).join('');
+}
+function pct(p){
+  const act = active(), tot = act.reduce((s,q)=>s+weightOf(q),0);
+  if(p.won || tot<=0) return '';
+  return (weightOf(p)/tot*100).toFixed(1)+'%';
+}
+function renderList(){
+  $('#modeEq').classList.toggle('on', mode==='equal');
+  $('#modeWt').classList.toggle('on', mode==='rank');
+  const rk = mode==='rank';
+  $('#plist').innerHTML = prizes.length ? prizes.map(p=>`
+    <div class="prow${p.won?' won':''}" data-id="${p.id}">
+      <div class="nm">${esc(p.name)}${p.hz?'<span class="tagHz">ハズレ</span>':''}${p.won?'<small>✅ 当選済み</small>':''}</div>
+      ${rk&&!p.won?`<input class="rk" type="number" min="1" step="1" value="${p.rank}" inputmode="numeric"><span class="pct">${pct(p)}</span>`:''}
+      ${p.won?`<button class="revive">復活</button>`:''}
+      <button class="del">削除</button>
+    </div>`).join('')
+    : '<div style="opacity:.6;font-size:14px;text-align:center;padding:14px">まだ賞品がありません。上の欄から追加してください。</div>';
+}
+function openSettings(){ renderList(); $('#settings').classList.add('show'); }
+
+$('#setBtn').addEventListener('click', ()=>{ if(!spinning) openSettings(); });
+$('#closeSet').addEventListener('click', ()=>{
+  $('#settings').classList.remove('show'); renderChips();
+  if(typeof gameView!=='undefined' && gameView==='race') buildLanes(active());
+  if(typeof gameView!=='undefined' && gameView==='illumi') buildForest(active());
+  if(typeof gameView!=='undefined' && gameView==='rocket') buildSpace(active());
+  if(typeof gameView!=='undefined' && gameView==='casino') buildWheel(active());
+});
+$('#modeEq').addEventListener('click', ()=>{ mode='equal'; save(); renderList(); });
+$('#modeWt').addEventListener('click', ()=>{ mode='rank'; save(); renderList(); });
+
+$('#addBtn').addEventListener('click', addPrize);
+$('#newName').addEventListener('keydown', e=>{ if(e.key==='Enter') addPrize(); });
+function addPrize(){
+  const name = $('#newName').value.trim();
+  if(!name){ toast('賞品名を入力してください'); return; }
+  const nonHz = prizes.filter(p=>!p.hz && !p.won).length;   /* 当選済みは枠から外す */
+  if(!$('#newHz').checked && nonHz >= 20){ toast('賞品は20個までです'); return; }
+  if($('#newHz').checked && prizes.filter(p=>p.hz).length >= 30){ toast('ハズレ枠は30個までです'); return; }
+  prizes.push({ id: uid++, name, rank: Math.max(1,Math.round(+$('#newRank').value||1)), hz: $('#newHz').checked, won:false });
+  $('#newName').value=''; $('#newHz').checked=false; $('#newRank').value=1;
+  save(); renderList(); renderChips();
+}
+$('#plist').addEventListener('click', e=>{
+  const row = e.target.closest('.prow'); if(!row) return;
+  const p = prizes.find(q=>q.id==row.dataset.id); if(!p) return;
+  if(e.target.classList.contains('del')){ prizes = prizes.filter(q=>q!==p); save(); renderList(); renderChips(); }
+  if(e.target.classList.contains('revive')){ p.won=false; save(); renderList(); renderChips(); }
+});
+$('#plist').addEventListener('change', e=>{
+  if(!e.target.classList.contains('rk')) return;
+  const row = e.target.closest('.prow');
+  const p = prizes.find(q=>q.id==row.dataset.id); if(!p) return;
+  p.rank = Math.max(1, Math.round(+e.target.value||1));
+  save(); renderList();
+});
+$('#resetAll').addEventListener('click', ()=>{
+  prizes.forEach(p=>p.won=false); save(); renderList(); renderChips(); toast('当選状況をリセットしました');
+});
+
+$('#sndBtn').addEventListener('click', ()=>{
+  soundOn = !soundOn;
+  $('#sndBtn').textContent = soundOn ? '🔊' : '🔇';
+  if(soundOn){ initAudio(); tone(880,.1,'square',.06); }
+});
+/* ================= 賞品レース ================= */
+let gameView = 'slot';
+function setView(v){
+  gameView = v;
+  $('#tabSlot').classList.toggle('on', v==='slot');
+  $('#tabRace').classList.toggle('on', v==='race');
+  $('#tabIllumi').classList.toggle('on', v==='illumi');
+  $('#tabRocket').classList.toggle('on', v==='rocket');
+  $('#tabCasino').classList.toggle('on', v==='casino');
+  $('#machine').style.display = v==='slot' ? '' : 'none';
+  $('#raceWrap').style.display = v==='race' ? '' : 'none';
+  $('#illumiWrap').style.display = v==='illumi' ? '' : 'none';
+  $('#rocketWrap').style.display = v==='rocket' ? '' : 'none';
+  $('#casinoWrap').style.display = v==='casino' ? '' : 'none';
+  $('#spinBtn').innerHTML = v==='slot' ? '🎲 抽選スタート' : v==='race' ? '🏁 レーススタート' : v==='illumi' ? '⚡ ブレーカーON!!' : v==='rocket' ? '🚀 発射<br>カウントダウン!!' : '🎡 スピン!!';
+  if(v==='race') buildLanes(active());
+  if(v==='illumi') buildForest(active());
+  if(v==='rocket') buildSpace(active());
+  if(v==='casino') buildWheel(active());
+  try{ localStorage.setItem('enkaiView', v); }catch(e){}
+}
+$('#tabSlot').addEventListener('click', ()=>{ if(!spinning) setView('slot'); });
+$('#tabRace').addEventListener('click', ()=>{ if(!spinning) setView('race'); });
+$('#tabIllumi').addEventListener('click', ()=>{ if(!spinning) setView('illumi'); });
+$('#tabRocket').addEventListener('click', ()=>{ if(!spinning) setView('rocket'); });
+$('#tabCasino').addEventListener('click', ()=>{ if(!spinning) setView('casino'); });
+
+const RACE_EMOJIS = ['🐎','🦄','🐢','🐇','🐕','🐈','🐖','🐓','🦖','🐧','🦆','🐒'];
+function emojiFor(p){ return p.hz ? '💀' : RACE_EMOJIS[p.id % RACE_EMOJIS.length]; }
+function buildLanes(act){
+  const track = $('#raceTrack');
+  const laneH = Math.max(34, Math.min(56, Math.floor(400/Math.max(1,act.length))));
+  track.style.setProperty('--laneH', laneH+'px');
+  track.innerHTML = act.map(p=>
+    `<div class="lane"><div class="runner" data-id="${p.id}"><span class="emoji">${emojiFor(p)}</span><span class="rname">${esc(p.name)}</span></div></div>`
+  ).join('');
+}
+function curveAt(cum, t){
+  const K = cum.length-1, x = t*K;
+  const i = Math.min(K-1, Math.floor(x)), f = x-i;
+  return cum[i] + (cum[i+1]-cum[i])*f;
+}
+function sGallop(){ tone(90+Math.random()*30, .05, 'triangle', .05); }
+const GAYA_TEXTS = ['差せー!!','行けー!!','そのままー!!','まくれー!!','粘れー!!','うおおおお!!','頑張れー!!','来い来い来い!!','いいぞー!!','抜けー!!'];
+function gaya(text){
+  const wrap = $('#raceWrap');
+  const g = document.createElement('div');
+  g.className = 'gaya';
+  g.textContent = text;
+  g.style.left = (4 + Math.random()*78) + '%';
+  g.style.top = (4 + Math.random()*86) + '%';
+  g.style.fontSize = (12 + Math.random()*10) + 'px';
+  g.style.setProperty('--rot', (Math.random()*24 - 12).toFixed(1) + 'deg');
+  g.style.color = pick(['#fff','#ffe680','#ffd24a','#aaeeff','#ffd8aa']);
+  wrap.appendChild(g);
+  setTimeout(()=>{ try{ g.remove(); }catch(e){} }, 1250);
+}
+let shoutTm = null;
+function shout(text, hold=1000, target='raceShout'){
+  const s = $('#'+target);
+  s.querySelector('b').textContent = text;
+  s.classList.remove('show'); void s.offsetWidth; s.classList.add('show');
+  clearTimeout(shoutTm);
+  shoutTm = setTimeout(()=>s.classList.remove('show'), hold+300);
+}
+
+async function race(){
+  if(spinning) return;
+  const act = active();
+  if(act.length===0){ toast('賞品がありません。登録してください'); openSettings(); return; }
+  initAudio();
+  spinning = true; spinDone = false;
+  $('#spinBtn').disabled = true;
+  const winner = drawWinner();
+  const guard = setTimeout(()=>{ if(!spinDone){ spinDone=true; setTimeout(()=>showResult(winner,false),400); } }, 35000);
+  try{ await runRace(winner, act); }
+  catch(e){ if(!spinDone){ spinDone=true; setTimeout(()=>showResult(winner,false),400); } }
+  clearTimeout(guard);
+}
+
+async function runRace(winner, act){
+  const track = $('#raceTrack'), com = $('#commentary');
+  com.classList.remove('hot');
+  buildLanes(act);
+  const runners = act.map(p=>({ p, el: track.querySelector(`.runner[data-id="${p.id}"]`), pos:0 }));
+  const w = runners.find(r=>r.p.id===winner.id);
+
+  /* 展開パターン: 逃げ切り/差し/追込(大逆転) */
+  const pattern = act.length>1 ? pick(['nige','sashi','oikomi','oikomi']) : 'nige';
+  const K = 6;
+  runners.forEach(r=>{
+    let segs = []; for(let i=0;i<K;i++) segs.push(0.6+Math.random());
+    if(r===w){
+      if(pattern==='nige')   segs = segs.map((s,i)=> i<2 ? s*1.9 : s);
+      if(pattern==='sashi')  segs = segs.map((s,i)=> (i>=2&&i<4) ? s*1.8 : s);
+      if(pattern==='oikomi') segs = segs.map((s,i)=> i>=K-2 ? s*3.0 : s*0.7);
+    }
+    const cum=[0]; let s=0;
+    for(const v of segs){ s+=v; cum.push(s); }
+    r.cum = cum.map(c=>c/s);
+    r.final = r===w ? 1.0 : 0.80 + Math.random()*0.15;
+  });
+  /* 写真判定: 2着が鼻差まで迫る */
+  const photo = act.length>1 && Math.random()<0.3;
+  if(photo) pick(runners.filter(r=>r!==w)).final = 0.985;
+
+  /* カウントダウン */
+  for(const c of ['3','2','1']){ com.textContent = '🕐 '+c; shout(c, 550); tone(440,.15,'square',.12); await wait(620); }
+  com.textContent = '🏁 スタートしました!!';
+  shout('スタート!!');
+  tone(880,.4,'square',.12); vibrate(80);
+  runners.forEach(r=>r.el.classList.add('dash'));
+  $('#speedlines').classList.add('show');
+
+  const usable = Math.max(120, track.clientWidth*0.80);
+  const D = 8000 + Math.random()*1000;
+  const cps = [
+    {t:.20, f:L=>`「${L}」が飛び出したー!`},
+    {t:.48, f:L=>`中盤! 先頭は「${L}」!`},
+    {t:.72, f:L=> (pattern==='oikomi' && L!==winner.name) ? `おっと大外から「${winner.name}」が来たぞー!?` : `「${L}」このまま押し切るかー!?`},
+    {t:.90, f:L=>`最後の直線!! 「${L}」先頭ーー!!`},
+  ];
+  /* フライング演出(たまに発生) */
+  const falseStart = (typeof window!=='undefined' && window.__forceRaceFS===true) || (act.length>1 && Math.random()<0.12);
+  if(falseStart){
+    await new Promise(res=>{ let t0=performance.now(); (function f(now){
+      const t=Math.min(1,(now-t0)/650);
+      runners.forEach(rr=>{ rr.el.style.transform=`translate3d(${(t*0.1*usable).toFixed(1)}px,-50%,0)`; });
+      if(t<1)requestAnimationFrame(f); else res();
+    })(t0); });
+    tone(1400,.35,'square',.14); tone(1400,.35,'square',.14,.42);
+    shout('フライング!!', 1300);
+    runners.forEach(rr=>rr.el.classList.remove('dash'));
+    com.textContent = '🎤 フライング!! 仕切り直しです!';
+    vibrate([80,60,80]);
+    await wait(1000);
+    await new Promise(res=>{ let t0=performance.now(); (function f(now){
+      const t=Math.min(1,(now-t0)/700);
+      runners.forEach(rr=>{ rr.el.style.transform=`translate3d(${((1-t)*0.1*usable).toFixed(1)}px,-50%,0)`; });
+      if(t<1)requestAnimationFrame(f); else res();
+    })(t0); });
+    await wait(450);
+    for(const c of ['3','2','1']){ com.textContent = '🕐 '+c; shout(c, 450); tone(440,.15,'square',.12); await wait(520); }
+    com.textContent = '🏁 今度こそスタート!!';
+    shout('スタート!!');
+    tone(880,.4,'square',.12);
+    runners.forEach(rr=>rr.el.classList.add('dash'));
+  }
+
+  let ci = 0;
+  await new Promise(res=>{
+    let t0 = performance.now(), prevF = t0, lastGal = 0, lastGaya = 0;
+    (function frame(now){
+      if(now - prevF > 250) t0 += now - prevF - 16;
+      prevF = now;
+      const t = Math.min(1, (now-t0)/D);
+      runners.forEach(r=>{
+        r.pos = curveAt(r.cum, t) * r.final;
+        r.el.style.transform = `translate3d(${r.pos*usable}px,-50%,0)`;
+      });
+      if(now - lastGal > 300){ lastGal = now; sGallop(); }
+      /* 後半、観客のガヤ声援がわちゃわちゃ湧く(終盤ほど密度UP) */
+      if(t > 0.45 && now - lastGaya > (480 - t*280)){
+        lastGaya = now;
+        const lead = runners.reduce((a,b)=> a.pos>b.pos ? a : b);
+        gaya(Math.random() < 0.25 ? `${lead.p.name}行けー!!` : pick(GAYA_TEXTS));
+      }
+      if(ci < cps.length && t >= cps[ci].t){
+        const leader = runners.reduce((a,b)=> a.pos>b.pos ? a : b);
+        com.textContent = '🎤 ' + cps[ci].f(leader.p.name);
+        if(cps[ci].t >= .7 && cps[ci].t < .9){
+          shout('最終コーナー!'); vibrate(100);
+        }
+        if(cps[ci].t >= .9){
+          com.classList.add('hot'); vibrate(80);
+          shout('最後の直線!!');
+          track.classList.remove('shakeHard'); void track.offsetWidth; track.classList.add('shakeHard');
+        }
+        ci++;
+      }
+      if(t < 1) requestAnimationFrame(frame); else res();
+    })(t0);
+  });
+
+  runners.forEach(r=>r.el.classList.remove('dash'));
+  $('#speedlines').classList.remove('show');
+  track.classList.remove('shakeHard');
+  shout('ゴール!!!', 1300);
+  flashWhite();
+  tone(1047,.35,'square',.11); vibrate(150);
+  if(photo){
+    await wait(800);
+    sHeart();
+    com.textContent = '📸 写真判定…!!!';
+    shout('写真判定!?', 2000);
+    await wait(2300);
+  }
+  com.classList.remove('hot');
+  com.textContent = winner.hz ? `…1着は「${winner.name}」…` : `🏆 「${winner.name}」1着ゴールーーー!!`;
+  return finish(winner, pattern==='oikomi' || photo);
+}
+
+/* ================= イルミネーション枯れ木抽選 ================= */
+/* ケヤキ並木風(下から上へ点灯する順に配置)+表参道風シャンパンゴールド */
+const TREE_LIGHTS = [
+  [38,68],[62,68],[44,64],[56,64],[50,62],
+  [26,52],[74,52],[38,44],[62,44],[21,43],[78,43],[27,41],[74,41],[50,40],
+  [35,34],[66,35],[16,34],[82,34],[40,33],[61,33],
+  [28,30],[74,30],[48,28],[53,28],[32,24],[70,26],[42,22],[60,22],[46,16],[56,16]
+];
+const LIGHT_COLORS = ['#ffe9c9','#ffd9a0','#ffcf8d','#fff3e0','#ffdfb2'];
+function treeSVG(){
+  return `<svg viewBox="0 0 100 126">` +
+    `<path class="trunk" d="M50,124 L50,84"/>` +
+    `<path class="limbs" d="M50,84 L26,52 M50,84 L38,44 M50,84 L50,40 M50,84 L62,44 M50,84 L74,52"/>` +
+    `<path class="twigs" d="M26,52 L16,34 M26,52 L28,30 M38,44 L32,24 M38,44 L42,22 M50,40 L46,16 M50,40 L56,16 M62,44 L60,22 M62,44 L70,26 M74,52 L82,34 M74,52 L74,30"/>` +
+    TREE_LIGHTS.map(([x,y],i)=>`<circle class="lt" data-i="${i}" cx="${x}" cy="${y}" r="2.3"/>`).join('') +
+    `</svg>`;
+}
+function setLive(on){
+  $('#busWire').classList.toggle('live', on);
+  $('#forestBox').classList.toggle('live', on);
+}
+function buildForest(act){
+  const cols = act.length<=4 ? 2 : act.length<=9 ? 3 : 4;
+  const rows = [];
+  for(let i=0;i<act.length;i+=cols) rows.push(act.slice(i,i+cols));
+  $('#forest').innerHTML = rows.map(row=>
+    `<div class="trow">` + row.map(p=>
+      `<div class="tree" data-id="${p.id}" style="width:${(100/cols).toFixed(2)}%">${treeSVG()}<div class="tname">${p.hz?'💀 ':''}${esc(p.name)}</div></div>`
+    ).join('') + `</div>`
+  ).join('');
+  setLive(false);
+  $('#breaker').classList.remove('on');
+  const sp = $('#spark');
+  sp.classList.remove('show');
+  sp.style.left = '60px';
+  sp.style.bottom = '24px';
+  $('#forestBox').classList.remove('dark');
+}
+function lightsOf(tree){ return Array.from(tree.querySelectorAll('.lt')); }
+function setLight(c, on, color){
+  if(on){ c.style.fill = color; c.style.filter = `drop-shadow(0 0 5px ${color})`; }
+  else { c.style.fill = ''; c.style.filter = ''; }
+}
+function darkTree(tree){ lightsOf(tree).forEach(c=>setLight(c,false)); tree.classList.remove('allon','winlit'); }
+function fullLit(tree){ tree.classList.add('allon','winlit'); }
+function litCount(tree){ return tree._lit||0; }
+function palFor(p){ return p.hz ? ['#8a7aff','#6a5ad9','#9a8aff'] : LIGHT_COLORS; }
+function setLitTo(tree, n, pal){
+  const ls = lightsOf(tree);
+  n = Math.max(0, Math.min(ls.length, Math.round(n)));
+  const cur = tree._lit||0;
+  if(n>cur){ for(let i=cur;i<n;i++) setLight(ls[i], true, pal[i%pal.length]); }
+  else if(n<cur){ for(let i=n;i<cur;i++) setLight(ls[i], false); }
+  tree._lit = n;
+}
+/* 点灯レース: 全部の木が点いていき、どの木が一番先に全点灯するかを競う */
+function lightRace(entries, dur){
+  entries.forEach(e=>{
+    let segs=[]; for(let i=0;i<5;i++) segs.push(0.5+Math.random());
+    const cum=[0]; let s=0; for(const v of segs){ s+=v; cum.push(s); }
+    e.curve = cum.map(c=>c/s);
+    e.ph = Math.random()*10;
+  });
+  return new Promise(res=>{
+    let t0=performance.now(), prevF=t0, lastSnd=0;
+    (function f(now){
+      if(now-prevF>250) t0 += now-prevF-16;
+      prevF = now;
+      const t = Math.min(1,(now-t0)/dur);
+      entries.forEach(e=>{
+        const wig = t<0.92 ? Math.sin(t*22+e.ph)*1.4 : 0;   /* チカチカ揺らぎ */
+        let target = e.from + (e.to-e.from)*curveAt(e.curve,t) + wig;
+        target = Math.min(e.to, Math.max(0, target));
+        if(e.to>=30 && t<0.96) target = Math.min(29, target);  /* 全点灯は最後まで確定させない */
+        if(Math.round(target)!==litCount(e.tree)){
+          setLitTo(e.tree, target, palFor(e.p));
+          if(now-lastSnd>90){ lastSnd=now; tone(420+litCount(e.tree)*14, .05, 'triangle', .07); }
+        }
+      });
+      if(t<1) requestAnimationFrame(f);
+      else { entries.forEach(e=>setLitTo(e.tree, e.to, palFor(e.p))); res(); }
+    })(t0);
+  });
+}
+/* スパークは必ず電線の上を走る(幹線→フィーダー→各列ワイヤー) */
+function sparkFollow(pts, dur){
+  return new Promise(res=>{
+    const sp = $('#spark');
+    sp.classList.add('show');
+    let prev = { x: parseFloat(sp.style.left)||56, b: parseFloat(sp.style.bottom)||24 };
+    const segs = []; let total = 0;
+    for(const p of pts){ const d = Math.hypot(p.x-prev.x, p.b-prev.b)||1; segs.push({from:prev,to:p,d}); total+=d; prev=p; }
+    let t0 = performance.now(), prevF = t0;
+    (function f(now){
+      if(now-prevF>250) t0 += now-prevF-16;
+      prevF = now;
+      const t = Math.min(1,(now-t0)/dur);
+      let dist = t*total, seg = segs[segs.length-1], off = 1;
+      for(const s of segs){ if(dist<=s.d){ seg=s; off=dist/s.d; break; } dist-=s.d; }
+      sp.style.left = (seg.from.x+(seg.to.x-seg.from.x)*off)+'px';
+      sp.style.bottom = (seg.from.b+(seg.to.b-seg.from.b)*off)+'px';
+      if(t<1) requestAnimationFrame(f); else res();
+    })(t0);
+  });
+}
+async function sparkTour(){
+  const box = $('#forestBox');
+  let W = 480;
+  try{ W = box.clientWidth||480; }catch(e){}
+  let rowsB = [];
+  try{
+    const b = box.getBoundingClientRect();
+    Array.from($('#forest').children||[]).forEach(r=>{
+      const rr = r.getBoundingClientRect();
+      rowsB.push(Math.max(20, b.top+b.height-rr.bottom+8));
+    });
+  }catch(e){}
+  if(!rowsB.length) rowsB = [120];
+  const pts = [{x:W-22,b:24},{x:24,b:24}];
+  rowsB.sort((a,b)=>a-b);
+  for(const rb of rowsB){ pts.push({x:24,b:rb},{x:W*0.94,b:rb},{x:24,b:rb}); }
+  await sparkFollow(pts, 2800);
+  $('#spark').classList.remove('show');
+}
+
+async function illumi(){
+  if(spinning) return;
+  const act = active();
+  if(act.length===0){ toast('賞品がありません。登録してください'); openSettings(); return; }
+  initAudio();
+  spinning = true; spinDone = false;
+  $('#spinBtn').disabled = true;
+  const winner = drawWinner();
+  const guard = setTimeout(()=>{ if(!spinDone){ spinDone=true; setTimeout(()=>showResult(winner,false),400); } }, 40000);
+  try{ await runIllumi(winner, act); }
+  catch(e){ if(!spinDone){ spinDone=true; setTimeout(()=>showResult(winner,false),400); } }
+  clearTimeout(guard);
+}
+
+async function illumiGoal(winner, wTree, isSuper){
+  $('#spark').classList.remove('show');
+  if(winner.hz){
+    shout('…点灯…', 1300, 'illumiShout');
+    await wait(1400);
+  } else {
+    fullLit(wTree);
+    flashWhite();
+    shout('全点灯!!', 1800, 'illumiShout');
+    [1046,1318,1568,2093,1568,2093].forEach((fq,i)=>tone(fq,.2,'triangle',.06,i*.28));
+    await wait(2600);
+  }
+  return finish(winner, isSuper);
+}
+
+async function runIllumi(winner, act){
+  buildForest(act);
+  const forest = $('#forest');
+  const treeOf = id => forest.querySelector(`.tree[data-id="${id}"]`);
+  act.forEach(p=>{ const tr=treeOf(p.id); if(tr) tr._lit=0; });
+  const wTree = treeOf(winner.id);
+  const others = act.filter(p=>p.id!==winner.id);
+  const goodOthers = others.filter(p=>!p.hz);
+  const entry = (p, to, from=0) => ({ tree:treeOf(p.id), p, to, from });
+  const sc = (function(){
+    if(typeof window!=='undefined' && window.__forceIllumiSc) return window.__forceIllumiSc;
+    if(act.length===1) return 'solo';
+    if(winner.hz) return (goodOthers.length && Math.random()<0.6) ? 'roudenLose' : 'race';
+    const r = Math.random();
+    if(r<0.35) return 'race';
+    if(r<0.50) return 'shinku';
+    if(r<0.70) return 'rouden';
+    if(r<0.85) return 'teiden';
+    return 'roudenTeiden';
+  })();
+
+  await wait(400);
+  $('#breaker').classList.add('on');
+  sStop(); flashWhite(); vibrate(90);
+  setLive(true);
+  shout('通電!!', 900, 'illumiShout');
+  const buzz = setInterval(()=>tone(70+Math.random()*50, .08, 'sawtooth', .05), 120);
+  try{
+    await sparkTour();                                   /* 電気が電線を巡って行き渡る */
+    for(let k=0;k<2;k++){                                /* 通電直後のチラつき */
+      act.forEach(p=>{
+        const ls = lightsOf(treeOf(p.id));
+        const c = ls[Math.floor(Math.random()*ls.length)];
+        if(c){ setLight(c,true,pick(LIGHT_COLORS)); setTimeout(()=>setLight(c,false),170); }
+      });
+      tone(900+k*120, .05, 'square', .06);
+      await wait(260);
+    }
+
+    if(sc==='solo'){
+      await lightRace([entry(winner,30)], 3600);
+      return illumiGoal(winner, wTree, false);
+    }
+
+    if(sc==='race' || sc==='shinku'){                    /* どの木が一番先に全点灯するかレース */
+      const es = [entry(winner,30)];
+      others.forEach(p=>es.push(entry(p, 14+Math.floor(Math.random()*11))));
+      if(sc==='shinku' && es.length>1) es[1+Math.floor(Math.random()*(es.length-1))].to = 29;
+      await lightRace(es, 8200);
+      return illumiGoal(winner, wTree, sc==='shinku' && Math.random()<0.5);
+    }
+
+    if(sc==='rouden'){                                   /* 別の木が先に全点灯→漏電→復旧で本命 */
+      const decoy = pick(others);
+      const dTree = treeOf(decoy.id);
+      const esA = [entry(decoy,30), entry(winner, 12+Math.floor(Math.random()*4))];
+      others.filter(p=>p!==decoy).forEach(p=>esA.push(entry(p, 8+Math.floor(Math.random()*8))));
+      await lightRace(esA, 4600);
+      dTree.classList.add('allon');
+      await wait(850);
+      dTree.classList.remove('allon');
+      dTree.classList.add('zap');
+      lightning();
+      shout('漏電!!', 1400, 'illumiShout');
+      sLose();
+      setLitTo(dTree, 0, LIGHT_COLORS); darkTree(dTree); dTree._lit = 0;
+      setLive(false);
+      await wait(1500);
+      dTree.classList.remove('zap');
+      setLive(true);
+      await cutIn('復旧!!', true);
+      const esB = [ entry(winner, 30, litCount(wTree)) ];
+      others.filter(p=>p!==decoy).forEach(p=>{
+        const tr = treeOf(p.id);
+        esB.push(entry(p, Math.min(26, litCount(tr)+3+Math.floor(Math.random()*4)), litCount(tr)));
+      });
+      await lightRace(esB, 2800);
+      return illumiGoal(winner, wTree, true);
+    }
+
+    if(sc==='teiden'){                                   /* レース中に大停電→本命だけ復活 */
+      const es = [entry(winner, 20+Math.floor(Math.random()*4))];
+      others.forEach(p=>es.push(entry(p, 15+Math.floor(Math.random()*8))));
+      await lightRace(es, 4400);
+      lightning();
+      shout('停電!?', 1500, 'illumiShout');
+      act.forEach(p=>{ const tr=treeOf(p.id); setLitTo(tr,0,LIGHT_COLORS); darkTree(tr); tr._lit=0; });
+      setLive(false);
+      $('#spark').classList.remove('show');
+      $('#forestBox').classList.add('dark');
+      sLose();
+      await wait(1900);
+      $('#forestBox').classList.remove('dark');
+      setLive(true);
+      sRiser();
+      await lightRace([entry(winner,30)], 1500);
+      return illumiGoal(winner, wTree, true);
+    }
+
+    if(sc==='roudenTeiden'){                           /* 漏電→復旧→今度は大停電→本命だけ復活 */
+      const decoy = pick(others), dTree = treeOf(decoy.id);
+      const esA = [entry(decoy,30), entry(winner, 12+Math.floor(Math.random()*4))];
+      others.filter(p=>p!==decoy).forEach(p=>esA.push(entry(p, 8+Math.floor(Math.random()*8))));
+      await lightRace(esA, 4200);
+      dTree.classList.add('allon');
+      await wait(750);
+      dTree.classList.remove('allon'); dTree.classList.add('zap');
+      lightning(); shout('漏電!!', 1400, 'illumiShout'); sLose();
+      setLitTo(dTree, 0, LIGHT_COLORS); darkTree(dTree); dTree._lit = 0;
+      setLive(false);
+      await wait(1300);
+      dTree.classList.remove('zap');
+      setLive(true);
+      await cutIn('復旧!!', true);
+      const esB = [entry(winner, 24, litCount(wTree))];
+      others.filter(p=>p!==decoy).forEach(p=>{
+        const tr = treeOf(p.id);
+        esB.push(entry(p, Math.min(22, litCount(tr)+4), litCount(tr)));
+      });
+      await lightRace(esB, 2400);
+      lightning(); shout('停電!?', 1500, 'illumiShout');
+      act.forEach(p=>{ const tr=treeOf(p.id); setLitTo(tr,0,LIGHT_COLORS); darkTree(tr); tr._lit=0; });
+      setLive(false);
+      $('#spark').classList.remove('show');
+      $('#forestBox').classList.add('dark');
+      sLose();
+      await wait(1900);
+      $('#forestBox').classList.remove('dark');
+      setLive(true); sRiser();
+      await lightRace([entry(winner,30)], 1400);
+      return illumiGoal(winner, wTree, true);
+    }
+
+    /* roudenLose: 良い木が先に全点灯→漏電で全滅→💀が静かに全点灯 */
+    {
+      const decoy = pick(goodOthers);
+      const dTree = treeOf(decoy.id);
+      const esA = [entry(decoy,30), entry(winner, 9+Math.floor(Math.random()*4))];
+      others.filter(p=>p!==decoy).forEach(p=>esA.push(entry(p, 8+Math.floor(Math.random()*8))));
+      await lightRace(esA, 4600);
+      dTree.classList.add('allon');
+      await wait(750);
+      dTree.classList.remove('allon');
+      dTree.classList.add('zap');
+      lightning();
+      shout('漏電!!', 1400, 'illumiShout');
+      sLose();
+      setLitTo(dTree, 0, LIGHT_COLORS); darkTree(dTree); dTree._lit = 0;
+      await wait(1400);
+      dTree.classList.remove('zap');
+      await lightRace([entry(winner, 30, litCount(wTree))], 2600);
+      return illumiGoal(winner, wTree, false);
+    }
+  } finally {
+    clearInterval(buzz);
+  }
+}
+
+/* ================= ロケット発射抽選 ================= */
+function sRoar(){ sCrash(); tone(55, 1.6, 'sawtooth', .2, 0, 38); tone(110, 1.2, 'sawtooth', .1, 0, 60); }
+function sAlarm(){ for(let i=0;i<6;i++) tone(i%2?988:659, .11, 'square', .1, i*.13); }
+function buildSpace(act){
+  $('#planets').innerHTML = act.map(p=>{
+    const hue = (p.id*67)%360;
+    const cls = p.hz ? 'bh' : (p.id%3===0 ? 'ring' : '');
+    const st = p.hz ? '' : `style="background:radial-gradient(circle at 32% 30%, hsl(${hue},80%,75%), hsl(${hue},70%,45%) 55%, hsl(${hue},80%,25%))"`;
+    return `<div class="planet ${cls}" data-id="${p.id}"><div class="pbody" ${st}></div><div class="pname">${p.hz?'🕳️ ':''}${esc(p.name)}</div></div>`;
+  }).join('');
+  const box = $('#spaceBox'), r = $('#rocket');
+  const W = box.clientWidth||480, H = box.clientHeight||420;
+  r._x = W/2; r._y = H-30;
+  r.style.left = r._x+'px'; r.style.top = r._y+'px';
+  r.style.transform = 'translate(-50%,-50%) rotate(-45deg) scale(1)';
+  r.classList.remove('spin');
+}
+function pCenter(el){
+  const box = $('#spaceBox');
+  try{
+    const b = box.getBoundingClientRect(), p = el.getBoundingClientRect();
+    return { x: p.left-b.left+p.width/2, y: p.top-b.top+p.width/2+4 };
+  }catch(e){ return { x: 100+Math.random()*260, y: 60+Math.random()*160 }; }
+}
+function puffAt(x, y){
+  const d = document.createElement('div');
+  d.className = 'puff';
+  d.style.left = (x-6)+'px'; d.style.top = (y-6)+'px';
+  $('#spaceBox').appendChild(d);
+  setTimeout(()=>{ try{ d.remove(); }catch(e){} }, 650);
+}
+function fly(points, dur, opts={}){
+  return new Promise(res=>{
+    const r = $('#rocket');
+    let prev = { x: r._x||240, y: r._y||360 };
+    const segs = []; let total = 0;
+    for(const p of points){ const d = Math.hypot(p.x-prev.x, p.y-prev.y)||1; segs.push({from:prev,to:p,d}); total+=d; prev=p; }
+    let t0 = performance.now(), prevF = t0, lastPuff = 0;
+    (function f(now){
+      if(now-prevF>250) t0 += now-prevF-16;
+      prevF = now;
+      const t = Math.min(1,(now-t0)/dur);
+      const e = opts.ease==='in' ? t*t : (t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2);
+      let dist = e*total, seg = segs[segs.length-1], off = 1;
+      for(const s of segs){ if(dist<=s.d){ seg=s; off=dist/s.d; break; } dist-=s.d; }
+      const x = seg.from.x+(seg.to.x-seg.from.x)*off, y = seg.from.y+(seg.to.y-seg.from.y)*off;
+      r._x = x; r._y = y;
+      r.style.left = x+'px'; r.style.top = y+'px';
+      if(!opts.tumble){
+        const ang = Math.atan2(seg.to.y-seg.from.y, seg.to.x-seg.from.x)*180/Math.PI;
+        r.style.transform = `translate(-50%,-50%) rotate(${ang+45}deg)`;
+      }
+      if(opts.puff!==false && now-lastPuff>70){ lastPuff = now; puffAt(x, y); }
+      if(t<1) requestAnimationFrame(f); else res();
+    })(t0);
+  });
+}
+function spiralInto(c, dur){
+  return new Promise(res=>{
+    const r = $('#rocket');
+    const r0 = Math.hypot(r._x-c.x, r._y-c.y);
+    const a0 = Math.atan2(r._y-c.y, r._x-c.x);
+    let t0 = performance.now(), prevF = t0;
+    (function f(now){
+      if(now-prevF>250) t0 += now-prevF-16;
+      prevF = now;
+      const t = Math.min(1,(now-t0)/dur);
+      const rad = r0*(1-t);
+      const ang = a0 + t*9;
+      const x = c.x+Math.cos(ang)*rad, y = c.y+Math.sin(ang)*rad;
+      r._x = x; r._y = y;
+      r.style.left = x+'px'; r.style.top = y+'px';
+      r.style.transform = `translate(-50%,-50%) rotate(${t*1440}deg) scale(${1-t*0.85})`;
+      if(t<1) requestAnimationFrame(f); else res();
+    })(t0);
+  });
+}
+async function rocket(){
+  if(spinning) return;
+  const act = active();
+  if(act.length===0){ toast('賞品がありません。登録してください'); openSettings(); return; }
+  initAudio();
+  spinning = true; spinDone = false;
+  $('#spinBtn').disabled = true;
+  const winner = drawWinner();
+  const guard = setTimeout(()=>{ if(!spinDone){ spinDone=true; setTimeout(()=>showResult(winner,false),400); } }, 40000);
+  try{ await runRocket(winner, act); }
+  catch(e){ if(!spinDone){ spinDone=true; setTimeout(()=>showResult(winner,false),400); } }
+  clearTimeout(guard);
+}
+async function rocketLand(winner, pEl, isSuper){
+  pEl.classList.add('landed');
+  flashWhite();
+  [784,1046,1568,2093].forEach((fq,i)=>tone(fq,.18,'triangle',.09,i*.12));
+  shout('着陸成功!!', 1600, 'rocketShout');
+  vibrate([100,60,200]);
+  await wait(1900);
+  return finish(winner, isSuper);
+}
+async function rocketSwallow(winner){
+  const c = pCenter($('#planets').querySelector(`.planet[data-id="${winner.id}"]`));
+  tone(300, 1.5, 'sawtooth', .12, 0, 45);
+  await spiralInto(c, 1800);
+  shout('吸い込まれた…', 1500, 'rocketShout');
+  sLose();
+  await wait(1300);
+  return finish(winner, false);
+}
+function streakAt(y){
+  const d = document.createElement('div');
+  d.className = 'streak';
+  d.style.top = y+'px';
+  $('#spaceBox').appendChild(d);
+  setTimeout(()=>{ try{ d.remove(); }catch(e){} }, 520);
+}
+async function doWarp(dest){
+  const r = $('#rocket');
+  sRiser();
+  r.classList.add('charge');
+  await wait(850);
+  shout('ワープ!!', 1000, 'rocketShout');
+  flashWhite(); sCrash(); tone(1200, .4, 'sawtooth', .1, 0, 3000);
+  r.classList.remove('charge');
+  r.classList.add('warpout');
+  streakAt(r._y);
+  await wait(380);
+  r._x = dest.x; r._y = dest.y;
+  r.style.left = dest.x+'px'; r.style.top = dest.y+'px';
+  r.classList.remove('warpout');
+  r.classList.add('warpin');
+  streakAt(dest.y);
+  flashWhite();
+  await wait(380);
+  r.classList.remove('warpin');
+}
+async function runRocket(winner, act){
+  buildSpace(act);
+  const planets = $('#planets');
+  const pl = id => planets.querySelector(`.planet[data-id="${id}"]`);
+  const others = act.filter(p=>p.id!==winner.id);
+  const goodOthers = others.filter(p=>!p.hz);
+  const box = $('#spaceBox');
+  const W = box.clientWidth||480, H = box.clientHeight||420;
+  const r = $('#rocket');
+  const sc = (function(){
+    if(typeof window!=='undefined' && window.__forceRocketSc) return window.__forceRocketSc;
+    if(act.length===1) return 'solo';
+    if(winner.hz){
+      const r0 = Math.random();
+      if(goodOthers.length && r0<0.4) return 'hzTease';
+      if(r0<0.65) return 'hzBousou';
+      return 'hzDirect';
+    }
+    const r0 = Math.random();
+    if(r0<0.17) return 'normal';
+    if(r0<0.33) return 'kiseki';
+    if(r0<0.46) return 'bounce';
+    if(r0<0.59) return 'nenryo';
+    if(r0<0.73) return 'bousou';
+    if(r0<0.87) return 'warp';
+    return 'warpNenryo';
+  })();
+
+  for(const c of ['3','2','1']){ shout(c, 550, 'rocketShout'); tone(440,.15,'square',.12); await wait(680); }
+  shout('発射!!', 1000, 'rocketShout');
+  sRoar(); vibrate([120,60,200]);
+  box.classList.remove('shakeHard'); void box.offsetWidth; box.classList.add('shakeHard');
+  for(let i=0;i<10;i++) puffAt(r._x+(Math.random()-.5)*28, r._y+6+Math.random()*12);
+  await fly([{x:W/2, y:H*0.62}], 1000, {ease:'in'});
+  box.classList.remove('shakeHard');
+
+  const wC = pCenter(pl(winner.id));
+
+  if(sc==='solo'){
+    await fly([{x:wC.x, y:wC.y+42},{x:wC.x, y:wC.y}], 1700);
+    return rocketLand(winner, pl(winner.id), false);
+  }
+  if(sc==='normal'){                                   /* 他の惑星に接近して焦らす */
+    for(const d of shuffle(others).slice(0, Math.min(2, others.length))){
+      const c = pCenter(pl(d.id));
+      await fly([{x:c.x+30, y:c.y+36}], 950);
+      await wait(450);
+      sZuru();
+    }
+    await fly([{x:wC.x, y:wC.y+38},{x:wC.x, y:wC.y}], 1500);
+    return rocketLand(winner, pl(winner.id), false);
+  }
+  if(sc==='kiseki'){                                   /* デコイ直前で警報→軌道修正 */
+    const d = pick(others), c = pCenter(pl(d.id));
+    await fly([{x:c.x+(c.x>W/2?-1:1)*10, y:c.y+26}], 1400);
+    sAlarm();
+    shout('軌道修正!!', 1200, 'rocketShout');
+    vibrate([80,60,80]);
+    await fly([{x:(c.x+wC.x)/2, y:Math.min(c.y,wC.y)-46},{x:wC.x, y:wC.y+36},{x:wC.x, y:wC.y}], 2000);
+    return rocketLand(winner, pl(winner.id), Math.random()<0.3);
+  }
+  if(sc==='bounce'){                                   /* 一度着陸→失敗→跳ねて本命へ */
+    const d = pick(others), dEl = pl(d.id), c = pCenter(dEl);
+    await fly([{x:c.x, y:c.y+32},{x:c.x, y:c.y}], 1600);
+    dEl.classList.add('landed');
+    await wait(650);
+    dEl.classList.remove('landed');
+    shout('着陸失敗!?', 1200, 'rocketShout');
+    sZuru(); lightning();
+    await fly([{x:c.x-44, y:c.y-52},{x:wC.x, y:wC.y+38},{x:wC.x, y:wC.y}], 2000);
+    return rocketLand(winner, pl(winner.id), false);
+  }
+  if(sc==='nenryo'){                                   /* 燃料切れ→落下→再点火(超大当たり) */
+    await fly([{x:W*0.3+Math.random()*W*0.4, y:H*0.42}], 950);
+    r.classList.add('spin');
+    shout('燃料切れ!?', 1300, 'rocketShout');
+    sLose();
+    await fly([{x:r._x+34, y:H*0.8}], 1500, {puff:false, tumble:true});
+    r.classList.remove('spin');
+    await wait(750);
+    await cutIn('再点火!!', true);
+    sRoar(); vibrate([120,60,200]);
+    await fly([{x:wC.x, y:wC.y+42},{x:wC.x, y:wC.y}], 1400);
+    return rocketLand(winner, pl(winner.id), true);
+  }
+  if(sc==='bousou'){                                   /* システムエラーで画面内暴走→制御回復(超大当たり) */
+    await fly([{x:W*0.5, y:H*0.45}], 850);
+    box.classList.add('glitch');
+    shout('システムエラー!!', 1500, 'rocketShout');
+    sAlarm();
+    const gl = setInterval(()=>tone(200+Math.random()*1800, .05, 'square', .07), 70);
+    vibrate([60,40,60,40,60,40,150]);
+    const pts = [];
+    for(let i=0;i<8;i++) pts.push({x:24+Math.random()*(W-48), y:26+Math.random()*(H-80)});
+    await fly(pts, 2700);
+    clearInterval(gl);
+    box.classList.remove('glitch');
+    r.classList.add('spin');
+    await wait(650);
+    r.classList.remove('spin');
+    await cutIn('制御回復!!', true);
+    await fly([{x:wC.x, y:wC.y+38},{x:wC.x, y:wC.y}], 1300);
+    return rocketLand(winner, pl(winner.id), true);
+  }
+  if(sc==='warp'){                                     /* ワープ航法(座標エラーで二段ワープも) */
+    await fly([{x:W*0.35+Math.random()*W*0.3, y:H*0.5}], 900);
+    const mis = others.length>0 && Math.random()<0.5;
+    if(mis){
+      const d = pick(others), c = pCenter(pl(d.id));
+      await doWarp({x:c.x+28, y:c.y+34});
+      await wait(650);
+      shout('座標エラー!?', 1100, 'rocketShout');
+      sAlarm();
+      await wait(550);
+      await doWarp({x:wC.x, y:wC.y+40});
+    } else {
+      await doWarp({x:wC.x, y:wC.y+40});
+    }
+    await fly([{x:wC.x, y:wC.y}], 750);
+    return rocketLand(winner, pl(winner.id), mis || Math.random()<0.3);
+  }
+  if(sc==='warpNenryo'){                               /* ワープ成功→直後に燃料切れ→再点火(超大当たり) */
+    await fly([{x:W*0.35+Math.random()*W*0.3, y:H*0.5}], 900);
+    await doWarp({x:W*0.25+Math.random()*W*0.5, y:H*0.35});
+    await wait(450);
+    r.classList.add('spin');
+    shout('燃料切れ!?', 1300, 'rocketShout');
+    sLose();
+    await fly([{x:r._x+34, y:H*0.8}], 1500, {puff:false, tumble:true});
+    r.classList.remove('spin');
+    await wait(750);
+    await cutIn('再点火!!', true);
+    sRoar(); vibrate([120,60,200]);
+    await fly([{x:wC.x, y:wC.y+42},{x:wC.x, y:wC.y}], 1400);
+    return rocketLand(winner, pl(winner.id), true);
+  }
+  if(sc==='hzBousou'){                                 /* 暴走したまま制御不能→ブラックホール */
+    await fly([{x:W*0.5, y:H*0.45}], 850);
+    box.classList.add('glitch');
+    shout('システムエラー!!', 1500, 'rocketShout');
+    sAlarm();
+    const gl = setInterval(()=>tone(200+Math.random()*1800, .05, 'square', .07), 70);
+    const pts = [];
+    for(let i=0;i<6;i++) pts.push({x:24+Math.random()*(W-48), y:26+Math.random()*(H-80)});
+    await fly(pts, 2300);
+    clearInterval(gl);
+    box.classList.remove('glitch');
+    shout('制御不能ー!!', 1200, 'rocketShout');
+    return rocketSwallow(winner);
+  }
+  if(sc==='hzTease'){                                  /* 良い惑星に向かうが逸れてブラックホールへ */
+    const d = pick(goodOthers), c = pCenter(pl(d.id));
+    await fly([{x:c.x+26, y:c.y+32}], 1200);
+    await wait(550);
+    sAlarm();
+    shout('コース逸脱!?', 1200, 'rocketShout');
+    await fly([{x:(c.x+wC.x)/2, y:c.y+62}], 950);
+    return rocketSwallow(winner);
+  }
+  /* hzDirect */
+  {
+    await fly([{x:wC.x+52, y:wC.y+62}], 1200);
+    return rocketSwallow(winner);
+  }
+}
+
+/* ================= カジノルーレット ================= */
+function sRoll(){
+  tone(950+Math.random()*450, .022, 'sine', .05);
+  tone(260+Math.random()*90, .045, 'triangle', .07, .003);
+}
+function sKnock(){
+  tone(1900, .025, 'square', .12);
+  tone(330, .07, 'triangle', .22, .004);
+  tone(130, .1, 'sine', .18, .01);
+}
+function sKnockOne(){ tone(340+Math.random()*60, .06, 'triangle', .22); }
+function buildWheel(act){
+  const svg = $('#wheelSVG');
+  if(!act.length){ svg.innerHTML=''; return; }
+  const n = act.length, seg = 360/n, cx = 160, cy = 160;
+  const Ro = 122, Ri = 92;
+  const PT = (r,aDeg)=>{ const a=(aDeg-90)*Math.PI/180; return {x:+(cx+Math.cos(a)*r).toFixed(2), y:+(cy+Math.sin(a)*r).toFixed(2)}; };
+  let segs='', frets='', labels='';
+  const drawSeg = (i, a0, a1, fill)=>{
+    const large = (a1-a0)>180 ? 1 : 0;
+    const o0=PT(Ro,a0), o1=PT(Ro,a1), i1=PT(Ri,a1), i0=PT(Ri,a0);
+    segs += `<path class="pocket" data-i="${i}" d="M${o0.x},${o0.y} A${Ro},${Ro} 0 ${large} 1 ${o1.x},${o1.y} L${i1.x},${i1.y} A${Ri},${Ri} 0 ${large} 0 ${i0.x},${i0.y} Z" fill="${fill}"/>`;
+  };
+  act.forEach((p,i)=>{
+    const a0=i*seg, a1=(i+1)*seg;
+    const fill = p.hz ? '#0a7a3c' : (i%2 ? '#111119' : '#a81f2d');
+    if(seg>=360){ drawSeg(i,0,180,fill); drawSeg(i,180,360,fill); }
+    else drawSeg(i,a0,a1,fill);
+    const f0=PT(Ro+2,a0), f1=PT(Ri-2,a0);
+    frets += `<line x1="${f0.x}" y1="${f0.y}" x2="${f1.x}" y2="${f1.y}" stroke="#e8c86a" stroke-width="1.6"/>`;
+    const am=i*seg+seg/2;
+    const maxC = n<=8?7 : n<=12?5 : 3;
+    const nm=[...p.name].length>maxC ? [...p.name].slice(0,maxC).join('')+'…' : p.name;
+    const fs = n<=6?12 : n<=10?10 : n<=14?8.5 : 7.5;
+    labels += `<text x="${cx}" y="${(cy-107+fs*0.35).toFixed(1)}" transform="rotate(${am.toFixed(2)} ${cx} ${cy})" text-anchor="middle" class="wlabel" style="font-size:${fs}px">${p.hz?'💀':''}${esc(nm)}</text>`;
+  });
+  let diamonds='';
+  for(let k=0;k<8;k++){
+    const a=(k*45-90)*Math.PI/180, dx=cx+Math.cos(a)*131, dy=cy+Math.sin(a)*131;
+    diamonds += `<rect x="${(dx-4).toFixed(1)}" y="${(dy-4).toFixed(1)}" width="8" height="8" transform="rotate(45 ${dx.toFixed(1)} ${dy.toFixed(1)})" fill="url(#gGold)" stroke="#7a5a10" stroke-width=".7"/>`;
+  }
+  svg.innerHTML =
+    `<defs>` +
+    `<radialGradient id="gWood" cx="38%" cy="32%"><stop offset="0%" stop-color="#8a4b24"/><stop offset="55%" stop-color="#5d3014"/><stop offset="100%" stop-color="#2e150a"/></radialGradient>` +
+    `<radialGradient id="gCone" cx="42%" cy="36%"><stop offset="0%" stop-color="#4e4e5e"/><stop offset="60%" stop-color="#26262f"/><stop offset="100%" stop-color="#101016"/></radialGradient>` +
+    `<radialGradient id="gGold" cx="35%" cy="30%"><stop offset="0%" stop-color="#ffe9a8"/><stop offset="55%" stop-color="#d4af37"/><stop offset="100%" stop-color="#8a6a1a"/></radialGradient>` +
+    `<linearGradient id="gSheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="rgba(255,255,255,.18)"/><stop offset="50%" stop-color="rgba(255,255,255,0)"/></linearGradient>` +
+    `</defs>` +
+    `<circle cx="${cx}" cy="${cy}" r="158" fill="url(#gWood)" stroke="#d4af37" stroke-width="3"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="144" fill="none" stroke="#241005" stroke-width="13"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="150" fill="none" stroke="rgba(0,0,0,.4)" stroke-width="2"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="137.5" fill="none" stroke="rgba(255,230,170,.15)" stroke-width="1.5"/>` +
+    `<g id="wheelG" style="transform-origin:${cx}px ${cy}px;transform-box:view-box">` +
+    `<circle cx="${cx}" cy="${cy}" r="${Ro+2}" fill="#1c0d05" stroke="#d4af37" stroke-width="2"/>` +
+    segs + frets + labels +
+    `<circle cx="${cx}" cy="${cy}" r="${Ri}" fill="url(#gCone)" stroke="#d4af37" stroke-width="2.5"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="60" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="18"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="30" fill="url(#gGold)" stroke="#7a5a10" stroke-width="1.5"/>` +
+    `<path d="M${cx-52},${cy} L${cx+52},${cy} M${cx},${cy-52} L${cx},${cy+52}" stroke="url(#gGold)" stroke-width="9" stroke-linecap="round"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="13" fill="url(#gGold)" stroke="#7a5a10" stroke-width="1.5"/>` +
+    `<circle cx="${cx-4}" cy="${cy-5}" r="4" fill="rgba(255,255,255,.5)"/>` +
+    `</g>` +
+    diamonds +
+    `<ellipse cx="${cx-45}" cy="${cy-55}" rx="95" ry="60" fill="url(#gSheen)" pointer-events="none"/>`;
+  $('#ball').classList.remove('show');
+}
+function ballPos(angScreen, r){
+  const box = $('#wheelBox');
+  const w = box.clientWidth||320;
+  const s = w/320;
+  const a = (angScreen-90)*Math.PI/180;
+  const b = $('#ball');
+  b.style.left = (160*s + Math.cos(a)*r*s - 7)+'px';
+  b.style.top  = (160*s + Math.sin(a)*r*s - 7)+'px';
+}
+function spinWheelAnim(Wtot, Btot, D, direct){
+  return new Promise(res=>{
+    $('#ball').classList.add('show');
+    const dropT = direct ? 0.80 : 0.62;
+    let t0 = performance.now(), prevF = t0, lastRoll = 0, lastK = -1;
+    (function f(now){
+      if(now-prevF>250) t0 += now-prevF-16;
+      prevF = now;
+      const t = Math.min(1,(now-t0)/D);
+      const W = Wtot*(1-Math.pow(1-t,3));
+      const Bp = Btot*(1-Math.pow(1-t,4));
+      const g = $('#wheelSVG').querySelector('#wheelG');
+      if(g) g.style.transform = `rotate(${W.toFixed(2)}deg)`;
+      let r = 144;
+      if(t<=dropT){
+        if(Bp-lastRoll>15){ lastRoll = Bp; sRoll(); }        /* コロコロコロ */
+      } else if(direct){
+        const u = (t-dropT)/(1-dropT);
+        r = 144-(144-107)*u;                                  /* バウンド無しでスパッと直滑降 */
+      } else {
+        const u = (t-dropT)/(1-dropT);
+        r = 144-(144-107)*u + Math.abs(Math.sin(u*14))*(1-u)*11;
+        const k = Math.floor(u*14/Math.PI);
+        if(k!==lastK && u<0.92){ lastK = k; (Math.random()<0.55 ? sKnockOne : sKnock)(); vibrate(18); }
+      }
+      ballPos(((-Bp%360)+360)%360, r);
+      if(t<1) requestAnimationFrame(f);
+      else { direct ? sKnockOne() : sKnock(); sStop(); res(W); }   /* ダイレクトは一発カコンッ */
+    })(t0);
+  });
+}
+function ballHop(Wtot, from, to, seg){
+  return new Promise(res=>{
+    const a0 = ((from*seg+seg/2)+Wtot)%360;
+    const a1 = ((to*seg+seg/2)+Wtot)%360;
+    let d = a1-a0; if(d>180) d-=360; if(d<-180) d+=360;
+    let t0 = performance.now();
+    (function f(now){
+      const t = Math.min(1,(now-t0)/280);
+      ballPos(a0+d*t, 107 + Math.sin(t*Math.PI)*16);
+      if(t<1) requestAnimationFrame(f); else { sKnock(); sStop(); res(); }
+    })(t0);
+  });
+}
+async function casino(){
+  if(spinning) return;
+  const act = active();
+  if(act.length===0){ toast('賞品がありません。登録してください'); openSettings(); return; }
+  initAudio();
+  spinning = true; spinDone = false;
+  $('#spinBtn').disabled = true;
+  const winner = drawWinner();
+  const guard = setTimeout(()=>{ if(!spinDone){ spinDone=true; setTimeout(()=>showResult(winner,false),400); } }, 35000);
+  try{ await runCasino(winner, act); }
+  catch(e){ if(!spinDone){ spinDone=true; setTimeout(()=>showResult(winner,false),400); } }
+  clearTimeout(guard);
+}
+async function runCasino(winner, act){
+  buildWheel(act);
+  const n = act.length, seg = 360/n;
+  const idx = act.findIndex(p=>p.id===winner.id);
+  const sc = (function(){
+    if(typeof window!=='undefined' && window.__forceCasinoSc) return window.__forceCasinoSc;
+    if(n===1) return 'normal';
+    const r = Math.random();
+    if(r<0.25) return 'normal';
+    if(r<0.45) return 'hop';
+    if(r<0.60) return 'direct';
+    if(r<0.80) return 'directHop';
+    return 'long';
+  })();
+  shout('ノーモアベット!', 1100, 'casinoShout');
+  tone(660,.15,'square',.1); tone(880,.15,'square',.1,.18);
+  await wait(1000);
+  const long = sc==='long';
+  const D = long ? 9800 : 7200;
+  const hopFrom = (idx + (Math.random()<0.5 ? 1 : n-1)) % n;
+  const targetIdx = (sc==='hop'||sc==='directHop') ? hopFrom : idx;
+  const Wtot = (long?5:4)*360 + Math.random()*360;
+  const targetScreen = ((targetIdx*seg + seg/2) + Wtot) % 360;
+  const Btot = (long?12:8)*360 + ((360 - targetScreen%360)+360)%360;
+  vibrate(60);
+  await spinWheelAnim(Wtot, Btot, D, sc==='direct'||sc==='directHop');
+  if(sc==='hop' || sc==='directHop'){                  /* 隣ポケットに入った!→跳ねて本命へ */
+    await wait(sc==='directHop' ? 850 : 600);
+    sZuru(); vibrate(80);
+    await ballHop(Wtot, hopFrom, idx, seg);
+  }
+  const pocket = $('#wheelSVG').querySelector(`.pocket[data-i="${idx}"]`);
+  if(pocket) pocket.classList.add('winPocket');
+  flashWhite();
+  shout(winner.hz ? 'ざんねん…' : '的中!!', 1500, 'casinoShout');
+  if(winner.hz) sLose();
+  else [784,1046,1568].forEach((fq,i)=>tone(fq,.2,'triangle',.09,i*.12));
+  vibrate([100,60,180]);
+  await wait(1700);
+  return finish(winner, long && !winner.hz && Math.random()<0.3);
+}
+
+$('#spinBtn').addEventListener('click', ()=>{ gameView==='slot' ? spin() : gameView==='race' ? race() : gameView==='illumi' ? illumi() : gameView==='rocket' ? rocket() : casino(); });
+addEventListener('resize', ()=>{ if(!spinning) reels.forEach(r=>{ if(r.seq.length) buildStrip(r); }); });
+
+/* ================= init ================= */
+load();
+if(prizes.length===0){
+  prizes = [
+    {id:uid++, name:'🥇 特賞', rank:1, hz:false, won:false},
+    {id:uid++, name:'🎁 2等', rank:2, hz:false, won:false},
+    {id:uid++, name:'🍬 3等', rank:3, hz:false, won:false},
+  ];
+}
+renderChips();
+reels.forEach(r=>{ if(active().length) buildStrip(r); });
+let savedView = 'slot';
+try{ const sv = localStorage.getItem('enkaiView'); if(sv==='race'||sv==='illumi'||sv==='rocket'||sv==='casino') savedView = sv; }catch(e){}
+setView(savedView);
+</script>
+</body>
+</html>

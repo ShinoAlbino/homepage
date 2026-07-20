@@ -151,9 +151,11 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
+  min-height: 80vh;
+  height: auto;
   text-align: center;
   flex-direction: column;
+  padding-bottom: 3rem;
 }
 
 .welcome-section h1 {
@@ -294,6 +296,10 @@ section:hover {
   margin-top: auto;
 }
 
+.footer-logo {
+  font-size: 0.67em;
+}
+
 .footer-links {
   margin: 0.5rem 0;
 }
@@ -320,16 +326,43 @@ section:hover {
   font-weight: bold;
 }
 
-/* ===== 上部画像（index専用） ===== */
+/* ===== 上部画像（index専用）：宇宙的な演出 ===== */
 .hero-image {
   position: relative;
   width: 300px;
   height: 300px;
   margin: 4rem auto 2rem;
   border-radius: 50%;
-  overflow: hidden;
   z-index: 1;
-  box-shadow: 0 0 100px 60px rgba(255, 255, 255, 0.08);
+  animation: heroFloat 7s ease-in-out infinite;
+}
+
+/* 星雲オーラ（青〜紫のガス雲） */
+.hero-image::before {
+  content: "";
+  position: absolute;
+  inset: -38%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(119, 221, 255, 0.20), transparent 55%),
+    radial-gradient(circle at 72% 68%, rgba(178, 122, 255, 0.18), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07), transparent 70%);
+  filter: blur(18px);
+  z-index: -1;
+  animation: nebulaPulse 9s ease-in-out infinite alternate;
+}
+
+/* 軌道リング＋周回する衛星 */
+.hero-image::after {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  border-radius: 50%;
+  border: 1px dashed rgba(119, 221, 255, 0.35);
+  box-shadow: inset 0 0 25px rgba(119, 221, 255, 0.10);
+  background: radial-gradient(circle 5px at 50% 0%, #aef1ff 40%, rgba(174, 241, 255, 0.35) 60%, transparent 70%);
+  animation: orbitSpin 18s linear infinite;
+  pointer-events: none;
 }
 
 .hero-image img {
@@ -338,6 +371,24 @@ section:hover {
   object-fit: cover;
   border-radius: 50%;
   filter: blur(0.3px) opacity(0.92);
+  box-shadow:
+    0 0 60px rgba(119, 221, 255, 0.30),
+    0 0 140px rgba(150, 120, 255, 0.22),
+    0 0 40px rgba(255, 255, 255, 0.10);
+}
+
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes nebulaPulse {
+  from { opacity: 0.65; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1.06); }
+}
+
+@keyframes orbitSpin {
+  to { transform: rotate(360deg); }
 }
 
 /* ===== SNSリンク（幻想的なボタン） ===== */
@@ -428,35 +479,43 @@ section:hover {
 /* ===== レスポンシブデザイン ===== */
 @media (max-width: 768px) {
   .header {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 15px 20px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+    padding: 12px 18px;
   }
-  
+
+  .site-title a {
+    font-size: 1.5rem;
+  }
+
   .nav-menu {
     flex-direction: column;
     gap: 15px;
     text-align: center;
   }
-  
+
   .page-container,
   .privacy-container,
   .terms-container {
-    padding: 2rem;
-    margin: 1rem;
+    padding: 1.5rem 1.2rem;
+    margin: 0.8rem;
   }
-  
+
   h1 {
-    font-size: 2rem;
+    /* 「プライバシーポリシー」等の長い見出しが語中で折れないよう画面幅に追従 */
+    font-size: clamp(1.45rem, 5.5vw, 2rem);
   }
-  
+
   h2 {
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 4.5vw, 1.5rem);
   }
-  
+
   .hero-image {
     width: 200px;
     height: 200px;
+    margin: 3rem auto 1.5rem;
   }
 }
 
@@ -923,7 +982,7 @@ section:hover {
 
 .affiliates-title {
     font-size: 0.75rem;
-    color: #555;
+    color: #9a9ab5;
     letter-spacing: 0.2em;
     text-align: center;
     margin-bottom: 40px;
@@ -982,7 +1041,614 @@ section:hover {
 
 .affiliate-en {
     font-size: 0.55rem;
-    color: #555;
+    color: #9a9ab5;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+}
+
+
+/* ===== アーカイブページ専用スタイル ===== */
+
+/* 検索バー（近未来のコンソール風） */
+.archive-search-bar {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto 3rem;
+}
+
+.archive-search-bar input[type="text"] {
+  width: 100%;
+  padding: 12px 20px;
+  background: rgba(10, 10, 20, 0.6);
+  border: 1px solid rgba(119, 221, 255, 0.3);
+  border-radius: 4px;
+  color: #e0e0ff;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.archive-search-bar input[type="text"]:focus {
+  outline: none;
+  border-color: #77ddff;
+  box-shadow: 0 0 15px rgba(119, 221, 255, 0.3);
+  background: rgba(15, 15, 30, 0.8);
+}
+
+/* アーカイブグリッド（レスポンシブ） */
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 2rem;
+  text-align: left; /* カード内は左揃えにして可読性UP */
+}
+
+/* アーカイブカード（浮かぶホログラム・魔導書をイメージ） */
+.archive-card {
+  position: relative;
+  background: rgba(20, 20, 35, 0.4);
+  border: 1px solid rgba(119, 221, 255, 0.1);
+  border-left: 3px solid rgba(119, 221, 255, 0.4); /* 左端のアクセントライン */
+  border-radius: 4px; /* あえて少しカチッとさせてデータベース感を出す */
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(5px);
+}
+
+/* ホバーした時に静かに浮かび上がり、光が強くなる */
+.archive-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(119, 221, 255, 0.4);
+  border-left-color: #77ddff;
+  background: rgba(25, 25, 45, 0.6);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(119, 221, 255, 0.15);
+}
+
+/* カード上部のメタ情報 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #667899;
+  margin-bottom: 15px;
+  letter-spacing: 0.05em;
+}
+
+.doc-id {
+  color: #77ddff;
+  font-weight: bold;
+}
+
+/* タイトル（明朝体で神秘性を演出） */
+.archive-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.25rem;
+  color: #c0e8ff;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  text-shadow: 0 0 10px rgba(192, 232, 255, 0.3);
+}
+
+/* 抜粋文 */
+.archive-excerpt {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #b8b8d0;
+  margin-bottom: 20px;
+  opacity: 0.85;
+  /* 3行以上は省略する記述 */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* カード下部 */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  font-size: 0.8rem;
+}
+
+.archive-tag {
+  color: #556b83;
+  font-family: monospace;
+}
+
+.read-more {
+  color: #77ddff;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.archive-card:hover .read-more {
+  color: #ffffff;
+  text-shadow: 0 0 10px #77ddff;
+  transform: translateX(3px);
+}
+
+/* ===== カード内の画像エリア ===== */
+.card-image-wrapper {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border: 1px solid rgba(119, 221, 255, 0.1);
+  position: relative;
+  background: #000;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6; /* 普段は暗めにして神秘性を出す */
+  filter: grayscale(30%) contrast(1.1);
+  transition: all 0.5s ease;
+}
+
+/* ホバー時に画像がかすかに拡大して明るくなる */
+.archive-card:hover .card-image {
+  opacity: 0.8;
+  filter: grayscale(0%) contrast(1.2);
+  transform: scale(1.05);
+}
+
+
+/* ===== 全画面モーダル（近未来・神秘的な図書館コンソール風） ===== */
+.archive-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  
+  /* ★ここを確実に設定：フレックスボックスで上下左右中央に配置 */
+  display: flex;
+  justify-content: center; /* 左右の中央揃え */
+  align-items: center;     /* 上下の中央揃え */
+  
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* アクティブになったら表示（念のため display: flex を再宣言） */
+.archive-modal.is-active {
+  pointer-events: auto;
+  opacity: 1;
+  display: flex; 
+}
+
+/* 背景のボカシ付き黒幕 */
+.modal-backdrop {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(5, 5, 10, 0.85);
+  backdrop-filter: blur(15px); /* 背景を「ぼわぁっ」と激しくボカす */
+}
+
+/* 中央のホログラム風ウィンドウ */
+.modal-window {
+  position: relative;
+  width: 90%;
+  max-width: 650px;
+  max-height: 80vh;
+  background: rgba(15, 15, 28, 0.85); /* 視認性のために少し不透明度をアップ */
+  border: 1px solid rgba(119, 221, 255, 0.2);
+  box-shadow: 0 0 50px rgba(119, 221, 255, 0.1), inset 0 0 20px rgba(119, 221, 255, 0.05);
+  padding: 40px;
+  overflow-y: auto;
+  
+  /* ★右寄りを防ぐ：余白を自動計算にして左右のバランスを均等にする */
+  margin: auto; 
+  
+  /* 開いたときの下からの静かな浮き上がり演出 */
+  transform: translateY(30px) scale(0.95);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* アクティブ時にウィンドウが定位置にカチッと収まる */
+.archive-modal.is-active .modal-window {
+  transform: translateY(0) scale(1);
+}
+
+/* 閉じるボタン */
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: 1px solid rgba(119, 221, 255, 0.3);
+  color: #77ddff;
+  font-family: monospace;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s;
+}
+
+.modal-close-btn:hover {
+  background: rgba(119, 221, 255, 0.1);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(119, 221, 255, 0.3);
+}
+
+/* モーダル内の中身のテキスト */
+.modal-body-content {
+  margin-top: 20px;
+  color: #e0e0ff;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.modal-body-content p {
+  margin-bottom: 1.5rem;
+  text-shadow: none; /* 可読性のために影をマイルドに */
+}
+
+/* ===== アーカイブページ専用スタイルEND ===== */
+
+
+/* ============================================================
+   ===== 機密文書・次元観測ターミナル演出 (SCP-style layer) =====
+   ============================================================ */
+
+/* --- 全域スキャンライン(404ページは独自演出があるため除外) --- */
+body:not(.error-body)::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 3px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* --- 検閲済みテキスト(ホバーで一瞬だけ内容が滲む) --- */
+.redacted {
+  position: relative;
+  background: #0a0a0e;
+  color: #0a0a0e;
+  padding: 0 0.2em;
+  border-radius: 2px;
+  cursor: help;
+  transition: color 1.2s ease;
+  user-select: none;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.redacted:hover {
+  color: rgba(255, 60, 60, 0.55);
+  text-shadow: 0 0 8px rgba(255, 60, 60, 0.4);
+}
+
+.redacted[data-reveal]:hover::before {
+  content: attr(data-reveal);
+  position: absolute;
+  left: 50%;
+  bottom: 130%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: rgba(255, 80, 80, 0.7);
+  background: rgba(5, 0, 0, 0.9);
+  border: 1px solid rgba(255, 60, 60, 0.3);
+  padding: 3px 10px;
+  animation: revealFlicker 0.9s steps(2) infinite;
+}
+
+@keyframes revealFlicker {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.4; }
+}
+
+/* --- クリアランスバッジ --- */
+.clearance-tag {
+  display: inline-block;
+  margin-left: 0.45em;
+  padding: 1px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: #ffb347;
+  border: 1px solid rgba(255, 179, 71, 0.5);
+  border-radius: 2px;
+  vertical-align: middle;
+  animation: clearancePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes clearancePulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(255, 179, 71, 0); }
+  50% { box-shadow: 0 0 10px rgba(255, 179, 71, 0.35); }
+}
+
+/* --- 次元観測ターミナル --- */
+.terminal-readout {
+  margin: 1.2rem auto 0.4rem;
+  padding: 14px 22px;
+  max-width: 640px;
+  width: min(92vw, 640px);
+  background: rgba(4, 8, 14, 0.72);
+  border: 1px solid rgba(119, 221, 255, 0.22);
+  border-left: 3px solid #77ddff;
+  font-family: 'JetBrains Mono', monospace;
+  text-align: left;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 25px rgba(119, 221, 255, 0.08), inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.terminal-line {
+  min-height: 1.2em;
+  font-size: 0.78rem;
+  color: #9ecfff;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.terminal-line::after {
+  content: "▌";
+  color: #77ddff;
+  animation: cursorBlink 0.9s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0; }
+}
+
+.terminal-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(119, 221, 255, 0.18);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: #667899;
+}
+
+.status-ok { color: #6fe3a5; text-shadow: 0 0 8px rgba(111, 227, 165, 0.5); }
+.status-warn { color: #ff6a6a; text-shadow: 0 0 8px rgba(255, 106, 106, 0.5); }
+
+.blink { animation: statusBlink 1.4s steps(2) infinite; }
+
+@keyframes statusBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+/* --- アクセス警告文 --- */
+.access-notice {
+  margin-top: 2.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  line-height: 2.1;
+  color: #8a8aa5;
+  text-shadow: none;
+}
+
+/* --- フッターのシステムログ --- */
+.system-log {
+  margin-top: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: #667899;
+  text-shadow: none;
+  opacity: 0.75;
+}
+
+.system-log .log-tail {
+  color: #9a9ab5;
+  font-family: 'Noto Serif JP', serif;
+  letter-spacing: 0.3em;
+}
+
+/* --- サイトタイトルのグリッチ(ホバー時のみ) --- */
+.site-title a {
+  position: relative;
+}
+
+.site-title a:hover {
+  animation: titleGlitch 0.35s steps(2) infinite;
+}
+
+@keyframes titleGlitch {
+  0% { text-shadow: 2px 0 rgba(255, 0, 193, 0.6), -2px 0 rgba(0, 255, 240, 0.6); }
+  25% { text-shadow: -2px 0 rgba(255, 0, 193, 0.6), 2px 0 rgba(0, 255, 240, 0.6); }
+  50% { text-shadow: 1px 1px rgba(255, 0, 193, 0.6), -1px -1px rgba(0, 255, 240, 0.6); }
+  100% { text-shadow: none; }
+}
+
+/* --- Archiveナビリンク --- */
+.nav-menu li a.nav-archive {
+  color: #ffd9a0;
+}
+
+.nav-menu li a.nav-archive::after {
+  background: linear-gradient(90deg, #ffb347, #ffffff);
+}
+
+/* --- SCP風 分類バー(サブページ用) --- */
+.classification-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(119, 221, 255, 0.25);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  background: rgba(4, 8, 14, 0.6);
+}
+
+.classification-bar .cls-cell {
+  flex: 1 1 auto;
+  padding: 8px 14px;
+  border-right: 1px solid rgba(119, 221, 255, 0.15);
+  color: #9ecfff;
+  white-space: nowrap;
+}
+
+.classification-bar .cls-cell:last-child { border-right: none; }
+
+.classification-bar .cls-label {
+  display: block;
+  font-size: 0.55rem;
+  color: #667899;
+  margin-bottom: 2px;
+}
+
+.classification-bar .cls-danger { color: #ff6a6a; }
+.classification-bar .cls-safe { color: #6fe3a5; }
+
+/* --- SCP演出パーツ：モバイル調整 --- */
+@media (max-width: 600px) {
+  .terminal-readout {
+    padding: 12px 14px;
+  }
+
+  .terminal-line {
+    font-size: 0.68rem;
+  }
+
+  .terminal-status {
+    font-size: 0.56rem;
+    gap: 5px 12px;
+  }
+
+  .access-notice {
+    font-size: 0.58rem;
+    letter-spacing: 0.05em;
+    line-height: 2;
+    padding: 0 14px;
+  }
+
+  .classification-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .classification-bar .cls-cell {
+    border-right: none;
+    border-bottom: 1px solid rgba(119, 221, 255, 0.12);
+    white-space: normal;
+  }
+
+  .system-log {
+    font-size: 0.52rem;
+    padding: 0 10px;
+  }
+}
+
+/* モーション低減設定を尊重 */
+@media (prefers-reduced-motion: reduce) {
+  .redacted[data-reveal]:hover::before,
+  .clearance-tag,
+  .terminal-line::after,
+  .blink,
+  .site-title a:hover,
+  .hero-image,
+  .hero-image::before,
+  .hero-image::after {
+    animation: none;
+  }
+}
+
+/* ===== 改行制御 ===== */
+/* 推奨品録: ボタン文言・価格注記の語中改行を防ぐ */
+.amazon-btn {
+  white-space: nowrap;
+}
+.price-display small {
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* 折り返したくない語句(見出しの「概要」等)に付与する汎用クラス */
+.nobr {
+  display: inline-block;
+}
+
+/* 提携機関タイトル: 「提携・協力機関」の語中改行を防ぐ */
+.affiliates-title {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* フッターのリンクはリンク単位で折り返す(「お問い合わせ」等の語中改行防止) */
+.footer-links a {
+  white-space: nowrap;
+  display: inline-block;
+}
+
+/* ===== 本文中のテキストリンク（プライバシーポリシー・利用規約ほか） =====
+   ボタン型リンク(.nexus-link等)を巻き込まないよう、段落・リスト内に限定 */
+.org-section p a,
+.org-section li a,
+main p a {
+  color: #87cefa;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.25s;
+}
+
+/* クリック(訪問)後はクリック前より暗い色 */
+.org-section p a:visited,
+.org-section li a:visited,
+main p a:visited {
+  color: #4f94cd;
+}
+
+.org-section p a:hover,
+.org-section li a:hover,
+main p a:hover,
+.org-section p a:visited:hover,
+.org-section li a:visited:hover,
+main p a:visited:hover {
+  color: #b8e4ff;
+}
+
+/* --- Laboratory(箱庭研究所)入口リンク --- */
+.clearance-tag.tag-exp {
+  color: #4dffa6;
+  border-color: rgba(77, 255, 166, 0.5);
+  animation: clearancePulseGreen 2.4s ease-in-out infinite;
+}
+
+@keyframes clearancePulseGreen {
+  0%, 100% { box-shadow: 0 0 0 rgba(77, 255, 166, 0); }
+  50% { box-shadow: 0 0 10px rgba(77, 255, 166, 0.35); }
+}
+
+.nav-menu li a.nav-lab {
+  color: #a8f5cf;
+}
+
+.nav-menu li a.nav-lab::after {
+  background: linear-gradient(90deg, #4dffa6, #ffffff);
 }

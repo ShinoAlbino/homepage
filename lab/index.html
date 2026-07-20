@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>箱庭研究所 | Arca Hortus Laboratory</title>
+  <meta name="description" content="箱庭次元研究機構・実験部門「箱庭研究所」。次元観測・確率制御・適性訓練——認可された観測者のみが立ち入れる研究区画の入口です。" />
+  <meta name="keywords" content="箱庭研究所, Arca Hortus, ラボ, 創作, ゲーム, SF, ダークファンタジー" />
+  <meta name="author" content="ArcaHortus Lab" />
+  <meta name="theme-color" content="#04100b" />
+
+  <!-- OGP -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="箱庭研究所 | Arca Hortus Laboratory" />
+  <meta property="og:description" content="ここから先は実験区画。次元観測・確率制御・適性訓練の各セクターが稼働中。" />
+  <meta property="og:image" content="https://www.arcahortus.com/images/sample1.png" />
+  <meta property="og:url" content="https://www.arcahortus.com/lab/" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="箱庭研究所 | Arca Hortus Laboratory" />
+  <meta name="twitter:description" content="ここから先は実験区画。認可された観測者のみ入場を許可する。" />
+  <meta name="twitter:image" content="https://www.arcahortus.com/images/sample1.png" />
+
+  <link rel="icon" href="../images/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/lab.css" />
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MRDPGGL9');</script>
+  <!-- End Google Tag Manager -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
+     crossorigin="anonymous"></script>
+</head>
+
+<body class="pre-boot">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- 背景キャンバス（六角格子・浮遊粒子・異常波紋） -->
+  <canvas id="lab-canvas" aria-hidden="true"></canvas>
+
+  <!-- 走査線・ヴィネットオーバーレイ -->
+  <div class="crt-overlay" aria-hidden="true"></div>
+
+  <!-- 起動シーケンス -->
+  <div id="boot-overlay" aria-hidden="true">
+    <div class="boot-terminal">
+      <pre id="boot-lines"></pre>
+      <p class="boot-skip">[ CLICK TO SKIP ]</p>
+    </div>
+  </div>
+
+  <header class="lab-header reveal" style="--d:.1s">
+    <a class="return-link" href="../index.html">◂ RETURN TO HQ <span class="jp">／本部へ帰還</span></a>
+    <div class="facility-id">FACILITY: AH-LAB-<span class="redacted">██</span> ・ NODE 07</div>
+  </header>
+
+  <main>
+    <!-- ヒーロー：次元炉コア -->
+    <section class="hero">
+      <div class="core-wrap reveal" style="--d:.2s" aria-hidden="true">
+        <svg class="core" viewBox="0 0 400 400">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"  stop-color="#b4ffd9" stop-opacity="0.95"/>
+              <stop offset="35%" stop-color="#4dffa6" stop-opacity="0.55"/>
+              <stop offset="70%" stop-color="#0e7c4f" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#04100b" stop-opacity="0"/>
+            </radialGradient>
+            <path id="glyphPathOuter" d="M200,200 m-158,0 a158,158 0 1,1 316,0 a158,158 0 1,1 -316,0" fill="none"/>
+            <path id="glyphPathInner" d="M200,200 m-108,0 a108,108 0 1,0 216,0 a108,108 0 1,0 -216,0" fill="none"/>
+          </defs>
+
+          <circle class="core-pulse" cx="200" cy="200" r="70" fill="url(#coreGlow)"/>
+          <circle class="core-heart" cx="200" cy="200" r="10"/>
+
+          <g class="ring ring-slow">
+            <circle cx="200" cy="200" r="132" class="ring-dashed"/>
+            <circle cx="200" cy="200" r="132" class="ring-arc"/>
+          </g>
+          <g class="ring ring-mid">
+            <text class="glyph-text">
+              <textPath href="#glyphPathInner">
+                HAKONIWA·DIMENSION·OBSERVE·SEAL·RECORD·HAKONIWA·DIMENSION·OBSERVE·SEAL·RECORD·
+              </textPath>
+            </text>
+          </g>
+          <g class="ring ring-fast">
+            <circle cx="200" cy="200" r="88" class="ring-thin"/>
+            <rect x="196" y="108" width="8" height="8" class="ring-node"/>
+          </g>
+          <g class="ring ring-rev">
+            <text class="glyph-text glyph-outer">
+              <textPath href="#glyphPathOuter">
+                ARCA·HORTUS·LABORATORY·EXPERIMENTAL·DIVISION·CLEARANCE·REQUIRED·
+              </textPath>
+            </text>
+            <circle cx="200" cy="200" r="176" class="ring-faint"/>
+          </g>
+        </svg>
+      </div>
+
+      <p class="hero-over reveal" style="--d:.35s">ARCA HORTUS — EXPERIMENTAL DIVISION</p>
+      <h1 class="glitch reveal" style="--d:.45s" data-text="箱庭研究所">箱庭研究所</h1>
+      <p class="hero-sub reveal" style="--d:.55s">— LABORATORY ACCESS TERMINAL —</p>
+      <p class="hero-desc reveal" style="--d:.65s">
+        ここから先は箱庭機構の実験区画。<br>
+        次元の揺らぎを観測し、確率を弄び、未知を飼い慣らす者たちの領域である。<br>
+        <span class="dim">立入により生じた記憶の欠落・運命の改変について、当研究所は一切の責任を負わない。</span>
+      </p>
+
+      <!-- 稼働ステータス -->
+      <div class="status-bar reveal" style="--d:.75s" aria-hidden="true">
+        <span class="status-cell">CORE OUTPUT <b id="st-core" class="ok">87.2%</b></span>
+        <span class="status-cell">DIM-FLUX <b id="st-flux" class="ok">0.031</b></span>
+        <span class="status-cell">SEALED UNITS <b id="st-seal" class="warn">3</b></span>
+        <span class="status-cell">OBSERVERS <b id="st-obs" class="ok">1</b></span>
+      </div>
+    </section>
+
+    <!-- 研究区画 -->
+    <section class="sectors">
+      <h2 class="section-title reveal" style="--d:.1s">RESEARCH SECTORS <span class="jp">／研究区画</span></h2>
+
+      <div class="sector-grid">
+        <a class="sector-card reveal" style="--d:.15s" href="hunting/index.html">
+          <div class="card-head">
+            <span class="sector-no">SECTOR-01</span>
+            <span class="sector-status st-active"><i></i>ACTIVE</span>
+          </div>
+          <h3 class="sector-name">狩猟適性訓練区画</h3>
+          <p class="sector-en">FIELD APTITUDE WING</p>
+          <p class="sector-desc">
+            実地観測要員の育成プログラム。狩猟の知識体系・資源利用（ジビエ）・
+            地域連携記録（有害鳥獣対策）を収めた資料庫と、免許試験対策端末が稼働中。
+          </p>
+          <div class="card-foot">
+            <span class="clearance">CLEARANCE LV.1</span>
+            <span class="enter-hint">ENTER ▸</span>
+          </div>
+        </a>
+
+        <a class="sector-card reveal" style="--d:.25s" href="live/dist/index.html">
+          <div class="card-head">
+            <span class="sector-no">SECTOR-02</span>
+            <span class="sector-status st-live"><i></i>STREAMING</span>
+          </div>
+          <h3 class="sector-name">次元観測区画</h3>
+          <p class="sector-en">OBSERVATION DECK</p>
+          <p class="sector-desc">
+            観測者・此芽（このめ）が常駐する観測室。
+            箱庭次元の「今」を静かに映し続ける疑似ライブ観測記録。
+          </p>
+          <div class="card-foot">
+            <span class="clearance">CLEARANCE LV.1</span>
+            <span class="enter-hint">ENTER ▸</span>
+          </div>
+        </a>
+
+        <a class="sector-card reveal" style="--d:.35s" href="lottery-game/index.html">
+          <div class="card-head">
+            <span class="sector-no">SECTOR-03</span>
+            <span class="sector-status st-unstable"><i></i>UNSTABLE</span>
+          </div>
+          <h3 class="sector-name">確率事象制御区画</h3>
+          <p class="sector-en">PROBABILITY ENGINE</p>
+          <p class="sector-desc">
+            運命の分岐点を可視化する抽選装置。スロット・レース・イルミネーション・
+            ロケットの4演出で、宴の場に管理された混沌をもたらす。
+          </p>
+          <div class="card-foot">
+            <span class="clearance">CLEARANCE LV.1</span>
+            <span class="enter-hint">ENTER ▸</span>
+          </div>
+        </a>
+
+        <div class="sector-card sealed reveal" style="--d:.45s" id="sealed-card" role="button" tabindex="0" aria-label="封鎖区画">
+          <div class="card-head">
+            <span class="sector-no">SECTOR-<span class="redacted">██</span></span>
+            <span class="sector-status st-sealed"><i></i>SEALED</span>
+          </div>
+          <h3 class="sector-name"><span class="redacted">████████</span></h3>
+          <p class="sector-en">[ DATA EXPUNGED ]</p>
+          <p class="sector-desc">
+            <span class="redacted">██████████████████</span><br>
+            当該区画に関する記録は倫理委員会の勧告により封印されている。
+          </p>
+          <div class="card-foot">
+            <span class="clearance warn">CLEARANCE LV.7 REQUIRED</span>
+            <span class="enter-hint">🔒</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 観測ログ -->
+    <section class="log-section reveal" style="--d:.2s">
+      <h2 class="section-title">OBSERVATION LOG <span class="jp">／観測記録</span></h2>
+      <div class="log-frame">
+        <div id="log-feed" aria-live="off"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="lab-footer">
+    <p class="footer-org">Arca Hortus Dimension Research Organization — Experimental Division</p>
+    <p class="footer-note">当施設内で観測された事象は、すべて<span class="redacted" data-reveal="物語">██</span>として記録されます。</p>
+    <a class="return-link" href="../index.html">◂ RETURN TO HQ ／本部へ帰還</a>
+  </footer>
+
+  <script src="assets/lab.js"></script>
+</body>
+</html>

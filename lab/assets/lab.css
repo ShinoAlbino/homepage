@@ -1,0 +1,617 @@
+/* ============================================================
+   箱庭研究所 — Arca Hortus Laboratory
+   実験部門アクセスターミナル スタイルシート
+   ============================================================ */
+
+:root {
+  --bg-0: #030906;
+  --bg-1: #04100b;
+  --bg-2: #071a12;
+  --panel: rgba(8, 26, 18, 0.72);
+  --line: rgba(77, 255, 166, 0.18);
+  --line-strong: rgba(77, 255, 166, 0.45);
+  --green: #4dffa6;
+  --green-dim: #2a9d6f;
+  --green-pale: #b4ffd9;
+  --amber: #ffc36b;
+  --magenta: #ff5fd2;
+  --text: #d8f3e6;
+  --text-dim: #7fae99;
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Noto Serif JP', serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: radial-gradient(ellipse at 50% -10%, var(--bg-2), var(--bg-0) 65%);
+  color: var(--text);
+  font-family: var(--serif);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::selection { background: rgba(77, 255, 166, 0.3); color: #fff; }
+
+/* ===== 背景キャンバス ===== */
+#lab-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== CRTオーバーレイ（走査線＋ヴィネット） ===== */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.14) 0px,
+      rgba(0, 0, 0, 0.14) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+.crt-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* ===== 起動シーケンス ===== */
+#boot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #020604;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.7s ease, visibility 0.7s;
+}
+#boot-overlay.done {
+  opacity: 0;
+  visibility: hidden;
+}
+.boot-terminal {
+  width: min(640px, 90vw);
+  font-family: var(--mono);
+  font-size: clamp(0.7rem, 2.4vw, 0.85rem);
+  color: var(--green);
+  text-shadow: 0 0 8px rgba(77, 255, 166, 0.6);
+}
+#boot-lines {
+  white-space: pre-wrap;
+  min-height: 14em;
+  font-family: inherit;
+}
+#boot-lines .cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1em;
+  background: var(--green);
+  vertical-align: -0.15em;
+  animation: blink 0.9s steps(1) infinite;
+}
+.boot-skip {
+  margin-top: 1.5em;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  animation: blink 1.6s steps(1) infinite;
+  text-align: center;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* pre-boot中は本文を隠す */
+body.pre-boot main,
+body.pre-boot .lab-header,
+body.pre-boot .lab-footer { visibility: hidden; }
+
+/* ===== 出現アニメーション ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+body.booted .reveal {
+  animation: rise 0.9s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+/* スクロール出現（JS制御） */
+.reveal.on-scroll { animation: none; opacity: 0; transform: translateY(24px); transition: opacity 0.8s ease, transform 0.8s ease; transition-delay: var(--d, 0s); }
+.reveal.on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== ヘッダー ===== */
+.lab-header {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 18px 28px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(4, 16, 11, 0.85), rgba(4, 16, 11, 0.4));
+  backdrop-filter: blur(6px);
+}
+.return-link {
+  color: var(--green);
+  text-decoration: none;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+.return-link:hover {
+  color: var(--green-pale);
+  text-shadow: 0 0 12px rgba(77, 255, 166, 0.8);
+}
+.return-link .jp { color: var(--text-dim); }
+.facility-id { color: var(--text-dim); }
+
+/* ===== メイン ===== */
+main {
+  position: relative;
+  z-index: 3;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ===== ヒーロー ===== */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 40px 0 30px;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 次元炉コア */
+.core-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(560px, 96vw);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.9;
+}
+.core { width: 100%; height: 100%; overflow: visible; }
+
+.core-pulse { animation: corePulse 4s ease-in-out infinite; transform-origin: 200px 200px; }
+@keyframes corePulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.18); opacity: 1; }
+}
+.core-heart {
+  fill: var(--green-pale);
+  filter: drop-shadow(0 0 12px var(--green));
+  animation: heartBeat 4s ease-in-out infinite;
+  transform-origin: 200px 200px;
+}
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+}
+
+.ring { transform-origin: 200px 200px; }
+.ring-slow { animation: spin 46s linear infinite; }
+.ring-mid  { animation: spin 30s linear infinite reverse; }
+.ring-fast { animation: spin 18s linear infinite; }
+.ring-rev  { animation: spin 70s linear infinite reverse; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.ring-dashed {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 4 10;
+}
+.ring-arc {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 2;
+  stroke-dasharray: 140 690;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px var(--green));
+}
+.ring-thin { fill: none; stroke: var(--line); stroke-width: 1; }
+.ring-faint { fill: none; stroke: rgba(77, 255, 166, 0.08); stroke-width: 1; }
+.ring-node {
+  fill: var(--green);
+  filter: drop-shadow(0 0 5px var(--green));
+}
+.glyph-text {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  fill: rgba(77, 255, 166, 0.55);
+}
+.glyph-outer { font-size: 10px; fill: rgba(127, 174, 153, 0.4); }
+
+/* ヒーローテキスト */
+.hero-over {
+  position: relative;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.5em;
+  color: var(--text-dim);
+}
+h1.glitch {
+  position: relative;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 9vw, 4.6rem);
+  letter-spacing: 0.14em;
+  color: var(--green-pale);
+  text-shadow:
+    0 0 18px rgba(77, 255, 166, 0.55),
+    0 0 60px rgba(77, 255, 166, 0.25);
+  margin: 8px 0 4px;
+}
+h1.glitch::before,
+h1.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0.8;
+}
+h1.glitch::before {
+  color: var(--magenta);
+  z-index: -1;
+  animation: glitchA 3.8s steps(2, end) infinite;
+}
+h1.glitch::after {
+  color: #57d8ff;
+  z-index: -2;
+  animation: glitchB 3.8s steps(2, end) infinite;
+}
+@keyframes glitchA {
+  0%, 91%, 100% { transform: none; clip-path: inset(0 0 0 0); opacity: 0; }
+  92% { transform: translate(-3px, 2px); clip-path: inset(10% 0 55% 0); opacity: 0.75; }
+  94% { transform: translate(2px, -1px); clip-path: inset(60% 0 8% 0); opacity: 0.75; }
+  96% { transform: translate(-2px, 1px); clip-path: inset(30% 0 40% 0); opacity: 0.6; }
+}
+@keyframes glitchB {
+  0%, 90%, 100% { transform: none; clip-path: inset(0 0 0 0); opacity: 0; }
+  91% { transform: translate(3px, -2px); clip-path: inset(48% 0 20% 0); opacity: 0.7; }
+  93% { transform: translate(-2px, 2px); clip-path: inset(5% 0 78% 0); opacity: 0.7; }
+  97% { transform: translate(1px, -1px); clip-path: inset(70% 0 5% 0); opacity: 0.55; }
+}
+
+.hero-sub {
+  position: relative;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.4em;
+  color: var(--green);
+  text-shadow: 0 0 10px rgba(77, 255, 166, 0.5);
+}
+.hero-desc {
+  position: relative;
+  margin-top: 26px;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.hero-desc .dim {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* ステータスバー */
+.status-bar {
+  position: relative;
+  margin-top: 34px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 26px;
+  padding: 12px 22px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  backdrop-filter: blur(4px);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--text-dim);
+}
+.status-bar b {
+  font-weight: 700;
+  margin-left: 6px;
+}
+.status-bar .ok { color: var(--green); text-shadow: 0 0 8px rgba(77, 255, 166, 0.5); }
+.status-bar .warn { color: var(--amber); text-shadow: 0 0 8px rgba(255, 195, 107, 0.5); animation: blink 1.4s steps(1) infinite; }
+.status-bar .alert { color: var(--magenta); text-shadow: 0 0 8px rgba(255, 95, 210, 0.6); animation: blink 0.7s steps(1) infinite; }
+
+/* ===== セクション見出し ===== */
+.section-title {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.3em;
+  color: var(--green);
+  margin: 70px 0 28px;
+  padding-left: 14px;
+  border-left: 3px solid var(--green);
+  text-shadow: 0 0 10px rgba(77, 255, 166, 0.4);
+}
+.section-title .jp {
+  font-family: var(--serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+}
+
+/* ===== 研究区画カード ===== */
+.sector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 22px;
+  perspective: 1200px;
+}
+
+.sector-card {
+  position: relative;
+  display: block;
+  padding: 22px 24px 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--text);
+  backdrop-filter: blur(5px);
+  transition: border-color 0.35s, box-shadow 0.35s, transform 0.2s ease-out;
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+/* コーナーブラケット */
+.sector-card::before,
+.sector-card::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--green);
+  border-style: solid;
+  opacity: 0.7;
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+}
+.sector-card::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+.sector-card::after { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+.sector-card:hover::before,
+.sector-card:hover::after { width: 26px; height: 26px; opacity: 1; }
+
+.sector-card:hover {
+  border-color: var(--line-strong);
+  box-shadow:
+    0 0 28px rgba(77, 255, 166, 0.12),
+    inset 0 0 40px rgba(77, 255, 166, 0.04);
+}
+a.sector-card:hover .enter-hint {
+  color: var(--green-pale);
+  text-shadow: 0 0 10px var(--green);
+  letter-spacing: 0.3em;
+}
+.sector-card:hover .sector-name {
+  color: var(--green-pale);
+  text-shadow: 0 0 14px rgba(77, 255, 166, 0.6);
+}
+
+/* ホバースキャンライン（要素はJSで付与） */
+@keyframes cardScan {
+  0% { top: -20%; opacity: 0; }
+  15% { opacity: 1; }
+  100% { top: 120%; opacity: 0; }
+}
+.sector-card .scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -20%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(77, 255, 166, 0.8), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+.sector-card:hover .scanline { animation: cardScan 1.2s ease-in-out infinite; }
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  margin-bottom: 14px;
+}
+.sector-no { color: var(--text-dim); }
+.sector-status { display: inline-flex; align-items: center; gap: 6px; }
+.sector-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.st-active { color: var(--green); }
+.st-active i { background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 2s steps(1) infinite; }
+.st-live { color: var(--magenta); }
+.st-live i { background: var(--magenta); box-shadow: 0 0 8px var(--magenta); animation: blink 1s steps(1) infinite; }
+.st-unstable { color: var(--amber); }
+.st-unstable i { background: var(--amber); box-shadow: 0 0 8px var(--amber); animation: blink 0.55s steps(1) infinite; }
+.st-sealed { color: #8a8aa0; }
+.st-sealed i { background: #8a8aa0; }
+
+.sector-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  color: var(--text);
+  transition: color 0.3s, text-shadow 0.3s;
+}
+.sector-en {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.34em;
+  color: var(--green-dim);
+  margin: 4px 0 12px;
+}
+.sector-desc {
+  font-size: 0.83rem;
+  color: var(--text-dim);
+  line-height: 1.8;
+  min-height: 4.4em;
+}
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+}
+.clearance { color: var(--text-dim); }
+.clearance.warn { color: var(--amber); }
+.enter-hint { color: var(--green-dim); transition: all 0.3s; }
+
+/* 封鎖区画 */
+.sector-card.sealed {
+  cursor: not-allowed;
+  border-style: dashed;
+  filter: saturate(0.4);
+}
+.sector-card.sealed:hover {
+  border-color: rgba(255, 95, 210, 0.4);
+  box-shadow: 0 0 24px rgba(255, 95, 210, 0.08);
+}
+.sector-card.sealed.deny {
+  animation: denyShake 0.45s ease;
+  border-color: var(--magenta);
+}
+@keyframes denyShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+
+/* ===== 観測ログ ===== */
+.log-frame {
+  border: 1px solid var(--line);
+  background: rgba(3, 10, 7, 0.82);
+  padding: 16px 20px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  min-height: 190px;
+  max-height: 230px;
+  overflow: hidden;
+  position: relative;
+}
+.log-frame::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 60px;
+  background: linear-gradient(180deg, transparent, rgba(3, 10, 7, 0.95));
+  pointer-events: none;
+}
+.log-line {
+  color: var(--text-dim);
+  line-height: 1.9;
+  opacity: 0;
+  animation: logIn 0.5s ease forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@keyframes logIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.log-line .t { color: var(--green-dim); margin-right: 10px; }
+.log-line.warn { color: var(--amber); }
+.log-line.alert { color: var(--magenta); }
+
+/* ===== 黒塗り ===== */
+.redacted {
+  background: #1c2a22;
+  color: transparent;
+  padding: 0 2px;
+  border-radius: 2px;
+  cursor: default;
+  transition: color 0.4s, background 0.4s;
+  text-shadow: none;
+  user-select: none;
+}
+.redacted:hover { background: rgba(77, 255, 166, 0.15); color: var(--green); }
+
+/* ===== フッター ===== */
+.lab-footer {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 40px 20px 60px;
+  border-top: 1px solid var(--line);
+  background: linear-gradient(0deg, rgba(4, 16, 11, 0.9), transparent);
+}
+.footer-org {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  color: var(--text-dim);
+}
+.footer-note {
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  margin: 10px 0 18px;
+}
+.lab-footer .return-link { font-family: var(--mono); font-size: 0.72rem; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 640px) {
+  .lab-header { padding: 14px 16px; font-size: 0.62rem; }
+  .core-wrap { opacity: 0.5; }
+  main { padding: 0 14px 60px; }
+  .hero { min-height: 440px; padding-top: 20px; }
+  .hero-desc { font-size: 0.85rem; }
+  .status-bar { gap: 8px 16px; font-size: 0.6rem; }
+  .sector-desc { min-height: 0; }
+  .log-frame { font-size: 0.62rem; }
+}
+
+/* ===== モーション低減設定 ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  body.pre-boot main,
+  body.pre-boot .lab-header,
+  body.pre-boot .lab-footer { visibility: visible; }
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>模擬試験 | 狩猟免許学習</title>
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MRDPGGL9');</script>
+<!-- End Google Tag Manager -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header class="app-header">
+  <a class="back-link" href="index.html">←</a>
+  <h1>模擬試験（30問・90分）</h1>
+  <span class="timer-display" id="timerDisplay" style="color:#fff;padding-right:8px;"></span>
+</header>
+<main>
+
+  <div class="card" id="introPanel">
+    <h2>本試験形式の模擬試験</h2>
+    <div class="settings-row" style="margin-bottom:12px;">
+      <label for="licenseSelect">免許種別</label>
+      <select id="licenseSelect">
+        <option value="gun">第一種銃猟</option>
+        <option value="trap">わな猟</option>
+      </select>
+    </div>
+    <p>三肢択一 全30問（法令13問・猟具6問・鳥獣9問・保護管理2問の比率で出題）、制限時間90分。</p>
+    <p>正答率<b>70%（21問）以上</b>で合格判定となります。開始すると全問が1ページに表示されるので、最後まで解答してから「採点する」を押してください。</p>
+    <button class="btn block" id="startBtn">模擬試験を開始する</button>
+  </div>
+
+  <div id="examArea" style="display:none;"></div>
+  <div id="resultArea" style="display:none;"></div>
+
+  <div class="card">
+    <h3>模擬試験の履歴（直近20件）</h3>
+    <div id="historyTableWrap"></div>
+  </div>
+</main>
+<footer class="app-footer">狩猟免許（第一種銃猟／わな猟）学習サイト</footer>
+<script src="js/data.js"></script>
+<script src="js/common.js"></script>
+<script src="js/mockexam.js"></script>
+</body>
+</html>

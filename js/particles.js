@@ -183,8 +183,10 @@ function init() {
   for (let i = 0; i < 50; i++) dusts.push(new Dust());
 }
 
+let animationId = null;
+
 function animate() {
-  requestAnimationFrame(animate);
+  animationId = requestAnimationFrame(animate);
   drawTwilight();
   drawAurora();
 
@@ -201,5 +203,26 @@ function animate() {
   }
 }
 
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 init();
-animate();
+if (prefersReducedMotion) {
+  drawTwilight();
+  drawAurora();
+  dusts.forEach(d => d.draw());
+  particles.forEach(p => p.draw());
+} else {
+  animate();
+}
+
+// タブが非表示の間はアニメーションを止めてCPU/バッテリーを節約する
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (animationId !== null) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+  } else if (!prefersReducedMotion && animationId === null) {
+    animate();
+  }
+});

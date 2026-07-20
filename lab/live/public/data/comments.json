@@ -1,0 +1,25 @@
+{
+  "comments": [
+    { "name": "観測者A", "badge": "観測記録", "text": "今日も来た", "replyTo": null, "weight": 3 },
+    { "name": "観測者B", "badge": "観測記録", "text": "此芽ちゃんの耳、今日も元気", "replyTo": null, "weight": 2 },
+    { "name": "境界線見回り", "badge": "巡回中", "text": "異常なし。……たぶん", "replyTo": null, "weight": 2 },
+    { "name": "第3層の住人", "badge": "観測記録", "text": "こっちは雨。そっちはどう？", "replyTo": null, "weight": 2 },
+    { "name": "観測者C", "badge": "観測記録", "text": "作業しながら聞いてる", "replyTo": null, "weight": 3 },
+    { "name": "記録係見習い", "badge": "観測記録", "text": "メモ間に合わない…", "replyTo": null, "weight": 2 },
+    { "name": "匿名の観測者", "badge": "検閲済", "text": "████が██になってた", "replyTo": null, "weight": 1 },
+    { "name": "観測者D", "badge": "観測記録", "text": "鈴の音した？", "replyTo": null, "weight": 2 },
+    { "name": "夜勤の観測者", "badge": "観測記録", "text": "この時間の観測室、落ち着く", "replyTo": null, "weight": 2 },
+    { "name": "G.N.A.司書", "badge": "外部機関", "text": "本日の記録、受領しました", "replyTo": null, "weight": 1 },
+    { "name": "観測者E", "badge": "観測記録", "text": "初見です。ここは何を観測してるんですか？", "replyTo": null, "weight": 2 },
+    { "name": "倫理委員会", "badge": "外部機関", "text": "本配信は倫理規定に適合しています", "replyTo": null, "weight": 1 },
+    { "name": "観測者F", "badge": "観測記録", "text": "羽織の紐かわいい", "replyTo": null, "weight": 2 },
+    { "name": "境界線見回り", "badge": "巡回中", "text": "西側、灯りがひとつ増えてる", "replyTo": null, "weight": 1 },
+    { "name": "観測者G", "badge": "観測記録", "text": "おつかれさま。無理しないでね", "replyTo": null, "weight": 2 },
+
+    { "name": "観測者A", "badge": "観測記録", "text": "触ってないって…！", "replyTo": "click_01", "weight": 1 },
+    { "name": "観測者B", "badge": "観測記録", "text": "耳は禁忌", "replyTo": "click_03", "weight": 1 },
+    { "name": "記録係見習い", "badge": "観測記録", "text": "支援したら本当に鈴鳴った", "replyTo": "promo_01", "weight": 1 },
+    { "name": "夜勤の観測者", "badge": "観測記録", "text": "窓の外…見なかったことにしよ", "replyTo": "prog_night_03", "weight": 1 },
+    { "name": "観測者C", "badge": "観測記録", "text": "完璧な計画で草", "replyTo": "prog_morning_03", "weight": 1 }
+  ]
+}

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A.R.C.A. ARCHIVE | Arca Hortus</title>
+  <link rel="icon" href="images/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/archive.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
+     crossorigin="anonymous"></script>
+</head>
+<body class="archive-page">
+
+  <canvas id="particle-canvas"></canvas>
+
+  <div id="header"></div>
+
+  <main class="archive-main">
+    
+    <!-- ======================== LEFT SIDEBAR ======================== -->
+    <aside class="archive-sidebar fade-in">
+      <div class="sidebar-header">
+        <h3>CATALOG</h3>
+        <p class="system-label">A.R.C.A. Database System v2.1</p>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="sidebar-search">
+        <input type="text" id="search-input" placeholder="Document ID or Keyword..." class="search-field" aria-label="文書検索" />
+        <span class="search-icon">⌕</span>
+      </div>
+
+      <!-- Category Tree -->
+      <div class="category-tree">
+        <div class="tree-header">CATEGORIES</div>
+        <ul class="tree-list">
+          <li class="tree-item active" data-category="all">
+            <span class="tree-toggle">▸</span>
+            <span class="tree-label">All Records</span>
+            <span class="count">(12)</span>
+          </li>
+          <li class="tree-item" data-category="boundary">
+            <span class="tree-toggle">▸</span>
+            <span class="tree-label">Boundary Phenomena</span>
+            <span class="count">(3)</span>
+          </li>
+          <li class="tree-item" data-category="protocol">
+            <span class="tree-toggle">▸</span>
+            <span class="tree-label">Protocols & Systems</span>
+            <span class="count">(4)</span>
+          </li>
+          <li class="tree-item" data-category="anomaly">
+            <span class="tree-toggle">▸</span>
+            <span class="tree-label">Anomalies</span>
+            <span class="count">(3)</span>
+          </li>
+          <li class="tree-item" data-category="character">
+            <span class="tree-toggle">▸</span>
+            <span class="tree-label">Chronicles & Entities</span>
+            <span class="count">(2)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Filter Section -->
+      <div class="filter-section">
+        <div class="filter-header">FILTERS</div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Security Level</label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" value="public"> Public</label>
+            <label><input type="checkbox" value="restricted"> Restricted</label>
+            <label><input type="checkbox" value="classified"> Classified</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Sort By</label>
+          <select id="sort-select" class="sort-select" aria-label="並び順">
+            <option value="date-desc">Newest First</option>
+            <option value="date-asc">Oldest First</option>
+            <option value="title">Title (A-Z)</option>
+            <option value="id">Document ID</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="sidebar-stats">
+        <div class="stat-item">
+          <span class="stat-label">Total Documents</span>
+          <span class="stat-value">12</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Last Updated</span>
+          <span class="stat-value">2026.06.15</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ======================== MAIN CONTENT ======================== -->
+    <div class="archive-container">
+      
+      <div class="page-header fade-in">
+        <div class="section-tag">CENTRAL DATABASE</div>
+        <h1>大図書館・記憶保管庫</h1>
+        <p class="en">A.R.C.A. Archival Records & Chronicles Archive</p>
+        <p class="doc-number">Document Hub: AH-ARC-MAIN / Version 2.1.0</p>
+      </div>
+
+      <!-- Archive Grid -->
+      <div class="archive-grid">
+        
+        <!-- CARD 01: Boundary Phenomena -->
+        <article class="archive-card" data-doc-id="REG-001" data-category="boundary" data-security="classified">
+          <div class="card-glow"></div>
+          
+          <div class="card-header">
+            <div class="security-badge classified">CLASSIFIED</div>
+            <span class="doc-id">REG-001</span>
+            <span class="doc-date">2026.04.12</span>
+          </div>
+          
+          <div class="card-image-wrapper">
+            <img src="images/sample.png" alt="観測記録イメージ" class="card-image">
+            <div class="image-overlay">
+              <span class="overlay-text">詳細画像あり</span>
+            </div>
+          </div>
+
+          <h2 class="archive-title">世界境界線の観測記録</h2>
+          <p class="archive-excerpt">初期フェーズにおける空間ノイズの増幅と、それに伴うレイヤー構造崩壊について。実体化の危機と対策の記録。</p>
+          
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 4 / CLASSIFIED</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Author:</span>
+                <span class="meta-value">観測班主任 / 記録局</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Date Created:</span>
+                <span class="meta-value">2026.04.12 09:47:23</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Last Modified:</span>
+                <span class="meta-value">2026.04.15 14:32:15</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Version:</span>
+                <span class="meta-value">2.3 (Patched)</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Related Documents:</span>
+                <span class="meta-value"><a href="#" class="doc-link">ANM-044</a>, <a href="#" class="doc-link">PRO-012</a></span>
+              </div>
+            </div>
+
+            <div class="content-section">
+              <h3>Summary</h3>
+              <p>【追加暗号ログ】空間ノイズの測定値が規定限界の200%を超過。境界線の向こう側から「記述されていない叙述」の逆流を確認。実体化を防ぐため、至急A.C.A.S.へ制圧要請を行う必要がある。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>Observations</h3>
+              <p>初期段階の観測では、境界線付近のデジタルノイズが時系列で増加している傾向が見られます。これは通常のシステムエラーではなく、外部からの「干渉」の兆候と考えられます。</p>
+              <p>特に注目すべき点は、この干渉が「意思」を持つように見えることです。システムログの分析から、特定のパターンで繰り返し記録を改竄しようとする試みが検出されています。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>Critical Findings</h3>
+              <ul class="findings-list">
+                <li>境界線の周辺で時空間の異常な歪曲を測定</li>
+                <li>複数のレイヤー間における整合性の喪失</li>
+                <li>未知の存在による自動的なシステム編集の可能性</li>
+                <li>この記録が最終的にどのような状態で保存されるか不確定</li>
+              </ul>
+            </div>
+
+            <div class="content-section">
+              <h3>Recommendation</h3>
+              <p>この記録が閲覧されている頃には、おそらく対象領域の再構築（パッチ適用）は完了しているはずだ。だが、その「完了」が本当に完了なのか、それとも「完了したように見せかけられた状態」なのか、それを確認する方法は、もう誰にも残されていないかもしれない。</p>
+              <p class="signature">―― 観測班主任 最終記録</p>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Boundary</span>
+            <span class="archive-tag">#Crisis</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
+        <!-- CARD 02: Protocol -->
+        <article class="archive-card" data-doc-id="REG-002" data-category="protocol" data-security="restricted">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge restricted">RESTRICTED</div>
+            <span class="doc-id">REG-002</span>
+            <span class="doc-date">2026.05.01</span>
+          </div>
+          <h2 class="archive-title">精神波形同調プロトコル</h2>
+          <p class="archive-excerpt">接続元の識別プロセス、および記憶消去を回避するための精神障壁パラメータ設定マニュアル。運用者向け実装ガイド。</p>
+          
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 3 / RESTRICTED</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Department:</span>
+                <span class="meta-value">精神管理局 (PSY-DIV)</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Created:</span>
+                <span class="meta-value">2026.05.01 12:30:00</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Access Level Required:</span>
+                <span class="meta-value">Administrator+</span>
+              </div>
+            </div>
+            <div class="content-section">
+              <h3>Overview</h3>
+              <p>精神波形同調（Psychic Resonance Calibration）は、複数の意識体を安全に統合・分離するための基盤プロトコルである。本マニュアルは、最新の v3.2.1 に対応している。</p>
+            </div>
+            <div class="content-section">
+              <h3>Implementation Details</h3>
+              <p>接続前の前準備フェーズ、同調中の監視プロセス、切断後の検証ステップの詳細が記載されています。特に重要なのは「記憶障壁」の設定です……</p>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Protocol</span>
+            <span class="archive-tag">#System</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
+        <!-- CARD 03: Anomaly -->
+        <article class="archive-card" data-doc-id="ANM-044" data-category="anomaly" data-security="classified">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge classified">CLASSIFIED</div>
+            <span class="doc-id">ANM-044</span>
+            <span class="doc-date">2026.06.09</span>
+          </div>
+          <h2 class="archive-title">未確認アノマリー収容外記録</h2>
+          <p class="archive-excerpt">当機構の観測圏外へと逸脱した、特定の概念実体（404コード含む）の追跡ログ断片。接触不可、観測のみ。</p>
+          
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 5 / CLASSIFIED</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Status:</span>
+                <span class="meta-value">ESCAPED / UNCONTAINED</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Risk Level:</span>
+                <span class="meta-value">⚠ CRITICAL</span>
+              </div>
+            </div>
+            <div class="content-section">
+              <h3>Detection Log</h3>
+              <p>2026.06.08 時刻 23:47 — 異常波形検出。未知の概念実体が標準的な検索結果から逸脱。その後、データベース内のいくつかの参照が「404エラー」状態に陥った。</p>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Classified</span>
+            <span class="archive-tag">#Anomaly</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
+        <!-- CARD 04: Character/Chronicle -->
+        <article class="archive-card" data-doc-id="CHR-001" data-category="character" data-security="restricted">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge restricted">RESTRICTED</div>
+            <span class="doc-id">CHR-001</span>
+            <span class="doc-date">2026.03.20</span>
+          </div>
+          <h2 class="archive-title">記録者の履歴書 - 存在の証</h2>
+          <p class="archive-excerpt">白い服を纏った少女。世界の終わりを記す存在。その素性は謎に包まれている。</p>
+          
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Entity Type:</span>
+                <span class="meta-value">Unknown Entity / Conceptual Being</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Known Name:</span>
+                <span class="meta-value">記録者 (The Archivist)</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">First Observation:</span>
+                <span class="meta-value">2026.03.15</span>
+              </div>
+            </div>
+            <div class="content-section">
+              <h3>Physical Description</h3>
+              <p>白いローブを纏った少女の姿で現れる。年齢は不定。眼元を覆う装飾がある。話しぶりは機械的で感情を感じさせない。</p>
+            </div>
+            <div class="content-section">
+              <h3>Abilities & Properties</h3>
+              <ul class="findings-list">
+                <li>世界の「終わり」を観測することが可能</li>
+                <li>過去の出来事を「物語」として再構成・記録できる</li>
+                <li>意識を「本」の形で保存・転送する能力</li>
+                <li>自身の名前を失う傾向</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Character</span>
+            <span class="archive-tag">#Mystery</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button class="page-btn prev" disabled>← Previous</button>
+        <span class="page-info">Page 1 of 3 (Showing 4 of 12 records)</span>
+        <button class="page-btn next">Next →</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================== FULL SCREEN MODAL ======================== -->
+  <div id="archive-modal" class="archive-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-container">
+      <!-- Close Button -->
+      <button class="modal-close-btn">✕</button>
+
+      <!-- Left Metadata Panel -->
+      <aside class="modal-sidebar">
+        <div class="modal-meta-header">
+          <span id="modal-id" class="doc-id">DOC-000</span>
+          <span id="modal-date" class="doc-date">2026.00.00</span>
+        </div>
+        
+        <div id="modal-security" class="modal-security-badge"></div>
+
+        <div class="modal-metadata">
+          <div class="meta-item">
+            <span class="meta-label">Category</span>
+            <span class="meta-value" id="modal-category">-</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Created</span>
+            <span class="meta-value" id="modal-created">-</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Modified</span>
+            <span class="meta-value" id="modal-modified">-</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Author</span>
+            <span class="meta-value" id="modal-author">Unknown</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Version</span>
+            <span class="meta-value" id="modal-version">1.0</span>
+          </div>
+        </div>
+
+        <!-- Image Gallery Navigation -->
+        <div class="gallery-nav">
+          <span class="gallery-label">Gallery</span>
+          <div class="gallery-thumbs" id="gallery-thumbs"></div>
+        </div>
+
+        <!-- Tags -->
+        <div class="modal-tags" id="modal-tags"></div>
+
+        <!-- Related Documents -->
+        <div class="related-docs">
+          <span class="related-label">Related</span>
+          <ul class="related-list" id="related-list">
+            <li><a href="#">REG-001</a></li>
+            <li><a href="#">ANM-044</a></li>
+          </ul>
+        </div>
+
+        <!-- Print & Export -->
+        <div class="modal-actions">
+          <button class="action-btn print-btn">⎙ Print</button>
+          <button class="action-btn export-btn">⇩ Export</button>
+        </div>
+      </aside>
+
+      <!-- Right Content Panel -->
+      <div class="modal-main">
+        <div class="modal-header-main">
+          <h2 id="modal-title">Document Title</h2>
+        </div>
+
+        <!-- Main Content (Scrollable) -->
+        <div id="modal-body" class="modal-body-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-container"></div>
+
+  <script src="js/particles.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/archive.js"></script>
+</body>
+</html>

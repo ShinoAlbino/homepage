@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>狩猟鳥獣フラッシュ暗記 | 狩猟免許学習</title>
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MRDPGGL9');</script>
+<!-- End Google Tag Manager -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<header class="app-header">
+  <a class="back-link" href="index.html">←</a>
+  <h1 id="pageTitle">狩猟鳥獣フラッシュ暗記</h1>
+</header>
+<main>
+
+  <!-- ============ スタート画面 ============ -->
+  <div class="card" id="startScreen">
+    <h2 id="startTitle">フラッシュ暗記</h2>
+    <p id="startDesc" style="font-size:0.92rem;"></p>
+    <div class="settings-panel" style="margin-top:8px;">
+      <div class="settings-row">
+        <label for="autoToggle">自動送りする</label>
+        <label class="switch">
+          <input type="checkbox" id="autoToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-row" id="speedRow" style="display:none;">
+        <label for="speedRange">送り速度（<span id="speedVal">2.0</span>秒/段階）</label>
+        <input type="range" id="speedRange" min="1" max="6" step="0.5" value="2">
+      </div>
+    </div>
+    <button class="btn block" id="startBtn" style="margin-top:14px;">スタート</button>
+  </div>
+
+  <!-- ============ カード画面 ============ -->
+  <div id="cardScreen" style="display:none;">
+    <div class="progress-bar"><div id="progressFill" style="width:0%"></div></div>
+    <div class="q-index" id="deckIndex">0 / 0</div>
+
+    <div class="card">
+      <div class="stage-image-wrap">
+        <img id="cardImage" alt="">
+      </div>
+
+      <div class="reveal-box hidden-stage" id="nameBox">タップして種名を表示</div>
+
+      <div id="featureBox" style="display:none;">
+        <p class="category-chip" id="sizeChip"></p>
+        <ul id="featureList" style="padding-left:20px;font-size:0.9rem;"></ul>
+        <p id="noteText" style="font-size:0.85rem;color:var(--color-text-muted);"></p>
+      </div>
+
+      <div class="controls-row">
+        <button class="btn secondary" id="prevBtn">◀ 前へ</button>
+        <button class="btn" id="nextBtn">次へ ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 終了画面 ============ -->
+  <div class="card" id="endScreen" style="display:none;">
+    <h2>🎉 おつかれさまでした！</h2>
+    <p id="endDesc" style="font-size:0.92rem;"></p>
+    <div class="controls-row">
+      <button class="btn block" id="retryBtn">もう一度</button>
+    </div>
+    <div class="controls-row">
+      <a class="btn secondary block" href="index.html">メニューに戻る</a>
+    </div>
+  </div>
+
+  <p style="font-size:0.75rem;color:var(--color-text-muted);text-align:center;margin-top:6px;">
+    ※ ノイヌ・ノネコ・シベリアイタチは収録していません
+  </p>
+</main>
+<footer class="app-footer">
+  狩猟免許（第一種銃猟／わな猟）学習サイト<br>
+  <span style="font-size:0.72rem;opacity:0.8;">掲載しているイラスト・画像の著作権は各権利者に帰属します。無断転載・複製・再配布はご遠慮ください。</span>
+</footer>
+<script src="js/data.js"></script>
+<script src="js/common.js"></script>
+<script src="js/flashcard.js"></script>
+</body>
+</html>

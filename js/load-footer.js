@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then(data => {
         footerContainer.innerHTML = data;
+        if (typeof initSessionId === 'function') initSessionId();
       })
       .catch(error => console.error('フッター読み込みエラー:', error));
   }

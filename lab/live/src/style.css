@@ -1,0 +1,428 @@
+/* ==========================================================
+   箱庭観測録 -此芽の観測室- テーマ
+   夜の観測室: 深紺〜墨色 + 藍 + 鈴の赤紐色 + 提灯的な暖色光 (仕様§7)
+   ========================================================== */
+:root {
+  --bg-deep: #0d1021;
+  --bg-ink: #131730;
+  --panel: rgba(19, 23, 48, 0.82);
+  --panel-line: rgba(122, 138, 191, 0.22);
+  --indigo: #2b3a6b;
+  --text: #e6e4ef;
+  --text-dim: #9aa0bd;
+  --accent: #c04a52;       /* 鈴の赤紐 */
+  --warm: #e6b06a;         /* 提灯の暖色 */
+  --serif: "Yu Mincho", "YuMincho", "Hiragino Mincho ProN", "Noto Serif JP", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--sans);
+  overflow: hidden;
+}
+
+button { font-family: inherit; cursor: pointer; }
+
+/* ---------- 入室ゲート ---------- */
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(60% 45% at 50% 62%, rgba(43, 58, 107, 0.35), transparent 70%),
+    #06070f;
+  transition: opacity 0.6s ease;
+}
+.gate-leaving { opacity: 0; pointer-events: none; }
+.gate-inner { text-align: center; padding: 1rem; }
+.gate-title {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  margin-bottom: 2.2rem;
+}
+.gate-sub {
+  display: block;
+  font-size: 0.55em;
+  color: var(--text-dim);
+  letter-spacing: 0.5em;
+  margin-top: 0.7em;
+}
+.gate-button {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  letter-spacing: 0.2em;
+  color: var(--text);
+  background: linear-gradient(180deg, rgba(43, 58, 107, 0.5), rgba(19, 23, 48, 0.7));
+  border: 1px solid var(--panel-line);
+  border-radius: 999px;
+  padding: 0.85em 2.4em;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+.gate-button:hover {
+  border-color: var(--warm);
+  box-shadow: 0 0 24px rgba(230, 176, 106, 0.25);
+  transform: translateY(-1px);
+}
+.gate-dot {
+  display: inline-block;
+  width: 0.6em; height: 0.6em;
+  border-radius: 50%;
+  border: 1px solid var(--warm);
+  margin-right: 0.7em;
+  vertical-align: 0.05em;
+}
+.gate-note { margin-top: 1.4rem; font-size: 0.75rem; color: var(--text-dim); }
+.gate-org  { margin-top: 3rem; font-size: 0.65rem; letter-spacing: 0.2em; color: rgba(154, 160, 189, 0.55); }
+
+/* ---------- アプリ全体 ---------- */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+/* ヘッダー(固定) */
+.live-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.55rem 1rem;
+  background: rgba(9, 11, 25, 0.92);
+  border-bottom: 1px solid var(--panel-line);
+}
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #fff;
+  background: rgba(192, 74, 82, 0.18);
+  border: 1px solid rgba(192, 74, 82, 0.55);
+  border-radius: 4px;
+  padding: 0.2em 0.6em;
+}
+.live-dot {
+  width: 0.55em; height: 0.55em;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: live-blink 2.6s ease-in-out infinite; /* 控えめに明滅(仕様§3-2) */
+}
+@keyframes live-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.live-title {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.live-title-sub { color: var(--text-dim); font-size: 0.85em; }
+.program-name {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--warm);
+  border: 1px solid rgba(230, 176, 106, 0.35);
+  border-radius: 4px;
+  padding: 0.2em 0.7em;
+  white-space: nowrap;
+}
+
+/* ---------- 本体レイアウト ---------- */
+.live-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+}
+
+/* ステージ = 観測室(CSS生成の背景) */
+.stage-area {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(55% 40% at 50% 66%, rgba(230, 176, 106, 0.10), transparent 70%),
+    radial-gradient(80% 60% at 70% 20%, rgba(43, 58, 107, 0.45), transparent 75%),
+    linear-gradient(180deg, #0a0d1d 0%, var(--bg-deep) 55%, #101430 100%);
+}
+.stage { position: absolute; inset: 0; }
+.live2d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* 微粒子: 画像アセット不使用、CSSのみで星屑がゆっくり流れる(仕様§7) */
+.stage-particles {
+  position: absolute;
+  inset: -60px;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 28%, rgba(230, 176, 106, 0.55), transparent 100%),
+    radial-gradient(1px 1px at 34% 74%, rgba(230, 228, 239, 0.5), transparent 100%),
+    radial-gradient(1.5px 1.5px at 58% 18%, rgba(230, 228, 239, 0.34), transparent 100%),
+    radial-gradient(1px 1px at 70% 58%, rgba(230, 176, 106, 0.4), transparent 100%),
+    radial-gradient(1px 1px at 86% 36%, rgba(230, 228, 239, 0.45), transparent 100%),
+    radial-gradient(1.5px 1.5px at 44% 46%, rgba(192, 74, 82, 0.3), transparent 100%),
+    radial-gradient(1px 1px at 22% 88%, rgba(230, 228, 239, 0.3), transparent 100%);
+  animation: drift 60s linear infinite;
+}
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(40px, -60px, 0); }
+}
+
+/* フォールバック此芽 */
+.fallback-konome {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4%;
+  margin: 0 auto;
+  max-height: 88%;
+  max-width: 82%;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 8px 40px rgba(43, 58, 107, 0.55));
+  animation: breathe 4.2s ease-in-out infinite;
+  transition: transform 1.2s ease;
+}
+@keyframes breathe {
+  0%, 100% { translate: 0 0; scale: 1; }
+  50% { translate: 0 -6px; scale: 1.005; }
+}
+.fallback-bounce { animation: breathe 4.2s ease-in-out infinite, bounce 0.45s ease; }
+@keyframes bounce {
+  0% { scale: 1; }
+  35% { scale: 1.02 0.985; }
+  100% { scale: 1; }
+}
+
+/* 字幕テロップ */
+.telop {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  max-width: min(80%, 640px);
+  font-family: var(--serif);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  line-height: 1.9;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  background: rgba(6, 8, 18, 0.74);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: 0.7em 1.2em;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.telop.visible { opacity: 1; }
+
+/* ---------- コメント欄 ---------- */
+.comment-area {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: rgba(10, 12, 26, 0.9);
+  border-left: 1px solid var(--panel-line);
+}
+.comment-note {
+  flex: 0 0 auto;
+  font-size: 0.66rem;
+  color: var(--text-dim);
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px dashed var(--panel-line);
+}
+.comment-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.6rem 0.7rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--indigo) transparent;
+}
+.comment {
+  display: flex;
+  gap: 0.55rem;
+  padding: 0.4rem 0.2rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  animation: comment-in 0.35s ease;
+}
+@keyframes comment-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+.c-icon {
+  flex: 0 0 auto;
+  width: 1.9em; height: 1.9em;
+  display: grid;
+  place-items: center;
+  font-size: 0.78em;
+  font-family: var(--serif);
+  color: var(--warm);
+  background: rgba(43, 58, 107, 0.4);
+  border: 1px solid var(--panel-line);
+  border-radius: 50%;
+}
+.c-body { min-width: 0; }
+.c-name { color: var(--text-dim); font-size: 0.85em; margin-right: 0.45em; }
+.c-badge {
+  font-size: 0.66em;
+  color: var(--warm);
+  border: 1px solid rgba(230, 176, 106, 0.4);
+  border-radius: 3px;
+  padding: 0.05em 0.4em;
+  margin-right: 0.5em;
+  vertical-align: 0.1em;
+  letter-spacing: 0.08em;
+}
+.c-text { display: block; word-break: break-word; }
+
+/* 入力欄(v1はdisabledのプレースホルダ。仕様§3-5) */
+.comment-form {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  border-top: 1px solid var(--panel-line);
+}
+.comment-form input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  background: rgba(19, 23, 48, 0.6);
+  border: 1px solid var(--panel-line);
+  border-radius: 6px;
+  padding: 0.5em 0.8em;
+}
+.comment-form button {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  background: rgba(43, 58, 107, 0.35);
+  border: 1px solid var(--panel-line);
+  border-radius: 6px;
+  padding: 0.5em 1em;
+}
+.comment-form input:disabled,
+.comment-form button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ---------- フッター ---------- */
+.live-footer {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.55rem 1rem;
+  background: rgba(9, 11, 25, 0.92);
+  border-top: 1px solid var(--panel-line);
+}
+.now-playing {
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.footer-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+/* スパチャ風の支援ボタン(仕様§3-6) */
+.fanbox-button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45em;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--accent), #8f3540);
+  border: 1px solid rgba(230, 176, 106, 0.5);
+  border-radius: 999px;
+  padding: 0.5em 1.2em;
+  box-shadow: 0 0 18px rgba(192, 74, 82, 0.35);
+  transition: box-shadow 0.3s, transform 0.2s;
+}
+.fanbox-button:hover {
+  box-shadow: 0 0 28px rgba(230, 176, 106, 0.45);
+  transform: translateY(-1px);
+}
+.fanbox-sub { font-size: 0.7em; opacity: 0.85; }
+.icon-button {
+  width: 2.2rem; height: 2.2rem;
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: rgba(43, 58, 107, 0.35);
+  border: 1px solid var(--panel-line);
+  border-radius: 50%;
+  transition: border-color 0.25s;
+}
+.icon-button:hover { border-color: var(--warm); }
+
+/* ---------- ヘルプ ---------- */
+.help-dialog {
+  margin: auto;
+  max-width: min(90vw, 480px);
+  color: var(--text);
+  background: var(--bg-ink);
+  border: 1px solid var(--panel-line);
+  border-radius: 10px;
+  padding: 1.6rem;
+  line-height: 1.9;
+  font-size: 0.88rem;
+}
+.help-dialog::backdrop { background: rgba(4, 5, 12, 0.7); }
+.help-dialog h2 {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.8em;
+  color: var(--warm);
+}
+.help-dialog ul { padding-left: 1.3em; margin: 0.6em 0 1.2em; }
+.help-dialog li { margin: 0.3em 0; }
+.help-dialog form { text-align: center; }
+
+/* ---------- モバイル(縦積み: 此芽2/3 + コメント1/3。仕様§8) ---------- */
+@media (max-width: 860px) {
+  .live-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 2fr) minmax(0, 1fr);
+  }
+  .comment-area { border-left: none; border-top: 1px solid var(--panel-line); }
+  .live-title { font-size: 0.85rem; }
+  .live-footer { flex-wrap: wrap; }
+  .now-playing { flex: 1 1 100%; order: 2; }
+  .footer-actions { margin-left: 0; order: 1; width: 100%; justify-content: space-between; }
+  .telop { bottom: 3%; max-width: 92%; font-size: 0.9rem; }
+}
+
+/* ---------- prefers-reduced-motion: 粒子・明滅を停止(仕様§7) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .stage-particles { animation: none; }
+  .live-dot { animation: none; }
+  .fallback-konome { animation: none; }
+  .comment { animation: none; }
+  .gate { transition: none; }
+}

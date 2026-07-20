@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>箱庭観測録 -此芽の観測室- | Arca Hortus</title>
+  <meta name="description" content="箱庭次元研究機構(箱庭研究所)所属の観測者・此芽が常駐する観測室。疑似ライブ配信ページです。" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#0d1021" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="箱庭観測録 -此芽の観測室-" />
+  <meta property="og:description" content="白髪ケモミミの観測者・此芽が、今日も静かに箱庭を観測しています。" />
+
+  <!--
+    Live2D Cubism Core
+    ------------------------------------------------------------------
+    公式配布の live2dcubismcore.min.js を script タグで読み込む。
+    バンドルには含めない（Live2D Proprietary Software License Agreement
+    により再配布形態に制限があるため）。
+    https://www.live2d.com/download/cubism-sdk/download-web/
+    セルフホストする場合はライセンス条項を確認の上、
+    public/vendor/live2dcubismcore.min.js に置いて src を差し替えること。
+    読み込みに失敗しても fallback.png モードでページは成立する。
+  -->
+  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- 入室ゲート: 音声自動再生制限のアンロックを兼ねる -->
+  <div id="gate" class="gate">
+    <div class="gate-inner">
+      <p class="gate-title">箱庭観測録<span class="gate-sub">-此芽の観測室-</span></p>
+      <button id="gate-enter" class="gate-button" type="button">
+        <span class="gate-dot" aria-hidden="true"></span>観測室に入室する
+      </button>
+      <p class="gate-note">※ 入室すると音声が再生される場合があります</p>
+      <p class="gate-org">Arca Hortus Dimension Research Organization / 箱庭研究所</p>
+    </div>
+  </div>
+
+  <div id="app" class="app" hidden>
+    <!-- ヘッダー(固定) -->
+    <header class="live-header">
+      <span class="live-badge"><span class="live-dot" aria-hidden="true"></span>LIVE</span>
+      <h1 class="live-title">箱庭観測録 <span class="live-title-sub">-此芽の観測室-</span></h1>
+      <span id="program-name" class="program-name">--</span>
+    </header>
+
+    <div class="live-body">
+      <!-- ステージ -->
+      <section class="stage-area" aria-label="観測室">
+        <div id="stage" class="stage">
+          <!-- Live2Dキャンバス or fallback.png がここに入る -->
+          <div class="stage-particles" aria-hidden="true"></div>
+        </div>
+        <div id="telop" class="telop" aria-live="polite"></div>
+      </section>
+
+      <!-- コメント欄 -->
+      <aside class="comment-area" aria-label="観測記録ログ">
+        <p class="comment-note">この欄は作中演出のログです（実在の視聴者コメントではありません）</p>
+        <div id="comment-list" class="comment-list"></div>
+        <form class="comment-form" onsubmit="return false;">
+          <input id="comment-input" type="text" disabled
+                 placeholder="コメント機能は次回アップデートで開放" />
+          <button type="submit" disabled>送信</button>
+        </form>
+      </aside>
+    </div>
+
+    <!-- フッター操作列 -->
+    <footer class="live-footer">
+      <p class="now-playing">♪ Now: <span id="now-program">--</span> / 次: <span id="next-program">--</span></p>
+      <div class="footer-actions">
+        <a id="fanbox-button" class="fanbox-button" href="#" target="_blank" rel="noopener noreferrer">
+          🔔 観測を支援する<span class="fanbox-sub">FANBOX</span>
+        </a>
+        <button id="volume-toggle" class="icon-button" type="button" aria-label="音量切り替え">🔊</button>
+        <button id="help-toggle" class="icon-button" type="button" aria-label="このページについて">?</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ヘルプ -->
+  <dialog id="help-dialog" class="help-dialog">
+    <h2>この観測室について</h2>
+    <p>本ページは箱庭次元研究機構（箱庭研究所）による<strong>疑似ライブ配信の演出ページ</strong>です。生放送ではありません。</p>
+    <ul>
+      <li>コメント欄に流れるのは作中演出の「観測記録」であり、実在の視聴者ではありません。</li>
+      <li>此芽をクリック/タップすると反応します。</li>
+      <li>番組表(JST)により時間帯ごとに内容が変わります。</li>
+    </ul>
+    <form method="dialog"><button class="gate-button">閉じる</button></form>
+  </dialog>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
