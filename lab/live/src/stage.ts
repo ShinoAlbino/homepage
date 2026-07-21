@@ -46,10 +46,15 @@ function isWebGLAvailable(): boolean {
 
 async function createLive2DStage(container: HTMLElement): Promise<Character> {
   const PIXI: any = await import('pixi.js');
-  // pixi-live2d-displayはwindow.PIXIを参照する
+  // pixi-live2d-displayはwindow.PIXIを参照する。cubism4エントリのimportより
+  // 前にグローバル登録しておく必要がある。
   (window as any).PIXI = PIXI;
   const live2d: any = await import('pixi-live2d-display/cubism4');
   const { Live2DModel } = live2d;
+
+  // Pixiのtickerクラスをlive2d側へ登録。モデル生成・描画開始より前に行う
+  // (登録漏れ時にRendererとモデルのフレーム管理がずれ、_currentFrameNo undefined を招く)。
+  Live2DModel.registerTicker(PIXI.Ticker);
 
   const isMobile = matchMedia('(max-width: 860px)').matches;
   const dpr = Math.min(
@@ -61,6 +66,8 @@ async function createLive2DStage(container: HTMLElement): Promise<Character> {
   canvas.className = 'live2d-canvas';
   container.appendChild(canvas);
 
+  // autoStart:false → モデルをstageへ載せ終えるまでrenderループを開始しない。
+  // これによりWebGLコンテキストがモデルに登録される前に_renderが走るのを防ぐ。
   const app = new PIXI.Application({
     view: canvas,
     resizeTo: container,
@@ -68,13 +75,18 @@ async function createLive2DStage(container: HTMLElement): Promise<Character> {
     antialias: true,
     resolution: dpr,
     autoDensity: true,
+    autoStart: false,
   });
 
-  // autoUpdate/autoInteractは切り、character.ts側で決定論的に更新する
+  // autoUpdateは切り、character.ts側で決定論的に更新する。
+  // autoInteractはv0.5.0で廃止 → autoHitTest / autoFocus に分割(どちらも手動制御のためfalse)。
   const model = await Live2DModel.from(SITE_CONFIG.paths.model, {
     autoUpdate: false,
-    autoInteract: false,
+    autoHitTest: false,
+    autoFocus: false,
   });
+
+  // ロード完了(await)後にstageへ追加し、フィットさせてから描画を始める。
   app.stage.addChild(model);
 
   const fit = () => {
@@ -90,5 +102,10 @@ async function createLive2DStage(container: HTMLElement): Promise<Character> {
   fit();
   window.addEventListener('resize', fit);
 
-  return new Live2DKonome(app, model, PIXI, container);
+  // 先にcharacterを生成してtick(手動update)を登録してから、renderループを開始する。
+  // これで最初の_renderは「モデルがstage上にあり、tickも配線済み」の状態で走る。
+  const character = new Live2DKonome(app, model, PIXI, container);
+  app.start();
+
+  return character;
 }
