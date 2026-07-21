@@ -1,6 +1,8 @@
 import { SITE_CONFIG } from './config';
 import type { Character } from './types';
 
+const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
 /**
  * Live2Dモデルが読み込めた場合の此芽制御。
  * まばたきはpixi-live2d-displayの自動処理、呼吸/簡易アイドル/追従/口パクは
@@ -17,6 +19,15 @@ export class Live2DKonome implements Character {
   private tfy = 0;
   private tapHandlers: Array<() => void> = [];
   private currentExpression = 'neutral';
+
+  // 自動まばたき: model3.jsonのEyeBlinkグループが空でライブラリ側が効かないため自前で行う
+  private eyeOpen = 1; // 1=開 0=閉
+  private blinking = false;
+  private blinkT = 0;
+  private blinkCountdown = rand(1.5, 4); // 次のまばたきまでの秒数
+
+  // 発話中の口パク(音声が無い時のフラップ)
+  private talking = false;
 
   constructor(
     private app: any,
@@ -60,12 +71,64 @@ export class Live2DKonome implements Character {
     set('ParamBodyAngleX', this.fx * 4);
     set('ParamEyeBallX', this.fx * 0.8);
     set('ParamEyeBallY', this.fy * -0.6);
-    // リップシンク(talk.tsのAnalyserNodeから毎フレーム供給される)
-    set('ParamMouthOpenY', this.mouth);
+
+    // 自動まばたき: ParamEyeLOpen/ROpen を毎フレーム更新(通常は1=開、まばたき時に0へ)
+    this.updateBlink(dtMs / 1000);
+    set('ParamEyeLOpen', this.eyeOpen);
+    set('ParamEyeROpen', this.eyeOpen);
+
+    // 口: リップシンク(talk.tsのAnalyser)優先。音声が無い発話中はフラップで口パク
+    let mouthOpen = this.mouth;
+    if (this.talking) {
+      const flap =
+        (Math.sin(this.t * 16) * 0.5 + 0.5) * (0.35 + (Math.sin(this.t * 5.5) * 0.5 + 0.5) * 0.5);
+      mouthOpen = Math.max(mouthOpen, flap);
+    }
+    set('ParamMouthOpenY', mouthOpen);
   };
+
+  // まばたきの各フェーズ長(秒)。閉→保持→開。保持を挟むことで確実に閉じ切って見える
+  private static readonly BLINK_CLOSE = 0.1;
+  private static readonly BLINK_HOLD = 0.08;
+  private static readonly BLINK_OPEN = 0.16;
+
+  /** まばたき状態を進める。約1.8〜5秒間隔で「閉じる→閉じたまま保持→開く」 */
+  private updateBlink(dt: number): void {
+    if (this.blinking) {
+      this.blinkT += dt;
+      const close = Live2DKonome.BLINK_CLOSE;
+      const hold = Live2DKonome.BLINK_HOLD;
+      const open = Live2DKonome.BLINK_OPEN;
+      if (this.blinkT < close) {
+        // 1→0 で閉じる
+        this.eyeOpen = 1 - this.blinkT / close;
+      } else if (this.blinkT < close + hold) {
+        // 閉じたまま保持(必ず数フレーム 0 が描画される)
+        this.eyeOpen = 0;
+      } else if (this.blinkT < close + hold + open) {
+        // 0→1 で開く
+        this.eyeOpen = (this.blinkT - close - hold) / open;
+      } else {
+        this.blinking = false;
+        this.eyeOpen = 1;
+        this.blinkCountdown = rand(1.8, 5);
+      }
+    } else {
+      this.blinkCountdown -= dt;
+      if (this.blinkCountdown <= 0) {
+        this.blinking = true;
+        this.blinkT = 0;
+      }
+    }
+  }
 
   setMouthOpen(v: number): void {
     this.mouth = Math.max(0, Math.min(1, v));
+  }
+
+  setTalking(on: boolean): void {
+    this.talking = on;
+    if (!on) this.mouth = 0;
   }
 
   /**
@@ -149,6 +212,10 @@ export class FallbackKonome implements Character {
   }
 
   setMouthOpen(_v: number): void {
+    /* 静止画のため口パクは省略(仕様) */
+  }
+
+  setTalking(_on: boolean): void {
     /* 静止画のため口パクは省略(仕様) */
   }
 

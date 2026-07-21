@@ -291,9 +291,14 @@ export class TalkEngine {
         voice = await this.audio.playVoice(s.voice, (v) => this.character.setMouthOpen(v));
       }
 
+      // 音声が取得できない場合(未配置/404)は、文字送りの間だけ口パクフラップを出す
+      const flapping = !voice;
+      if (flapping) this.character.setTalking(true);
+
       // 音声再生と同時に文字送り開始。音声が無ければ文字送りのみ(仕様§3-3)
       await this.ui.showTelop(s.text, SITE_CONFIG.talk.charMs);
       if (voice) await voice.ended;
+      if (flapping) this.character.setTalking(false);
 
       this.remember(s.id);
       this.playedHandlers.forEach((h) => h(s.id));
@@ -302,6 +307,7 @@ export class TalkEngine {
       this.ui.clearTelop();
       this.character.setMouthOpen(0);
     } finally {
+      this.character.setTalking(false);
       this.speaking = false;
     }
   }

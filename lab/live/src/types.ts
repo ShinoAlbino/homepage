@@ -53,6 +53,8 @@ export interface Character {
   readonly kind: 'live2d' | 'fallback';
   /** 口開度 0..1 (リップシンク) */
   setMouthOpen(v: number): void;
+  /** 発話中フラグ。音声が無い時に口パク(フラップ)を生成するために使う */
+  setTalking(on: boolean): void;
   /** 表情切替。v1はneutralのみだが受け口として実装 */
   setExpression(name: string): Promise<void>;
   /** 視線・顔向き追従 (-1..1 正規化座標) */
