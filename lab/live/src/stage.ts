@@ -86,6 +86,8 @@ async function createLive2DStage(container: HTMLElement): Promise<Character> {
     autoFocus: false,
   });
 
+  patchClippingManagerBug(model);
+
   // ロード完了(await)後にstageへ追加し、フィットさせてから描画を始める。
   app.stage.addChild(model);
 
@@ -108,4 +110,41 @@ async function createLive2DStage(container: HTMLElement): Promise<Character> {
   app.start();
 
   return character;
+}
+
+/**
+ * pixi-live2d-display v0.5.0-beta のバグ回避。
+ *
+ * Cubism4InternalModel.updateWebGLContext() は
+ *   this.renderer._clippingManager._currentFrameNo = glContextID;
+ * を無条件で実行するが、_clippingManager は「クリッピングマスクを持つモデル」に
+ * 対してしか生成されない(renderer.initialize内の model.isUsingMasking() 分岐)。
+ * マスク無しモデルでは _clippingManager が undefined のため、初回_render時に
+ *   Cannot set properties of undefined (setting '_currentFrameNo')
+ * でクラッシュする。
+ *
+ * 描画本体(doDrawModel等)は全て `_clippingManager != null` でガードしているので、
+ * _clippingManagerがundefinedのままでもマスク処理をスキップするだけで正常に描ける。
+ * よってこの1メソッドだけを、マスク無し時に該当2行を飛ばす形でラップして無害化する。
+ */
+function patchClippingManagerBug(model: any): void {
+  const internal = model?.internalModel;
+  const renderer = internal?.renderer;
+  if (!internal || !renderer || typeof internal.updateWebGLContext !== 'function') return;
+
+  const original = internal.updateWebGLContext.bind(internal);
+  internal.updateWebGLContext = (gl: any, glContextID: number) => {
+    if (renderer._clippingManager) {
+      // マスクありモデルは本来の実装をそのまま使う
+      return original(gl, glContextID);
+    }
+    // マスク無しモデル: _clippingManager(undefined)へのアクセスを避けて再現する。
+    // firstDraw/バッファ初期化とGLセットアップは必要なので実行し、
+    // _clippingManager._currentFrameNo / _maskTexture への代入だけを省略する
+    // (シェーダセットのリセットは初回は空配列のままで実害が無く、
+    //  ページ生存中GLコンテキストは変わらないため省略して問題ない)。
+    renderer.firstDraw = true;
+    renderer._bufferData = { vertex: null, uv: null, index: null };
+    renderer.startUp(gl);
+  };
 }
