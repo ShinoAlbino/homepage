@@ -68,9 +68,12 @@ async function createLive2DStage(container: HTMLElement): Promise<Character> {
 
   // autoStart:false → モデルをstageへ載せ終えるまでrenderループを開始しない。
   // これによりWebGLコンテキストがモデルに登録される前に_renderが走るのを防ぐ。
+  //
+  // resizeTo は使わない: PixiのresizeToはリサイズを次フレーム(rAF)に遅延させるため、
+  // window resizeで走るfit()が旧サイズのrenderer寸法を読んでしまい、位置がズレて
+  // モデルが画面外へ消える。resizeとfitを自前で同期実行してこれを防ぐ。
   const app = new PIXI.Application({
     view: canvas,
-    resizeTo: container,
     backgroundAlpha: 0,
     antialias: true,
     resolution: dpr,
@@ -91,18 +94,36 @@ async function createLive2DStage(container: HTMLElement): Promise<Character> {
   // ロード完了(await)後にstageへ追加し、フィットさせてから描画を始める。
   app.stage.addChild(model);
 
+  // コンテナの現在サイズから renderer・位置・スケールを毎回再計算してセンタリングする。
+  const ZOOM = 1.15; // 収まり具合(大きいほどアップ)
+  const VERTICAL = 0.5; // 縦センタリング係数(0=上端, 0.5=中央, 1=下端)
   const fit = () => {
-    const w = app.renderer.width / app.renderer.resolution;
-    const h = app.renderer.height / app.renderer.resolution;
-    const mw = model.internalModel?.originalWidth || model.width || 1;
+    if (!app.renderer) return; // dispose後にデバウンスが発火しても安全に無視
+    const w = container.clientWidth || 1;
+    const h = container.clientHeight || 1;
+    // rendererを実サイズ(CSSピクセル)へ更新。autoDensityがdpr換算する。
+    // resizeToに頼らず自分で呼ぶことで、この直後のfitが必ず新サイズを反映する。
+    app.renderer.resize(w, h);
+    // canvasの高さ基準でスケール(画面の大小に関わらず同じ比率で中央に収める)
     const mh = model.internalModel?.originalHeight || model.height || 1;
-    const scale = Math.min(w / mw, h / mh) * 1.15;
-    model.scale.set(scale);
+    model.scale.set((h / mh) * ZOOM);
+    // アンカーを中心にして、常に画面中央へ配置し直す
     model.anchor?.set?.(0.5, 0.5);
-    model.position.set(w / 2, h * 0.56);
+    model.position.set(w / 2, h * VERTICAL);
   };
   fit();
-  window.addEventListener('resize', fit);
+
+  // リサイズはデバウンスして間引き、収束時に renderer.resize → fit を必ず実行する。
+  let resizeTimer = 0;
+  const scheduleFit = () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(fit, 120);
+  };
+  window.addEventListener('resize', scheduleFit);
+  // コンテナ自体のサイズ変化(レイアウト変更・端末回転等)にも追従する
+  const resizeObserver =
+    typeof ResizeObserver !== 'undefined' ? new ResizeObserver(scheduleFit) : null;
+  resizeObserver?.observe(container);
 
   // 先にcharacterを生成してtick(手動update)を登録してから、renderループを開始する。
   // これで最初の_renderは「モデルがstage上にあり、tickも配線済み」の状態で走る。

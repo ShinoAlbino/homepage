@@ -5,6 +5,7 @@
 		"Textures": [
 			"konome.2048/texture_00.png"
 		],
+		"Physics": "konome.physics3.json",
 		"DisplayInfo": "konome.cdi3.json"
 	},
 	"Groups": [

@@ -46,12 +46,15 @@ async function boot(): Promise<void> {
 
       const character = await createStage(ui.stageEl);
 
-      // マウス/タッチ追従(-1..1に正規化、控えめ)
+      // マウス/タッチ追従。追従感を画面サイズ・アスペクトに依存させないため、
+      // 縦横とも「高さ」を基準に正規化する(モデルのスケール基準=高さと一致させ、
+      // 画面が横長でも縦長でも一定の追従感になる)。中心からの距離を高さの半分で割る。
       ui.stageEl.addEventListener('pointermove', (e) => {
         const rect = ui.stageEl.getBoundingClientRect();
-        const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-        const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
-        character.focus(nx, ny);
+        const half = (rect.height || 1) * 0.5;
+        const nx = (e.clientX - (rect.left + rect.width / 2)) / half;
+        const ny = (e.clientY - (rect.top + rect.height / 2)) / half;
+        character.focus(nx, ny); // focus内で-1..1にクランプ
       });
 
       const talk = new TalkEngine(character, ui, audio, getProgram);
