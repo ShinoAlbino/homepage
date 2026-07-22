@@ -1,25 +1,43 @@
-{
-  "comments": [
-    { "name": "観測者A", "badge": "観測記録", "text": "今日も来た", "replyTo": null, "weight": 3 },
-    { "name": "観測者B", "badge": "観測記録", "text": "此芽ちゃんの耳、今日も元気", "replyTo": null, "weight": 2 },
-    { "name": "境界線見回り", "badge": "巡回中", "text": "異常なし。……たぶん", "replyTo": null, "weight": 2 },
-    { "name": "第3層の住人", "badge": "観測記録", "text": "こっちは雨。そっちはどう？", "replyTo": null, "weight": 2 },
-    { "name": "観測者C", "badge": "観測記録", "text": "作業しながら聞いてる", "replyTo": null, "weight": 3 },
-    { "name": "記録係見習い", "badge": "観測記録", "text": "メモ間に合わない…", "replyTo": null, "weight": 2 },
-    { "name": "匿名の観測者", "badge": "検閲済", "text": "████が██になってた", "replyTo": null, "weight": 1 },
-    { "name": "観測者D", "badge": "観測記録", "text": "鈴の音した？", "replyTo": null, "weight": 2 },
-    { "name": "夜勤の観測者", "badge": "観測記録", "text": "この時間の観測室、落ち着く", "replyTo": null, "weight": 2 },
-    { "name": "G.N.A.司書", "badge": "外部機関", "text": "本日の記録、受領しました", "replyTo": null, "weight": 1 },
-    { "name": "観測者E", "badge": "観測記録", "text": "初見です。ここは何を観測してるんですか？", "replyTo": null, "weight": 2 },
-    { "name": "倫理委員会", "badge": "外部機関", "text": "本配信は倫理規定に適合しています", "replyTo": null, "weight": 1 },
-    { "name": "観測者F", "badge": "観測記録", "text": "羽織の紐かわいい", "replyTo": null, "weight": 2 },
-    { "name": "境界線見回り", "badge": "巡回中", "text": "西側、灯りがひとつ増えてる", "replyTo": null, "weight": 1 },
-    { "name": "観測者G", "badge": "観測記録", "text": "おつかれさま。無理しないでね", "replyTo": null, "weight": 2 },
+[
+  { "name": "観察者A", "role": "viewer", "badge": "観察", "text": "今日も来た。……この声、落ち着く。", "replyTo": null, "weight": 1 },
+  { "name": "観察者B", "role": "viewer", "badge": "観察", "text": "観測率、じわじわ上がってるね", "replyTo": null, "weight": 1 },
+  { "name": "観察者C", "role": "viewer", "badge": "観察", "text": "この部屋、時間の流れがゆっくりでいい", "replyTo": null, "weight": 1 },
+  { "name": "観察者D", "role": "viewer", "badge": "新入り", "text": "はじめて来ました。……なるほど、これが観測室", "replyTo": null, "weight": 1 },
+  { "name": "観察者γ", "role": "viewer", "badge": "観察", "text": "書架の奥の話、もっと聞きたいな", "replyTo": null, "weight": 0.8 },
+  { "name": "観察者E", "role": "viewer", "badge": "古参", "text": "この部屋が開く時間、だいたい覚えた", "replyTo": null, "weight": 0.8 },
+  { "name": "観察者F", "role": "viewer", "badge": "観察", "text": "耳、ぴこぴこしてる", "replyTo": null, "weight": 1 },
+  { "name": "観察者H", "role": "viewer", "badge": "観察", "text": "静かすぎて、逆に集中できる", "replyTo": null, "weight": 1 },
+  { "name": "観察者K", "role": "viewer", "badge": "観察", "text": "鈴の音、好き", "replyTo": null, "weight": 1 },
+  { "name": "観察者δ", "role": "viewer", "badge": "観察", "text": "記録の間、いい響きだ", "replyTo": null, "weight": 0.8 },
+  { "name": "観察者M", "role": "viewer", "badge": "新入り", "text": "観測率って何……？ あとで調べます", "replyTo": null, "weight": 0.8 },
+  { "name": "観察者N", "role": "viewer", "badge": "古参", "text": "今日の空はどうかな", "replyTo": null, "weight": 1 },
+  { "name": "観察者P", "role": "viewer", "badge": "観察", "text": "尾が、少し揺れてる。機嫌よさそう", "replyTo": null, "weight": 0.8 },
+  { "name": "観察者R", "role": "viewer", "badge": "観察", "text": "作業のBGM代わりに開いてる", "replyTo": null, "weight": 1 },
+  { "name": "観察者S", "role": "viewer", "badge": "新入り", "text": "はじめまして。ここ、居心地いいですね", "replyTo": null, "weight": 0.8 },
 
-    { "name": "観測者A", "badge": "観測記録", "text": "触ってないって…！", "replyTo": "click_01", "weight": 1 },
-    { "name": "観測者B", "badge": "観測記録", "text": "耳は禁忌", "replyTo": "click_03", "weight": 1 },
-    { "name": "記録係見習い", "badge": "観測記録", "text": "支援したら本当に鈴鳴った", "replyTo": "promo_01", "weight": 1 },
-    { "name": "夜勤の観測者", "badge": "観測記録", "text": "窓の外…見なかったことにしよ", "replyTo": "prog_night_03", "weight": 1 },
-    { "name": "観測者C", "badge": "観測記録", "text": "完璧な計画で草", "replyTo": "prog_morning_03", "weight": 1 }
-  ]
-}
+  { "name": "観察者B", "role": "viewer", "badge": "観察", "text": "平安の光か……ロマンあるな", "replyTo": "click_trivia_star_deneb", "weight": 1 },
+  { "name": "観察者C", "role": "viewer", "badge": "観察", "text": "月が遠ざかる話、毎回すこしさみしくなる", "replyTo": "click_trivia_star_moon", "weight": 1 },
+  { "name": "観察者γ", "role": "viewer", "badge": "観察", "text": "この部屋にも神、いそう。わかる", "replyTo": "click_trivia_shinto_yaoyorozu", "weight": 1 },
+  { "name": "観察者D", "role": "viewer", "badge": "新入り", "text": "鳥居＝境、なるほど……勉強になる", "replyTo": "click_trivia_shinto_torii", "weight": 1 },
+  { "name": "観察者E", "role": "viewer", "badge": "古参", "text": "一葉の秋か。……もう夏も終わりだね", "replyTo": "season_summerend_01", "weight": 1 },
+  { "name": "観察者K", "role": "viewer", "badge": "観察", "text": "Ad astra、かっこいい。意味はあとで調べる", "replyTo": "poly_latin_adastra", "weight": 0.8 },
+  { "name": "観察者F", "role": "viewer", "badge": "観察", "text": "蛸の血が青いの、初めて知った", "replyTo": "click_trivia_nature_octopus", "weight": 1 },
+  { "name": "観察者A", "role": "viewer", "badge": "観察", "text": "願いごと、決めてくる", "replyTo": "date_0707_tanabata", "weight": 1 },
+  { "name": "観察者H", "role": "viewer", "badge": "観察", "text": "雨の日の観測室、いちばん好きかも", "replyTo": "weather_rain_01", "weight": 1 },
+  { "name": "観察者N", "role": "viewer", "badge": "古参", "text": "星喰……こわい。でも気になる", "replyTo": "idle_10", "weight": 0.8 },
+  { "name": "観察者M", "role": "viewer", "badge": "新入り", "text": "デネブって夏の大三角のあれか。覚えた", "replyTo": "click_trivia_star_deneb", "weight": 0.8 },
+
+  { "name": "記録者・栞", "role": "recorder", "badge": "記録", "text": "同業から失礼。……この観測室の記録は、いつも丁寧だ。見習う。", "replyTo": null, "weight": 0.4 },
+  { "name": "記録者 K", "role": "recorder", "badge": "記録", "text": "こちらの書架でも同じ観測記録を確認。齟齬なし。", "replyTo": null, "weight": 0.4 },
+  { "name": "記録者・椎", "role": "recorder", "badge": "記録", "text": "言霊、我々の仕事の芯だね。……声に出して、残す。", "replyTo": "click_trivia_shinto_kotodama", "weight": 0.35 },
+  { "name": "記録者・榛", "role": "recorder", "badge": "記録", "text": "その星の記録、こちらでも控えておく。……ありがとう。", "replyTo": "click_trivia_star_deneb", "weight": 0.35 },
+
+  { "name": "第二観測室", "role": "operator", "badge": "観測", "text": "現在の観測率および状況を報告。……概ね安定。特異点なし。", "replyTo": null, "weight": 0.15 },
+  { "name": "観測者（当直）", "role": "operator", "badge": "観測", "text": "各観測室へ。通常観測を継続。記録者は記録の更新を。", "replyTo": null, "weight": 0.15 },
+  { "name": "第七観測室", "role": "operator", "badge": "観測", "text": "観測率、微増傾向。この時間帯の観察者数、平常。", "replyTo": null, "weight": 0.12 },
+
+  { "name": "所内放送", "role": "official", "badge": "所内", "text": "【告知】本観測室は演出を含みます。コメントは作中の観察記録です。", "replyTo": null, "weight": 0.12 },
+  { "name": "観測管理室", "role": "official", "badge": "所内", "text": "【観測異常】一時的な観測ノイズを検出。記録への影響なし。復旧済み。", "replyTo": null, "weight": 0.1 },
+  { "name": "観測管理室", "role": "official", "badge": "所内", "text": "【観測率更新】現在の観測率、良好圏。観察者各位に感謝を。", "replyTo": null, "weight": 0.1 },
+  { "name": "中央観測室", "role": "official", "badge": "所内", "text": "【観測異常】星喰の兆候を遠方に確認。当該領域の観測を一時制限。", "replyTo": null, "weight": 0.08 }
+]

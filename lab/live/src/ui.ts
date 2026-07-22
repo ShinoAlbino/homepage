@@ -1,5 +1,5 @@
 import { SITE_CONFIG } from './config';
-import type { Program } from './types';
+import type { CommentRole, Program } from './types';
 
 const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -53,9 +53,11 @@ export class UI {
    * 字幕テロップ: 1文字ずつ表示(仕様§3-3)。
    * 音声再生と同時に呼ばれ、音声が無い場合は文字送りのみで進行する。
    */
-  async showTelop(text: string, charMs: number): Promise<void> {
+  async showTelop(text: string, charMs: number, variant?: 'anomaly'): Promise<void> {
     const token = ++this.telopToken;
     this.telop.classList.add('visible');
+    // anomaly(異常検知ログ)はモノスペース/グリッチ調に見た目を差別化
+    this.telop.classList.toggle('telop-anomaly', variant === 'anomaly');
     if (reducedMotion()) {
       this.telop.textContent = text;
       return;
@@ -71,6 +73,7 @@ export class UI {
   clearTelop(): void {
     ++this.telopToken;
     this.telop.classList.remove('visible');
+    this.telop.classList.remove('telop-anomaly');
     this.telop.textContent = '';
   }
 
@@ -78,9 +81,11 @@ export class UI {
    * 世界観コメントを1件流す。
    * アイコン枠+「観測記録」系バッジで作中演出であることを明示する(仕様§3-4)。
    */
-  addComment(c: { name: string; badge: string; text: string }): void {
+  addComment(c: { name: string; badge: string; text: string; role?: CommentRole }): void {
     const item = document.createElement('div');
-    item.className = 'comment';
+    const role = c.role ?? 'viewer';
+    // official/operator はシステムメッセージ風に見た目を差別化(CSSで色・バナー化)
+    item.className = `comment role-${role}`;
 
     const icon = document.createElement('span');
     icon.className = 'c-icon';

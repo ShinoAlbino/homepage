@@ -5,7 +5,8 @@ import { AudioManager, TalkEngine } from './talk';
 import { CommentFeed } from './comments';
 import { UI } from './ui';
 import { findNextProgram, findProgram, getJSTHour } from './schedule';
-import type { Program, ScheduleDB } from './types';
+import { fetchWeather } from './weather';
+import type { Program, ScheduleDB, Weather } from './types';
 
 // v2でPages Functions(コメント投稿/限定会話API)を有効化する際の分岐用(仕様§9)
 export const API_ENABLED = SITE_CONFIG.apiEnabled;
@@ -27,6 +28,18 @@ async function boot(): Promise<void> {
 
   let currentProgram: Program = findProgram(schedule, getJSTHour());
   const getProgram = () => currentProgram;
+
+  // 天候(Open-Meteo)。取得失敗時はnullのまま=weather条件付きセリフは候補外になる。
+  // 起動をブロックしないよう非同期で取得し、定期的に更新する。
+  let currentWeather: Weather | null = null;
+  const getWeather = () => currentWeather;
+  const refreshWeather = () => {
+    void fetchWeather().then((w) => {
+      currentWeather = w;
+    });
+  };
+  refreshWeather();
+  window.setInterval(refreshWeather, SITE_CONFIG.weather.refreshMs);
 
   const refreshProgramUI = () => {
     const hour = getJSTHour();
@@ -57,7 +70,7 @@ async function boot(): Promise<void> {
         character.focus(nx, ny); // focus内で-1..1にクランプ
       });
 
-      const talk = new TalkEngine(character, ui, audio, getProgram);
+      const talk = new TalkEngine(character, ui, audio, getProgram, getWeather);
       const comments = new CommentFeed(ui);
       await Promise.all([talk.load(), comments.load()]);
 

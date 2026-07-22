@@ -232,6 +232,25 @@ button { font-family: inherit; cursor: pointer; }
 }
 .telop.visible { opacity: 1; }
 
+/* anomaly(異常検知ログ): モノスペース＋薄いグリッチ調の本人独白トーン */
+.telop.telop-anomaly {
+  font-family: 'JetBrains Mono', ui-monospace, 'Courier New', monospace;
+  letter-spacing: 0.02em;
+  color: #cfe3d6;
+  background: rgba(4, 10, 8, 0.82);
+  border-left-color: #6fd0a8;
+  text-shadow: 0 0 6px rgba(111, 208, 168, 0.35);
+  animation: anomaly-flicker 2.4s steps(1) infinite;
+}
+@keyframes anomaly-flicker {
+  0%, 97%, 100% { opacity: 1; }
+  98% { opacity: 0.72; }
+  99% { opacity: 0.9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .telop.telop-anomaly { animation: none; }
+}
+
 /* ---------- コメント欄 ---------- */
 .comment-area {
   display: flex;
@@ -292,6 +311,50 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: 0.08em;
 }
 .c-text { display: block; word-break: break-word; }
+
+/* recorder(記録者・同業): ほんのり色を変え、通常viewerと差をつける */
+.comment.role-recorder .c-icon {
+  color: #a9c7d6;
+  background: rgba(58, 90, 107, 0.4);
+}
+.comment.role-recorder .c-badge {
+  color: #a9c7d6;
+  border-color: rgba(169, 199, 214, 0.4);
+}
+
+/* operator(他観測室・業務連絡): 業務通信らしく淡い枠付きバナー */
+.comment.role-operator {
+  background: rgba(58, 90, 107, 0.14);
+  border-left: 2px solid rgba(139, 179, 199, 0.55);
+  border-radius: 4px;
+  padding-left: 0.5rem;
+}
+.comment.role-operator .c-name,
+.comment.role-operator .c-text { color: #bcd4de; }
+
+/* official(所内アナウンス): システムメッセージ風に全幅バナーで強調 */
+.comment.role-official {
+  display: block;
+  background: rgba(230, 176, 106, 0.12);
+  border: 1px solid rgba(230, 176, 106, 0.45);
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  margin: 0.15rem 0;
+}
+.comment.role-official .c-icon { display: none; }
+.comment.role-official .c-name {
+  color: var(--warm);
+  font-size: 0.78em;
+  letter-spacing: 0.04em;
+}
+.comment.role-official .c-badge {
+  background: rgba(230, 176, 106, 0.18);
+}
+.comment.role-official .c-text {
+  color: var(--warm);
+  font-weight: 600;
+  margin-top: 0.2em;
+}
 
 /* 入力欄(v1はdisabledのプレースホルダ。仕様§3-5) */
 .comment-form {

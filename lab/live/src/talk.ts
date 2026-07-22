@@ -1,10 +1,19 @@
 import { SITE_CONFIG } from './config';
-import { getJSTHour, inHours } from './schedule';
-import type { Character, Program, Serifu, SerifuDB } from './types';
+import { getJSTDate, getJSTHour, inDateRange, inHours, matchesSeason } from './schedule';
+import type { Character, Program, Serifu, Weather } from './types';
 import type { UI } from './ui';
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
+/** conditions 判定に使う現在の文脈 */
+interface TalkContext {
+  hour: number;
+  month: number;
+  day: number;
+  weather: Weather | null;
+  visitor: 'first' | 'repeat' | 'any';
+}
 
 /** 重み付き抽選 */
 function weightedPick<T extends { weight?: number }>(items: T[]): T | null {
@@ -175,7 +184,7 @@ export class AudioManager {
  * 入室時greeting → 25〜60秒間隔の自動トーク(idle/番組カテゴリ/頻度制限付きpromo)。
  */
 export class TalkEngine {
-  private db: SerifuDB = { version: 1, serifu: [] };
+  private serifu: Serifu[] = [];
   private recent: string[] = [];
   private lastPromoAt = 0;
   private speaking = false;
@@ -188,6 +197,7 @@ export class TalkEngine {
     private ui: UI,
     private audio: AudioManager,
     private getProgram: () => Program,
+    private getWeather: () => Weather | null,
   ) {
     this.isFirstVisit = localStorage.getItem(SITE_CONFIG.storage.visited) !== '1';
   }
@@ -195,7 +205,13 @@ export class TalkEngine {
   async load(): Promise<void> {
     try {
       const res = await fetch(SITE_CONFIG.paths.serifu);
-      if (res.ok) this.db = (await res.json()) as SerifuDB;
+      if (res.ok) {
+        const json = (await res.json()) as unknown;
+        // 新形式(トップレベル配列)と旧形式({serifu:[...]})の両対応
+        this.serifu = Array.isArray(json)
+          ? (json as Serifu[])
+          : ((json as { serifu?: Serifu[] }).serifu ?? []);
+      }
     } catch (e) {
       console.warn('[talk] serifu.json の読込に失敗:', e);
     }
@@ -208,13 +224,13 @@ export class TalkEngine {
 
   /** 入室時の挨拶: 時間帯 + 初回/リピーター判定(localStorage) */
   async greet(): Promise<void> {
-    const hour = getJSTHour();
     const visitor = this.isFirstVisit ? 'first' : 'repeat';
-    let pool = this.db.serifu.filter(
-      (s) => s.category === 'greeting' && this.matchConditions(s, hour, visitor),
+    const ctx = this.buildContext(visitor);
+    let pool = this.serifu.filter(
+      (s) => s.category === 'greeting' && this.matchConditions(s, ctx),
     );
     if (pool.length === 0) {
-      pool = this.db.serifu.filter((s) => s.category === 'greeting');
+      pool = this.serifu.filter((s) => s.category === 'greeting');
     }
     localStorage.setItem(SITE_CONFIG.storage.visited, '1');
     const s = weightedPick(pool);
@@ -234,12 +250,12 @@ export class TalkEngine {
   /** クリック/タップ反応。再生中は無視(連打ロック。仕様§4) */
   requestClickTalk(): void {
     if (this.speaking) return;
-    const hour = getJSTHour();
-    const pool = this.db.serifu.filter(
-      (s) => s.category === 'click' && this.matchConditions(s, hour, 'any') && !this.recent.includes(s.id),
+    const ctx = this.buildContext('any');
+    const pool = this.serifu.filter(
+      (s) => s.category === 'click' && this.matchConditions(s, ctx) && !this.recent.includes(s.id),
     );
     const s =
-      weightedPick(pool) ?? weightedPick(this.db.serifu.filter((c) => c.category === 'click'));
+      weightedPick(pool) ?? weightedPick(this.serifu.filter((c) => c.category === 'click'));
     if (s) void this.speak(s);
   }
 
@@ -252,19 +268,20 @@ export class TalkEngine {
 
   private async autoTalk(): Promise<void> {
     if (this.speaking) return;
-    const hour = getJSTHour();
     const program = this.getProgram();
+    const ctx = this.buildContext('any');
     const promoReady = Date.now() - this.lastPromoAt > SITE_CONFIG.talk.promoCooldownMs;
 
     const isCandidate = (s: Serifu) =>
       (s.category === 'idle' ||
+        s.category === 'anomaly' || // 異常検知ログ。weightが低く自然に極低頻度になる
         s.category === `program:${program.id}` ||
         (s.category === 'promo' && promoReady)) &&
-      this.matchConditions(s, hour, 'any');
+      this.matchConditions(s, ctx);
 
     // 直近N件は再抽選で回避。全滅したら回避条件を緩める
-    let pool = this.db.serifu.filter((s) => isCandidate(s) && !this.recent.includes(s.id));
-    if (pool.length === 0) pool = this.db.serifu.filter(isCandidate);
+    let pool = this.serifu.filter((s) => isCandidate(s) && !this.recent.includes(s.id));
+    if (pool.length === 0) pool = this.serifu.filter(isCandidate);
 
     const s = weightedPick(pool);
     if (!s) return;
@@ -272,19 +289,33 @@ export class TalkEngine {
     await this.speak(s);
   }
 
-  private matchConditions(s: Serifu, hour: number, visitor: 'first' | 'repeat' | 'any'): boolean {
+  /** 現在時刻・日付・天候・visitorから判定文脈を組む */
+  private buildContext(visitor: 'first' | 'repeat' | 'any'): TalkContext {
+    const { month, day } = getJSTDate();
+    return { hour: getJSTHour(), month, day, weather: this.getWeather(), visitor };
+  }
+
+  /** conditions を AND 判定。無指定フィールドは常に真 */
+  private matchConditions(s: Serifu, ctx: TalkContext): boolean {
     const c = s.conditions;
     if (!c) return true;
-    if (c.hourJST && !inHours(hour, c.hourJST)) return false;
-    if (c.visitor && c.visitor !== 'any' && visitor !== 'any' && c.visitor !== visitor) return false;
+    if (c.hourJST && !inHours(ctx.hour, c.hourJST)) return false;
+    if (c.dateJST && !inDateRange(ctx.month, ctx.day, c.dateJST)) return false;
+    if (c.season && !matchesSeason(c.season, ctx.month, ctx.day)) return false;
+    // weather指定かつ'any'でない場合、現在天候と一致が必要(取得失敗=nullなら候補外)
+    if (c.weather && c.weather !== 'any' && ctx.weather !== c.weather) return false;
+    if (c.visitor && c.visitor !== 'any' && ctx.visitor !== 'any' && c.visitor !== ctx.visitor) {
+      return false;
+    }
     return true;
   }
 
-  /** 1セリフの再生: 表情→音声(あれば)+テロップ→完了通知 */
+  /** 1セリフの再生: 表情→モーション→音声(あれば)+テロップ→完了通知 */
   private async speak(s: Serifu): Promise<void> {
     this.speaking = true;
     try {
       void this.character.setExpression(s.expression ?? 'neutral');
+      if (s.motion) this.character.playMotion(s.motion); // 耳モーション発火(未対応値は無視)
 
       let voice: { ended: Promise<void> } | null = null;
       if (s.voice) {
@@ -296,7 +327,8 @@ export class TalkEngine {
       if (flapping) this.character.setTalking(true);
 
       // 音声再生と同時に文字送り開始。音声が無ければ文字送りのみ(仕様§3-3)
-      await this.ui.showTelop(s.text, SITE_CONFIG.talk.charMs);
+      // anomaly は「異常検知ログ」風に見た目を差別化する
+      await this.ui.showTelop(s.text, SITE_CONFIG.talk.charMs, s.category === 'anomaly' ? 'anomaly' : undefined);
       if (voice) await voice.ended;
       if (flapping) this.character.setTalking(false);
 

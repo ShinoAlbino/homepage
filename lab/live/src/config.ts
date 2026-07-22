@@ -46,6 +46,26 @@ export const SITE_CONFIG = {
     replyDelayMinMs: 2_000,
     replyDelayMaxMs: 6_000,
     maxVisible: 60,
+    /**
+     * ロール別の出現確率(相対値)。まずここで出すロールを抽選し、
+     * 選ばれたロール内で weight 付き抽選する。
+     * viewer主体 / recorder低 / operator・official極低。
+     */
+    roleWeights: {
+      viewer: 85,
+      recorder: 10,
+      operator: 3,
+      official: 2,
+    },
+  },
+
+  /** 天候連携(Open-Meteo・キー不要)。座標は東京固定 */
+  weather: {
+    url: 'https://api.open-meteo.com/v1/forecast',
+    latitude: 35.68,
+    longitude: 139.76,
+    /** 天候の再取得間隔 */
+    refreshMs: 30 * 60 * 1000,
   },
 
   /** 描画設定 */
