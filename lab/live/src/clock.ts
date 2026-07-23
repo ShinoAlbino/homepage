@@ -30,8 +30,14 @@ const ORBITS: Array<{ rx: number; ry: number; tilt: number; period: Period; cls:
   { rx: 15, ry: 10, tilt: 60, period: 'fast', cls: 'planet-fast', r: 1.8 },
 ];
 
-/** 24時間枠(外周)の楕円と時間帯バンド。schedule.jsonの境界と揃える(ほぼ正円) */
-const DAY_RING = { rx: 52, ry: 47, tilt: -6 };
+/** 24時間枠(外周)の時間帯バンド。schedule.jsonの境界と揃える(正円) */
+const DAY_RING = { rx: 50, ry: 50, tilt: 0 };
+
+/** 中央星の色: 0時/24時=紺 → 12時=紅 のグラデーション用 */
+const CORE_NAVY = [36, 48, 106]; // 紺
+const CORE_CRIMSON = [192, 66, 78]; // 紅
+const mix = (a: number[], b: number[], t: number) =>
+  a.map((v, i) => Math.round(v + (b[i] - v) * t));
 const BANDS = [
   { from: 1, to: 6, cls: 'band-midnight' }, // 深夜: 濃紺
   { from: 6, to: 11, cls: 'band-morning' }, // 明け方: 淡い金/桜
@@ -49,9 +55,9 @@ function orbitPoint(rx: number, ry: number, tiltDeg: number, phi: number): [numb
   return [CX + (x0 * c - y0 * s), CY + (x0 * s + y0 * c)];
 }
 
-/** 24時間枠上の座標。正午=最上部・深夜0時=最下部、朝は右・夕は左 */
+/** 24時間枠上の座標。0時=真上、時計回り(6時=右・12時=下・18時=左) */
 function dayPoint(hour: number): [number, number] {
-  const phi = Math.PI - (hour / 24) * Math.PI * 2;
+  const phi = (hour / 24) * Math.PI * 2;
   return orbitPoint(DAY_RING.rx, DAY_RING.ry, DAY_RING.tilt, phi);
 }
 
@@ -83,6 +89,7 @@ function phaseFor(period: Period, hoursFloat: number): number {
 export class OrbitClock {
   private planets: Array<{ g: SVGGElement; orbit: (typeof ORBITS)[number] }> = [];
   private core: SVGGElement;
+  private star: SVGCircleElement;
   private sunMoon: SVGGElement;
   private sun = this.buildSun();
   private moon = this.buildMoon();
@@ -131,14 +138,14 @@ export class OrbitClock {
     this.sonar.setAttribute('class', 'orbit-sonar');
     svg.appendChild(this.sonar);
 
-    // 中心の恒星(AM/PMで色替え)
+    // 中心の恒星(時刻で紺↔紅にグラデーション)
     this.core = document.createElementNS(SVG_NS, 'g');
     this.core.setAttribute('class', 'orbit-core');
-    const star = document.createElementNS(SVG_NS, 'circle');
-    star.setAttribute('cx', String(CX));
-    star.setAttribute('cy', String(CY));
-    star.setAttribute('r', '5');
-    this.core.appendChild(star);
+    this.star = document.createElementNS(SVG_NS, 'circle');
+    this.star.setAttribute('cx', String(CX));
+    this.star.setAttribute('cy', String(CY));
+    this.star.setAttribute('r', '5');
+    this.core.appendChild(this.star);
     svg.appendChild(this.core);
 
     // 24時間枠上を回る太陽/月マーカー
@@ -259,10 +266,11 @@ export class OrbitClock {
       g.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)})`);
     }
 
-    // 中心の恒星: AM(0..12)/PM(12..24)で色替え
-    const pm = hourHand >= 12;
-    this.core.classList.toggle('is-am', !pm);
-    this.core.classList.toggle('is-pm', pm);
+    // 中心の恒星: 0時/24時=紺 → 12時=紅 のグラデーション
+    const t = 1 - Math.abs(hourHand - 12) / 12; // 0(0/24時)〜1(12時)
+    const [r, g, b] = mix(CORE_NAVY, CORE_CRIMSON, t);
+    this.star.style.fill = `rgb(${r}, ${g}, ${b})`;
+    this.star.style.filter = `drop-shadow(0 0 6px rgba(${r}, ${g}, ${b}, 0.85))`;
 
     const w = this.getWeather();
     (['clear', 'cloud', 'rain', 'snow'] as Weather[]).forEach((k) => {

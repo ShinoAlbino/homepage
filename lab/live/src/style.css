@@ -345,15 +345,7 @@ button { font-family: inherit; cursor: pointer; }
   stroke-width: 0.7;
 }
 
-/* 中心の恒星: AM/PMで色替え(明滅はさせず一定) */
-.orbit-core.is-am circle {
-  fill: #f2d79a;                              /* AM: 淡い金(朝〜昼) */
-  filter: drop-shadow(0 0 6px rgba(242, 215, 154, 0.85));
-}
-.orbit-core.is-pm circle {
-  fill: #8f7bd6;                              /* PM: 藍紫(午後〜夜) */
-  filter: drop-shadow(0 0 6px rgba(143, 123, 214, 0.85));
-}
+/* 中心の恒星: 時刻で紺↔紅にグラデーション(fill/filterはJSで設定)。明滅はさせず一定 */
 
 /* 惑星マーカー(座標はJSでtransform。rAFで滑らかに公転)。
    明暗(点滅)は惑星だけに付与し、周期をずらして瞬く */
