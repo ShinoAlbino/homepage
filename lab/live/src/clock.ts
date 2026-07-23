@@ -97,6 +97,36 @@ export class OrbitClock {
     svg.setAttribute('viewBox', '0 0 120 120');
     svg.classList.add('orbit-svg');
 
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // スイープ用グラデ定義
+    const defs = document.createElementNS(SVG_NS, 'defs');
+    defs.innerHTML =
+      '<linearGradient id="sweepGrad" x1="0" y1="1" x2="0" y2="0">' +
+      '<stop offset="0" stop-color="#6fd6e0" stop-opacity="0"/>' +
+      '<stop offset="1" stop-color="#6fd6e0" stop-opacity="0.35"/>' +
+      '</linearGradient>';
+    svg.appendChild(defs);
+
+    // レーダースイープ(中心から回る扇。reduced-motion時は出さない)
+    if (!reduce) {
+      const sweep = document.createElementNS(SVG_NS, 'g');
+      sweep.setAttribute('class', 'orbit-sweep');
+      const wedge = document.createElementNS(SVG_NS, 'path');
+      wedge.setAttribute('d', 'M60,60 L51.3,10.8 A50,50 0 0 1 68.7,10.8 Z');
+      wedge.setAttribute('fill', 'url(#sweepGrad)');
+      sweep.appendChild(wedge);
+      const anim = document.createElementNS(SVG_NS, 'animateTransform');
+      anim.setAttribute('attributeName', 'transform');
+      anim.setAttribute('type', 'rotate');
+      anim.setAttribute('from', '0 60 60');
+      anim.setAttribute('to', '360 60 60');
+      anim.setAttribute('dur', '8s');
+      anim.setAttribute('repeatCount', 'indefinite');
+      sweep.appendChild(anim);
+      svg.appendChild(sweep);
+    }
+
     // 外周: 24時間枠の4色バンド
     for (const b of BANDS) {
       const p = document.createElementNS(SVG_NS, 'path');
@@ -153,7 +183,7 @@ export class OrbitClock {
       snow: this.buildSnow(),
     };
     const wxGroup = document.createElementNS(SVG_NS, 'g');
-    wxGroup.setAttribute('transform', `translate(${CX} ${CY + 13})`);
+    wxGroup.setAttribute('transform', 'translate(102 16)'); // 右上
     wxGroup.setAttribute('class', 'orbit-wx');
     Object.values(this.wx).forEach((g) => {
       g.style.display = 'none';

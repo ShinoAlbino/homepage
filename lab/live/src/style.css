@@ -297,11 +297,57 @@ button { font-family: inherit; cursor: pointer; }
   aspect-ratio: 1;
   pointer-events: none;
   filter: drop-shadow(0 0 6px rgba(111, 214, 224, 0.25));
+  animation: holo-glow 4.5s ease-in-out infinite;
 }
-.orbit-svg { width: 100%; height: 100%; display: block; }
+/* ホログラムのスキャンライン(細い横縞がゆっくり流れる) */
+.orbit-clock::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(111, 214, 224, 0.06) 0px,
+    rgba(111, 214, 224, 0.06) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  animation: holo-scan 6s linear infinite;
+}
+.orbit-svg {
+  width: 100%; height: 100%; display: block;
+  animation: holo-flicker 5s steps(1) infinite;
+}
+/* レーダースイープ */
+.orbit-sweep { filter: drop-shadow(0 0 3px rgba(111, 214, 224, 0.5)); }
+
+@keyframes holo-glow {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(111, 214, 224, 0.2)); }
+  50%      { filter: drop-shadow(0 0 11px rgba(111, 214, 224, 0.42)); }
+}
+@keyframes holo-scan {
+  from { background-position: 0 0; }
+  to   { background-position: 0 8px; }
+}
+@keyframes holo-flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93% { opacity: 0.82; }
+  95% { opacity: 0.96; }
+  97% { opacity: 0.78; }
+}
 
 /* 外周: 24時間枠の時間帯バンド(4色) */
-.band-arc { stroke-width: 2; stroke-linecap: round; opacity: 0.9; }
+.band-arc { stroke-width: 2; stroke-linecap: round; opacity: 0.9; animation: band-shimmer 5.5s ease-in-out infinite; }
+.band-daytime { animation-delay: -1s; }
+.band-night { animation-delay: -2s; }
+.band-midnight { animation-delay: -3s; }
+@keyframes band-shimmer {
+  0%, 100% { opacity: 0.78; }
+  50%      { opacity: 1; }
+}
 .band-morning  { stroke: #f0d4a8; }        /* 明け方: 淡い金/桜 */
 .band-daytime  { stroke: #bfe9ef; }        /* 昼: cyan/白 */
 .band-night    { stroke: #7b7bd6; }        /* 夜: 藍/紫 */
@@ -314,7 +360,12 @@ button { font-family: inherit; cursor: pointer; }
   stroke-width: 0.7;
 }
 
-/* 中心の恒星: AM/PMで色替え */
+/* 中心の恒星: AM/PMで色替え + 明滅パルス */
+.orbit-core circle { animation: core-pulse 3.4s ease-in-out infinite; }
+@keyframes core-pulse {
+  0%, 100% { opacity: 0.8; }
+  50%      { opacity: 1; }
+}
 .orbit-core.is-am circle {
   fill: #f2d79a;                              /* AM: 淡い金(朝〜昼) */
   filter: drop-shadow(0 0 6px rgba(242, 215, 154, 0.85));
@@ -674,4 +725,6 @@ button { font-family: inherit; cursor: pointer; }
   .fallback-konome { animation: none; }
   .comment { animation: none; }
   .gate { transition: none; }
+  .orbit-clock, .orbit-clock::after, .orbit-svg,
+  .band-arc, .orbit-core circle { animation: none; }
 }
