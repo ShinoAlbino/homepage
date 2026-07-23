@@ -30,8 +30,8 @@ const ORBITS: Array<{ rx: number; ry: number; tilt: number; period: Period; cls:
   { rx: 15, ry: 10, tilt: 60, period: 'fast', cls: 'planet-fast', r: 1.8 },
 ];
 
-/** 24時間枠(外周)の楕円と時間帯バンド。schedule.jsonの境界と揃える */
-const DAY_RING = { rx: 52, ry: 36, tilt: -8 };
+/** 24時間枠(外周)の楕円と時間帯バンド。schedule.jsonの境界と揃える(ほぼ正円) */
+const DAY_RING = { rx: 52, ry: 47, tilt: -6 };
 const BANDS = [
   { from: 1, to: 6, cls: 'band-midnight' }, // 深夜: 濃紺
   { from: 6, to: 11, cls: 'band-morning' }, // 明け方: 淡い金/桜
@@ -182,7 +182,7 @@ export class OrbitClock {
       this.timer = window.setInterval(() => this.update(), 30_000);
     } else {
       this.animated = true;
-      this.nextPingAt = performance.now() + rand(2000, 5000);
+      this.nextPingAt = performance.now() + rand(4000, 9000);
       const loop = () => {
         this.update();
         this.updateSonar(performance.now());
@@ -194,7 +194,7 @@ export class OrbitClock {
 
   /** 不定期にソナーのリングを放ち、各リングの拡大・減衰を進める */
   private updateSonar(now: number): void {
-    const DUR = 2000; // 1リングの寿命(ms)
+    const DUR = 3800; // 1リングの寿命(ms)。大きいほどゆっくり広がる
     if (now >= this.nextPingAt) {
       if (this.pings.length < 4) {
         const el = document.createElementNS(SVG_NS, 'circle');
@@ -205,7 +205,7 @@ export class OrbitClock {
         this.sonar.appendChild(el);
         this.pings.push({ el, start: now });
       }
-      this.nextPingAt = now + rand(3500, 9000); // 次のping間隔(不定期)
+      this.nextPingAt = now + rand(11000, 26000); // 次のping間隔(不定期・長め)
     }
     for (let i = this.pings.length - 1; i >= 0; i--) {
       const p = this.pings[i];
