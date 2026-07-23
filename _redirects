@@ -1,0 +1,2 @@
+# 旧URL(/lab/live/dist/)を新URL(/lab/live/)へ恒久リダイレクト
+/lab/live/dist/* /lab/live/:splat 301
