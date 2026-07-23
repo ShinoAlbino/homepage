@@ -305,14 +305,15 @@ button { font-family: inherit; cursor: pointer; }
   background:
     linear-gradient(180deg, rgba(6, 8, 18, 0.28) 0%, transparent 28%, transparent 55%, rgba(6, 8, 18, 0.62) 100%);
 }
-.stage { position: absolute; inset: 0; z-index: 1; }
+/* 重ね順(前面→背面): 字幕(4) > キャラクター(3) > 時計(2) > 背景 */
+.stage { position: absolute; inset: 0; z-index: 3; }
 .live2d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
 /* ---------- 公転モデル風ホログラム時計(UIフェーズ2-5) ---------- */
 .orbit-clock {
   position: absolute;
   top: 0.7rem; right: 0.9rem;
-  z-index: 3;
+  z-index: 2;
   width: clamp(152px, 23vw, 224px);
   aspect-ratio: 1;
   pointer-events: none;
@@ -446,6 +447,7 @@ button { font-family: inherit; cursor: pointer; }
 /* 字幕テロップ */
 .telop {
   position: absolute;
+  z-index: 4; /* 最前面(キャラクターより前) */
   left: 50%;
   bottom: 6%;
   transform: translateX(-50%);
