@@ -29,6 +29,7 @@ export class UI {
   private helpDialog = document.getElementById('help-dialog') as HTMLDialogElement;
   private fanboxBtn = document.getElementById('fanbox-button') as HTMLAnchorElement;
   private gateBackBtn = document.getElementById('gate-back') as HTMLAnchorElement;
+  private gateExitBtn = document.getElementById('gate-exit') as HTMLAnchorElement;
   private liveBackBtn = document.getElementById('live-back') as HTMLButtonElement;
 
   readonly stageEl = document.getElementById('stage') as HTMLElement;
@@ -39,8 +40,9 @@ export class UI {
     this.fanboxBtn.href = SITE_CONFIG.fanboxUrl;
     this.helpBtn.addEventListener('click', () => this.helpDialog.showModal());
 
-    // 戻るボタン(UIフェーズ2-4): 入口→サイトトップ / LIVE→入口(同一ページ=リロードで復帰)
+    // 戻るボタン(UIフェーズ2-4): 入口→箱庭研究所 / LIVE→入口(同一ページ=リロードで復帰)
     this.gateBackBtn.href = SITE_CONFIG.nav.backTargetEntry;
+    this.gateExitBtn.href = SITE_CONFIG.nav.backTargetEntry; // 退室=箱庭研究所へ
     this.liveBackBtn.addEventListener('click', () => location.reload());
 
     // 観測室背景(bg.webp)を入口とLIVEステージに敷く。base:'./'準拠でパス解決

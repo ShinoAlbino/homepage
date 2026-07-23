@@ -42,9 +42,12 @@
         <p class="gate-status" aria-hidden="true">
           <span class="gate-status-dot"></span>SYSTEM ONLINE ／ 観測室 接続待機
         </p>
-        <button id="gate-enter" class="gate-button" type="button">
-          <span class="gate-dot" aria-hidden="true"></span>入室
-        </button>
+        <div class="gate-buttons">
+          <button id="gate-enter" class="gate-button" type="button">
+            <span class="gate-dot" aria-hidden="true"></span>入室
+          </button>
+          <a id="gate-exit" class="gate-button gate-button-sub" href="#">退室</a>
+        </div>
         <p class="gate-note">※ 入室すると音声が再生される場合があります</p>
       </div>
     </div>
