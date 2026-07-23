@@ -299,23 +299,34 @@ button { font-family: inherit; cursor: pointer; }
   filter: drop-shadow(0 0 6px rgba(111, 214, 224, 0.25));
 }
 .orbit-svg { width: 100%; height: 100%; display: block; }
-.orbit-arc { stroke-width: 1.4; stroke-linecap: round; opacity: 0.85; }
-.band-morning  { stroke: #f0d4a8; }        /* 明け方: 淡い金/桜 */
-.band-daytime  { stroke: #bfe9ef; opacity: 0.95; } /* 昼: cyan/白 */
-.band-night    { stroke: #7b7bd6; }        /* 夜: 藍/紫 */
-.band-midnight { stroke: #3a4680; }        /* 深夜: 濃紺 */
 
-.orbit-core circle {
-  fill: var(--holo);
-  filter: drop-shadow(0 0 5px rgba(111, 214, 224, 0.8));
+/* 楕円軌道リング(薄い) */
+.orbit-ring {
+  fill: none;
+  stroke: rgba(111, 214, 224, 0.28);
+  stroke-width: 0.7;
 }
-/* 惑星マーカー: 座標はJSでtransform、CSS transitionで滑らかに移動 */
-.orbit-planet { transition: transform 1.2s ease; }
+
+/* 中心の恒星: AM/PMで色替え */
+.orbit-core.is-am circle {
+  fill: #f2d79a;                              /* AM: 淡い金(朝〜昼) */
+  filter: drop-shadow(0 0 6px rgba(242, 215, 154, 0.85));
+}
+.orbit-core.is-pm circle {
+  fill: #8f7bd6;                              /* PM: 藍紫(午後〜夜) */
+  filter: drop-shadow(0 0 6px rgba(143, 123, 214, 0.85));
+}
+
+/* 惑星マーカー(座標はJSでtransform。rAFで滑らかに公転) */
 .planet-sun circle { fill: #ffe6b0; }
 .planet-sun line { stroke: #ffd98a; stroke-width: 1.1; stroke-linecap: round; }
 .planet-sun { filter: drop-shadow(0 0 5px rgba(255, 216, 138, 0.85)); }
 .planet-moon path { fill: #d7e6f2; }
 .planet-moon { filter: drop-shadow(0 0 5px rgba(178, 198, 230, 0.7)); }
+/* 分針=cyan / 15分=teal / 秒針風=白 で見分けやすく */
+.planet-minute circle { fill: #7fd6e0; filter: drop-shadow(0 0 4px rgba(127, 214, 224, 0.8)); }
+.planet-quarter circle { fill: #9ad0c0; filter: drop-shadow(0 0 3px rgba(154, 208, 192, 0.7)); }
+.planet-fast circle { fill: #eef6ff; filter: drop-shadow(0 0 3px rgba(238, 246, 255, 0.9)); }
 
 .orbit-wx { filter: drop-shadow(0 0 4px rgba(111, 214, 224, 0.6)); }
 .wx-clear circle { fill: #ffe6b0; }
@@ -323,10 +334,6 @@ button { font-family: inherit; cursor: pointer; }
 .wx-cloud path { fill: none; stroke: var(--holo); stroke-width: 1.4; stroke-linejoin: round; }
 .wx-rain path { fill: var(--holo); }
 .wx-snow line { stroke: #dffafd; stroke-width: 1.2; stroke-linecap: round; }
-
-@media (prefers-reduced-motion: reduce) {
-  .orbit-planet { transition: none; }
-}
 
 /* 微粒子: 画像アセット不使用、CSSのみで星屑がゆっくり流れる(仕様§7) */
 .stage-particles {

@@ -1,48 +1,63 @@
 import type { Weather } from './types';
 
 /**
- * 公転モデル風ホログラム時計(UIフェーズ2-5)。
- * 文字を一切使わず、恒星まわりを24時間で1周する惑星の「位置」で時刻を、
- * 軌道リングの4色弧で時間帯(1日4分割)を、惑星グリフ(昼=太陽/夜=月)で昼夜を表す。
- * 天気は中心上部に小さなアイコングリフで示す(取得失敗時は非表示)。
+ * 公転モデル風ホログラム時計(UIフェーズ2-5 / オーラリー版)。
+ * 文字を一切使わず、複数の惑星の「公転位置」で時刻を表す。
+ *  - 時針(hour)  : 12時間で1周。昼=太陽/夜=月グリフ。
+ *  - 分針(minute): 1時間で1周。
+ *  - 15分針      : 15分で1周。
+ *  - 秒針風(fast): 1分で1周。
+ * 各惑星は半径・傾きの異なる楕円軌道に乗せ、天球儀のような立体感を出す。
+ * 中心の恒星の色はAM/PMで切替。天気は中心上部に小さなアイコングリフで示す。
  * 外部ライブラリ不使用・SVG+少量JSで自己完結。
  */
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const CX = 60;
 const CY = 60;
-const RX = 44; // 楕円の横半径(公転モデルらしく横長=少し傾けた見た目)
-const RY = 30; // 縦半径
 
-/** schedule.json と揃えた時間帯4分割の境界と色 */
-const BANDS = [
-  { from: 1, to: 6, cls: 'band-midnight' }, // 深夜: 濃紺
-  { from: 6, to: 11, cls: 'band-morning' }, // 明け方: 淡い金/桜
-  { from: 11, to: 18, cls: 'band-daytime' }, // 昼: cyan/白
-  { from: 18, to: 25, cls: 'band-night' }, // 夜(18→翌1): 藍/紫
-] as const;
+type Period = 'hour' | 'minute' | 'quarter' | 'fast';
 
-/** 時刻h(0..24)→軌道上の座標。正午=最上部・深夜0時=最下部(未傾斜のローカル座標) */
-function pointAt(h: number): [number, number] {
-  const a = (h / 24) * Math.PI * 2;
-  return [CX + RX * Math.sin(a), CY + RY * Math.cos(a)];
+/** 各軌道: 横半径rx・縦半径ry・傾きtilt(度)・公転周期 */
+const ORBITS: Array<{ rx: number; ry: number; tilt: number; period: Period; cls: string }> = [
+  { rx: 45, ry: 30, tilt: -16, period: 'hour', cls: 'planet-hour' },
+  { rx: 35, ry: 26, tilt: 26, period: 'minute', cls: 'planet-minute' },
+  { rx: 26, ry: 20, tilt: -42, period: 'quarter', cls: 'planet-quarter' },
+  { rx: 17, ry: 13, tilt: 58, period: 'fast', cls: 'planet-fast' },
+];
+
+/** 楕円軌道上の座標。φ=0で最上部、時計回りに増加。tiltで傾ける */
+function orbitPoint(rx: number, ry: number, tiltDeg: number, phi: number): [number, number] {
+  const x0 = rx * Math.sin(phi);
+  const y0 = -ry * Math.cos(phi);
+  const t = (tiltDeg * Math.PI) / 180;
+  const c = Math.cos(t);
+  const s = Math.sin(t);
+  return [CX + (x0 * c - y0 * s), CY + (x0 * s + y0 * c)];
 }
 
-/** from〜to の弧を細かくサンプリングしてパス文字列を作る */
-function arcPath(from: number, to: number): string {
-  let d = '';
-  for (let h = from; h <= to + 0.001; h += 0.2) {
-    const [x, y] = pointAt(h);
-    d += `${d === '' ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)} `;
+/** 各周期に対応する位相角(rad)を、時刻(小数時間)から求める */
+function phaseFor(period: Period, hoursFloat: number): number {
+  const frac = (v: number) => v - Math.floor(v);
+  switch (period) {
+    case 'hour':
+      return frac((hoursFloat % 12) / 12) * Math.PI * 2; // 12時間で1周
+    case 'minute':
+      return frac(hoursFloat) * Math.PI * 2; // 1時間で1周
+    case 'quarter':
+      return frac(hoursFloat / 0.25) * Math.PI * 2; // 15分で1周
+    case 'fast':
+      return frac(hoursFloat * 60) * Math.PI * 2; // 1分で1周
   }
-  return d.trim();
 }
 
 export class OrbitClock {
-  private planet: SVGGElement;
-  private sun: SVGGElement;
-  private moon: SVGGElement;
+  private planets: Array<{ g: SVGGElement; orbit: (typeof ORBITS)[number] }> = [];
+  private core: SVGGElement;
+  private sun = this.buildSun();
+  private moon = this.buildMoon();
   private wx: Record<Weather, SVGGElement>;
+  private raf = 0;
   private timer: number | null = null;
 
   constructor(
@@ -54,34 +69,42 @@ export class OrbitClock {
     svg.setAttribute('viewBox', '0 0 120 120');
     svg.classList.add('orbit-svg');
 
-    // 軌道群(少し傾けて立体感)。惑星も同群に入れ、傾きを共有する
-    const tilt = document.createElementNS(SVG_NS, 'g');
-    tilt.setAttribute('transform', `rotate(-16 ${CX} ${CY})`);
-
-    for (const b of BANDS) {
-      const p = document.createElementNS(SVG_NS, 'path');
-      p.setAttribute('d', arcPath(b.from, b.to));
-      p.setAttribute('class', `orbit-arc ${b.cls}`);
-      p.setAttribute('fill', 'none');
-      tilt.appendChild(p);
+    // 各軌道の楕円リング(薄い)と惑星
+    for (const o of ORBITS) {
+      const ring = document.createElementNS(SVG_NS, 'ellipse');
+      ring.setAttribute('cx', String(CX));
+      ring.setAttribute('cy', String(CY));
+      ring.setAttribute('rx', String(o.rx));
+      ring.setAttribute('ry', String(o.ry));
+      ring.setAttribute('transform', `rotate(${o.tilt} ${CX} ${CY})`);
+      ring.setAttribute('class', 'orbit-ring');
+      svg.appendChild(ring);
     }
 
-    // 惑星マーカー(昼=太陽/夜=月を切替)
-    this.planet = document.createElementNS(SVG_NS, 'g');
-    this.planet.setAttribute('class', 'orbit-planet');
-    this.sun = this.buildSun();
-    this.moon = this.buildMoon();
-    this.planet.append(this.sun, this.moon);
-    tilt.appendChild(this.planet);
-
-    // 中心の恒星(太陽グリフ)
-    const core = document.createElementNS(SVG_NS, 'g');
-    core.setAttribute('class', 'orbit-core');
+    // 中心の恒星(AM/PMで色替え)
+    this.core = document.createElementNS(SVG_NS, 'g');
+    this.core.setAttribute('class', 'orbit-core');
     const star = document.createElementNS(SVG_NS, 'circle');
     star.setAttribute('cx', String(CX));
     star.setAttribute('cy', String(CY));
     star.setAttribute('r', '5');
-    core.appendChild(star);
+    this.core.appendChild(star);
+    svg.appendChild(this.core);
+
+    // 惑星群(リングより前面)
+    for (const o of ORBITS) {
+      const g = document.createElementNS(SVG_NS, 'g');
+      g.setAttribute('class', `orbit-planet ${o.cls}`);
+      if (o.period === 'hour') {
+        g.append(this.sun, this.moon);
+      } else {
+        const c = document.createElementNS(SVG_NS, 'circle');
+        c.setAttribute('r', o.period === 'minute' ? '3' : o.period === 'quarter' ? '2.4' : '1.9');
+        g.appendChild(c);
+      }
+      svg.appendChild(g);
+      this.planets.push({ g, orbit: o });
+    }
 
     // 天気グリフ(中心上部・アイコンのみ。既定は全非表示)
     this.wx = {
@@ -97,29 +120,62 @@ export class OrbitClock {
       g.style.display = 'none';
       wxGroup.appendChild(g);
     });
+    svg.appendChild(wxGroup);
 
-    svg.append(tilt, core, wxGroup);
     this.root.appendChild(svg);
 
-    this.update();
-    // 45秒ごとに再計算(CSS transitionで滑らかに移動)
-    this.timer = window.setInterval(() => this.update(), 45_000);
+    // reduced-motion時は連続アニメせず、30秒ごとにスナップ更新
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      this.update();
+      this.timer = window.setInterval(() => this.update(), 30_000);
+    } else {
+      const loop = () => {
+        this.update();
+        this.raf = requestAnimationFrame(loop);
+      };
+      this.raf = requestAnimationFrame(loop);
+    }
   }
 
   dispose(): void {
+    if (this.raf) cancelAnimationFrame(this.raf);
     if (this.timer !== null) window.clearInterval(this.timer);
+    this.raf = 0;
     this.timer = null;
   }
 
+  /** 昼夜・AM/PMや時針の位置は getHour()(?hour=で偽装可)、分/秒は実時刻で滑らかに動かす */
+  private nowHoursFloat(): { hourHand: number; subHand: number } {
+    const hourHand = ((this.getHour() % 24) + 24) % 24; // 偽装対応(分解能=分)
+    const nowJst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    const subHand =
+      nowJst.getUTCHours() +
+      nowJst.getUTCMinutes() / 60 +
+      nowJst.getUTCSeconds() / 3600 +
+      nowJst.getUTCMilliseconds() / 3.6e6;
+    return { hourHand, subHand };
+  }
+
   private update(): void {
-    const h = ((this.getHour() % 24) + 24) % 24;
-    const [x, y] = pointAt(h);
-    this.planet.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px)`;
+    const { hourHand, subHand } = this.nowHoursFloat();
+
+    for (const { g, orbit } of this.planets) {
+      // 時針は偽装可能な hourHand、それ以外は実時刻の subHand を使う
+      const base = orbit.period === 'hour' ? hourHand : subHand;
+      const phi = phaseFor(orbit.period, base);
+      const [x, y] = orbitPoint(orbit.rx, orbit.ry, orbit.tilt, phi);
+      g.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)})`);
+    }
 
     // 昼(6..18)は太陽、夜は月
-    const day = h >= 6 && h < 18;
+    const day = hourHand >= 6 && hourHand < 18;
     this.sun.style.display = day ? '' : 'none';
     this.moon.style.display = day ? 'none' : '';
+
+    // 中心の恒星: AM(0..12)/PM(12..24)で色替え
+    const pm = hourHand >= 12;
+    this.core.classList.toggle('is-am', !pm);
+    this.core.classList.toggle('is-pm', pm);
 
     const w = this.getWeather();
     (['clear', 'cloud', 'rain', 'snow'] as Weather[]).forEach((k) => {
@@ -156,7 +212,6 @@ export class OrbitClock {
   }
 
   private buildClear(): SVGGElement {
-    // 晴れ: 光球+短い光条
     const g = document.createElementNS(SVG_NS, 'g');
     g.setAttribute('class', 'wx-clear');
     const c = document.createElementNS(SVG_NS, 'circle');
@@ -178,10 +233,7 @@ export class OrbitClock {
     const g = document.createElementNS(SVG_NS, 'g');
     g.setAttribute('class', 'wx-cloud');
     const p = document.createElementNS(SVG_NS, 'path');
-    p.setAttribute(
-      'd',
-      'M -6,3 Q -6,-1 -2.5,-1 Q -1.5,-4 2,-3 Q 6,-3 6,1 Q 8,1 7,3 Z',
-    );
+    p.setAttribute('d', 'M -6,3 Q -6,-1 -2.5,-1 Q -1.5,-4 2,-3 Q 6,-3 6,1 Q 8,1 7,3 Z');
     g.appendChild(p);
     return g;
   }
@@ -190,7 +242,6 @@ export class OrbitClock {
     const g = document.createElementNS(SVG_NS, 'g');
     g.setAttribute('class', 'wx-rain');
     const p = document.createElementNS(SVG_NS, 'path');
-    // 雫
     p.setAttribute('d', 'M 0,-4 C 3,0 3,4 0,4 C -3,4 -3,0 0,-4 Z');
     g.appendChild(p);
     return g;
