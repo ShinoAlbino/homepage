@@ -3,10 +3,12 @@ import type { Weather } from './types';
 /**
  * 公転モデル風ホログラム時計(UIフェーズ2-5 / オーラリー版)。
  * 文字を一切使わず、複数の惑星の「公転位置」で時刻を表す。
- *  - 時針(hour)  : 12時間で1周。昼=太陽/夜=月グリフ。
- *  - 分針(minute): 1時間で1周。
- *  - 15分針      : 15分で1周。
- *  - 秒針風(fast): 1分で1周。
+ *  - 外周の24時間枠 : 4色の時間帯バンド(深夜/明け方/昼/夜)。その上を
+ *                     太陽(昼)/月(夜)マーカーが24時間で1周し、今の時間帯を示す。
+ *  - 時針(hour)     : 12時間で1周。
+ *  - 分針(minute)   : 1時間で1周。
+ *  - 15分針(quarter): 15分で1周。
+ *  - 秒針風(fast)   : 1分で1周。
  * 各惑星は半径・傾きの異なる楕円軌道に乗せ、天球儀のような立体感を出す。
  * 中心の恒星の色はAM/PMで切替。天気は中心上部に小さなアイコングリフで示す。
  * 外部ライブラリ不使用・SVG+少量JSで自己完結。
@@ -18,13 +20,22 @@ const CY = 60;
 
 type Period = 'hour' | 'minute' | 'quarter' | 'fast';
 
-/** 各軌道: 横半径rx・縦半径ry・傾きtilt(度)・公転周期 */
-const ORBITS: Array<{ rx: number; ry: number; tilt: number; period: Period; cls: string }> = [
-  { rx: 45, ry: 30, tilt: -16, period: 'hour', cls: 'planet-hour' },
-  { rx: 35, ry: 26, tilt: 26, period: 'minute', cls: 'planet-minute' },
-  { rx: 26, ry: 20, tilt: -42, period: 'quarter', cls: 'planet-quarter' },
-  { rx: 17, ry: 13, tilt: 58, period: 'fast', cls: 'planet-fast' },
+/** 内側の公転惑星: 横半径rx・縦半径ry・傾きtilt(度)・公転周期 */
+const ORBITS: Array<{ rx: number; ry: number; tilt: number; period: Period; cls: string; r: number }> = [
+  { rx: 41, ry: 27, tilt: -20, period: 'hour', cls: 'planet-hour', r: 3.4 },
+  { rx: 32, ry: 23, tilt: 24, period: 'minute', cls: 'planet-minute', r: 2.8 },
+  { rx: 23, ry: 16, tilt: -44, period: 'quarter', cls: 'planet-quarter', r: 2.3 },
+  { rx: 15, ry: 10, tilt: 60, period: 'fast', cls: 'planet-fast', r: 1.8 },
 ];
+
+/** 24時間枠(外周)の楕円と時間帯バンド。schedule.jsonの境界と揃える */
+const DAY_RING = { rx: 52, ry: 36, tilt: -8 };
+const BANDS = [
+  { from: 1, to: 6, cls: 'band-midnight' }, // 深夜: 濃紺
+  { from: 6, to: 11, cls: 'band-morning' }, // 明け方: 淡い金/桜
+  { from: 11, to: 18, cls: 'band-daytime' }, // 昼: cyan/白
+  { from: 18, to: 25, cls: 'band-night' }, // 夜(18→翌1): 藍/紫
+] as const;
 
 /** 楕円軌道上の座標。φ=0で最上部、時計回りに増加。tiltで傾ける */
 function orbitPoint(rx: number, ry: number, tiltDeg: number, phi: number): [number, number] {
@@ -34,6 +45,22 @@ function orbitPoint(rx: number, ry: number, tiltDeg: number, phi: number): [numb
   const c = Math.cos(t);
   const s = Math.sin(t);
   return [CX + (x0 * c - y0 * s), CY + (x0 * s + y0 * c)];
+}
+
+/** 24時間枠上の座標。正午=最上部・深夜0時=最下部、朝は右・夕は左 */
+function dayPoint(hour: number): [number, number] {
+  const phi = Math.PI - (hour / 24) * Math.PI * 2;
+  return orbitPoint(DAY_RING.rx, DAY_RING.ry, DAY_RING.tilt, phi);
+}
+
+/** from〜to(時)の弧を細かくサンプリングして24時間枠上のパス文字列を作る */
+function bandPath(from: number, to: number): string {
+  let d = '';
+  for (let h = from; h <= to + 0.001; h += 0.2) {
+    const [x, y] = dayPoint(h);
+    d += `${d === '' ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)} `;
+  }
+  return d.trim();
 }
 
 /** 各周期に対応する位相角(rad)を、時刻(小数時間)から求める */
@@ -54,6 +81,7 @@ function phaseFor(period: Period, hoursFloat: number): number {
 export class OrbitClock {
   private planets: Array<{ g: SVGGElement; orbit: (typeof ORBITS)[number] }> = [];
   private core: SVGGElement;
+  private sunMoon: SVGGElement;
   private sun = this.buildSun();
   private moon = this.buildMoon();
   private wx: Record<Weather, SVGGElement>;
@@ -69,7 +97,16 @@ export class OrbitClock {
     svg.setAttribute('viewBox', '0 0 120 120');
     svg.classList.add('orbit-svg');
 
-    // 各軌道の楕円リング(薄い)と惑星
+    // 外周: 24時間枠の4色バンド
+    for (const b of BANDS) {
+      const p = document.createElementNS(SVG_NS, 'path');
+      p.setAttribute('d', bandPath(b.from, b.to));
+      p.setAttribute('class', `band-arc ${b.cls}`);
+      p.setAttribute('fill', 'none');
+      svg.appendChild(p);
+    }
+
+    // 内側の各軌道の楕円リング(薄い)
     for (const o of ORBITS) {
       const ring = document.createElementNS(SVG_NS, 'ellipse');
       ring.setAttribute('cx', String(CX));
@@ -91,17 +128,19 @@ export class OrbitClock {
     this.core.appendChild(star);
     svg.appendChild(this.core);
 
-    // 惑星群(リングより前面)
+    // 24時間枠上を回る太陽/月マーカー
+    this.sunMoon = document.createElementNS(SVG_NS, 'g');
+    this.sunMoon.setAttribute('class', 'orbit-planet planet-day');
+    this.sunMoon.append(this.sun, this.moon);
+    svg.appendChild(this.sunMoon);
+
+    // 内側の公転惑星(リングより前面)
     for (const o of ORBITS) {
       const g = document.createElementNS(SVG_NS, 'g');
       g.setAttribute('class', `orbit-planet ${o.cls}`);
-      if (o.period === 'hour') {
-        g.append(this.sun, this.moon);
-      } else {
-        const c = document.createElementNS(SVG_NS, 'circle');
-        c.setAttribute('r', o.period === 'minute' ? '3' : o.period === 'quarter' ? '2.4' : '1.9');
-        g.appendChild(c);
-      }
+      const c = document.createElementNS(SVG_NS, 'circle');
+      c.setAttribute('r', String(o.r));
+      g.appendChild(c);
       svg.appendChild(g);
       this.planets.push({ g, orbit: o });
     }
@@ -114,7 +153,7 @@ export class OrbitClock {
       snow: this.buildSnow(),
     };
     const wxGroup = document.createElementNS(SVG_NS, 'g');
-    wxGroup.setAttribute('transform', `translate(${CX} 14)`);
+    wxGroup.setAttribute('transform', `translate(${CX} ${CY + 13})`);
     wxGroup.setAttribute('class', 'orbit-wx');
     Object.values(this.wx).forEach((g) => {
       g.style.display = 'none';
@@ -159,18 +198,20 @@ export class OrbitClock {
   private update(): void {
     const { hourHand, subHand } = this.nowHoursFloat();
 
+    // 24時間枠上の太陽/月(位置=実時間帯)
+    const [dx, dy] = dayPoint(hourHand);
+    this.sunMoon.setAttribute('transform', `translate(${dx.toFixed(2)} ${dy.toFixed(2)})`);
+    const day = hourHand >= 6 && hourHand < 18;
+    this.sun.style.display = day ? '' : 'none';
+    this.moon.style.display = day ? 'none' : '';
+
+    // 内側の公転惑星
     for (const { g, orbit } of this.planets) {
-      // 時針は偽装可能な hourHand、それ以外は実時刻の subHand を使う
       const base = orbit.period === 'hour' ? hourHand : subHand;
       const phi = phaseFor(orbit.period, base);
       const [x, y] = orbitPoint(orbit.rx, orbit.ry, orbit.tilt, phi);
       g.setAttribute('transform', `translate(${x.toFixed(2)} ${y.toFixed(2)})`);
     }
-
-    // 昼(6..18)は太陽、夜は月
-    const day = hourHand >= 6 && hourHand < 18;
-    this.sun.style.display = day ? '' : 'none';
-    this.moon.style.display = day ? 'none' : '';
 
     // 中心の恒星: AM(0..12)/PM(12..24)で色替え
     const pm = hourHand >= 12;

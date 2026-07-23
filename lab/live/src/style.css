@@ -291,16 +291,23 @@ button { font-family: inherit; cursor: pointer; }
 /* ---------- 公転モデル風ホログラム時計(UIフェーズ2-5) ---------- */
 .orbit-clock {
   position: absolute;
-  top: 0.6rem; right: 0.8rem;
+  top: 0.7rem; right: 0.9rem;
   z-index: 3;
-  width: clamp(84px, 13vw, 128px);
+  width: clamp(128px, 19vw, 188px);
   aspect-ratio: 1;
   pointer-events: none;
   filter: drop-shadow(0 0 6px rgba(111, 214, 224, 0.25));
 }
 .orbit-svg { width: 100%; height: 100%; display: block; }
 
-/* 楕円軌道リング(薄い) */
+/* 外周: 24時間枠の時間帯バンド(4色) */
+.band-arc { stroke-width: 2; stroke-linecap: round; opacity: 0.9; }
+.band-morning  { stroke: #f0d4a8; }        /* 明け方: 淡い金/桜 */
+.band-daytime  { stroke: #bfe9ef; }        /* 昼: cyan/白 */
+.band-night    { stroke: #7b7bd6; }        /* 夜: 藍/紫 */
+.band-midnight { stroke: #3a4680; }        /* 深夜: 濃紺 */
+
+/* 内側の楕円軌道リング(薄い) */
 .orbit-ring {
   fill: none;
   stroke: rgba(111, 214, 224, 0.28);
@@ -323,7 +330,8 @@ button { font-family: inherit; cursor: pointer; }
 .planet-sun { filter: drop-shadow(0 0 5px rgba(255, 216, 138, 0.85)); }
 .planet-moon path { fill: #d7e6f2; }
 .planet-moon { filter: drop-shadow(0 0 5px rgba(178, 198, 230, 0.7)); }
-/* 分針=cyan / 15分=teal / 秒針風=白 で見分けやすく */
+/* 時針=金 / 分針=cyan / 15分=teal / 秒針風=白 で見分けやすく */
+.planet-hour circle { fill: #f2d79a; filter: drop-shadow(0 0 4px rgba(242, 215, 154, 0.85)); }
 .planet-minute circle { fill: #7fd6e0; filter: drop-shadow(0 0 4px rgba(127, 214, 224, 0.8)); }
 .planet-quarter circle { fill: #9ad0c0; filter: drop-shadow(0 0 3px rgba(154, 208, 192, 0.7)); }
 .planet-fast circle { fill: #eef6ff; filter: drop-shadow(0 0 3px rgba(238, 246, 255, 0.9)); }
