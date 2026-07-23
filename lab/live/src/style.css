@@ -321,8 +321,9 @@ button { font-family: inherit; cursor: pointer; }
   width: 100%; height: 100%; display: block;
   animation: holo-flicker 5s steps(1) infinite;
 }
-/* レーダースイープ */
-.orbit-sweep { filter: drop-shadow(0 0 3px rgba(111, 214, 224, 0.5)); }
+/* ソナー(不定期に中心から広がるリング。r/opacityはJSで制御) */
+.orbit-sonar { filter: drop-shadow(0 0 3px rgba(111, 214, 224, 0.45)); }
+.sonar-ping { stroke: #7fe4ee; }
 
 @keyframes holo-glow {
   0%, 100% { filter: drop-shadow(0 0 5px rgba(111, 214, 224, 0.2)); }

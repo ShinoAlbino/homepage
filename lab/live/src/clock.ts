@@ -18,6 +18,8 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 const CX = 60;
 const CY = 60;
 
+const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
 type Period = 'hour' | 'minute' | 'quarter' | 'fast';
 
 /** 内側の公転惑星: 横半径rx・縦半径ry・傾きtilt(度)・公転周期 */
@@ -88,6 +90,12 @@ export class OrbitClock {
   private raf = 0;
   private timer: number | null = null;
 
+  // ソナー(不定期に中心から広がるリング)
+  private sonar: SVGGElement;
+  private pings: Array<{ el: SVGCircleElement; start: number }> = [];
+  private nextPingAt = Infinity; // rAF起動時に設定
+  private animated = false;
+
   constructor(
     private root: HTMLElement,
     private getHour: () => number,
@@ -96,36 +104,6 @@ export class OrbitClock {
     const svg = document.createElementNS(SVG_NS, 'svg');
     svg.setAttribute('viewBox', '0 0 120 120');
     svg.classList.add('orbit-svg');
-
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // スイープ用グラデ定義
-    const defs = document.createElementNS(SVG_NS, 'defs');
-    defs.innerHTML =
-      '<linearGradient id="sweepGrad" x1="0" y1="1" x2="0" y2="0">' +
-      '<stop offset="0" stop-color="#6fd6e0" stop-opacity="0"/>' +
-      '<stop offset="1" stop-color="#6fd6e0" stop-opacity="0.35"/>' +
-      '</linearGradient>';
-    svg.appendChild(defs);
-
-    // レーダースイープ(中心から回る扇。reduced-motion時は出さない)
-    if (!reduce) {
-      const sweep = document.createElementNS(SVG_NS, 'g');
-      sweep.setAttribute('class', 'orbit-sweep');
-      const wedge = document.createElementNS(SVG_NS, 'path');
-      wedge.setAttribute('d', 'M60,60 L51.3,10.8 A50,50 0 0 1 68.7,10.8 Z');
-      wedge.setAttribute('fill', 'url(#sweepGrad)');
-      sweep.appendChild(wedge);
-      const anim = document.createElementNS(SVG_NS, 'animateTransform');
-      anim.setAttribute('attributeName', 'transform');
-      anim.setAttribute('type', 'rotate');
-      anim.setAttribute('from', '0 60 60');
-      anim.setAttribute('to', '360 60 60');
-      anim.setAttribute('dur', '8s');
-      anim.setAttribute('repeatCount', 'indefinite');
-      sweep.appendChild(anim);
-      svg.appendChild(sweep);
-    }
 
     // 外周: 24時間枠の4色バンド
     for (const b of BANDS) {
@@ -147,6 +125,11 @@ export class OrbitClock {
       ring.setAttribute('class', 'orbit-ring');
       svg.appendChild(ring);
     }
+
+    // ソナーの描画層(リングの上・惑星の下)
+    this.sonar = document.createElementNS(SVG_NS, 'g');
+    this.sonar.setAttribute('class', 'orbit-sonar');
+    svg.appendChild(this.sonar);
 
     // 中心の恒星(AM/PMで色替え)
     this.core = document.createElementNS(SVG_NS, 'g');
@@ -193,16 +176,49 @@ export class OrbitClock {
 
     this.root.appendChild(svg);
 
-    // reduced-motion時は連続アニメせず、30秒ごとにスナップ更新
+    // reduced-motion時は連続アニメせず、30秒ごとにスナップ更新(ソナーは出さない)
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
       this.update();
       this.timer = window.setInterval(() => this.update(), 30_000);
     } else {
+      this.animated = true;
+      this.nextPingAt = performance.now() + rand(2000, 5000);
       const loop = () => {
         this.update();
+        this.updateSonar(performance.now());
         this.raf = requestAnimationFrame(loop);
       };
       this.raf = requestAnimationFrame(loop);
+    }
+  }
+
+  /** 不定期にソナーのリングを放ち、各リングの拡大・減衰を進める */
+  private updateSonar(now: number): void {
+    const DUR = 2000; // 1リングの寿命(ms)
+    if (now >= this.nextPingAt) {
+      if (this.pings.length < 4) {
+        const el = document.createElementNS(SVG_NS, 'circle');
+        el.setAttribute('cx', String(CX));
+        el.setAttribute('cy', String(CY));
+        el.setAttribute('class', 'sonar-ping');
+        el.setAttribute('fill', 'none');
+        this.sonar.appendChild(el);
+        this.pings.push({ el, start: now });
+      }
+      this.nextPingAt = now + rand(3500, 9000); // 次のping間隔(不定期)
+    }
+    for (let i = this.pings.length - 1; i >= 0; i--) {
+      const p = this.pings[i];
+      const t = (now - p.start) / DUR;
+      if (t >= 1) {
+        p.el.remove();
+        this.pings.splice(i, 1);
+        continue;
+      }
+      const ease = 1 - (1 - t) * (1 - t); // ease-out: 最初速く、外周で緩む
+      p.el.setAttribute('r', (4 + 50 * ease).toFixed(2));
+      p.el.setAttribute('stroke-width', (1.8 * (1 - t) + 0.3).toFixed(2));
+      p.el.style.opacity = (0.55 * (1 - t)).toFixed(3);
     }
   }
 
