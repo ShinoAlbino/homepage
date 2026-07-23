@@ -3,6 +3,12 @@ export const SITE_CONFIG = {
   /** FANBOX(支援)ボタンのリンク先 */
   fanboxUrl: 'https://arcahortus.fanbox.cc/',
 
+  /** 戻るボタンの遷移先(UIフェーズ2-4)。LIVEの戻り先は同一ページの入口=リロードで復帰 */
+  nav: {
+    /** 入口の戻り先: サイトトップ */
+    backTargetEntry: 'https://arcahortus.com/',
+  },
+
   /** v2: Pages Functions(API)を有効化するフラグ。v1では常にfalse */
   apiEnabled: false,
 
@@ -37,6 +43,11 @@ export const SITE_CONFIG = {
     recentAvoid: 5,
     /** 音声なしセリフの1文字あたり表示時間(ms) */
     charMs: 90,
+    /**
+     * 字幕を全文表示し切って(音声付きは再生終了の遅いほう)から、
+     * さらに保持する時間(ms)。UIフェーズ2-3。テンポ調整用に定数化。
+     */
+    subtitleHoldMs: 2500,
   },
 
   /** 世界観コメントの流量 (1〜3件/分) */

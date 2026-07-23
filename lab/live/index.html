@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>箱庭観測録 -此芽の観測室- | Arca Hortus</title>
-  <meta name="description" content="箱庭次元研究機構(箱庭研究所)所属の観測者・此芽が常駐する観測室。疑似ライブ配信ページです。" />
+  <title>箱庭研究所 -観測室- | Arca Hortus</title>
+  <meta name="description" content="箱庭次元研究機構(箱庭研究所)の観測室。観測者・此芽が常駐する疑似ライブ配信ページです。" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0d1021" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="箱庭観測録 -此芽の観測室-" />
+  <meta property="og:title" content="箱庭研究所 -観測室-" />
   <meta property="og:description" content="白髪ケモミミの観測者・此芽が、今日も静かに箱庭を観測しています。" />
 
   <!--
@@ -29,21 +29,34 @@
 <body>
   <!-- 入室ゲート: 音声自動再生制限のアンロックを兼ねる -->
   <div id="gate" class="gate">
-    <div class="gate-inner">
-      <p class="gate-title">箱庭観測録<span class="gate-sub">-此芽の観測室-</span></p>
-      <button id="gate-enter" class="gate-button" type="button">
-        <span class="gate-dot" aria-hidden="true"></span>観測室に入室する
-      </button>
-      <p class="gate-note">※ 入室すると音声が再生される場合があります</p>
-      <p class="gate-org">Arca Hortus Dimension Research Organization / 箱庭研究所</p>
+    <div class="gate-bg" aria-hidden="true"></div>
+    <a id="gate-back" class="back-button" href="#" aria-label="サイトトップへ戻る">◀</a>
+    <div class="gate-console">
+      <span class="bracket bracket-tl" aria-hidden="true"></span>
+      <span class="bracket bracket-tr" aria-hidden="true"></span>
+      <span class="bracket bracket-bl" aria-hidden="true"></span>
+      <span class="bracket bracket-br" aria-hidden="true"></span>
+      <div class="gate-inner">
+        <p class="gate-emblem" aria-hidden="true">◇ ARCA HORTUS ◇</p>
+        <p class="gate-title">箱庭研究所<span class="gate-sub">- 観測室 -</span></p>
+        <p class="gate-status" aria-hidden="true">
+          <span class="gate-status-dot"></span>SYSTEM ONLINE ／ 観測室 接続待機
+        </p>
+        <button id="gate-enter" class="gate-button" type="button">
+          <span class="gate-dot" aria-hidden="true"></span>観測室へ入室
+        </button>
+        <p class="gate-note">※ 入室すると音声が再生される場合があります</p>
+      </div>
     </div>
+    <p class="gate-org">Arca Hortus Dimension Research Organization / 箱庭研究所</p>
   </div>
 
   <div id="app" class="app" hidden>
     <!-- ヘッダー(固定) -->
     <header class="live-header">
+      <button id="live-back" class="back-button back-button-inline" type="button" aria-label="入口へ戻る">◀</button>
       <span class="live-badge"><span class="live-dot" aria-hidden="true"></span>LIVE</span>
-      <h1 class="live-title">箱庭観測録 <span class="live-title-sub">-此芽の観測室-</span></h1>
+      <h1 class="live-title">箱庭研究所 <span class="live-title-sub">-観測室-</span></h1>
       <span id="program-name" class="program-name">--</span>
     </header>
 
@@ -54,6 +67,8 @@
           <!-- Live2Dキャンバス or fallback.png がここに入る -->
           <div class="stage-particles" aria-hidden="true"></div>
         </div>
+        <!-- 公転モデル風ホログラム時計(UIフェーズ2-5)。JSで描画 -->
+        <div id="orbit-clock" class="orbit-clock" aria-hidden="true"></div>
         <div id="telop" class="telop" aria-live="polite"></div>
       </section>
 

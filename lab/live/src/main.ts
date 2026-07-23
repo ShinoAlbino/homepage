@@ -4,6 +4,7 @@ import { createStage } from './stage';
 import { AudioManager, TalkEngine } from './talk';
 import { CommentFeed } from './comments';
 import { UI } from './ui';
+import { OrbitClock } from './clock';
 import { findNextProgram, findProgram, getJSTHour } from './schedule';
 import { fetchWeather } from './weather';
 import type { Program, ScheduleDB, Weather } from './types';
@@ -58,6 +59,10 @@ async function boot(): Promise<void> {
       audio.unlock();
 
       const character = await createStage(ui.stageEl);
+
+      // 公転モデル風ホログラム時計(UIフェーズ2-5)。実JST(?hour=で偽装可)と天気で動く
+      const clockEl = document.getElementById('orbit-clock');
+      if (clockEl) new OrbitClock(clockEl, getJSTHour, getWeather);
 
       // マウス/タッチ追従。追従感を画面サイズ・アスペクトに依存させないため、
       // 縦横とも「高さ」を基準に正規化する(モデルのスケール基準=高さと一致させ、

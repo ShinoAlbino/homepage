@@ -336,7 +336,8 @@ export class TalkEngine {
       this.remember(s.id);
       this.playedHandlers.forEach((h) => h(s.id));
 
-      await delay(1800); // 読み切り猶予
+      // 全文表示(+音声があれば再生終了)後、さらに保持してから消す(UIフェーズ2-3)
+      await delay(SITE_CONFIG.talk.subtitleHoldMs);
       this.ui.clearTelop();
       this.character.setMouthOpen(0);
     } finally {

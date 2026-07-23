@@ -5,6 +5,15 @@ const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').match
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
+/** 現在のJST時刻を HH:MM で返す(コメント描画時のタイムスタンプ用。UIフェーズ2-6) */
+function jstHhmm(): string {
+  const now = new Date();
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const hh = String(jst.getUTCHours()).padStart(2, '0');
+  const mm = String(jst.getUTCMinutes()).padStart(2, '0');
+  return `${hh}:${mm}`;
+}
+
 /** LIVE UI(入室ゲート/バッジ/テロップ/コメント欄/フッター操作)の制御 */
 export class UI {
   private gate = document.getElementById('gate') as HTMLElement;
@@ -19,6 +28,8 @@ export class UI {
   private helpBtn = document.getElementById('help-toggle') as HTMLButtonElement;
   private helpDialog = document.getElementById('help-dialog') as HTMLDialogElement;
   private fanboxBtn = document.getElementById('fanbox-button') as HTMLAnchorElement;
+  private gateBackBtn = document.getElementById('gate-back') as HTMLAnchorElement;
+  private liveBackBtn = document.getElementById('live-back') as HTMLButtonElement;
 
   readonly stageEl = document.getElementById('stage') as HTMLElement;
 
@@ -27,6 +38,22 @@ export class UI {
   constructor() {
     this.fanboxBtn.href = SITE_CONFIG.fanboxUrl;
     this.helpBtn.addEventListener('click', () => this.helpDialog.showModal());
+
+    // 戻るボタン(UIフェーズ2-4): 入口→サイトトップ / LIVE→入口(同一ページ=リロードで復帰)
+    this.gateBackBtn.href = SITE_CONFIG.nav.backTargetEntry;
+    this.liveBackBtn.addEventListener('click', () => location.reload());
+
+    // 観測室背景(bg.webp)を入口とLIVEステージに敷く。base:'./'準拠でパス解決
+    const bgBase = import.meta.env.BASE_URL;
+    const bgSet =
+      `image-set(url("${bgBase}bg/bg.webp") 1x, url("${bgBase}bg/bg@2x.webp") 2x)`;
+    const gateBg = document.querySelector('.gate-bg') as HTMLElement | null;
+    if (gateBg) gateBg.style.backgroundImage = bgSet;
+    const stageArea = document.querySelector('.stage-area') as HTMLElement | null;
+    if (stageArea) {
+      stageArea.style.backgroundImage = bgSet;
+      stageArea.classList.add('has-bg');
+    }
   }
 
   /** 入室ゲート。クリック1回だけコールバック(音声アンロックを兼ねる) */
@@ -106,7 +133,15 @@ export class UI {
     text.className = 'c-text';
     text.textContent = c.text;
 
-    body.append(name, badge, text);
+    // タイムスタンプは一般コメント(viewer/recorder)のみ。official/operatorは除外(UIフェーズ2-6)
+    if (role === 'viewer' || role === 'recorder') {
+      const time = document.createElement('span');
+      time.className = 'c-time';
+      time.textContent = jstHhmm();
+      body.append(name, badge, time, text);
+    } else {
+      body.append(name, badge, text);
+    }
     item.append(icon, body);
 
     const nearBottom =
