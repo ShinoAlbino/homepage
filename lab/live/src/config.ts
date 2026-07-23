@@ -5,8 +5,8 @@ export const SITE_CONFIG = {
 
   /** 戻るボタンの遷移先(UIフェーズ2-4)。LIVEの戻り先は同一ページの入口=リロードで復帰 */
   nav: {
-    /** 入口の戻り先: サイトトップ */
-    backTargetEntry: 'https://arcahortus.com/',
+    /** 入口の戻り先: 箱庭研究所(ラボ)トップ */
+    backTargetEntry: 'https://arcahortus.com/lab/',
   },
 
   /** v2: Pages Functions(API)を有効化するフラグ。v1では常にfalse */
