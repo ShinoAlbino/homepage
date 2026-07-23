@@ -251,11 +251,11 @@ export class TalkEngine {
   requestClickTalk(): void {
     if (this.speaking) return;
     const ctx = this.buildContext('any');
+    const isClickCandidate = (s: Serifu) => s.category === 'click' || s.category === 'trivia';
     const pool = this.serifu.filter(
-      (s) => s.category === 'click' && this.matchConditions(s, ctx) && !this.recent.includes(s.id),
+      (s) => isClickCandidate(s) && this.matchConditions(s, ctx) && !this.recent.includes(s.id),
     );
-    const s =
-      weightedPick(pool) ?? weightedPick(this.serifu.filter((c) => c.category === 'click'));
+    const s = weightedPick(pool) ?? weightedPick(this.serifu.filter(isClickCandidate));
     if (s) void this.speak(s);
   }
 
@@ -274,6 +274,7 @@ export class TalkEngine {
 
     const isCandidate = (s: Serifu) =>
       (s.category === 'idle' ||
+        s.category === 'trivia' || // 豆知識。idle自動流しにも混ざる(クリック時と共通プール)
         s.category === 'anomaly' || // 異常検知ログ。weightが低く自然に極低頻度になる
         s.category === `program:${program.id}` ||
         (s.category === 'promo' && promoReady)) &&
