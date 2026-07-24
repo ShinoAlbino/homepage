@@ -1618,6 +1618,7 @@ body:not(.error-body)::after {
    ボタン型リンク(.nexus-link等)を巻き込まないよう、段落・リスト内に限定 */
 .org-section p a,
 .org-section li a,
+.org-section td a,
 main p a {
   color: #87cefa;
   text-decoration: underline;
@@ -1628,15 +1629,18 @@ main p a {
 /* クリック(訪問)後はクリック前より暗い色 */
 .org-section p a:visited,
 .org-section li a:visited,
+.org-section td a:visited,
 main p a:visited {
   color: #4f94cd;
 }
 
 .org-section p a:hover,
 .org-section li a:hover,
+.org-section td a:hover,
 main p a:hover,
 .org-section p a:visited:hover,
 .org-section li a:visited:hover,
+.org-section td a:visited:hover,
 main p a:visited:hover {
   color: #b8e4ff;
 }
