@@ -590,14 +590,17 @@ a.sector-card:hover .enter-hint {
   margin: 10px 0 18px;
 }
 .lab-footer .return-link { font-family: var(--mono); font-size: 0.72rem; }
-.footer-credits-link {
-  display: block;
+.footer-copyright {
   margin-top: 10px;
   font-family: var(--mono);
   font-size: 0.62rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.05em;
   color: var(--text-dim);
-  text-decoration: none;
+}
+.footer-credits-link {
+  color: var(--text-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 .footer-credits-link:hover { color: var(--green); }
 
