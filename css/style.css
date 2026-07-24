@@ -140,7 +140,8 @@ main {
 /* about、privacy、termsページ専用の中央揃え */
 .about-page main,
 .privacy-page main,
-.terms-page main {
+.terms-page main,
+.credits-page main {
   justify-content: center;
   align-items: center;
   min-height: 80vh;
@@ -875,6 +876,13 @@ section:hover {
     font-size: 0.8rem;
     color: #555;
     text-align: right;
+}
+
+/* 未確定項目の注記(クレジットページ等) */
+.note-pending {
+    font-size: 0.8rem;
+    color: #777;
+    font-style: italic;
 }
 
 

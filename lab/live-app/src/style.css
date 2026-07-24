@@ -180,6 +180,12 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: 0.24em;
   color: rgba(154, 160, 189, 0.5);
 }
+.gate-org a {
+  color: rgba(154, 160, 189, 0.8);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.gate-org a:hover { color: var(--holo); }
 
 /* ---------- 戻るボタン(入口・LIVE共通。UIフェーズ2-4) ---------- */
 .back-button {

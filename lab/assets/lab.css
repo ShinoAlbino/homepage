@@ -590,6 +590,16 @@ a.sector-card:hover .enter-hint {
   margin: 10px 0 18px;
 }
 .lab-footer .return-link { font-family: var(--mono); font-size: 0.72rem; }
+.footer-credits-link {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  text-decoration: none;
+}
+.footer-credits-link:hover { color: var(--green); }
 
 /* ===== レスポンシブ ===== */
 @media (max-width: 640px) {

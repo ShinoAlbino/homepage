@@ -1,0 +1,11 @@
+# ads.txt - ArcaHortus root (全サブディレクトリを一括カバー)
+# 設置先: https://<ArcaHortusのルートドメイン>/ads.txt
+# ※サブディレクトリ運用のため、このルート1ファイルで箱庭研究所・Liveもカバーされます。
+
+# --- Google AdSense ---
+google.com, pub-5730182021026574, DIRECT, f08c47fec0942fa0
+
+# --- 楽天 (Rakuten) ---
+# ・楽天アフィリエイト(アフィリエイトリンク)の場合: ads.txtは不要 → 追記なしでOK。
+# ・楽天のディスプレイ広告ネットワークの場合: 楽天指定のads.txt行をこの下に追記する。
+#   例: <SSPドメイン>, <パブリッシャーID>, DIRECT, <認証ID>

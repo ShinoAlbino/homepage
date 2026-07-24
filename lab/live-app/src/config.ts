@@ -7,6 +7,8 @@ export const SITE_CONFIG = {
   nav: {
     /** 入口の戻り先: 箱庭研究所(ラボ)トップ */
     backTargetEntry: 'https://arcahortus.com/lab/',
+    /** クレジット・ライセンス集約ページ(VOICEVOX等の表記義務の到達先) */
+    creditsUrl: 'https://arcahortus.com/credits.html',
   },
 
   /** v2: Pages Functions(API)を有効化するフラグ。v1では常にfalse */

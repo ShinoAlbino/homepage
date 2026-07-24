@@ -15,6 +15,7 @@
     "pixi.js": "^7.4.3"
   },
   "devDependencies": {
+    "rollup-plugin-license": "^3.7.1",
     "typescript": "^5.5.4",
     "vite": "^5.4.11"
   }

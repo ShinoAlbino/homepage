@@ -31,6 +31,7 @@ export class UI {
   private gateBackBtn = document.getElementById('gate-back') as HTMLAnchorElement;
   private gateExitBtn = document.getElementById('gate-exit') as HTMLAnchorElement;
   private liveBackBtn = document.getElementById('live-back') as HTMLButtonElement;
+  private gateCreditsBtn = document.getElementById('gate-credits') as HTMLAnchorElement;
 
   readonly stageEl = document.getElementById('stage') as HTMLElement;
 
@@ -43,6 +44,7 @@ export class UI {
     // 戻るボタン(UIフェーズ2-4): 入口→箱庭研究所 / LIVE→入口(同一ページ=リロードで復帰)
     this.gateBackBtn.href = SITE_CONFIG.nav.backTargetEntry;
     this.gateExitBtn.href = SITE_CONFIG.nav.backTargetEntry; // 退室=箱庭研究所へ
+    this.gateCreditsBtn.href = SITE_CONFIG.nav.creditsUrl; // VOICEVOX等の表記義務の到達先
     this.liveBackBtn.addEventListener('click', () => location.reload());
 
     // 観測室背景(bg.webp)を入口とLIVEステージに敷く。base:'./'準拠でパス解決
