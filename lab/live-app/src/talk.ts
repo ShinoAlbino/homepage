@@ -39,6 +39,8 @@ export class AudioManager {
   private currentBgm: string | null = null;
   private muted: boolean;
   private volume: number;
+  /** デコード済み音声バッファのキャッシュ(再生の度の再fetch/デコードを回避) */
+  private voiceCache = new Map<string, AudioBuffer>();
 
   constructor() {
     this.muted = localStorage.getItem(SITE_CONFIG.storage.muted) === '1';
@@ -139,66 +141,72 @@ export class AudioManager {
 
   /**
    * セリフ音声を再生し、AnalyserNodeのRMSを平滑化してonLevelへ毎フレーム渡す
-   * (リップシンク。仕様§4)。ファイルが無い場合はnullを返しテキストのみ進行。
+   * (リップシンク。仕様§4)。口パクは常にこの実波形(音声)に追従する。
+   *
+   * <audio>要素+canplaythroughは発火が不安定で、失敗するとテキスト連動の
+   * フラップ(口が音声でなく文字送りに合う)にフォールバックしてしまうため、
+   * fetch→decodeAudioData→AudioBufferSourceNode で確実にデコードして鳴らす。
+   * 取得/デコード失敗時のみ null を返しテキストのみ進行する。
    */
-  playVoice(file: string, onLevel: (v: number) => void): Promise<{ ended: Promise<void> } | null> {
-    return new Promise((resolve) => {
-      if (!this.ctx || !this.master) {
-        resolve(null);
-        return;
+  async playVoice(
+    file: string,
+    onLevel: (v: number) => void,
+  ): Promise<{ ended: Promise<void> } | null> {
+    if (!this.ctx || !this.master) return null;
+    const ctx = this.ctx;
+    const master = this.master;
+
+    let audioBuf = this.voiceCache.get(file);
+    if (!audioBuf) {
+      try {
+        const res = await fetch(SITE_CONFIG.paths.voiceDir + file);
+        if (!res.ok) return null;
+        const arr = await res.arrayBuffer();
+        audioBuf = await ctx.decodeAudioData(arr);
+        this.voiceCache.set(file, audioBuf);
+      } catch {
+        return null; // 未配置/404/デコード不可 → テキストのみ
       }
-      const ctx = this.ctx;
-      const master = this.master;
-      const el = new Audio(SITE_CONFIG.paths.voiceDir + file);
-      el.preload = 'auto';
+    }
 
-      el.addEventListener('error', () => resolve(null), { once: true });
-      el.addEventListener(
-        'canplaythrough',
-        () => {
-          const src = ctx.createMediaElementSource(el);
-          const analyser = ctx.createAnalyser();
-          analyser.fftSize = 512;
-          src.connect(analyser);
-          analyser.connect(master);
+    const src = ctx.createBufferSource();
+    src.buffer = audioBuf;
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 512;
+    // src → analyser → master: 解析はmaster(音量)より前で行い、
+    // 音量スライダーを下げてもリップシンクは実波形に追従させる。
+    src.connect(analyser);
+    analyser.connect(master);
 
-          const buf = new Uint8Array(analyser.fftSize);
-          const { threshold, gain, smoothing } = SITE_CONFIG.lipsync;
-          let smooth = 0;
-          let raf = 0;
-          const tick = () => {
-            analyser.getByteTimeDomainData(buf);
-            let sum = 0;
-            for (let i = 0; i < buf.length; i++) {
-              const v = (buf[i] - 128) / 128;
-              sum += v * v;
-            }
-            const rms = Math.sqrt(sum / buf.length);
-            const target = rms < threshold ? 0 : Math.min(1, (rms - threshold) * gain);
-            smooth = smooth * smoothing + target * (1 - smoothing);
-            onLevel(smooth);
-            raf = requestAnimationFrame(tick);
-          };
-          tick();
+    const buf = new Uint8Array(analyser.fftSize);
+    const { threshold, gain, smoothing } = SITE_CONFIG.lipsync;
+    let smooth = 0;
+    let raf = 0;
+    const tick = () => {
+      analyser.getByteTimeDomainData(buf);
+      let sum = 0;
+      for (let i = 0; i < buf.length; i++) {
+        const v = (buf[i] - 128) / 128;
+        sum += v * v;
+      }
+      const rms = Math.sqrt(sum / buf.length);
+      const target = rms < threshold ? 0 : Math.min(1, (rms - threshold) * gain);
+      smooth = smooth * smoothing + target * (1 - smoothing);
+      onLevel(smooth);
+      raf = requestAnimationFrame(tick);
+    };
 
-          const ended = new Promise<void>((done) => {
-            el.addEventListener(
-              'ended',
-              () => {
-                cancelAnimationFrame(raf);
-                onLevel(0);
-                done();
-              },
-              { once: true },
-            );
-          });
-
-          void el.play();
-          resolve({ ended });
-        },
-        { once: true },
-      );
+    const ended = new Promise<void>((done) => {
+      src.onended = () => {
+        cancelAnimationFrame(raf);
+        onLevel(0);
+        done();
+      };
     });
+
+    src.start();
+    tick();
+    return { ended };
   }
 }
 
