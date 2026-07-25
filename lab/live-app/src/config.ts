@@ -41,6 +41,17 @@ export const SITE_CONFIG = {
     smoothing: 0.65,
   },
 
+  /** BGM(番組ごとの背景音楽)の再生設定 */
+  bgm: {
+    /** 再生音量(BGMバス上の各トラックの目標ゲイン) */
+    volume: 0.32,
+    /** フェードイン/アウトの時定数(秒) */
+    fadeInSec: 1.2,
+    fadeOutSec: 0.4,
+    /** フェードアウト開始から実際に停止・破棄するまでの猶予(ms) */
+    stopDelayMs: 1500,
+  },
+
   /** 自動トークの進行設定 */
   talk: {
     minIntervalMs: 25_000,

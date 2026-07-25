@@ -35,6 +35,8 @@ export class AudioManager {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
   private bgmGain: GainNode | null = null;
+  /** 現在のBGMトラック個別のゲイン(曲ごとに独立してフェードさせる) */
+  private bgmTrackGain: GainNode | null = null;
   private bgmEl: HTMLAudioElement | null = null;
   private currentBgm: string | null = null;
   private muted: boolean;
@@ -63,8 +65,9 @@ export class AudioManager {
     this.master = this.ctx.createGain();
     this.master.gain.value = this.muted ? 0 : this.volume;
     this.master.connect(this.ctx.destination);
+    // BGMバスは常時1.0。曲ごとの音量/フェードはトラック個別のゲインで行う
     this.bgmGain = this.ctx.createGain();
-    this.bgmGain.gain.value = 0;
+    this.bgmGain.gain.value = 1;
     this.bgmGain.connect(this.master);
     void this.ctx.resume();
   }
@@ -94,49 +97,93 @@ export class AudioManager {
     this.applyGain();
   }
 
-  /** 番組BGMをクロスフェードで切替。null/404は無音で継続(BGMは任意アセット) */
+  /**
+   * 番組BGMをクロスフェードで切替。null/404は無音で継続(BGMは任意アセット)。
+   *
+   * 再生開始は canplaythrough を待たない。長尺BGMでは「最後まで途切れず再生できる
+   * 見込み」が条件のこのイベントは発火が遅い/来ないことがあり、待つとBGMが
+   * 鳴らないままになるため、play()で開始しバッファリングはブラウザに任せる。
+   *
+   * 音量はトラックごとに個別のGainNodeで制御する(BGMバスを共有すると、旧曲の
+   * フェードアウト中に新曲のフェードインが始まった際、まだ再生中の旧曲まで
+   * 音量が戻ってしまうため)。
+   */
   playBgm(file: string | null): void {
     if (!this.ctx || !this.bgmGain) return;
     const url = file ? SITE_CONFIG.paths.bgmDir + file : null;
     if (url === this.currentBgm) return;
     this.currentBgm = url;
 
-    // フェードアウトして停止
-    const old = this.bgmEl;
-    if (old) {
-      this.bgmGain.gain.setTargetAtTime(0, this.ctx.currentTime, 0.4);
-      setTimeout(() => {
-        old.pause();
-        old.src = '';
-      }, 1500);
-      this.bgmEl = null;
-    }
+    this.stopBgm(); // 旧トラックを自身のゲインでフェードアウト→破棄
     if (!url) return;
 
+    const ctx = this.ctx;
     const el = new Audio(url);
     el.loop = true;
     el.preload = 'auto';
-    el.addEventListener(
-      'error',
-      () => {
-        // BGM未配置(404)でも動作継続
-        if (this.bgmEl === el) this.bgmEl = null;
-      },
-      { once: true },
-    );
-    el.addEventListener(
-      'canplaythrough',
-      () => {
-        if (this.currentBgm !== url || !this.ctx || !this.bgmGain) return;
-        const src = this.ctx.createMediaElementSource(el);
-        src.connect(this.bgmGain);
-        void el.play();
-        this.bgmEl = el;
-        // ゆっくりフェードイン
-        this.bgmGain.gain.setTargetAtTime(0.32, this.ctx.currentTime, 1.2);
-      },
-      { once: true },
-    );
+
+    // トラック個別のゲイン: 0から立ち上げ、BGMバス(bgmGain)へ繋ぐ
+    const trackGain = ctx.createGain();
+    trackGain.gain.value = 0;
+    trackGain.connect(this.bgmGain);
+
+    let src: MediaElementAudioSourceNode;
+    try {
+      src = ctx.createMediaElementSource(el);
+    } catch {
+      trackGain.disconnect();
+      return;
+    }
+    src.connect(trackGain);
+
+    const cleanup = () => {
+      if (this.bgmEl === el) {
+        this.bgmEl = null;
+        this.bgmTrackGain = null;
+      }
+      try {
+        trackGain.disconnect();
+      } catch {
+        /* 既に切断済み */
+      }
+    };
+    // BGM未配置(404)・デコード不可でも本編は継続する
+    el.addEventListener('error', cleanup, { once: true });
+
+    this.bgmEl = el;
+    this.bgmTrackGain = trackGain;
+
+    void el
+      .play()
+      .then(() => {
+        if (this.bgmEl !== el) return; // 再生開始までに次の番組へ切替わった
+        trackGain.gain.setTargetAtTime(
+          SITE_CONFIG.bgm.volume,
+          ctx.currentTime,
+          SITE_CONFIG.bgm.fadeInSec,
+        );
+      })
+      .catch(cleanup); // 自動再生拒否など
+  }
+
+  /** 現在のBGMをフェードアウトして停止・破棄する */
+  private stopBgm(): void {
+    const el = this.bgmEl;
+    const gain = this.bgmTrackGain;
+    this.bgmEl = null;
+    this.bgmTrackGain = null;
+    if (!el || !this.ctx) return;
+
+    gain?.gain.setTargetAtTime(0, this.ctx.currentTime, SITE_CONFIG.bgm.fadeOutSec);
+    window.setTimeout(() => {
+      el.pause();
+      el.src = '';
+      try {
+        gain?.disconnect();
+      } catch {
+        /* 既に切断済み */
+      }
+    }, SITE_CONFIG.bgm.stopDelayMs);
   }
 
   /**
