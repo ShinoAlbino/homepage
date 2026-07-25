@@ -165,7 +165,8 @@ export class UI {
 
   /**
    * 音量UI(状態はlocalStorageに保存: 呼び出し側で管理)。
-   * ON/OFFボタン(スライダー左)=ミュート切替 / スライダー=音量調整(0..1)。
+   * スピーカーボタン(スライダー左)=ミュート切替 / スライダー=音量調整(0..1)。
+   * アイコンは実効音量に応じて 🔇/🔈/🔉/🔊 を出し分ける。
    */
   bindVolume(
     isMuted: () => boolean,
@@ -173,12 +174,18 @@ export class UI {
     getVolume: () => number,
     setVolume: (v: number) => void,
   ): void {
+    const icon = (): string => {
+      const v = getVolume();
+      if (isMuted() || v === 0) return '🔇';
+      if (v < 0.34) return '🔈';
+      if (v < 0.67) return '🔉';
+      return '🔊';
+    };
     const render = () => {
-      // ミュート中、または音量0なら実質OFF
+      // ミュート中、または音量0なら実質オフ
       const off = isMuted() || getVolume() === 0;
       const pct = isMuted() ? 0 : Math.round(getVolume() * 100); // ミュート中は実効0を表示
-      this.volumeBtn.textContent = off ? 'OFF' : 'ON';
-      this.volumeBtn.classList.toggle('is-off', off);
+      this.volumeBtn.textContent = icon();
       this.volumeBtn.setAttribute('aria-label', off ? '音声をオンにする' : '音声をオフにする');
       this.volumeBtn.setAttribute('aria-pressed', String(off));
       if (this.volumeSlider) {
