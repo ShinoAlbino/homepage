@@ -38,9 +38,19 @@ export class AudioManager {
   private bgmEl: HTMLAudioElement | null = null;
   private currentBgm: string | null = null;
   private muted: boolean;
+  private volume: number;
 
   constructor() {
     this.muted = localStorage.getItem(SITE_CONFIG.storage.muted) === '1';
+    const v = parseFloat(localStorage.getItem(SITE_CONFIG.storage.volume) ?? '');
+    this.volume = Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : 1;
+  }
+
+  /** master.gainを現在のミュート/音量状態へ反映(ctx未生成時は何もしない) */
+  private applyGain(): void {
+    if (this.master && this.ctx) {
+      this.master.gain.setTargetAtTime(this.muted ? 0 : this.volume, this.ctx.currentTime, 0.05);
+    }
   }
 
   unlock(): void {
@@ -49,7 +59,7 @@ export class AudioManager {
     if (!AC) return;
     this.ctx = new AC();
     this.master = this.ctx.createGain();
-    this.master.gain.value = this.muted ? 0 : 1;
+    this.master.gain.value = this.muted ? 0 : this.volume;
     this.master.connect(this.ctx.destination);
     this.bgmGain = this.ctx.createGain();
     this.bgmGain.gain.value = 0;
@@ -61,12 +71,25 @@ export class AudioManager {
     return this.muted;
   }
 
+  getVolume(): number {
+    return this.volume;
+  }
+
+  /** 音量(0..1)を設定。スライダー操作でミュート中なら解除する */
+  setVolume(v: number): void {
+    this.volume = Math.min(1, Math.max(0, v));
+    localStorage.setItem(SITE_CONFIG.storage.volume, String(this.volume));
+    if (this.muted && this.volume > 0) {
+      this.muted = false;
+      localStorage.setItem(SITE_CONFIG.storage.muted, '0');
+    }
+    this.applyGain();
+  }
+
   toggleMuted(): void {
     this.muted = !this.muted;
     localStorage.setItem(SITE_CONFIG.storage.muted, this.muted ? '1' : '0');
-    if (this.master && this.ctx) {
-      this.master.gain.setTargetAtTime(this.muted ? 0 : 1, this.ctx.currentTime, 0.05);
-    }
+    this.applyGain();
   }
 
   /** 番組BGMをクロスフェードで切替。null/404は無音で継続(BGMは任意アセット) */

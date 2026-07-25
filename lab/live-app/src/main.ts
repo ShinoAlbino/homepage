@@ -51,6 +51,8 @@ async function boot(): Promise<void> {
   ui.bindVolume(
     () => audio.isMuted(),
     () => audio.toggleMuted(),
+    () => audio.getVolume(),
+    (v) => audio.setVolume(v),
   );
 
   // 入室ゲート(仕様§3-1): クリックで音声アンロック→BGM→挨拶→ループ開始

@@ -92,5 +92,6 @@ export const SITE_CONFIG = {
   storage: {
     visited: 'konome_visited',
     muted: 'konome_muted',
+    volume: 'konome_volume',
   },
 } as const;

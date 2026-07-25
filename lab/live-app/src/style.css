@@ -691,6 +691,48 @@ button { font-family: inherit; cursor: pointer; }
 }
 .icon-button:hover { border-color: var(--warm); }
 
+/* ---------- 音量スライダー ---------- */
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 84px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--holo) 0%,
+    var(--holo) var(--fill, 100%),
+    rgba(122, 138, 191, 0.28) var(--fill, 100%),
+    rgba(122, 138, 191, 0.28) 100%
+  );
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--text);
+  border: 1px solid var(--holo);
+  box-shadow: 0 0 6px rgba(111, 214, 224, 0.5);
+}
+.volume-slider::-moz-range-thumb {
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--text);
+  border: 1px solid var(--holo);
+  box-shadow: 0 0 6px rgba(111, 214, 224, 0.5);
+}
+/* Firefox: トラック/進捗は専用擬似要素で塗る(背景gradientは効かないため) */
+.volume-slider::-moz-range-track {
+  height: 4px; border-radius: 999px; background: rgba(122, 138, 191, 0.28);
+}
+.volume-slider::-moz-range-progress {
+  height: 4px; border-radius: 999px; background: var(--holo);
+}
+.volume-slider:focus-visible { outline: 1px solid var(--holo); outline-offset: 4px; }
+
 /* ---------- ヘルプ ---------- */
 .help-dialog {
   margin: auto;
