@@ -487,7 +487,12 @@
   const sealed = document.getElementById('sealed-card');
   if (sealed) {
     let denyCount = 0;
+    let singularity = false;
     const deny = () => {
+      if (singularity) {
+        window.location.href = 'danger.html';
+        return;
+      }
       sealed.classList.remove('deny');
       void sealed.offsetWidth; // アニメ再トリガー
       sealed.classList.add('deny');
@@ -496,8 +501,10 @@
         pushLog('alert', 'WARNING: 封鎖区画への未認可アクセスを検知。観測局へ通報しました。');
       } else if (denyCount === 3) {
         pushLog('alert', 'WARNING: 執拗なアクセス試行を記録。あなたの好奇心は報告対象です。');
+        pushLog('alert', '次元特異点を検知。座標が収束しています……');
+        singularity = true;
       } else if (denyCount >= 5 && denyCount % 5 === 0) {
-        pushLog('warn', '……鍵は、まだこの次元には存在しない。');
+        pushLog('warn', '……現在の次元では観測権限が有りません。');
       }
     };
     sealed.addEventListener('click', deny);

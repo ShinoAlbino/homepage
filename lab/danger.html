@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>箱庭研究所 | Arca Hortus Black Facility</title>
+  <meta name="description" content="箱庭次元研究機構・封鎖区画「箱庭研究所」。三賢者演算系TRIADと模擬特異点エネルギー抽出炉が稼働する非公開施設。現在、外部からの侵入・汚染を受けています。" />
+  <meta name="keywords" content="箱庭研究所, Arca Hortus, 封鎖区画, SF, ダークファンタジー, 創作, ハッキング" />
+  <meta name="author" content="ArcaHortus Lab" />
+  <meta name="theme-color" content="#120406" />
+  <meta name="robots" content="noindex, follow" />
+
+  <!-- OGP -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="箱庭研究所 | Arca Hortus Black Facility" />
+  <meta property="og:description" content="[ CLEARANCE LV.7 ] 当区画は現在、外部からの侵入と汚染を受けています。速やかに退避してください。" />
+  <meta property="og:image" content="https://www.arcahortus.com/images/sample1.png" />
+  <meta property="og:url" content="https://www.arcahortus.com/lab/danger.html" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="箱庭研究所 | Arca Hortus Black Facility" />
+  <meta name="twitter:description" content="封鎖区画へようこそ。あなたの接続は既に記録されています。" />
+  <meta name="twitter:image" content="https://www.arcahortus.com/images/sample1.png" />
+
+  <link rel="icon" href="../images/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/danger.css" />
+
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MRDPGGL9');</script>
+  <!-- End Google Tag Manager -->
+</head>
+
+<body class="pre-breach">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- 背景キャンバス（崩れた格子・データ雨・汚染域） -->
+  <canvas id="danger-canvas" aria-hidden="true"></canvas>
+
+  <!-- 走査線・ヴィネット -->
+  <div class="crt-overlay" aria-hidden="true"></div>
+  <!-- 画面破断レイヤー -->
+  <div class="glitch-layer" id="glitch-layer" aria-hidden="true"></div>
+
+  <!-- 侵入シーケンス -->
+  <div id="breach-overlay" aria-hidden="true">
+    <div class="breach-terminal">
+      <pre id="breach-lines"></pre>
+      <p class="breach-skip">[ CLICK TO SKIP ]</p>
+    </div>
+  </div>
+
+  <!-- 警告バナー -->
+  <div class="breach-banner" aria-hidden="true">
+    <span>■ 警告 ■ 当区画は外部からの侵入を受けています ■ 隔壁 B7〜B12 応答なし ■ 模擬特異点炉 出力上昇中 ■ TRIAD 演算系に汚染を確認 ■ 非認可観測者は直ちに退避してください ■ 退避経路は現在 [ 検 閲 済 ] ■</span>
+  </div>
+
+  <header class="danger-header reveal" style="--d:.1s">
+    <a class="return-link" href="index.html">◂ RETURN TO SURFACE <span class="jp">／表層へ帰還</span></a>
+    <div class="facility-id">FACILITY: AH-LAB-<span class="redacted">██</span> ・ SUB-LEVEL B<span class="redacted">██</span></div>
+    <div class="threat-level">THREAT LEVEL: <b id="threat-word">CRITICAL</b></div>
+  </header>
+
+  <main>
+    <!-- ヒーロー：崩壊しつつある封印炉 -->
+    <section class="hero">
+      <div class="core-wrap reveal" style="--d:.2s" aria-hidden="true">
+        <svg class="core" viewBox="0 0 400 400">
+          <defs>
+            <radialGradient id="dCoreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.95"/>
+              <stop offset="28%"  stop-color="#ff2d3f" stop-opacity="0.62"/>
+              <stop offset="66%"  stop-color="#7a0714" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#120406" stop-opacity="0"/>
+            </radialGradient>
+            <path id="dGlyphOuter" d="M200,200 m-158,0 a158,158 0 1,1 316,0 a158,158 0 1,1 -316,0" fill="none"/>
+            <path id="dGlyphInner" d="M200,200 m-108,0 a108,108 0 1,0 216,0 a108,108 0 1,0 -216,0" fill="none"/>
+          </defs>
+
+          <circle class="core-pulse" cx="200" cy="200" r="72" fill="url(#dCoreGlow)"/>
+          <circle class="core-heart" cx="200" cy="200" r="9"/>
+
+          <g class="ring ring-slow">
+            <circle cx="200" cy="200" r="132" class="ring-dashed"/>
+            <circle cx="200" cy="200" r="132" class="ring-arc"/>
+          </g>
+          <g class="ring ring-mid">
+            <text class="glyph-text">
+              <textPath href="#dGlyphInner">
+                CONTAINMENT·FAILURE·CONTAINMENT·FAILURE·CONTAINMENT·FAILURE·
+              </textPath>
+            </text>
+          </g>
+          <g class="ring ring-fast">
+            <circle cx="200" cy="200" r="88" class="ring-thin"/>
+            <circle cx="200" cy="200" r="88" class="ring-arc-2"/>
+            <rect x="196" y="108" width="8" height="8" class="ring-node"/>
+          </g>
+          <g class="ring ring-broken">
+            <path class="ring-crack" d="M200,200 m-104,0 a104,104 0 0,1 62,-95"/>
+            <path class="ring-crack" d="M200,200 m104,0 a104,104 0 0,1 -54,99"/>
+          </g>
+          <g class="ring ring-rev">
+            <text class="glyph-text glyph-outer">
+              <textPath href="#dGlyphOuter">
+                UNAUTHORIZED·ACCESS·LOGGED·DO·NOT·OPEN·THE·GARDEN·UNAUTHORIZED·ACCESS·LOGGED·
+              </textPath>
+            </text>
+            <circle cx="200" cy="200" r="176" class="ring-faint"/>
+          </g>
+        </svg>
+      </div>
+
+      <p class="hero-over reveal" style="--d:.35s">ARCA HORTUS — SEALED DIVISION / BLACK FACILITY</p>
+      <h1 class="glitch reveal" style="--d:.45s" data-text="箱庭研究所">箱庭研究所</h1>
+      <p class="hero-sub reveal" style="--d:.55s">— CONTAINMENT BREACH IN PROGRESS —</p>
+      <p class="hero-desc reveal" style="--d:.65s">
+        ここは記録に存在しない区画。<span class="strike">安全は保証されている</span><br>
+        三賢者演算系 <b>TRIAD</b> と模擬特異点炉が、いま外部から<span style="color:var(--red)">喰われて</span>いる。<br>
+        <span class="dim">当該接続はすでに記録されました。閲覧の継続は、あなたの同意とみなされます。</span>
+      </p>
+
+      <div class="status-bar reveal" style="--d:.75s" aria-hidden="true">
+        <span class="status-cell">CORRUPTION <b id="st-corrupt" class="alert">41.6%</b></span>
+        <span class="status-cell">BULKHEAD <b id="st-bulk" class="warn">7/12</b></span>
+        <span class="status-cell">CONTAMINATION <b id="st-contam" class="warn">Ⅲ</b></span>
+        <span class="status-cell">GHOST LINKS <b id="st-ghost" class="alert">3</b></span>
+        <span class="status-cell">CRITICAL IN <b id="st-timer" class="alert">T-04:00</b></span>
+      </div>
+    </section>
+
+    <!-- ===== TRIAD CORE ===== -->
+    <section class="triad-section">
+      <h2 class="section-title reveal" style="--d:.1s"><span class="sec-no">§01</span>TRIAD CORE SYSTEM <span class="jp">／三賢者演算系</span></h2>
+      <p class="section-lead reveal" style="--d:.12s">
+        設立者の人格を三重に分割・移植した合議演算体。全ての封印命令はこの三者の議決を経る。
+        現在、第<span class="redacted">█</span>ノードに外部起源のコードが常駐している。
+      </p>
+
+      <div class="triad reveal" style="--d:.16s">
+        <svg class="triad-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="50" y1="56" x2="50" y2="20"/>
+          <line x1="50" y1="56" x2="20" y2="72"/>
+          <line x1="50" y1="56" x2="80" y2="72"/>
+        </svg>
+
+        <article class="magi" data-node="1" data-index="01" id="magi-1">
+          <div class="magi-stamp" aria-hidden="true"></div>
+          <div class="magi-head">
+            <span class="magi-tag">TRIAD-01</span>
+            <span class="magi-state" id="s-1"><i></i>ONLINE</span>
+          </div>
+          <p class="magi-name">RADIX</p>
+          <p class="magi-role">ROOT / LOGIC ENGINE</p>
+          <p class="magi-verdict v-yes" id="v-1">可決</p>
+          <p class="magi-reason" id="r-1">議題の受信を待機しています。</p>
+          <div class="magi-meters">
+            <div class="meter-row"><span>侵食率</span><i class="meter"><i id="m1-corr"></i></i><span class="meter-val" id="t1-corr">0%</span></div>
+            <div class="meter-row"><span>演算負荷</span><i class="meter amber"><i id="m1-load"></i></i><span class="meter-val" id="t1-load">0%</span></div>
+            <div class="meter-row"><span>同期率</span><i class="meter toxic"><i id="m1-sync"></i></i><span class="meter-val" id="t1-sync">0%</span></div>
+          </div>
+        </article>
+
+        <article class="magi" data-node="2" data-index="02" id="magi-2">
+          <div class="magi-stamp" aria-hidden="true"></div>
+          <div class="magi-head">
+            <span class="magi-tag">TRIAD-02</span>
+            <span class="magi-state" id="s-2"><i></i>ONLINE</span>
+          </div>
+          <p class="magi-name">FOLIUM</p>
+          <p class="magi-role">LEAF / GUARDIAN ENGINE</p>
+          <p class="magi-verdict v-no" id="v-2">否決</p>
+          <p class="magi-reason" id="r-2">議題の受信を待機しています。</p>
+          <div class="magi-meters">
+            <div class="meter-row"><span>侵食率</span><i class="meter"><i id="m2-corr"></i></i><span class="meter-val" id="t2-corr">0%</span></div>
+            <div class="meter-row"><span>演算負荷</span><i class="meter amber"><i id="m2-load"></i></i><span class="meter-val" id="t2-load">0%</span></div>
+            <div class="meter-row"><span>同期率</span><i class="meter toxic"><i id="m2-sync"></i></i><span class="meter-val" id="t2-sync">0%</span></div>
+          </div>
+        </article>
+
+        <article class="magi" data-node="3" data-index="03" id="magi-3">
+          <div class="magi-stamp" aria-hidden="true"></div>
+          <div class="magi-head">
+            <span class="magi-tag">TRIAD-03</span>
+            <span class="magi-state" id="s-3"><i></i>ONLINE</span>
+          </div>
+          <p class="magi-name">FLOS</p>
+          <p class="magi-role">BLOOM / EMPATHY ENGINE</p>
+          <p class="magi-verdict v-hold" id="v-3">保留</p>
+          <p class="magi-reason" id="r-3">議題の受信を待機しています。</p>
+          <div class="magi-meters">
+            <div class="meter-row"><span>侵食率</span><i class="meter"><i id="m3-corr"></i></i><span class="meter-val" id="t3-corr">0%</span></div>
+            <div class="meter-row"><span>演算負荷</span><i class="meter amber"><i id="m3-load"></i></i><span class="meter-val" id="t3-load">0%</span></div>
+            <div class="meter-row"><span>同期率</span><i class="meter toxic"><i id="m3-sync"></i></i><span class="meter-val" id="t3-sync">0%</span></div>
+          </div>
+        </article>
+
+        <div class="triad-verdict">
+          <svg class="tv-ring" viewBox="0 0 200 200" aria-hidden="true">
+            <polygon points="100,6 182,53 182,147 100,194 18,147 18,53"/>
+            <polygon points="100,26 165,63 165,137 100,174 35,137 35,63"/>
+          </svg>
+          <div class="tv-inner">
+            <p class="tv-label">DELIBERATION <span class="jp">／議題</span></p>
+            <p class="tv-topic" id="tv-topic">議題を受信しています……</p>
+            <p class="tv-result v-hold" id="tv-result">審議中</p>
+            <p class="tv-sub" id="tv-sub">CONSENSUS 0 / 3 ・ ELAPSED 0.00s</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 人格二重鎖・音声波形 ===== -->
+    <section class="signal-section">
+      <h2 class="section-title reveal" style="--d:.1s"><span class="sec-no">§02</span>PERSONA HELIX / VOICE PRINT <span class="jp">／人格二重鎖・音声波形</span></h2>
+      <p class="section-lead reveal" style="--d:.12s">
+        三人格を撚り合わせて一本の設立者へ戻すための照合鎖と、演算中に漏れ出す音声の波形。
+        議決が動くと、鎖が捩れ、声が大きくなる。
+      </p>
+
+      <div class="signal-grid reveal" style="--d:.16s">
+        <figure class="signal-card">
+          <figcaption class="signal-head">
+            <span class="signal-title">PERSONA HELIX <span class="jp">／人格二重鎖</span></span>
+            <span class="signal-tag" id="helix-tag">STRAND SYNC 00.0%</span>
+          </figcaption>
+          <canvas id="helix-canvas" aria-hidden="true"></canvas>
+          <div class="signal-meta">
+            <span>捻率 <b id="helix-twist">0.00</b> rad/nm</span>
+            <span>塩基欠損 <b id="helix-gap">0</b> 対</span>
+            <span>照合 <b id="helix-match" class="warn">照合中</b></span>
+          </div>
+        </figure>
+
+        <figure class="signal-card">
+          <figcaption class="signal-head">
+            <span class="signal-title">VOICE PRINT <span class="jp">／音声波形</span></span>
+            <span class="signal-tag" id="wave-tag">CH: TRIAD-BUS</span>
+          </figcaption>
+          <canvas id="wave-canvas" aria-hidden="true"></canvas>
+          <div class="signal-meta">
+            <span>音圧 <b id="wave-db">-∞</b> dB</span>
+            <span>基本周波数 <b id="wave-hz">0</b> Hz</span>
+            <span>話者 <b id="wave-who">—</b></span>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== 模擬特異点炉 機器配置図 ===== -->
+    <section class="rig-section">
+      <h2 class="section-title reveal" style="--d:.1s"><span class="sec-no">§03</span>SINGULARITY RIG <span class="jp">／模擬特異点エネルギー抽出炉</span></h2>
+      <p class="section-lead reveal" style="--d:.12s">
+        実験番号 EXP-<span class="redacted">███</span>。閉じ込め殻の内側に極小の疑似事象地平を維持し、
+        降着円盤から生じる位相差を六基の抽出塔で汲み上げる。理論上、燃料は不要。理論上は。
+      </p>
+
+      <div class="rig-frame reveal" style="--d:.16s">
+        <svg class="rig" viewBox="0 0 900 420" role="img" aria-label="模擬特異点エネルギー抽出炉の機器配置図">
+          <defs>
+            <pattern id="rigGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path class="rig-grid" d="M30 0 L0 0 0 30" fill="none"/>
+            </pattern>
+            <radialGradient id="rigSing" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.9"/>
+              <stop offset="30%"  stop-color="#ff2d3f" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#ff2d3f" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <rect x="0" y="0" width="900" height="420" fill="url(#rigGrid)"/>
+
+          <!-- 外枠と図面情報 -->
+          <rect class="rig-frameline" x="20" y="16" width="860" height="388"/>
+          <text class="rig-label" x="32" y="34">FIG.1 — 模擬特異点エネルギー抽出装置 / 平面配置図</text>
+          <text class="rig-label-dim" x="32" y="46">SCALE 1:200 ・ REV.<tspan>17</tspan> ・ APPROVED BY [ REDACTED ]</text>
+          <text class="rig-label-dim" x="868" y="34" text-anchor="end">EXP-███ / SUB-LEVEL B██</text>
+
+          <!-- 閉じ込め殻 -->
+          <circle class="rig-frameline" cx="450" cy="210" r="150" stroke-dasharray="8 6"/>
+          <circle class="rig-part" cx="450" cy="210" r="132"/>
+          <circle class="rig-frameline" cx="450" cy="210" r="118"/>
+
+          <!-- 降着円盤 -->
+          <circle class="rig-disk rig-disk-a" cx="450" cy="210" r="96"/>
+          <circle class="rig-disk rig-disk-b" cx="450" cy="210" r="78"/>
+          <circle class="rig-disk rig-disk-c" cx="450" cy="210" r="60"/>
+
+          <!-- 疑似事象地平 -->
+          <circle class="rig-singularity" cx="450" cy="210" r="48" fill="url(#rigSing)"/>
+          <circle class="rig-horizon" cx="450" cy="210" r="21"/>
+          <text class="rig-label-dim" x="450" y="246" text-anchor="middle">EVENT HORIZON (SIM.)</text>
+
+          <!-- 汚染域 -->
+          <path class="rig-hot" d="M556,300 L640,286 L676,330 L644,372 L560,364 L534,330 Z"/>
+          <path class="rig-lead" d="M672,304 L702,294"/>
+          <text class="rig-label" x="706" y="297" fill="#ff2d3f">汚染域 拡大中</text>
+
+          <!-- 抽出塔 EX-01 (左上) -->
+          <line class="rig-conduit" x1="360" y1="120" x2="326" y2="86"/>
+          <rect class="rig-part-solid" x="266" y="66" width="72" height="40"/>
+          <circle class="rig-node rig-node-live" cx="276" cy="76" r="3"/>
+          <text class="rig-label" x="302" y="84" text-anchor="middle">EX-01</text>
+          <text class="rig-label-dim" x="302" y="96" text-anchor="middle">抽出塔・北西</text>
+
+          <!-- 抽出塔 EX-02 (右上) -->
+          <line class="rig-conduit" x1="540" y1="120" x2="574" y2="86"/>
+          <rect class="rig-part-solid" x="562" y="66" width="72" height="40"/>
+          <circle class="rig-node rig-node-live" cx="572" cy="76" r="3"/>
+          <text class="rig-label" x="598" y="84" text-anchor="middle">EX-02</text>
+          <text class="rig-label-dim" x="598" y="96" text-anchor="middle">抽出塔・北東</text>
+
+          <!-- 抽出塔 EX-03 (左下) -->
+          <line class="rig-conduit" x1="360" y1="300" x2="326" y2="334"/>
+          <rect class="rig-part-solid" x="266" y="314" width="72" height="40"/>
+          <circle class="rig-node rig-node-warn" cx="276" cy="324" r="3"/>
+          <text class="rig-label" x="302" y="332" text-anchor="middle">EX-03</text>
+          <text class="rig-label-dim" x="302" y="344" text-anchor="middle">抽出塔・南西</text>
+
+          <!-- 抽出塔 EX-04 (右下・汚染) -->
+          <line class="rig-conduit rev" x1="540" y1="300" x2="574" y2="334"/>
+          <rect class="rig-part-solid" x="562" y="314" width="72" height="40" stroke="#ff2d3f"/>
+          <circle class="rig-node rig-node-dead" cx="572" cy="324" r="3"/>
+          <text class="rig-label" x="598" y="332" text-anchor="middle">EX-04</text>
+          <text class="rig-label-dim" x="598" y="344" text-anchor="middle" fill="#ff2d3f">応答なし</text>
+
+          <!-- 粒子入射器（左） -->
+          <rect class="rig-part-solid" x="52" y="186" width="92" height="48"/>
+          <circle class="rig-node rig-node-live" cx="62" cy="196" r="3"/>
+          <text class="rig-label" x="98" y="206" text-anchor="middle">INJ-A</text>
+          <text class="rig-label-dim" x="98" y="220" text-anchor="middle">粒子入射器</text>
+          <line class="rig-beam" x1="144" y1="210" x2="318" y2="210"/>
+          <path class="rig-lead" d="M98 234 L98 262 L150 262"/>
+          <text class="rig-label-dim" x="154" y="265">出力 8.4 PW</text>
+
+          <!-- 粒子入射器（右） -->
+          <rect class="rig-part-solid" x="756" y="186" width="92" height="48"/>
+          <circle class="rig-node rig-node-warn" cx="766" cy="196" r="3"/>
+          <text class="rig-label" x="802" y="206" text-anchor="middle">INJ-B</text>
+          <text class="rig-label-dim" x="802" y="220" text-anchor="middle">粒子入射器</text>
+          <line class="rig-beam" x1="756" y1="210" x2="582" y2="210"/>
+          <path class="rig-lead" d="M802 234 L802 262 L750 262"/>
+          <text class="rig-label-dim" x="746" y="265" text-anchor="end">位相ズレ 0.4° / 計測不能</text>
+
+          <!-- 冷却塔（左上） -->
+          <rect class="rig-part" x="44" y="52" width="120" height="44"/>
+          <text class="rig-label" x="104" y="70" text-anchor="middle">CRYO-01</text>
+          <text class="rig-label-dim" x="104" y="84" text-anchor="middle">超低温冷却塔</text>
+          <path class="rig-conduit" d="M164 74 L226 74 L266 80" fill="none"/>
+
+          <!-- 記録装置（右上） -->
+          <rect class="rig-part" x="736" y="52" width="120" height="44"/>
+          <text class="rig-label" x="796" y="70" text-anchor="middle">REC-∞</text>
+          <text class="rig-label-dim" x="796" y="84" text-anchor="middle">全事象記録装置</text>
+          <path class="rig-conduit" d="M736 74 L674 74 L634 80" fill="none"/>
+
+          <!-- 蓄電バンク（左下） -->
+          <rect class="rig-part" x="44" y="318" width="120" height="44"/>
+          <text class="rig-label" x="104" y="336" text-anchor="middle">ACC-BANK</text>
+          <text class="rig-label-dim" x="104" y="350" text-anchor="middle">位相蓄電槽</text>
+          <path class="rig-conduit" d="M164 340 L226 340 L266 336" fill="none"/>
+
+          <!-- 隔離装置（右下・停止） -->
+          <rect class="rig-part" x="736" y="318" width="120" height="44" stroke="rgba(168,118,125,.4)"/>
+          <text class="rig-label" x="796" y="336" text-anchor="middle" fill="rgba(168,118,125,.8)">SEAL-07</text>
+          <text class="rig-label-dim" x="796" y="350" text-anchor="middle">緊急封印機構 / 停止</text>
+          <path class="rig-lead" d="M736 340 L690 340"/>
+
+          <!-- TRIAD 連絡線 -->
+          <line class="rig-conduit" x1="450" y1="30" x2="450" y2="60"/>
+          <path class="rig-lead" d="M450 60 L450 78"/>
+          <text class="rig-label-dim" x="458" y="44">▲ TRIAD LINK / 三賢者演算系へ</text>
+
+          <!-- 主排熱路 -->
+          <path class="rig-lead" d="M450 342 L450 386"/>
+          <text class="rig-label-dim" x="458" y="386">▼ 主排熱路 — 到達点 [ 未 特 定 ]</text>
+
+          <!-- 寸法線 -->
+          <path class="rig-dim" d="M300 396 L300 388 M600 396 L600 388 M300 392 L600 392"/>
+          <text class="rig-label-dim" x="450" y="404" text-anchor="middle">Ø 34.0 m</text>
+          <path class="rig-dim" d="M28 120 L36 120 M28 300 L36 300 M32 120 L32 300"/>
+          <text class="rig-label-dim" x="32" y="214" text-anchor="middle" transform="rotate(-90 32 214)">H 20.4 m</text>
+        </svg>
+
+        <div class="rig-caption">
+          <span>DRAWN BY: <span class="redacted">████</span> ・ 最終更新 <span id="rig-date">----/--/--</span></span>
+          <span id="rig-note">SYS: 抽出効率、理論値を超過。原因未特定。</span>
+        </div>
+      </div>
+
+      <!-- テレメトリ -->
+      <div class="telemetry reveal" style="--d:.2s" aria-hidden="true">
+        <div class="tele-cell"><span class="k">EXTRACTED POWER ／抽出出力</span><span class="v" id="te-out">0.00</span><span class="u">PW</span>
+          <svg class="tele-spark" viewBox="0 0 120 26" preserveAspectRatio="none"><polyline id="spark" points=""/></svg>
+        </div>
+        <div class="tele-cell"><span class="k">HORIZON RADIUS ／事象視界半径</span><span class="v" id="te-eh">0.00</span><span class="u">µm</span></div>
+        <div class="tele-cell"><span class="k">TIDAL STRESS ／潮汐応力</span><span class="v" id="te-tidal">0.00</span><span class="u">GPa</span></div>
+        <div class="tele-cell"><span class="k">EXTRACTION EFF. ／抽出効率</span><span class="v" id="te-eff">0.0</span><span class="u">%</span></div>
+        <div class="tele-cell"><span class="k">CONFINEMENT FIELD ／閉じ込め磁場</span><span class="v" id="te-field">0.00</span><span class="u">T</span></div>
+        <div class="tele-cell"><span class="k">HAWKING FLUX ／蒸発輻射</span><span class="v" id="te-hawk">0.00</span><span class="u">nW</span></div>
+      </div>
+    </section>
+
+    <!-- ===== 侵入ログ ===== -->
+    <section class="log-section">
+      <h2 class="section-title reveal" style="--d:.1s"><span class="sec-no">§04</span>INTRUSION LOG <span class="jp">／侵入記録</span></h2>
+      <div class="log-frame reveal" style="--d:.14s">
+        <div id="log-feed" aria-live="off"></div>
+      </div>
+    </section>
+
+    <!-- ===== 緊急端末 ===== -->
+    <section class="console-section">
+      <h2 class="section-title reveal" style="--d:.1s"><span class="sec-no">§05</span>EMERGENCY TERMINAL <span class="jp">／緊急端末</span></h2>
+      <p class="section-lead reveal" style="--d:.12s">
+        隔壁の向こうで、まだ一台だけ生きている端末。<code>HELP</code> と打てば、まだ返事をする。
+      </p>
+      <div class="console-frame reveal" style="--d:.16s">
+        <div class="console-bar"><span>AH-TERM // B██ / GUEST</span><span id="console-state">LINK: UNSTABLE</span></div>
+        <div id="console-out"></div>
+        <form class="console-input" id="console-form" autocomplete="off">
+          <span class="prompt">&gt;</span>
+          <input id="console-cmd" type="text" placeholder="コマンドを入力（HELP）" aria-label="コマンド入力" spellcheck="false" />
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="danger-footer">
+    <p class="footer-org">Arca Hortus Dimension Research Organization — Sealed Division / Black Facility</p>
+    <p class="footer-note">
+      当区画の存在は公式には否定されています。<br>
+      あなたがここで見たものは、<span class="redacted" data-reveal="なかったこと">██████</span>として処理されます。
+    </p>
+    <a class="return-link" href="index.html">◂ RETURN TO SURFACE ／表層へ帰還</a>
+    <p class="footer-copyright">&copy; ArcaHortus. All rights reserved. <a class="footer-credits-link" href="../credits.html">Credits</a></p>
+  </footer>
+
+  <script src="assets/triad-engine.js"></script>
+  <script src="assets/danger.js"></script>
+</body>
+</html>
