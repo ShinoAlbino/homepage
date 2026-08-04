@@ -486,10 +486,21 @@
      ========================================================== */
   const sealed = document.getElementById('sealed-card');
   if (sealed) {
+    const SINGULARITY_AT = 3; // 次元特異点を検知する回数
+    const TRANSIT_AT = 7;     // 箱庭研究所へ遷移する回数
+    const COOLDOWN = 500;     // 連打でログを読み飛ばさせないための最小間隔(ms)
     let denyCount = 0;
     let singularity = false;
+    let deniedLogged = false; // 「観測権限が有りません」を出したか
+    let lastDenyAt = -Infinity;
     const deny = () => {
-      if (singularity) {
+      // 連打は1回分として無視する。遷移は必ずログが出た後に来る
+      const now = performance.now();
+      if (now - lastDenyAt < COOLDOWN) return;
+      lastDenyAt = now;
+
+      // 権限拒否のログを出し切ってからでないと遷移しない
+      if (singularity && deniedLogged && denyCount >= TRANSIT_AT - 1) {
         window.location.href = 'danger.html';
         return;
       }
@@ -499,12 +510,15 @@
       denyCount++;
       if (denyCount === 1) {
         pushLog('alert', 'WARNING: 封鎖区画への未認可アクセスを検知。観測局へ通報しました。');
-      } else if (denyCount === 3) {
+      } else if (denyCount === SINGULARITY_AT) {
         pushLog('alert', 'WARNING: 執拗なアクセス試行を記録。あなたの好奇心は報告対象です。');
         pushLog('alert', '次元特異点を検知。座標が収束しています……');
         singularity = true;
-      } else if (denyCount >= 5 && denyCount % 5 === 0) {
+      } else if (singularity && !deniedLogged) {
         pushLog('warn', '……現在の次元では観測権限が有りません。');
+        deniedLogged = true;
+      } else if (denyCount === TRANSIT_AT - 1) {
+        pushLog('alert', '……接続先の座標が書き換えられました。');
       }
     };
     sealed.addEventListener('click', deny);
