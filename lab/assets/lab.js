@@ -565,7 +565,8 @@
       appModal.setAttribute('aria-hidden', 'false');
       officeCard.setAttribute('aria-expanded', 'true');
       document.documentElement.classList.add('modal-open');
-      panel.scrollTop = 0;
+      const list = appModal.querySelector('.app-list');
+      if (list) list.scrollTop = 0;
 
       // 閉じるボタンより先に、先頭の端末へフォーカスを置く
       const first = appModal.querySelector('a.app-item') || focusables()[0];

@@ -523,6 +523,13 @@ a.sector-card:hover .enter-hint,
 /* ==========================================================
    端末選択ダイアログ（SECTOR-04）
    ========================================================== */
+/* スクロールバーは常に出さない。
+   出し入れで幅が変わるとダイアログ開閉のたびに画面全体が横へ飛ぶため。
+   ホイール・キー・タッチでのスクロールは従来どおり効く。 */
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
 html.modal-open { overflow: hidden; }
 
 #app-modal {
@@ -553,8 +560,12 @@ html.modal-open { overflow: hidden; }
 .modal-panel {
   position: relative;
   width: min(760px, 100%);
-  max-height: min(86vh, 760px);
-  overflow-y: auto;
+  /* グリッド領域（＝ビューポート − パネル外周の余白）を超えない。
+     項目が増えても枠は動かさず、中のリストだけをスクロールさせる */
+  max-height: min(760px, 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   padding: 26px 30px 20px;
   background: linear-gradient(180deg, rgba(7, 26, 18, 0.96), rgba(3, 11, 8, 0.97));
   border: 1px solid var(--line-strong);
@@ -612,6 +623,7 @@ html.modal-open { overflow: hidden; }
 
 /* ----- ヘッダー ----- */
 .modal-head {
+  flex: none;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -655,16 +667,33 @@ html.modal-open { overflow: hidden; }
 }
 
 .modal-lead {
+  flex: none;
   font-size: 0.82rem;
   color: var(--text-dim);
   margin: 14px 0 18px;
 }
 
 /* ----- 端末リスト ----- */
-.app-list { display: flex; flex-direction: column; gap: 12px; }
+/* 項目が増えたときはここだけがスクロールする。
+   スクロールバーは出さず、左右の余白はホバーで5px動く分の逃げ場 */
+.app-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 10px;
+  margin: -4px -10px;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.app-list::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
 .app-item {
   position: relative;
+  flex: none; /* 縦に潰さずリスト側をスクロールさせる */
   display: grid;
   grid-template-columns: 40px 1fr auto;
   align-items: center;
@@ -789,6 +818,7 @@ a.app-item:focus-visible .app-go {
 
 /* ----- フッター ----- */
 .modal-foot {
+  flex: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
