@@ -526,4 +526,108 @@
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); deny(); }
     });
   }
+
+  /* ==========================================================
+     事務処理支援区画：端末選択ダイアログ
+     ========================================================== */
+  const officeCard = document.getElementById('office-card');
+  const appModal = document.getElementById('app-modal');
+  if (officeCard && appModal) {
+    const panel = appModal.querySelector('.modal-panel');
+    const items = appModal.querySelectorAll('.app-item');
+    const CLOSE_MS = 300; // modalOut と揃える
+    let lastFocus = null;
+    let closeTimer = 0;
+
+    // Tabキーの巡回対象
+    const focusables = () => [
+      ...appModal.querySelectorAll('a.app-item, .app-item.locked, .modal-close')
+    ].filter((el) => el.offsetParent !== null);
+
+    const isOpen = () => appModal.classList.contains('open');
+
+    const open = () => {
+      if (isOpen()) return;
+      clearTimeout(closeTimer);
+      const active = document.activeElement;
+      lastFocus = (active && active !== document.body) ? active : officeCard;
+
+      // カードの中心を原点にして開く（visibility:hidden でも寸法は取れる）
+      // clampは transform の影響を受けない offsetWidth/Height を使う
+      const c = officeCard.getBoundingClientRect();
+      const p = panel.getBoundingClientRect();
+      const ox = Math.max(0, Math.min(panel.offsetWidth, c.left + c.width / 2 - p.left));
+      const oy = Math.max(0, Math.min(panel.offsetHeight, c.top + c.height / 2 - p.top));
+      panel.style.transformOrigin = `${ox.toFixed(1)}px ${oy.toFixed(1)}px`;
+
+      appModal.classList.remove('closing');
+      appModal.classList.add('open');
+      appModal.setAttribute('aria-hidden', 'false');
+      officeCard.setAttribute('aria-expanded', 'true');
+      document.documentElement.classList.add('modal-open');
+      panel.scrollTop = 0;
+
+      // 閉じるボタンより先に、先頭の端末へフォーカスを置く
+      const first = appModal.querySelector('a.app-item') || focusables()[0];
+      if (first) first.focus({ preventScroll: true });
+      pushLog('', 'ARCA OFFICE SERIES：端末ディレクトリを展開しました。');
+    };
+
+    const close = () => {
+      if (!isOpen()) return;
+      appModal.classList.remove('open');
+      appModal.classList.add('closing');
+      appModal.setAttribute('aria-hidden', 'true');
+      officeCard.setAttribute('aria-expanded', 'false');
+      document.documentElement.classList.remove('modal-open');
+      closeTimer = setTimeout(() => appModal.classList.remove('closing'), CLOSE_MS);
+      if (lastFocus) lastFocus.focus({ preventScroll: true });
+    };
+
+    officeCard.addEventListener('click', open);
+    officeCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+    });
+
+    appModal.querySelectorAll('[data-close]').forEach((el) => {
+      el.addEventListener('click', close);
+    });
+
+    // 隔離中の端末：拒否演出＋観測ログ
+    items.forEach((item) => {
+      if (!item.classList.contains('locked')) return;
+      const refuse = () => {
+        item.classList.remove('deny');
+        void item.offsetWidth; // アニメ再トリガー
+        item.classList.add('deny');
+        const name = item.dataset.name || '当該端末';
+        pushLog('warn', `${name} は検疫のため隔離中です。接続は許可されていません。`);
+      };
+      item.addEventListener('click', refuse);
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); refuse(); }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!isOpen()) return;
+      if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+      if (e.key !== 'Tab') return;
+      // フォーカスをダイアログ内に閉じ込める
+      const list = focusables();
+      if (!list.length) return;
+      const first = list[0];
+      const last = list[list.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      } else if (!appModal.contains(document.activeElement)) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+  }
 })();

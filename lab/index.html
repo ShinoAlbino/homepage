@@ -184,22 +184,23 @@
           </div>
         </a>
 
-        <a class="sector-card reveal" style="--d:.45s" href="office/Tabula.html">
+        <div class="sector-card reveal" style="--d:.45s" id="office-card" role="button" tabindex="0"
+             aria-haspopup="dialog" aria-expanded="false" aria-controls="app-modal">
           <div class="card-head">
             <span class="sector-no">SECTOR-04</span>
             <span class="sector-status st-active"><i></i>ACTIVE</span>
           </div>
           <h3 class="sector-name">事務処理支援区画</h3>
-          <p class="sector-en">ARCA OFFICE — TABULA</p>
+          <p class="sector-en">ARCA OFFICE — SERIES</p>
           <p class="sector-desc">
-            見積書・請求書・納品書を生成する事務端末「Tabula」。
-            入力データは外部へ送信されず、端末内のみで完結する。
+            事務処理を代行する端末群。現在は帳票生成「Tabula」のみ運用中で、
+            残る個体は検疫のため隔離されている。
           </p>
           <div class="card-foot">
             <span class="clearance">CLEARANCE LV.1</span>
-            <span class="enter-hint">ENTER ▸</span>
+            <span class="enter-hint">SELECT ▸</span>
           </div>
-        </a>
+        </div>
 
         <div class="sector-card sealed reveal" style="--d:.55s" id="sealed-card" role="button" tabindex="0" aria-label="封鎖区画">
           <div class="card-head">
@@ -235,6 +236,74 @@
     <a class="return-link" href="../index.html">◂ RETURN TO HQ ／本部へ帰還</a>
     <p class="footer-copyright">&copy; ArcaHortus. All rights reserved. <a class="footer-credits-link" href="../credits.html">Credits</a></p>
   </footer>
+
+  <!-- SECTOR-04：端末選択ダイアログ -->
+  <div id="app-modal" role="dialog" aria-modal="true" aria-labelledby="app-modal-title" aria-hidden="true">
+    <div class="modal-backdrop" data-close></div>
+
+    <div class="modal-panel" role="document">
+      <span class="sweep" aria-hidden="true"></span>
+
+      <div class="modal-head">
+        <div class="modal-head-text">
+          <span class="modal-no">SECTOR-04 ／ 事務処理支援区画</span>
+          <h2 class="modal-title" id="app-modal-title">ARCA OFFICE — SERIES</h2>
+        </div>
+        <button type="button" class="modal-close" data-close aria-label="閉じる">
+          <span aria-hidden="true">CLOSE ✕</span>
+        </button>
+      </div>
+
+      <p class="modal-lead">
+        接続可能な端末を選択してください。隔離中の個体へは接続できません。
+      </p>
+
+      <div class="app-list">
+        <a class="app-item" style="--i:0" href="office/Tabula.html">
+          <span class="app-idx">01</span>
+          <span class="app-body">
+            <span class="app-name">Tabula<span class="app-jp">／帳票生成</span></span>
+            <span class="app-desc">見積書・請求書・納品書を発行する。入力データは端末内で完結し、外部へ送信されない。</span>
+          </span>
+          <span class="app-right">
+            <span class="app-state st-active"><i></i>ACTIVE</span>
+            <span class="app-go">OPEN ▸</span>
+          </span>
+        </a>
+
+        <div class="app-item locked" style="--i:1" role="button" tabindex="0" aria-disabled="true"
+             data-name="Libra">
+          <span class="app-idx">02</span>
+          <span class="app-body">
+            <span class="app-name">Libra<span class="app-jp">／収支台帳</span></span>
+            <span class="app-desc">入出金と残高を記録する台帳端末。検疫中につき接続不可。</span>
+          </span>
+          <span class="app-right">
+            <span class="app-state st-quarantined"><i></i>QUARANTINED</span>
+            <span class="app-go">隔離中</span>
+          </span>
+        </div>
+
+        <div class="app-item locked" style="--i:2" role="button" tabindex="0" aria-disabled="true"
+             data-name="Horologium">
+          <span class="app-idx">03</span>
+          <span class="app-body">
+            <span class="app-name">Horologium<span class="app-jp">／作業記録</span></span>
+            <span class="app-desc">作業時間と稼働実績を計測する端末。検疫中につき接続不可。</span>
+          </span>
+          <span class="app-right">
+            <span class="app-state st-quarantined"><i></i>QUARANTINED</span>
+            <span class="app-go">隔離中</span>
+          </span>
+        </div>
+      </div>
+
+      <p class="modal-foot">
+        <span class="modal-foot-line">&gt; UNITS 3 ／ ONLINE 1 ／ QUARANTINED 2</span>
+        <span class="modal-foot-hint">[ESC] で閉じる</span>
+      </p>
+    </div>
+  </div>
 
   <script src="assets/lab.js"></script>
 </body>
