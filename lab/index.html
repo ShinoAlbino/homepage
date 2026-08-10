@@ -134,7 +134,7 @@
       <h2 class="section-title reveal" style="--d:.1s">RESEARCH SECTORS <span class="jp">／研究区画</span></h2>
 
       <div class="sector-grid">
-        <a class="sector-card reveal" style="--d:.15s" href="hunting/index.html">
+        <a class="sector-card reveal" style="--d:.15s" href="hunting/index.html" data-ah-gate="01">
           <div class="card-head">
             <span class="sector-no">SECTOR-01</span>
             <span class="sector-status st-active"><i></i>ACTIVE</span>
@@ -151,7 +151,7 @@
           </div>
         </a>
 
-        <a class="sector-card reveal" style="--d:.25s" href="live/index.html">
+        <a class="sector-card reveal" style="--d:.25s" href="live/index.html" data-ah-gate="02">
           <div class="card-head">
             <span class="sector-no">SECTOR-02</span>
             <span class="sector-status st-live"><i></i>STREAMING</span>
@@ -168,7 +168,7 @@
           </div>
         </a>
 
-        <a class="sector-card reveal" style="--d:.35s" href="game/lottery.html">
+        <a class="sector-card reveal" style="--d:.35s" href="game/lottery.html" data-ah-gate="03">
           <div class="card-head">
             <span class="sector-no">SECTOR-03</span>
             <span class="sector-status st-unstable"><i></i>UNSTABLE</span>
@@ -260,7 +260,7 @@
       </p>
 
       <div class="app-list">
-        <a class="app-item" style="--i:0" href="office/Tabula.html">
+        <a class="app-item" style="--i:0" href="office/Tabula.html" data-ah-gate="04">
           <span class="app-idx">01</span>
           <span class="app-body">
             <span class="app-name">Tabula<span class="app-jp">／帳票生成</span></span>
@@ -304,6 +304,31 @@
         <span class="modal-foot-hint">[ESC] で閉じる</span>
       </p>
     </div>
+  </div>
+
+  <!-- セクター起動インタースティシャル（演出はこのページ内で完結し、遷移先には手を加えない） -->
+  <div id="ah-gate" aria-hidden="true">
+    <div class="ah-gate__grid"></div>
+    <div class="ah-gate__scan"></div>
+    <div class="ah-gate__vig"></div>
+
+    <div class="ah-gate__inner">
+      <div class="ah-gate__glyph" data-ah-glyph></div>
+
+      <div class="ah-gate__head">
+        <span class="ah-gate__id"    data-ah-id></span>
+        <span class="ah-gate__state" data-ah-state></span>
+      </div>
+      <div class="ah-gate__name" data-ah-name></div>
+      <div class="ah-gate__jp"   data-ah-jp></div>
+
+      <pre class="ah-gate__log" data-ah-log></pre>
+
+      <div class="ah-gate__bar"><i data-ah-bar></i></div>
+      <div class="ah-gate__status" data-ah-status>STANDBY</div>
+    </div>
+
+    <div class="ah-gate__skip">[ CLICK / ESC TO SKIP ]</div>
   </div>
 
   <script src="assets/lab.js"></script>

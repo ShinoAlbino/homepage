@@ -948,6 +948,143 @@ a.app-item:focus-visible .app-go {
   .app-desc { font-size: 0.74rem; }
 }
 
+/* ==========================================================
+   セクター起動インタースティシャル（SECTOR GATE）
+   遷移の間にこのページ内で端末起動演出を挟む。遷移先は素のまま。
+   ========================================================== */
+#ah-gate{
+  --ah-hue:#4fd08a;
+  position:fixed; inset:0; z-index:99999;
+  display:none; place-items:center;
+  background:#04100b;
+  color:var(--ah-hue);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Noto Sans JP",monospace;
+  overflow:hidden;
+  cursor:pointer;
+  -webkit-user-select:none; user-select:none;
+}
+#ah-gate[data-open]{ display:grid; }
+
+/* 上下からのワイプイン */
+#ah-gate[data-open] .ah-gate__inner,
+#ah-gate[data-open] .ah-gate__grid,
+#ah-gate[data-open] .ah-gate__scan{
+  animation:ah-wipe .18s cubic-bezier(.2,.9,.2,1) both;
+}
+@keyframes ah-wipe{
+  from{ clip-path:inset(50% 0 50% 0); opacity:0; }
+  to  { clip-path:inset(0 0 0 0);     opacity:1; }
+}
+
+/* 背景グリッド */
+.ah-gate__grid{
+  position:absolute; inset:0; pointer-events:none; opacity:.13;
+  background-image:
+    linear-gradient(to right, var(--ah-hue) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ah-hue) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse at center, #000 20%, transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse at center, #000 20%, transparent 78%);
+}
+
+/* 走査線 */
+.ah-gate__scan{
+  position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(
+    to bottom, rgba(255,255,255,.045) 0 1px, transparent 1px 3px);
+}
+.ah-gate__scan::after{
+  content:""; position:absolute; left:0; right:0; height:22vh;
+  background:linear-gradient(to bottom, transparent, color-mix(in srgb, var(--ah-hue) 16%, transparent), transparent);
+  animation:ah-sweep 2.6s linear infinite;
+}
+@keyframes ah-sweep{ from{ top:-25vh; } to{ top:105vh; } }
+
+/* 周辺減光 */
+.ah-gate__vig{
+  position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.85) 100%);
+}
+
+.ah-gate__inner{
+  position:relative; z-index:2;
+  width:min(680px, 88vw);
+  text-align:left;
+}
+
+/* 巨大グリフ（背面の漢字一文字） */
+.ah-gate__glyph{
+  position:absolute; right:-.08em; top:50%; translate:0 -50%;
+  font-size:min(38vh, 300px); line-height:1;
+  font-family:"Noto Serif JP",serif; font-weight:700;
+  color:var(--ah-hue); opacity:.07;
+  pointer-events:none;
+}
+
+.ah-gate__head{
+  display:flex; align-items:baseline; gap:1em;
+  font-size:.78rem; letter-spacing:.22em; opacity:.75;
+}
+.ah-gate__state{
+  border:1px solid currentColor; padding:.1em .6em; font-size:.66rem;
+}
+.ah-gate__name{
+  margin-top:.35em;
+  font-size:clamp(1.3rem, 4.4vw, 2.1rem);
+  letter-spacing:.14em; font-weight:700;
+  text-shadow:0 0 24px color-mix(in srgb, var(--ah-hue) 55%, transparent);
+}
+.ah-gate__jp{
+  margin-top:.2em; font-size:.86rem; letter-spacing:.34em; opacity:.55;
+}
+
+.ah-gate__log{
+  margin:1.6em 0 0; min-height:6.2em;
+  font-size:clamp(.66rem,2.5vw,.8rem); line-height:1.75;
+  white-space:pre; opacity:.9;
+}
+.ah-gate__log b{ font-weight:400; color:#fff; }
+
+.ah-gate__bar{
+  margin-top:.6em; height:6px;
+  border:1px solid color-mix(in srgb, var(--ah-hue) 45%, transparent);
+  background:rgba(0,0,0,.4);
+}
+.ah-gate__bar i{
+  display:block; height:100%; width:0%;
+  background:var(--ah-hue);
+  box-shadow:0 0 14px var(--ah-hue);
+  transition:width .18s linear;
+}
+.ah-gate__status{
+  margin-top:.5em; font-size:.7rem; letter-spacing:.3em; opacity:.6;
+}
+
+.ah-gate__skip{
+  position:absolute; left:0; right:0; bottom:6vh;
+  text-align:center; font-size:.62rem; letter-spacing:.3em;
+  opacity:.35; z-index:3;
+  animation:ah-blink 1.4s steps(1,end) infinite;
+}
+@keyframes ah-blink{ 0%,60%{opacity:.35} 61%,100%{opacity:.08} }
+
+/* SECTOR-03 の UNSTABLE 用グリッチ */
+#ah-gate[data-glitch] .ah-gate__name{ animation:ah-glitch .22s steps(2,end) 3; }
+@keyframes ah-glitch{
+  0%  { transform:translate(0);      filter:none; }
+  33% { transform:translate(-3px,1px); filter:hue-rotate(35deg); }
+  66% { transform:translate(2px,-2px); filter:hue-rotate(-25deg); }
+  100%{ transform:translate(0);      filter:none; }
+}
+
+/* 締めのフラッシュ */
+#ah-gate[data-flash]::after{
+  content:""; position:absolute; inset:0; z-index:5;
+  background:var(--ah-hue);
+  animation:ah-flash .34s ease-out both;
+}
+@keyframes ah-flash{ from{opacity:.85} to{opacity:0} }
+
 /* ===== モーション低減設定 ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -959,4 +1096,6 @@ a.app-item:focus-visible .app-go {
   body.pre-boot main,
   body.pre-boot .lab-header,
   body.pre-boot .lab-footer { visibility: visible; }
+  /* 演出は出さず、通常のリンクとして直接遷移させる */
+  #ah-gate{ display:none !important; }
 }

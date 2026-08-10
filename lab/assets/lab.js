@@ -612,6 +612,9 @@
 
     document.addEventListener('keydown', (e) => {
       if (!isOpen()) return;
+      // ゲート演出が出ている間はそちらのスキップ操作を優先する
+      const gate = document.getElementById('ah-gate');
+      if (gate && gate.hasAttribute('data-open')) return;
       if (e.key === 'Escape') { e.preventDefault(); close(); return; }
       if (e.key !== 'Tab') return;
       // フォーカスをダイアログ内に閉じ込める
@@ -631,4 +634,223 @@
       }
     });
   }
+})();
+
+/* ============================================================
+   セクター起動インタースティシャル（SECTOR GATE）
+   ------------------------------------------------------------
+   セクターへ遷移する前に、このページ内で端末の起動演出を挟む。
+   遷移先のページには一切手を加えない（実ページに演出レイヤーを足すと
+   検索流入の主戦場である狩猟ガイドのLCPが悪化するため）。
+   data-ah-gate を持たないリンクは影響を受けない。
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var SECTORS = {
+    '01': {
+      id:'SECTOR-01', state:'ACTIVE', glyph:'狩',
+      name:'FIELD APTITUDE WING', jp:'狩猟適性訓練区画',
+      hue:'#4fd08a',
+      log:[
+        'LINKING TO SECTOR-01 ................. <b>OK</b>',
+        'TERRAIN MESH        <b>LOADED</b>  [ 47 REGIONS ]',
+        'BIOSIGNAL FILTER    <b>CALIBRATED</b>',
+        'ARCHIVE LV.1        <b>UNLOCKED</b>'
+      ]
+    },
+    '02': {
+      id:'SECTOR-02', state:'STREAMING', glyph:'観',
+      name:'OBSERVATION DECK', jp:'次元観測区画',
+      hue:'#7d9bff',
+      log:[
+        'LINKING TO SECTOR-02 ................. <b>OK</b>',
+        'OBSERVER  <b>此芽</b>  ............... <b>ON DUTY</b>',
+        'SIGNAL SYNC         <b>99.4%</b>',
+        'NOTICE: 観測は既に始まっている'
+      ]
+    },
+    '03': {
+      id:'SECTOR-03', state:'UNSTABLE', glyph:'率',
+      name:'PROBABILITY ENGINE', jp:'確率事象制御区画',
+      hue:'#a56bff', unstable:true,
+      log:[
+        'LINKING TO SECTOR-03 ................. <b>OK</b>',
+        'ENTROPY POOL        [<b>████████░░</b>] 87%',
+        'CAUSALITY LOCK      <b>RELEASED</b>',
+        'WARNING: 観測結果は既に確定している'
+      ]
+    },
+    '04': {
+      id:'SECTOR-04', state:'ACTIVE', glyph:'帳',
+      name:'ARCA OFFICE — TABULA', jp:'事務処理支援区画',
+      hue:'#d9b45c',
+      log:[
+        'LINKING TO SECTOR-04 ................. <b>OK</b>',
+        'UNIT 01 <b>TABULA</b>       ......... <b>ONLINE</b>',
+        'UNIT 02 LIBRA        ......... QUARANTINED',
+        'UNIT 03 HOROLOGIUM   ......... QUARANTINED'
+      ]
+    }
+  };
+
+  var CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*/\\<>=+-';
+  var SESSION_KEY = 'ah.gate.seen';
+
+  var gate = document.getElementById('ah-gate');
+  if (!gate) return;
+
+  var el = {
+    glyph : gate.querySelector('[data-ah-glyph]'),
+    id    : gate.querySelector('[data-ah-id]'),
+    state : gate.querySelector('[data-ah-state]'),
+    name  : gate.querySelector('[data-ah-name]'),
+    jp    : gate.querySelector('[data-ah-jp]'),
+    log   : gate.querySelector('[data-ah-log]'),
+    bar   : gate.querySelector('[data-ah-bar]'),
+    status: gate.querySelector('[data-ah-status]')
+  };
+
+  var timers = [];
+  var pending = null;   // 遷移先 URL
+  var done = false;
+
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function clearAll(){ timers.forEach(clearTimeout); timers = []; }
+
+  function go(){
+    if (done) return;
+    done = true;
+    clearAll();
+    if (pending) window.location.href = pending;
+  }
+
+  function seen(){
+    try { return sessionStorage.getItem(SESSION_KEY) === '1'; }
+    catch (e) { return false; }
+  }
+  function markSeen(){
+    try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+  }
+
+  // 英字をスクランブルさせながら解決する
+  function scramble(node, text, duration){
+    var start = null, len = text.length;
+    function frame(ts){
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var fixed = Math.floor(p * len);
+      var out = text.slice(0, fixed);
+      for (var i = fixed; i < len; i++){
+        out += text[i] === ' ' ? ' ' : CHARS[(Math.random() * CHARS.length) | 0];
+      }
+      node.textContent = out;
+      if (p < 1) requestAnimationFrame(frame);
+      else node.textContent = text;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function play(key, href){
+    var s = SECTORS[key];
+    if (!s) { window.location.href = href; return; }
+
+    pending = href;
+    done = false;
+    var fast = seen();
+    var k = fast ? 0.42 : 1;      // 2回目以降は時間を圧縮
+
+    gate.style.setProperty('--ah-hue', s.hue);
+    gate.removeAttribute('data-flash');
+    if (s.unstable) gate.setAttribute('data-glitch',''); else gate.removeAttribute('data-glitch');
+
+    el.glyph.textContent  = s.glyph;
+    el.id.textContent     = s.id;
+    el.state.textContent  = s.state;
+    el.jp.textContent     = s.jp;
+    el.name.textContent   = '';
+    el.log.innerHTML      = '';
+    el.bar.style.width    = '0%';
+    el.status.textContent = 'STANDBY';
+
+    gate.setAttribute('data-open','');
+    gate.setAttribute('aria-hidden','false');
+    document.documentElement.style.overflow = 'hidden';
+
+    at(120 * k, function(){ scramble(el.name, s.name, 480 * k); });
+
+    s.log.forEach(function(line, i){
+      at((480 + i * 170) * k, function(){
+        el.log.innerHTML += '&gt; ' + line + '\n';
+      });
+    });
+
+    at(480 * k, function(){ el.status.textContent = 'HANDSHAKE'; });
+
+    // プログレスバー
+    var barStart = 1250 * k, barDur = 750 * k;
+    at(barStart, function(){
+      el.status.textContent = 'GATE OPENING';
+      var t0 = performance.now();
+      (function step(now){
+        if (done) return;
+        var p = Math.min((now - t0) / barDur, 1);
+        var v = p * 100;
+        // UNSTABLE は 1 回だけ巻き戻す
+        if (s.unstable && p > 0.55 && p < 0.68) v = 48;
+        el.bar.style.width = v.toFixed(1) + '%';
+        if (p < 1) requestAnimationFrame(step);
+        else el.bar.style.width = '100%';
+      })(performance.now());
+    });
+
+    at(barStart + barDur + 60, function(){
+      el.status.textContent = 'GATE OPEN';
+      gate.setAttribute('data-flash','');
+    });
+
+    at(barStart + barDur + 400, go);
+
+    // 保険: 何があっても 4 秒で必ず遷移する
+    at(4000, go);
+
+    markSeen();
+  }
+
+  // クリック捕捉
+  document.addEventListener('click', function(ev){
+    var a = ev.target.closest ? ev.target.closest('a[data-ah-gate]') : null;
+    if (!a) return;
+
+    // 新規タブ・別窓・修飾キー付きは邪魔しない
+    if (ev.defaultPrevented) return;
+    if (ev.button !== 0) return;
+    if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    if (a.target && a.target !== '_self') return;
+
+    // reduced-motion の人は演出なしで素通し
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    ev.preventDefault();
+    play(a.getAttribute('data-ah-gate'), a.href);
+  }, false);
+
+  // スキップ
+  gate.addEventListener('click', go);
+  document.addEventListener('keydown', function(ev){
+    if (!gate.hasAttribute('data-open')) return;
+    if (ev.key === 'Escape' || ev.key === 'Enter' || ev.key === ' ') go();
+  });
+
+  // ブラウザバックで戻ってきたときにオーバーレイが残らないようにする
+  window.addEventListener('pageshow', function(ev){
+    if (ev.persisted){
+      clearAll();
+      done = false; pending = null;
+      gate.removeAttribute('data-open');
+      gate.removeAttribute('data-flash');
+      gate.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow = '';
+    }
+  });
 })();
