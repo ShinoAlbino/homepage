@@ -7,9 +7,14 @@
   <meta name="description" content="箱庭次元研究機構(箱庭研究所)の観測室。観測者・此芽が常駐する疑似ライブ配信ページです。" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0d1021" />
+  <link rel="canonical" href="https://arcahortus.com/lab/live/index.html" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="箱庭研究所 -観測室-" />
   <meta property="og:description" content="白髪ケモミミの観測者・此芽が、今日も静かに箱庭を観測しています。" />
+  <meta property="og:url" content="https://arcahortus.com/lab/live/index.html" />
+  <meta property="og:image" content="https://arcahortus.com/images/ogp-live.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://arcahortus.com/images/ogp-live.png" />
 
   <!--
     Live2D Cubism Core
@@ -30,7 +35,7 @@
   <!-- 入室ゲート: 音声自動再生制限のアンロックを兼ねる -->
   <div id="gate" class="gate">
     <div class="gate-bg" aria-hidden="true"></div>
-    <a id="gate-back" class="back-button" href="#" aria-label="箱庭研究所へ戻る">◀</a>
+    <a id="gate-back" class="back-button" href="https://arcahortus.com/lab/" aria-label="箱庭研究所へ戻る">◀</a>
     <div class="gate-console">
       <span class="bracket bracket-tl" aria-hidden="true"></span>
       <span class="bracket bracket-tr" aria-hidden="true"></span>
@@ -46,12 +51,12 @@
           <button id="gate-enter" class="gate-button" type="button">
             <span class="gate-dot" aria-hidden="true"></span>入室
           </button>
-          <a id="gate-exit" class="gate-button gate-button-sub" href="#">退室</a>
+          <a id="gate-exit" class="gate-button gate-button-sub" href="https://arcahortus.com/lab/">退室</a>
         </div>
         <p class="gate-note">※ 入室すると音声が再生される場合があります</p>
       </div>
     </div>
-    <p class="gate-org">Arca Hortus Dimension Research Organization / 箱庭研究所 ・ <a id="gate-credits" href="#">Credits</a></p>
+    <p class="gate-org">Arca Hortus Dimension Research Organization / 箱庭研究所 ・ <a id="gate-credits" href="https://arcahortus.com/credits.html">Credits</a></p>
   </div>
 
   <div id="app" class="app" hidden>
@@ -91,7 +96,7 @@
     <footer class="live-footer">
       <p class="now-playing">♪ Now: <span id="now-program">--</span> / 次: <span id="next-program">--</span></p>
       <div class="footer-actions">
-        <a id="fanbox-button" class="fanbox-button" href="#" target="_blank" rel="noopener noreferrer">
+        <a id="fanbox-button" class="fanbox-button" href="https://hakoniwa-lab.fanbox.cc/" target="_blank" rel="noopener noreferrer">
           🔔 観測を支援する<span class="fanbox-sub">FANBOX</span>
         </a>
         <button id="volume-toggle" class="icon-button" type="button" aria-label="音量切り替え">🔊</button>

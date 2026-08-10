@@ -1,7 +1,7 @@
 /** サイト全体の設定。デプロイ先や支援URLはここだけ書き換えれば良い */
 export const SITE_CONFIG = {
   /** FANBOX(支援)ボタンのリンク先 */
-  fanboxUrl: 'https://arcahortus.fanbox.cc/',
+  fanboxUrl: 'https://hakoniwa-lab.fanbox.cc/',
 
   /** 戻るボタンの遷移先(UIフェーズ2-4)。LIVEの戻り先は同一ページの入口=リロードで復帰 */
   nav: {
