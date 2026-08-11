@@ -816,6 +816,22 @@ a.app-item:focus-visible .app-go {
   border-color: var(--magenta);
 }
 
+/* ----- 補足行 ----- */
+.modal-note {
+  flex: none;
+  margin-top: 14px;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+.modal-note a {
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.25s, text-shadow 0.25s;
+}
+.modal-note a:hover,
+.modal-note a:focus-visible { color: var(--green-pale); text-shadow: 0 0 10px var(--green); }
+
 /* ----- フッター ----- */
 .modal-foot {
   flex: none;

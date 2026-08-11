@@ -42,27 +42,32 @@
           <li class="tree-item active" data-category="all">
             <span class="tree-toggle">▸</span>
             <span class="tree-label">All Records</span>
-            <span class="count">(12)</span>
+            <span class="count" data-count-for="all">(7)</span>
           </li>
           <li class="tree-item" data-category="boundary">
             <span class="tree-toggle">▸</span>
             <span class="tree-label">Boundary Phenomena</span>
-            <span class="count">(3)</span>
+            <span class="count" data-count-for="boundary">(1)</span>
           </li>
           <li class="tree-item" data-category="protocol">
             <span class="tree-toggle">▸</span>
             <span class="tree-label">Protocols & Systems</span>
-            <span class="count">(4)</span>
+            <span class="count" data-count-for="protocol">(1)</span>
           </li>
           <li class="tree-item" data-category="anomaly">
             <span class="tree-toggle">▸</span>
             <span class="tree-label">Anomalies</span>
-            <span class="count">(3)</span>
+            <span class="count" data-count-for="anomaly">(1)</span>
           </li>
           <li class="tree-item" data-category="character">
             <span class="tree-toggle">▸</span>
             <span class="tree-label">Chronicles & Entities</span>
-            <span class="count">(2)</span>
+            <span class="count" data-count-for="character">(1)</span>
+          </li>
+          <li class="tree-item" data-category="tool">
+            <span class="tree-toggle">▸</span>
+            <span class="tree-label">Instruments &amp; Tools</span>
+            <span class="count" data-count-for="tool">(3)</span>
           </li>
         </ul>
       </div>
@@ -95,11 +100,11 @@
       <div class="sidebar-stats">
         <div class="stat-item">
           <span class="stat-label">Total Documents</span>
-          <span class="stat-value">12</span>
+          <span class="stat-value" id="total-documents">7</span>
         </div>
         <div class="stat-item">
           <span class="stat-label">Last Updated</span>
-          <span class="stat-value">2026.06.15</span>
+          <span class="stat-value">2026.08.11</span>
         </div>
       </div>
     </aside>
@@ -330,6 +335,267 @@
           <div class="card-footer">
             <span class="archive-tag">#Character</span>
             <span class="archive-tag">#Mystery</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
+        <!-- CARD 05: Instruments & Tools -->
+        <article class="archive-card" data-doc-id="TOL-001" data-category="tool" data-security="public">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge public">PUBLIC</div>
+            <span class="doc-id">TOL-001</span>
+            <span class="doc-date">2026.08.11</span>
+          </div>
+          <h2 class="archive-title">ArcaOffice Tabula ── 帳票生成端末</h2>
+          <p class="archive-excerpt">見積書・請求書・納品書・領収書を作成する単一ファイルのツール。入力データは端末内で完結し、外部へ送信されない。</p>
+
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 1 / PUBLIC</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Series:</span>
+                <span class="meta-value">ArcaOffice</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Version:</span>
+                <span class="meta-value">1.0（2026年8月）</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Format:</span>
+                <span class="meta-value">単一HTMLファイル</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">External Access:</span>
+                <span class="meta-value">NONE（外部通信なし）</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Status:</span>
+                <span class="meta-value">ACTIVE</span>
+              </div>
+            </div>
+
+            <div class="content-section">
+              <h3>何ができるか</h3>
+              <p>見積書・請求書・納品書・領収書の4種類を作成し、印刷またはPDFで出力できます。ブラウザだけで動き、インストールは不要です。</p>
+              <ul class="findings-list">
+                <li><b>インボイス制度に対応</b> — 適格請求書発行事業者の登録番号、税率別の対象額と消費税額を印字します</li>
+                <li><b>軽減税率・非課税</b> — 明細の行ごとに 10% / 8% / 非課税 を選べます</li>
+                <li><b>源泉徴収</b> — 10.21%（100万円超の部分は20.42%）を自動計算します</li>
+                <li><b>収入印紙の判定</b> — 領収書では、金額から必要な印紙税額を自動で表示します。クレジットカード決済の場合は不要と判定します</li>
+                <li><b>書類の変換</b> — 見積書から請求書へ、請求書から領収書へ、内容を引き継いだまま切り替えられます。変換前の書類は自動で履歴に残ります</li>
+                <li><b>取引先・品目のマスタ</b> — よく使う相手先と品目を登録しておけます</li>
+                <li><b>書き出し</b> — Excel(.xlsx) と CSV に出せます</li>
+              </ul>
+              <p>用紙は A4 / A5 / A5×2面付け（控え付き）から選べます。明細が増えても自動で縮小して1ページに収めます。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>データの扱い</h3>
+              <p>入力した内容は、<b>いま開いているブラウザの中</b>にのみ保存されます。外部に送信されることは一切ありません。</p>
+              <p>これは「送信しません」という約束ではなく、<b>確かめられる事実</b>です。ファイルの先頭に外部通信を禁止する宣言（Content-Security-Policy の <code>connect-src 'none'</code>）を書いてあるため、仮に送信しようとしてもブラウザ自身が止めます。開発者ツールの「ネットワーク」タブを開いたまま操作しても、通信は1件も発生しません。</p>
+              <p>作り手を信用しなくても、仕組みとして送信できません。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>オフラインで使う</h3>
+              <p>外部ライブラリにもCDNにも依存しない、1つのHTMLファイルです。ダウンロードして手元に置けば、インターネットに繋がっていなくても全機能が動きます。</p>
+              <p>ただし、<b>画面版と手元版でデータは共有されません</b>（保存先がブラウザ側のため）。移す場合はツール内の「書き出し」→「全データを書き出し（JSON）」をお使いください。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>ご利用条件</h3>
+              <p>無償でご利用いただけます。個人・法人を問わず、商用利用を含め業務でお使いいただけます。<b>本ファイルの再配布・転載・販売はご遠慮ください。</b></p>
+              <p>税額計算の結果および作成された書類の内容について、著作者は責任を負いません。税務上の取扱いは税理士等の専門家にご確認ください。</p>
+            </div>
+
+            <div class="tool-actions">
+              <a class="tool-btn primary" href="/lab/office/Tabula.html">→ ブラウザで開く</a>
+              <a class="tool-btn" href="/lab/office/Tabula.html" download="ArcaOffice_Tabula.html">⇩ オフライン版をダウンロード</a>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Tool</span>
+            <span class="archive-tag">#Office</span>
+            <span class="archive-tag">#Offline</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
+        <!-- CARD 06: Instruments & Tools -->
+        <article class="archive-card" data-doc-id="TOL-002" data-category="tool" data-security="public">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge public">PUBLIC</div>
+            <span class="doc-id">TOL-002</span>
+            <span class="doc-date">2026.08.11</span>
+          </div>
+          <h2 class="archive-title">狩猟記録帳 Venatio ── 野帳端末</h2>
+          <p class="archive-excerpt">わなの見回りと実包の受払を記録し、印刷できる単一ファイルのツール。電波の届かない場所でも動作する。</p>
+
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 1 / PUBLIC</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Series:</span>
+                <span class="meta-value">ArcaOffice</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Version:</span>
+                <span class="meta-value">1.0（2026年8月）</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Format:</span>
+                <span class="meta-value">単一HTMLファイル</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">External Access:</span>
+                <span class="meta-value">NONE（外部通信なし）</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Status:</span>
+                <span class="meta-value">ACTIVE</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Related:</span>
+                <span class="meta-value">SECTOR-01 狩猟適性訓練区画</span>
+              </div>
+            </div>
+
+            <div class="content-section">
+              <h3>何ができるか</h3>
+              <p>わなの見回り記録と、実包の受払記録を、スマートフォン1台で残せます。</p>
+              <h3>わな見回り</h3>
+              <ul class="findings-list">
+                <li>わなを登録し、見回りのたびに結果（異常なし／作動・空はじき／捕獲／錯誤捕獲／破損／餌切れ／撤去）を記録します</li>
+                <li><b>最後の見回りからの日数</b>をわなごとに表示し、しきい値を超えたものをまとめて警告します</li>
+                <li>捕獲した場合は、獣種・頭数・性別・推定体重を残せます</li>
+                <li>設置場所は端末のGPSから取得できます。電波の無い場所のために手入力欄も残してあります</li>
+              </ul>
+              <h3>実包管理帳簿</h3>
+              <ul class="findings-list">
+                <li>適合実包ごとに受・払・残を記録し、残数を自動で計算します</li>
+                <li><b>令和7年3月1日施行の改正に対応</b>しています。ライフル実包以外は、番径に加えて「散弾」「単弾」の別を分けて登録できます</li>
+                <li>自宅保管の限度（散弾・ライフル実包の合計800個）を超えると警告します</li>
+                <li>残数がマイナスになった行を検出し、発生箇所を示します</li>
+                <li>印刷すると、警察の記載例と同じ体裁で出力できます</li>
+              </ul>
+              <p>どちらも CSV に書き出せます。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>大切な注意</h3>
+              <p><b>本ツールは記録の作成を支援するものであり、法定の帳簿様式そのものではありません。</b></p>
+              <p>実包管理帳簿の様式は都道府県警察により異なる場合があります。また、電子的な記録のみで法定の帳簿義務を満たせるかは所轄の判断によります。実際の運用は必ず所轄の警察署（生活安全課）にご確認ください。</p>
+              <p>見回りの頻度や標識の要件、使用が制限されるわなの種類についても、地域ごとに上乗せの規制があります。狩猟者登録時に配布される資料と、お住まいの都道府県の最新情報をご確認ください。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>データの扱い</h3>
+              <p>記録は<b>いま開いているブラウザの中</b>にのみ保存されます。わなの設置場所の座標も、捕獲の記録も、外部に送信されることは一切ありません。ファイルの先頭に外部通信を禁止する宣言（<code>connect-src 'none'</code>）を書いてあるため、仕組みとして送信できません。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>オフラインで使う</h3>
+              <p>外部ライブラリにもCDNにも依存しない、1つのHTMLファイルです。ダウンロードして端末に置けば、<b>電波の届かない山の中でも全機能が動きます。</b></p>
+            </div>
+
+            <div class="content-section">
+              <h3>ご利用条件</h3>
+              <p>無償でご利用いただけます。<b>本ファイルの再配布・転載・販売はご遠慮ください。</b></p>
+              <p>記録内容および法令上の取扱いについて、著作者は責任を負いません。</p>
+            </div>
+
+            <div class="tool-actions">
+              <a class="tool-btn primary" href="/lab/hunting/Venatio.html">→ ブラウザで開く</a>
+              <a class="tool-btn" href="/lab/hunting/Venatio.html" download="Venatio.html">⇩ オフライン版をダウンロード</a>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Tool</span>
+            <span class="archive-tag">#Field</span>
+            <span class="archive-tag">#Offline</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
+        <!-- CARD 07: Instruments & Tools -->
+        <article class="archive-card" data-doc-id="TOL-003" data-category="tool" data-security="public">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge public">PUBLIC</div>
+            <span class="doc-id">TOL-003</span>
+            <span class="doc-date">2026.08.11</span>
+          </div>
+          <h2 class="archive-title">抽選ゲーム ── 確率事象制御端末</h2>
+          <p class="archive-excerpt">忘年会・二次会・結婚式の景品抽選をブラウザで行うツール。スロット・レース・イルミネーション・ロケットの4演出から選べる。</p>
+
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 1 / PUBLIC</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Series:</span>
+                <span class="meta-value">SECTOR-03 確率事象制御区画</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Format:</span>
+                <span class="meta-value">単一HTMLファイル</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">External Access:</span>
+                <span class="meta-value">広告配信のみ（入力データの送信なし）</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Status:</span>
+                <span class="meta-value">ACTIVE</span>
+              </div>
+            </div>
+
+            <div class="content-section">
+              <h3>何ができるか</h3>
+              <p>宴会・忘年会・新年会・二次会・結婚式などの景品抽選を、その場のプロジェクタやモニタに映して進行できます。ルーレットやビンゴの代わりに使えます。</p>
+              <ul class="findings-list">
+                <li><b>4種類の演出</b> — スロット／競馬風レース／イルミネーション点灯／ロケット発射から選べます</li>
+                <li><b>景品の登録</b> — 賞品名と当選数を登録するだけで始められます</li>
+                <li><b>参加者名での抽選</b> — 名簿を入れれば、番号ではなく名前で当選者を出せます</li>
+                <li><b>ハズレ枠・確率の設定</b> — 盛り上がりに合わせて当たりの出方を調整できます</li>
+                <li><b>当選者の自動除外</b> — 一度当たった人を次回以降の対象から自動で外します（連続で当たってよい設定にもできます）</li>
+                <li>スマートフォン・タブレット・PCのいずれでも動きます</li>
+              </ul>
+            </div>
+
+            <div class="content-section">
+              <h3>データの扱い</h3>
+              <p>登録した参加者名も抽選結果も、<b>いま開いているブラウザの中（localStorage）にのみ保存</b>されます。当研究所を含め、外部へ送信されることはありません。</p>
+              <p>ただし本ツールは、TOL-001・TOL-002 と異なり<b>広告配信スクリプトを読み込みます</b>。そのため外部通信を禁止する宣言（CSP）は入っておらず、完全なオフライン動作は保証されません。会場のネットワークが不安定な場合は、事前にページを開いておいてください。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>ご利用条件</h3>
+              <p>無償でご利用いただけます。<b>本ファイルの再配布・転載・販売はご遠慮ください。</b></p>
+              <p>抽選結果および運用上生じた事象について、著作者は責任を負いません。</p>
+            </div>
+
+            <div class="tool-actions">
+              <a class="tool-btn primary" href="/lab/game/lottery.html">→ ブラウザで開く</a>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Tool</span>
+            <span class="archive-tag">#Party</span>
+            <span class="archive-tag">#Browser</span>
             <span class="read-more">ACCESS ✦</span>
           </div>
         </article>

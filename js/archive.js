@@ -15,7 +15,11 @@ function initArchiveSystem() {
   initSearch();
   initCategoryFilter();
   initSorting();
-  console.log("✓ A.R.C.A. Archive System v2.3 FINAL Initialized");
+  initPagination();
+  initCounts();
+  render(); // 初期表示から並び順とページングを効かせる
+  openFromHash(); // 他ページから archive.html#TOL-001 の形で直接開けるようにする
+  console.log("✓ A.R.C.A. Archive System v2.4 Initialized");
 }
 
 // ============================================
@@ -37,6 +41,18 @@ function initModalSystem() {
       closeModal();
     }
   });
+}
+
+/**
+ * URLのハッシュ（#TOL-001 など）で指定された記録を開く。
+ * 各ページからその記録へ直接案内できるようにするため。
+ */
+function openFromHash() {
+  const id = decodeURIComponent((location.hash || '').replace('#', '')).trim();
+  if (!id) return;
+
+  const card = document.querySelector(`.archive-card[data-doc-id="${CSS.escape(id)}"]`);
+  if (card) openModal(card);
 }
 
 function openModal(cardElement) {
@@ -143,6 +159,10 @@ let currentFilters = {
   sort: 'date-desc'
 };
 
+// 1ページあたりの表示件数。収録数が増えたらここだけ変えればよい
+const PAGE_SIZE = 24;
+let currentPage = 1;
+
 /**
  * FIX v2.3: Changed logic to show/hide instead of moving DOM
  * This prevents cards from disappearing when filtering
@@ -209,86 +229,91 @@ function initSorting() {
 }
 
 /**
- * FIX v2.3: Show/Hide logic instead of moving DOM elements
- * This preserves DOM structure and allows cards to reappear
+ * 絞り込みの判定のみを行う（DOMは触らない）。
+ * 検索は本文とタグも対象にする。館内検索で目的の記録に辿り着けないと
+ * 収録している意味が薄いため。
  */
+function matchesFilters(card) {
+  if (currentFilters.category !== 'all' &&
+      card.getAttribute('data-category') !== currentFilters.category) {
+    return false;
+  }
+
+  if (currentFilters.security.length > 0 &&
+      !currentFilters.security.includes(card.getAttribute('data-security'))) {
+    return false;
+  }
+
+  if (currentFilters.searchQuery) {
+    const parts = [
+      card.querySelector('.archive-title'),
+      card.querySelector('.archive-excerpt'),
+      card.querySelector('.doc-id'),
+      card.querySelector('.archive-full-content')
+    ].concat(Array.from(card.querySelectorAll('.archive-tag')));
+
+    const haystack = parts
+      .filter(Boolean)
+      .map(node => node.textContent.toLowerCase())
+      .join(' ');
+
+    if (!haystack.includes(currentFilters.searchQuery)) return false;
+  }
+
+  return true;
+}
+
+// 絞り込み・並び替えの変更は常に1ページ目から見せる
 function applyFilters() {
-  let allCards = document.querySelectorAll('.archive-card');
-  let visibleCount = 0;
+  currentPage = 1;
+  render();
+}
 
-  allCards.forEach(card => {
-    let shouldShow = true;
+function applySorting() {
+  currentPage = 1;
+  render();
+}
 
-    // Filter by category
-    if (currentFilters.category !== 'all') {
-      if (card.getAttribute('data-category') !== currentFilters.category) {
-        shouldShow = false;
-      }
-    }
+/**
+ * 絞り込み → 並び替え → ページ切り出し の順に適用して描画する。
+ */
+function render() {
+  const grid = document.querySelector('.archive-grid');
+  if (!grid) return;
 
-    // Filter by security level
-    if (shouldShow && currentFilters.security.length > 0) {
-      const cardSecurity = card.getAttribute('data-security');
-      if (!currentFilters.security.includes(cardSecurity)) {
-        shouldShow = false;
-      }
-    }
+  const allCards = Array.from(grid.querySelectorAll('.archive-card'));
+  const matched = sortCards(allCards.filter(matchesFilters), currentFilters.sort);
 
-    // Filter by search query
-    if (shouldShow && currentFilters.searchQuery) {
-      const title = card.querySelector('.archive-title').textContent.toLowerCase();
-      const excerpt = card.querySelector('.archive-excerpt').textContent.toLowerCase();
-      const docId = card.querySelector('.doc-id').textContent.toLowerCase();
-      
-      if (!title.includes(currentFilters.searchQuery) &&
-          !excerpt.includes(currentFilters.searchQuery) &&
-          !docId.includes(currentFilters.searchQuery)) {
-        shouldShow = false;
-      }
-    }
+  const totalPages = Math.max(1, Math.ceil(matched.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
 
-    // Set visibility
-    card.style.display = shouldShow ? '' : 'none';
-    if (shouldShow) visibleCount++;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageCards = matched.slice(start, start + PAGE_SIZE);
+
+  allCards.forEach(card => { card.style.display = 'none'; });
+  pageCards.forEach(card => {
+    card.style.display = '';
+    grid.appendChild(card); // 並び順どおりにDOMを詰め直す
   });
 
   // Show "no results" message if needed
-  const grid = document.querySelector('.archive-grid');
   let noResultsDiv = grid.querySelector('.no-results');
-  
-  if (visibleCount === 0) {
+  if (matched.length === 0) {
     if (!noResultsDiv) {
       noResultsDiv = document.createElement('div');
       noResultsDiv.className = 'no-results';
       noResultsDiv.textContent = '🔍 No documents match your criteria';
       grid.appendChild(noResultsDiv);
     }
-  } else {
-    if (noResultsDiv) {
-      noResultsDiv.remove();
-    }
+  } else if (noResultsDiv) {
+    noResultsDiv.remove();
   }
-
-  // Apply sorting
-  applySorting();
 
   // Reinitialize card listeners
   initCardEventListeners();
 
-  // Update results counter
-  updateResultsCounter(visibleCount);
-}
-
-function applySorting() {
-  const grid = document.querySelector('.archive-grid');
-  let visibleCards = Array.from(grid.querySelectorAll('.archive-card')).filter(card => card.style.display !== 'none');
-
-  visibleCards = sortCards(visibleCards, currentFilters.sort);
-
-  // Reorder cards in DOM
-  visibleCards.forEach(card => {
-    grid.appendChild(card);
-  });
+  updatePagination(matched.length, totalPages, pageCards.length);
 }
 
 function sortCards(cards, sortType) {
@@ -331,12 +356,55 @@ function sortCards(cards, sortType) {
   return cardsCopy;
 }
 
-function updateResultsCounter(count) {
+// ============================================
+// PAGINATION
+// ============================================
+
+function updatePagination(matchedCount, totalPages, shownCount) {
   const pageInfo = document.querySelector('.page-info');
-  if (!pageInfo) return;
-  
-  const totalCount = document.querySelectorAll('.archive-card').length;
-  pageInfo.textContent = `Showing ${count} of ${totalCount} records`;
+  if (pageInfo) {
+    pageInfo.textContent =
+      `Page ${currentPage} of ${totalPages} (Showing ${shownCount} of ${matchedCount} records)`;
+  }
+
+  const prevBtn = document.querySelector('.page-btn.prev');
+  const nextBtn = document.querySelector('.page-btn.next');
+  if (prevBtn) prevBtn.disabled = currentPage <= 1;
+  if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+}
+
+function initPagination() {
+  const prevBtn = document.querySelector('.page-btn.prev');
+  const nextBtn = document.querySelector('.page-btn.next');
+
+  const goTo = (page) => {
+    currentPage = page;
+    render();
+    const container = document.querySelector('.archive-container');
+    if (container) container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  if (prevBtn) prevBtn.addEventListener('click', () => { if (!prevBtn.disabled) goTo(currentPage - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { if (!nextBtn.disabled) goTo(currentPage + 1); });
+}
+
+/**
+ * 件数表示は実際のカード枚数から数える。
+ * 手書きの数字は収録のたびに実体とずれるため、DOMを唯一の出典にする。
+ */
+function initCounts() {
+  const cards = Array.from(document.querySelectorAll('.archive-card'));
+
+  document.querySelectorAll('[data-count-for]').forEach(el => {
+    const key = el.getAttribute('data-count-for');
+    const n = (key === 'all')
+      ? cards.length
+      : cards.filter(card => card.getAttribute('data-category') === key).length;
+    el.textContent = `(${n})`;
+  });
+
+  const totalEl = document.getElementById('total-documents');
+  if (totalEl) totalEl.textContent = String(cards.length);
 }
 
 // ============================================
@@ -349,7 +417,8 @@ function capitalizeCategory(category) {
     'boundary': 'Boundary Phenomena',
     'protocol': 'Protocols & Systems',
     'anomaly': 'Anomalies',
-    'character': 'Chronicles & Entities'
+    'character': 'Chronicles & Entities',
+    'tool': 'Instruments & Tools'
   };
   return categoryMap[category] || category;
 }
@@ -359,7 +428,10 @@ function getAuthorByDocId(docId) {
     'REG-001': '観測班主任 / 記録局',
     'REG-002': '精神管理局 (PSY-DIV)',
     'ANM-044': 'Anomaly Response Team',
-    'CHR-001': 'Archive System'
+    'CHR-001': 'Archive System',
+    'TOL-001': 'ArcaHortus',
+    'TOL-002': 'ArcaHortus',
+    'TOL-003': 'ArcaHortus'
   };
   return authorMap[docId] || 'Unknown Author';
 }
@@ -369,7 +441,10 @@ function getCreatedDateByDocId(docId) {
     'REG-001': '2026.04.12 09:47:23',
     'REG-002': '2026.05.01 12:30:00',
     'ANM-044': '2026.06.09 15:22:45',
-    'CHR-001': '2026.03.20 08:15:00'
+    'CHR-001': '2026.03.20 08:15:00',
+    'TOL-001': '2026.08.11 00:00:00',
+    'TOL-002': '2026.08.11 00:00:00',
+    'TOL-003': '2026.08.11 00:00:00'
   };
   return dateMap[docId] || '2026.06.15 10:00:00';
 }
@@ -379,17 +454,24 @@ function getModifiedDateByDocId(docId) {
     'REG-001': '2026.04.15 14:32:15',
     'REG-002': '2026.05.10 16:45:30',
     'ANM-044': '2026.06.14 19:33:22',
-    'CHR-001': '2026.06.01 12:20:15'
+    'CHR-001': '2026.06.01 12:20:15',
+    'TOL-001': '2026.08.11 00:00:00',
+    'TOL-002': '2026.08.11 00:00:00',
+    'TOL-003': '2026.08.11 00:00:00'
   };
   return dateMap[docId] || '2026.06.15 10:00:00';
 }
 
+// ツールの版はツール本体の表記と揃える。本体を更新したらここも更新すること
 function getVersionByDocId(docId) {
   const versionMap = {
     'REG-001': '2.3 (Patched)',
     'REG-002': '3.2.1',
     'ANM-044': '1.0 (UNSTABLE)',
-    'CHR-001': '1.0'
+    'CHR-001': '1.0',
+    'TOL-001': '1.0（2026年8月）',
+    'TOL-002': '1.0（2026年8月）',
+    'TOL-003': '1.0（2026年8月）'
   };
   return versionMap[docId] || '1.0';
 }
@@ -399,7 +481,10 @@ function getRelatedDocuments(docId) {
     'REG-001': ['ANM-044', 'PRO-012'],
     'REG-002': ['REG-001'],
     'ANM-044': ['REG-001', 'CHR-001'],
-    'CHR-001': ['ANM-044']
+    'CHR-001': ['ANM-044'],
+    'TOL-001': ['TOL-002', 'TOL-003'],
+    'TOL-002': ['TOL-001'],
+    'TOL-003': ['TOL-001']
   };
   return relatedMap[docId] || [];
 }
