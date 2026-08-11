@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:; connect-src 'none'; img-src 'self' data: blob:; form-action 'none'; base-uri 'none';">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>狩猟記録帳 Venatio — わな見回り・実包管理帳簿</title>
+<meta name="description" content="わなの見回り記録と実包管理帳簿を、スマホひとつで記録・印刷できる無料ツール。令和7年3月改正（散弾・単弾の別）に対応。データは端末内にのみ保存され外部へ一切送信されません。オフライン動作。">
+<meta name="keywords" content="実包管理帳簿,わな,見回り,記録,狩猟,無料,テンプレート,散弾,単弾,有害鳥獣,捕獲記録,オフライン">
+<meta name="theme-color" content="#1e5b3f">
+<meta name="robots" content="index, follow">
+<style>
+:root{
+  --green:#1e5b3f;
+  --green-d:#14402c;
+  --green-l:#2f7a56;
+  --leaf:#4a9d72;
+  --bg:#f4f6f3;
+  --card:#ffffff;
+  --ink:#1c2620;
+  --ink-2:#5a6b62;
+  --line:#d7dfd9;
+  --warn:#b7791f;
+  --warn-bg:#fdf6e7;
+  --danger:#b3261e;
+  --danger-bg:#fdecea;
+  --ok:#2f7a56;
+  --radius:10px;
+  --shadow:0 1px 2px rgba(20,40,30,.06), 0 4px 14px rgba(20,40,30,.06);
+}
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body{ margin:0; padding:0; }
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+  font-size:16px; line-height:1.7;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+h1,h2,h3{ margin:0; line-height:1.4; }
+button,input,select,textarea{ font:inherit; color:inherit; }
+
+/* ---------- header ---------- */
+header{
+  position:sticky; top:0; z-index:50;
+  background:var(--green); color:#fff;
+  padding:env(safe-area-inset-top) 0 0;
+  box-shadow:0 2px 10px rgba(20,40,30,.18);
+}
+.hd{ display:flex; align-items:center; gap:.7rem; padding:.7rem 1rem .6rem; max-width:1100px; margin:0 auto; }
+.hd .logo{ font-size:1.4rem; }
+.hd h1{ font-size:1rem; font-weight:700; letter-spacing:.04em; }
+.hd h1 small{ display:block; font-size:.62rem; font-weight:400; opacity:.75; letter-spacing:.16em; }
+.tabs{ display:flex; max-width:1100px; margin:0 auto; }
+.tabs button{
+  flex:1; padding:.72rem .4rem; background:none; border:0; color:rgba(255,255,255,.68);
+  font-size:.84rem; font-weight:700; cursor:pointer; border-bottom:3px solid transparent;
+}
+.tabs button[aria-selected="true"]{ color:#fff; border-bottom-color:#9fe0be; background:rgba(255,255,255,.08); }
+
+/* ---------- layout ---------- */
+main{ max-width:1100px; margin:0 auto; padding:1rem 1rem 5rem; }
+.view{ display:none; }
+.view.on{ display:block; }
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow); padding:1rem 1.1rem; margin-bottom:1rem;
+}
+.card > h2{
+  font-size:.94rem; color:var(--green); margin:-.15rem 0 .8rem;
+  padding-bottom:.5rem; border-bottom:2px solid #e8efea;
+  display:flex; align-items:center; gap:.45rem; flex-wrap:wrap;
+}
+.card > h2 .sub{ font-size:.68rem; font-weight:400; color:var(--ink-2); }
+
+/* ---------- summary tiles ---------- */
+.tiles{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.7rem; margin-bottom:1rem; }
+.tile{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:.75rem .85rem; box-shadow:var(--shadow);
+}
+.tile .lb{ font-size:.68rem; color:var(--ink-2); letter-spacing:.04em; }
+.tile .vl{ font-size:1.7rem; font-weight:700; color:var(--green); line-height:1.25; }
+.tile .vl small{ font-size:.72rem; font-weight:400; margin-left:.15em; color:var(--ink-2); }
+.tile.alert{ border-color:#e8c98f; background:var(--warn-bg); }
+.tile.alert .vl{ color:var(--warn); }
+.tile.bad{ border-color:#e9b4af; background:var(--danger-bg); }
+.tile.bad .vl{ color:var(--danger); }
+
+/* ---------- forms ---------- */
+.grid{ display:grid; gap:.7rem; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+.f{ display:flex; flex-direction:column; gap:.25rem; }
+.f > label{ font-size:.72rem; font-weight:700; color:var(--ink-2); }
+.f > label .req{ color:var(--danger); font-weight:400; }
+input[type=text],input[type=number],input[type=date],input[type=datetime-local],select,textarea{
+  width:100%; padding:.6rem .65rem; border:1px solid var(--line); border-radius:8px;
+  background:#fff; min-height:44px;
+}
+textarea{ min-height:76px; resize:vertical; line-height:1.6; }
+input:focus,select:focus,textarea:focus{ outline:2px solid var(--leaf); outline-offset:-1px; border-color:var(--leaf); }
+.hint{ font-size:.68rem; color:var(--ink-2); line-height:1.6; }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.4rem;
+  min-height:46px; padding:.55rem 1.1rem; border-radius:8px; border:1px solid var(--green);
+  background:var(--green); color:#fff; font-weight:700; font-size:.88rem; cursor:pointer;
+}
+.btn:hover{ background:var(--green-l); }
+.btn:active{ transform:translateY(1px); }
+.btn.ghost{ background:#fff; color:var(--green); }
+.btn.ghost:hover{ background:#eef5f1; }
+.btn.sm{ min-height:38px; padding:.3rem .75rem; font-size:.78rem; }
+.btn.danger{ background:#fff; color:var(--danger); border-color:#e0a9a4; }
+.btn.wide{ width:100%; }
+a.btn{ text-decoration:none; }
+.row-btns{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.9rem; }
+
+/* ---------- banners ---------- */
+.banner{ border-radius:8px; padding:.7rem .85rem; font-size:.8rem; line-height:1.7; margin-bottom:.9rem; }
+.banner.warn{ background:var(--warn-bg); border:1px solid #e8c98f; color:#6d4a10; }
+.banner.bad{ background:var(--danger-bg); border:1px solid #e9b4af; color:#7d2019; }
+.banner.info{ background:#eef5f1; border:1px solid #cfe3d8; color:#1f4a37; }
+.banner b{ font-weight:700; }
+
+/* ---------- lists ---------- */
+.tlist{ display:grid; gap:.6rem; }
+.trap{
+  border:1px solid var(--line); border-radius:9px; padding:.7rem .8rem; background:#fff;
+  display:grid; grid-template-columns:1fr auto; gap:.4rem .8rem; align-items:center;
+}
+.trap.due{ border-color:#e8c98f; background:var(--warn-bg); }
+.trap.over{ border-color:#e9b4af; background:var(--danger-bg); }
+.trap.off{ opacity:.5; }
+.trap .code{ font-weight:700; font-size:.95rem; }
+.trap .meta{ font-size:.72rem; color:var(--ink-2); }
+.trap .days{ font-size:.72rem; font-weight:700; text-align:right; white-space:nowrap; }
+.trap .acts{ grid-column:1/-1; display:flex; gap:.4rem; flex-wrap:wrap; }
+.pill{
+  display:inline-block; font-size:.64rem; font-weight:700; padding:.1rem .45rem;
+  border-radius:99px; background:#e8efea; color:var(--green); margin-right:.3rem;
+}
+.pill.k{ background:#e5eef9; color:#1d4e89; }
+.pill.c{ background:#fdecea; color:var(--danger); }
+
+/* ---------- tables ---------- */
+.tw{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+table{ border-collapse:collapse; width:100%; font-size:.78rem; }
+th,td{ border:1px solid var(--line); padding:.42rem .5rem; text-align:left; vertical-align:top; }
+th{ background:#eef3f0; font-weight:700; color:var(--green-d); white-space:nowrap; font-size:.72rem; }
+td.n,th.n{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+tbody tr:nth-child(even) td{ background:#fbfcfb; }
+.empty{ text-align:center; color:var(--ink-2); font-size:.8rem; padding:1.6rem 0; }
+
+/* ---------- modal ---------- */
+.modal{ position:fixed; inset:0; z-index:200; display:none; }
+.modal.on{ display:block; }
+.modal__bd{ position:absolute; inset:0; background:rgba(15,30,22,.5); }
+.modal__pn{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:min(660px,94vw); max-height:88vh; overflow:auto;
+  background:#fff; border-radius:12px; padding:1.1rem 1.1rem 1.3rem;
+  box-shadow:0 18px 50px rgba(10,25,18,.35);
+}
+.modal__pn h3{ font-size:1rem; color:var(--green); margin-bottom:.8rem; }
+
+details{ border:1px solid var(--line); border-radius:8px; background:#fff; margin-bottom:.7rem; }
+details > summary{ cursor:pointer; padding:.65rem .8rem; font-size:.82rem; font-weight:700; color:var(--green); }
+details[open] > summary{ border-bottom:1px solid var(--line); }
+details .body{ padding:.8rem; }
+
+.foot{ text-align:center; font-size:.68rem; color:var(--ink-2); padding:1.6rem 1rem 2rem; line-height:2; }
+.foot a{ color:var(--green); }
+
+/* ---------- print ---------- */
+.printonly{ display:none; }
+@media print{
+  @page{ size:A4 landscape; margin:8mm; }
+  body{ background:#fff; font-size:10pt; }
+  header,.tabs,.noprint,.foot{ display:none !important; }
+  main{ max-width:none; padding:0; }
+  .view{ display:none !important; }
+  .view.printing{ display:block !important; }
+  .card{ box-shadow:none; border:0; padding:0; margin:0; }
+  .printonly{ display:block; }
+  table{ font-size:8.5pt; }
+  th,td{ border:1px solid #333; padding:2pt 3pt; }
+  th{ background:#eee !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  tbody tr:nth-child(even) td{ background:#fff; }
+  .pbreak{ page-break-before:always; }
+}
+</style>
+</head>
+<body>
+
+<header class="noprint">
+  <div class="hd">
+    <span class="logo">🏔️</span>
+    <h1>狩猟記録帳 Venatio<small>ARCA HORTUS LAB ／ FIELD RECORD</small></h1>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true"  data-view="patrol">わな見回り</button>
+    <button role="tab" aria-selected="false" data-view="ammo">実包帳簿</button>
+    <button role="tab" aria-selected="false" data-view="data">設定・データ</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ==================== わな見回り ==================== -->
+<section class="view on" id="v-patrol">
+
+  <div id="patrolAlerts"></div>
+
+  <div class="tiles">
+    <div class="tile"><div class="lb">稼働中のわな</div><div class="vl" id="tActive">0<small>基</small></div></div>
+    <div class="tile" id="tDueBox"><div class="lb">要見回り</div><div class="vl" id="tDue">0<small>基</small></div></div>
+    <div class="tile"><div class="lb">今期の捕獲</div><div class="vl" id="tCatch">0<small>頭・羽</small></div></div>
+    <div class="tile"><div class="lb">記録件数</div><div class="vl" id="tRec">0<small>件</small></div></div>
+  </div>
+
+  <div class="card">
+    <h2>わな一覧 <span class="sub">タップして見回りを記録</span></h2>
+    <div id="trapList" class="tlist"></div>
+    <div class="row-btns">
+      <button class="btn" id="btnAddTrap">＋ わなを登録</button>
+      <button class="btn ghost sm" id="btnShowRemoved">撤去済みも表示</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>見回り記録 <span class="sub">新しい順</span></h2>
+    <div class="tw"><table id="patrolTable"></table></div>
+    <div id="patrolMore" class="row-btns"></div>
+    <div class="row-btns">
+      <button class="btn ghost sm" id="btnPatrolCsv">CSVで書き出し</button>
+      <button class="btn ghost sm" id="btnPatrolPrint">印刷 / PDF保存</button>
+    </div>
+  </div>
+
+  <details>
+    <summary>わなを掛けるときの確認事項</summary>
+    <div class="body hint">
+      <p style="margin-top:0"><b>標識の装着</b>／わなには、住所・氏名・電話番号・登録を受けた都道府県知事名・登録番号を記載した標識を、見やすい場所に付ける必要があります（金属・プラスチック・木の板などで、縦3.5cm×横6cm以上）。</p>
+      <p><b>見回り</b>／錯誤捕獲や獲物の衰弱を防ぐため、多くの自治体で<b>毎日の見回り</b>が指導されています。頻度・方法は都道府県の狩猟者登録時の指導や地域の取り決めに従ってください。</p>
+      <p><b>使用が禁止されているわな</b>／とらばさみ、直径12cmを超えるくくりわな（一部地域は例外あり）、締付防止金具のないくくりわななど、制限があります。地域ごとに上乗せ規制があるため、必ず狩猟者登録時に配布される資料で確認してください。</p>
+      <p style="margin-bottom:0"><b>捕獲後</b>／捕獲した鳥獣は狩猟者登録をした都道府県へ報告が必要です。有害鳥獣捕獲の場合は市町村への報告様式が別にあります。</p>
+    </div>
+  </details>
+
+</section>
+
+
+<!-- ==================== 実包帳簿 ==================== -->
+<section class="view" id="v-ammo">
+
+  <div id="ammoAlerts"></div>
+
+  <div class="tiles">
+    <div class="tile" id="tStockBox"><div class="lb">合計残弾数</div><div class="vl" id="tStock">0<small>個</small></div></div>
+    <div class="tile"><div class="lb">自宅保管限度</div><div class="vl">800<small>個</small></div></div>
+    <div class="tile"><div class="lb">今年の消費</div><div class="vl" id="tUsed">0<small>個</small></div></div>
+    <div class="tile"><div class="lb">帳簿の行数</div><div class="vl" id="tRows">0<small>行</small></div></div>
+  </div>
+
+  <div class="card">
+    <h2>帳簿 <span class="sub">年月日の古い順・残数は自動計算</span></h2>
+    <div class="tw"><table id="ledgerTable"></table></div>
+    <div id="ledgerMore" class="row-btns"></div>
+    <div class="row-btns">
+      <button class="btn" id="btnAddLedger">＋ 記帳する</button>
+      <button class="btn ghost sm" id="btnLedgerCsv">CSVで書き出し</button>
+      <button class="btn ghost sm" id="btnLedgerPrint">印刷 / PDF保存</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>適合実包 <span class="sub">帳簿の列になります（最大6種）</span></h2>
+    <div id="ammoList" class="tlist"></div>
+    <div class="row-btns"><button class="btn ghost sm" id="btnAddAmmo">＋ 適合実包を追加</button></div>
+    <p class="hint" style="margin-bottom:0">
+      令和7年3月1日施行の改正により、ライフル実包以外の実包は<b>番径に加えて「散弾」「単弾」の別</b>を記載することとされました。
+      例：<code>12番・散弾</code> ／ <code>12番・単弾</code> ／ <code>308WINmag</code>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>銃 <span class="sub">許可番号で特定できるように</span></h2>
+    <div id="gunList" class="tlist"></div>
+    <div class="row-btns"><button class="btn ghost sm" id="btnAddGun">＋ 銃を追加</button></div>
+  </div>
+
+  <details>
+    <summary>この帳簿の使い方と注意</summary>
+    <div class="body hint">
+      <p style="margin-top:0"><b>摘要欄の書き方</b>／「受」のときは実包の<b>購入先</b>、「払」のときは<b>消費した射撃場・猟場等</b>を書きます。加えて、消費用途（狩猟／有害鳥獣駆除／標的射撃の別）、捕獲した鳥獣の種類と数、出場した射撃大会名や点数なども記載します。</p>
+      <p><b>譲受の種別</b>／許可譲受・無許可譲受・有害鳥獣駆除譲受の別を記載します。</p>
+      <p><b>自宅保管の限度</b>／散弾実包・ライフル実包の合計で<b>800個以内</b>です。このツールは合計残数が800個を超えると警告を出します。</p>
+      <p><b>保存期間</b>／帳簿は最終記載日から<b>3年間</b>保存してください。射撃場のレシートやスコアカードも、消費・残弾の裏付けとして併せて保存することが推奨されています。</p>
+      <p style="margin-bottom:0"><b class="req" style="color:#b3261e">重要</b>／様式は都道府県警察により異なる場合があり、また電子的な記録のみで法定の帳簿義務を満たせるかは所轄の判断によります。<b>このツールは記録と印刷を助けるものであり、法定様式そのものではありません。</b>実際の運用は必ず所轄の警察署（生活安全課）にご確認ください。</p>
+    </div>
+  </details>
+
+</section>
+
+
+<!-- ==================== 設定・データ ==================== -->
+<section class="view" id="v-data">
+
+  <div class="card">
+    <h2>使用者情報 <span class="sub">印刷時の帳簿ヘッダーに出ます</span></h2>
+    <div class="grid">
+      <div class="f"><label>氏名</label><input type="text" id="mOwner" placeholder="例：箱庭 太郎"></div>
+      <div class="f"><label>狩猟者登録番号</label><input type="text" id="mHunter" placeholder="例：東京都 第00000号"></div>
+      <div class="f"><label>見回り警告のしきい値（日）</label><input type="number" id="mDue" min="1" max="30" step="1" value="1"></div>
+      <div class="f"><label>自宅保管の限度（個）</label><input type="number" id="mLimit" min="1" step="1" value="800"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>手元に置いてオフラインで使う</h2>
+    <p class="hint" style="margin-top:0">
+      このツールは<b>1つのHTMLファイルだけ</b>でできています。外部のライブラリもCDNも使っていません。
+      ファイルを自分の端末に保存してしまえば、<b>電波の届かない山の中でも全機能が動きます。</b>
+      見回りの記録も、実包の記帳も、印刷用の書き出しもそのまま使えます。
+    </p>
+    <div class="row-btns">
+      <a class="btn" id="btnOffline" href="Venatio.html" download="Venatio.html">⇩ オフライン版をダウンロード</a>
+      <span class="hint" id="dlNote" style="align-self:center">Venatio 1.0 ／ 単一HTMLファイル</span>
+    </div>
+    <div class="banner warn" style="margin-top:.9rem">
+      <b>ダウンロードする前に、いまの記録をどうするか決めてください。</b><br>
+      記録はファイルの中ではなくブラウザ側に保存されています。そのため、ダウンロードしたファイルを開いても
+      <b>いまのわな・見回り・帳簿は入っていません</b>（サンプルデータの状態で起動します）。<br>
+      引き継ぐ場合は、先に下の「全データを書き出し（JSON）」で保存し、
+      ダウンロードした側で「JSONを読み込み」してください。
+    </div>
+    <p class="hint">
+      裏を返せば、<b>ダウンロードしたファイルにあなたの記録は一切含まれません。</b>
+      わなの設置場所の座標も、捕獲の記録も、実包の残数も入っていないので、そのまま人に渡しても情報は漏れません。
+      ただし本ファイルの再配布はご遠慮いただいています。人に薦めるときは、このページのURLを教えてください。
+    </p>
+    <p class="hint" style="margin-bottom:0">
+      <b>置き場所は固定してください。</b>記録は「そのファイルをどこから開いたか」に紐づいて保存されるため、
+      別のフォルダへ移すと、ブラウザによっては前のデータが読めなくなります。移動する前に必ずJSONで書き出してください。<br>
+      <b>ときどき最新版を取り直してください。</b>法令や様式が変わっても、手元のファイルは自動では更新されません。
+      このツールは外部と通信しないため、新版が出たことをお知らせすることもできません。
+      いま使っている版は下の「このソフトについて」で確認できます。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>バックアップ</h2>
+    <p class="hint" style="margin-top:0">
+      記録はこのブラウザの中（ローカルストレージ・保存名 <code>arcahortus.venatio.v1</code>）にのみ保存されます。
+      ブラウザのサイトデータを消す・端末を替える・別のブラウザで開くと引き継がれません。<b>月に一度はJSONで書き出して保管してください。</b>
+    </p>
+    <div class="row-btns">
+      <button class="btn" id="btnExport">全データを書き出し（JSON）</button>
+      <button class="btn ghost" id="btnImport">JSONを読み込み</button>
+      <button class="btn danger" id="btnWipe">保存データを消去</button>
+    </div>
+    <input type="file" id="fileInput" accept="application/json,.json" hidden>
+  </div>
+
+  <div class="card">
+    <h2>データはどこにも送信されません</h2>
+    <p class="hint" style="margin-top:0">
+      入力した内容が外部へ送られることは一切ありません。口頭の説明ではなく、ご自身の手で確認できます。
+    </p>
+    <ol class="hint" style="margin:0 0 .6rem; padding-left:1.3em">
+      <li><b>ネットを切って使う</b>／Wi-Fiを切っても、記録・集計・印刷・書き出しまで全機能が動きます。</li>
+      <li><b>ソースを検索する</b>／このファイルを <code>Ctrl</code>＋<code>U</code> やテキストエディタで開き、<code>fetch</code> / <code>XMLHttpRequest</code> / <code>WebSocket</code> で検索してください。<b>いま読んでいるこの説明文以外に、1件も見つかりません。</b></li>
+      <li><b>通信を監視する</b>／<code>F12</code> の「ネットワーク」タブを開いたまま操作しても、<b>通信が1件も発生しません。</b></li>
+    </ol>
+    <p class="hint" style="margin-bottom:0">
+      さらに、このファイルの先頭には外部通信を禁止する宣言（Content-Security-Policy の <code>connect-src 'none'</code>）を書いてあります。
+      仮に送信しようとしてもブラウザ自身が止めます。<b>作り手を信用しなくても、仕組みとして送信できません。</b>
+      なお、位置情報を取得する機能は端末のGPSを読むだけで、座標も端末内にしか保存されません。
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>このソフトについて</h2>
+    <div class="tw"><table>
+      <tr><th>バージョン</th><td>Venatio 1.0（2026年8月）</td></tr>
+      <tr><th>著作権</th><td>© 2026 ArcaHortus</td></tr>
+      <tr><th>ご利用条件</th><td>無償でご利用いただけます。個人・法人を問わず商用利用を含め業務でお使いいただけます。<b>本ファイルの再配布・転載・販売はご遠慮ください。</b></td></tr>
+      <tr><th>免責</th><td>本ツールは記録の作成を支援するものであり、法定の帳簿様式そのものではありません。記録内容および法令上の取扱いについて著作者は責任を負いません。実際の運用は所轄の警察署・都道府県の担当課にご確認ください。</td></tr>
+    </table></div>
+    <p class="hint" style="margin-bottom:0">外部ライブラリ・CDNに一切依存しない単一HTMLファイルです。オフラインで全機能が動作します。</p>
+  </div>
+
+</section>
+
+<!-- 印刷専用ビュー -->
+<section class="view" id="v-print"><div class="card" id="printArea"></div></section>
+
+</main>
+
+<div class="foot noprint">
+  狩猟記録帳 Venatio ／ ArcaOffice Series<br>
+  Produced by Arca Hortus Lab
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal__bd" data-close></div>
+  <div class="modal__pn" role="dialog" aria-modal="true">
+    <h3 id="mTitle"></h3>
+    <div id="mBody"></div>
+    <div class="row-btns">
+      <button class="btn" id="mOk">保存</button>
+      <button class="btn ghost" data-close>キャンセル</button>
+      <button class="btn danger sm" id="mDel" hidden>削除</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ========== 定数 ========== */
+var KEY = 'arcahortus.venatio.v1';
+var TRAP_TYPES  = ['くくりわな','箱わな','箱おとし','囲いわな','その他'];
+var RESULTS     = ['異常なし','作動・空はじき','捕獲','錯誤捕獲','わな破損','餌切れ','設置','撤去'];
+var SPECIES     = ['イノシシ','ニホンジカ','ニホンザル','ハクビシン','アライグマ','タヌキ','アナグマ','キョン','ノウサギ','カモ類','カラス類','その他'];
+var AMMO_KINDS  = ['散弾','単弾','ライフル'];
+var TRANSFERS   = ['—','許可譲受','無許可譲受','有害鳥獣駆除譲受'];
+var PURPOSES    = ['—','狩猟','有害鳥獣駆除','標的射撃','射撃大会','技能講習'];
+
+/* ========== 状態 ========== */
+var DB = load();
+var showRemoved = false;
+/* 帳簿は最終記載日から3年保存するため、行数は年々増える。
+   画面には直近ぶんだけを描き、印刷・書き出しは常に全件を対象にする */
+var PAGE = 200;
+var showAllLedger = false, showAllPatrol = false;
+
+function blank(){
+  return {
+    v:1,
+    meta:{ owner:'', hunterNo:'', dueDays:1, limit:800 },
+    traps:[], patrols:[], guns:[], ammos:[], ledger:[]
+  };
+}
+/* 保存データや読み込んだJSONが壊れていても起動できるよう、型を整えてから取り込む。
+   配列かどうかだけを見ていると、中身に null やゴミが混ざっていた場合に描画で落ちる。 */
+function normDB(d){
+  var b = blank();
+  var o = (d && typeof d === 'object' && !Array.isArray(d)) ? d : {};
+  var S = function(v){ return String(v == null ? '' : v); };
+  var isObj = function(x){ return x && typeof x === 'object' && !Array.isArray(x); };
+  var arr = function(v, f){ return (Array.isArray(v) ? v : []).filter(isObj).map(f); };
+  var pick = function(list, v, fb){ return list.indexOf(S(v)) >= 0 ? S(v) : fb; };
+
+  var out = {
+    v: 1,
+    meta: Object.assign({}, b.meta, isObj(o.meta) ? o.meta : {}),
+    traps: arr(o.traps, function(t){
+      return { id:S(t.id) || uid(), code:S(t.code), type:pick(TRAP_TYPES, t.type, TRAP_TYPES[0]),
+               place:S(t.place), setAt:S(t.setAt), lat:S(t.lat), lng:S(t.lng),
+               note:S(t.note), active: t.active !== false };
+    }),
+    patrols: arr(o.patrols, function(p){
+      return { id:S(p.id) || uid(), at:S(p.at), trapId:S(p.trapId),
+               result:pick(RESULTS, p.result, RESULTS[0]), species:S(p.species),
+               count:num(p.count), sex:S(p.sex), weight:S(p.weight),
+               note:S(p.note), lat:S(p.lat), lng:S(p.lng) };
+    }),
+    guns: arr(o.guns, function(g){
+      return { id:S(g.id) || uid(), permitNo:S(g.permitNo), gunNo:S(g.gunNo), name:S(g.name) };
+    }),
+    ammos: arr(o.ammos, function(a){
+      return { id:S(a.id) || uid(), label:S(a.label), kind:pick(AMMO_KINDS, a.kind, AMMO_KINDS[0]) };
+    }).slice(0, 6),
+    ledger: arr(o.ledger, function(r){
+      var io = {};
+      if(isObj(r.io)){
+        for(var k in r.io){
+          if(!Object.prototype.hasOwnProperty.call(r.io, k)) continue;
+          if(isObj(r.io[k])) io[k] = { i:num(r.io[k].i), o:num(r.io[k].o) };
+        }
+      }
+      return { id:S(r.id) || uid(), date:S(r.date), gunId:S(r.gunId),
+               transfer:pick(TRANSFERS, r.transfer, TRANSFERS[0]),
+               purpose:pick(PURPOSES, r.purpose, PURPOSES[0]),
+               place:S(r.place), note:S(r.note), io:io };
+    })
+  };
+  if(!isObj(out.meta)) out.meta = Object.assign({}, b.meta);
+  out.meta.owner    = S(out.meta.owner);
+  out.meta.hunterNo = S(out.meta.hunterNo);
+  out.meta.dueDays  = num(out.meta.dueDays) || 1;
+  out.meta.limit    = num(out.meta.limit)   || 800;
+  return out;
+}
+
+function load(){
+  try{
+    var raw = localStorage.getItem(KEY);
+    if(!raw) return seed();
+    return normDB(JSON.parse(raw));
+  }catch(e){ return seed(); }
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(DB)); }
+  catch(e){ alert('保存に失敗しました。ブラウザの保存領域が不足している可能性があります。\n\n' + e.message); }
+}
+function seed(){
+  var d = blank();
+  var today = new Date();
+  var iso = function(off){ var x=new Date(today); x.setDate(x.getDate()+off); return x.toISOString().slice(0,10); };
+  d.traps = [
+    { id:uid(), code:'A-01', type:'くくりわな', place:'東尾根の水路脇', setAt:iso(-9), lat:'', lng:'', note:'獣道の交差点。踏み板は落ち葉で偽装。', active:true },
+    { id:uid(), code:'B-03', type:'箱わな',     place:'南斜面の耕作放棄地', setAt:iso(-5), lat:'', lng:'', note:'米ぬかで誘引中。', active:true }
+  ];
+  d.patrols = [
+    { id:uid(), at:iso(-1)+'T07:10', trapId:d.traps[0].id, result:'異常なし', species:'', count:0, sex:'', weight:'', note:'', lat:'', lng:'' },
+    { id:uid(), at:iso(-3)+'T06:40', trapId:d.traps[1].id, result:'捕獲', species:'イノシシ', count:1, sex:'オス', weight:'52', note:'止め刺し後、自家消費。', lat:'', lng:'' }
+  ];
+  d.guns  = [{ id:uid(), permitNo:'東京第00000号', gunNo:'ABC-123456', name:'上下二連 12番' }];
+  d.ammos = [
+    { id:uid(), label:'12番', kind:'散弾' },
+    { id:uid(), label:'12番', kind:'単弾' }
+  ];
+  var a1 = d.ammos[0].id, a2 = d.ammos[1].id;
+  d.ledger = [
+    { id:uid(), date:iso(-30), gunId:'', transfer:'無許可譲受', purpose:'—', place:'○○銃砲店', note:'狩猟期前の補充',
+      io:(function(){var o={};o[a1]={i:100,o:0};o[a2]={i:50,o:0};return o;})() },
+    { id:uid(), date:iso(-20), gunId:d.guns[0].id, transfer:'—', purpose:'標的射撃', place:'○○射撃場', note:'狩猟期前 射撃練習',
+      io:(function(){var o={};o[a1]={i:0,o:75};return o;})() },
+    { id:uid(), date:iso(-5),  gunId:d.guns[0].id, transfer:'—', purpose:'狩猟', place:'○○町内', note:'イノシシ1頭',
+      io:(function(){var o={};o[a2]={i:0,o:2};return o;})() }
+  ];
+  return d;
+}
+
+/* ========== ユーティリティ ========== */
+/* 連番は関数自身に持たせる。外の変数だと、初回のサンプル生成が
+   その変数の初期化より先に走るため、巻き上げで undefined を拾ってしまう */
+function uid(){
+  uid._n = (uid._n || 0) + 1;
+  return Date.now().toString(36) + '-' + uid._n.toString(36) + '-' + Math.floor(Math.random()*1e6).toString(36);
+}
+function esc(s){
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function $(s, r){ return (r||document).querySelector(s); }
+function $$(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function todayISO(){
+  var d = new Date(), z = d.getTimezoneOffset()*60000;
+  return new Date(d - z).toISOString().slice(0,10);
+}
+function nowLocal(){
+  var d = new Date(), z = d.getTimezoneOffset()*60000;
+  return new Date(d - z).toISOString().slice(0,16);
+}
+function fmtDate(s){
+  if(!s) return '';
+  var p = String(s).slice(0,10).split('-');
+  return p.length === 3 ? (+p[1]) + '/' + (+p[2]) : s;
+}
+function fmtDateTime(s){
+  if(!s) return '';
+  var d = String(s).slice(0,10).split('-'), t = String(s).slice(11,16);
+  return (d.length===3 ? (+d[1])+'/'+(+d[2]) : s) + (t ? ' ' + t : '');
+}
+function daysSince(iso){
+  if(!iso) return null;
+  var a = new Date(String(iso).slice(0,10) + 'T00:00:00');
+  var b = new Date(todayISO() + 'T00:00:00');
+  if(isNaN(a)) return null;
+  return Math.floor((b - a) / 86400000);
+}
+function num(v){ var x = parseInt(v, 10); return isFinite(x) && x > 0 ? x : 0; }
+
+function download(name, text, mime){
+  var blob = new Blob([text], { type: (mime || 'text/plain') + ';charset=utf-8' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+}
+function toCsv(rows){
+  var body = rows.map(function(r){
+    return r.map(function(c){
+      c = String(c == null ? '' : c);
+      return /[",\n]/.test(c) ? '"' + c.replace(/"/g,'""') + '"' : c;
+    }).join(',');
+  }).join('\r\n');
+  return '﻿' + body;   // Excel 用 BOM
+}
+
+/* ========== モーダル ========== */
+var modal = $('#modal'), mOk = $('#mOk'), mDel = $('#mDel');
+var onOk = null, onDel = null;
+
+function openModal(title, html, ok, del){
+  $('#mTitle').textContent = title;
+  $('#mBody').innerHTML = html;
+  onOk = ok; onDel = del || null;
+  mDel.hidden = !del;
+  modal.classList.add('on');
+  var first = $('#mBody input,#mBody select,#mBody textarea');
+  if(first) setTimeout(function(){ first.focus(); }, 40);
+}
+function closeModal(){ modal.classList.remove('on'); onOk = null; onDel = null; }
+
+$$('[data-close]').forEach(function(b){ b.addEventListener('click', closeModal); });
+mOk.addEventListener('click', function(){ if(onOk && onOk() !== false){ save(); renderAll(); closeModal(); } });
+mDel.addEventListener('click', function(){
+  if(!confirm('この記録を削除します。よろしいですか？')) return;
+  if(onDel){ onDel(); save(); renderAll(); closeModal(); }
+});
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.classList.contains('on')) closeModal(); });
+
+function field(label, inner, hint){
+  return '<div class="f"><label>' + esc(label) + '</label>' + inner +
+         (hint ? '<span class="hint">' + hint + '</span>' : '') + '</div>';
+}
+function selOpts(list, cur){
+  return list.map(function(o){
+    return '<option value="' + esc(o) + '"' + (String(o) === String(cur) ? ' selected' : '') + '>' + esc(o) + '</option>';
+  }).join('');
+}
+
+/* ========== タブ ========== */
+$$('.tabs button').forEach(function(b){
+  b.addEventListener('click', function(){
+    $$('.tabs button').forEach(function(x){ x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+    $$('main > .view').forEach(function(v){ v.classList.remove('on'); });
+    $('#v-' + b.dataset.view).classList.add('on');
+    window.scrollTo(0, 0);
+  });
+});
+
+/* ==================================================================
+   わな見回り
+   ================================================================== */
+/* わなごとの「最後の見回り」を1回の走査でまとめて求める。
+   わなの数だけ全記録を絞り込むと、記録が増えたときに描画が急に重くなる */
+function lastPatrolMap(){
+  var m = Object.create(null);
+  for(var i=0;i<DB.patrols.length;i++){
+    var p = DB.patrols[i];
+    if(!p || !p.trapId) continue;
+    var cur = m[p.trapId];
+    if(!cur || String(p.at) > String(cur.at)) m[p.trapId] = p;
+  }
+  return m;
+}
+function lastPatrol(trapId){ return lastPatrolMap()[trapId] || null; }
+
+function renderTraps(){
+  var box = $('#trapList');
+  var lp0 = lastPatrolMap();
+  var traps = DB.traps.filter(function(t){ return showRemoved || t.active !== false; });
+  if(!traps.length){
+    box.innerHTML = '<p class="empty">わなが登録されていません。「＋ わなを登録」から追加してください。</p>';
+    return;
+  }
+  var due = num(DB.meta.dueDays) || 1;
+  box.innerHTML = traps.map(function(t){
+    var lp = lp0[t.id];
+    var d  = lp ? daysSince(lp.at) : daysSince(t.setAt);
+    var cls = t.active === false ? 'off' : (d != null && d >= due * 3 ? 'over' : (d != null && d >= due ? 'due' : ''));
+    var dtxt = d == null ? '—' : (d === 0 ? '本日確認済み' : d + '日経過');
+    return '<div class="trap ' + cls + '" data-trap="' + esc(t.id) + '">' +
+      '<div>' +
+        '<div class="code">' + esc(t.code || '(番号なし)') +
+          ' <span class="pill">' + esc(t.type) + '</span>' +
+          (t.active === false ? '<span class="pill c">撤去済</span>' : '') +
+        '</div>' +
+        '<div class="meta">' + esc(t.place || '設置場所未記入') +
+          (t.lat ? ' ／ ' + esc(t.lat) + ', ' + esc(t.lng) : '') +
+          ' ／ 設置 ' + esc(fmtDate(t.setAt)) + '</div>' +
+      '</div>' +
+      '<div class="days">' + esc(dtxt) + '</div>' +
+      '<div class="acts">' +
+        '<button class="btn sm" data-act="patrol" data-id="' + esc(t.id) + '">見回りを記録</button>' +
+        '<button class="btn ghost sm" data-act="edittrap" data-id="' + esc(t.id) + '">編集</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+/* 表示件数の案内と「すべて表示」ボタン */
+function setMore(id, total, shown){
+  var el = document.getElementById(id);
+  if(!el) return;
+  if(total <= shown){ el.innerHTML = ''; return; }
+  el.innerHTML = '<span class="hint">全 ' + total + ' 件のうち直近 ' + shown +
+    ' 件を表示しています。印刷とCSVには全件が含まれます。</span>' +
+    ' <button class="btn ghost sm" data-more="' + id + '">すべて表示</button>';
+}
+document.addEventListener('click', function(e){
+  var b = e.target.closest ? e.target.closest('[data-more]') : null;
+  if(!b) return;
+  if(b.dataset.more === 'patrolMore'){ showAllPatrol = true; renderPatrolTable(); }
+  else { showAllLedger = true; renderLedger(); }
+});
+
+function renderPatrolTable(){
+  var tb = $('#patrolTable');
+  var all = DB.patrols.slice().sort(function(a,b){ var x=String(a.at), y=String(b.at); return x===y ? 0 : (x<y ? 1 : -1); });
+  if(!all.length){ tb.innerHTML = '<tr><td class="empty">記録がありません。</td></tr>'; setMore('patrolMore', 0, 0); return; }
+  var rows = showAllPatrol ? all : all.slice(0, PAGE);
+  setMore('patrolMore', all.length, rows.length);
+  var head = '<thead><tr><th>日時</th><th>わな</th><th>結果</th><th>獲物</th><th class="n">頭数</th>' +
+             '<th>性別</th><th class="n">体重kg</th><th>メモ</th><th></th></tr></thead>';
+  var byId = Object.create(null);
+  DB.traps.forEach(function(x){ byId[x.id] = x; });
+  var body = rows.map(function(p){
+    var t = byId[p.trapId];
+    return '<tr>' +
+      '<td>' + esc(fmtDateTime(p.at)) + '</td>' +
+      '<td>' + esc(t ? t.code : '(削除済)') + '</td>' +
+      '<td>' + esc(p.result) + '</td>' +
+      '<td>' + esc(p.species || '') + '</td>' +
+      '<td class="n">' + (num(p.count) || '') + '</td>' +
+      '<td>' + esc(p.sex || '') + '</td>' +
+      '<td class="n">' + esc(p.weight || '') + '</td>' +
+      '<td>' + esc(p.note || '') + '</td>' +
+      '<td class="noprint"><button class="btn ghost sm" data-act="editpatrol" data-id="' + esc(p.id) + '">編集</button></td>' +
+    '</tr>';
+  }).join('');
+  tb.innerHTML = head + '<tbody>' + body + '</tbody>';
+}
+
+function trapForm(t){
+  t = t || {};
+  return '<div class="grid">' +
+    field('管理番号', '<input type="text" id="fCode" value="' + esc(t.code||'') + '" placeholder="例：A-01">') +
+    field('種別', '<select id="fType">' + selOpts(TRAP_TYPES, t.type || TRAP_TYPES[0]) + '</select>') +
+    field('設置場所', '<input type="text" id="fPlace" value="' + esc(t.place||'') + '" placeholder="例：東尾根の水路脇">') +
+    field('設置日', '<input type="date" id="fSetAt" value="' + esc(t.setAt || todayISO()) + '">') +
+    field('緯度', '<input type="text" id="fLat" value="' + esc(t.lat||'') + '" inputmode="decimal" placeholder="35.6812">') +
+    field('経度', '<input type="text" id="fLng" value="' + esc(t.lng||'') + '" inputmode="decimal" placeholder="139.7671">') +
+  '</div>' +
+  '<div class="row-btns"><button class="btn ghost sm" id="fGeo" type="button">現在地を取得</button>' +
+  '<span class="hint" id="fGeoMsg" style="align-self:center"></span></div>' +
+  field('メモ', '<textarea id="fNote" placeholder="獣道の様子、餌の種類、注意点など">' + esc(t.note||'') + '</textarea>') +
+  '<div class="f"><label><input type="checkbox" id="fActive" ' + (t.active === false ? '' : 'checked') + '> 稼働中（外すと撤去済みになります）</label></div>';
+}
+
+function bindGeo(){
+  var btn = $('#fGeo'); if(!btn) return;
+  btn.addEventListener('click', function(){
+    var msg = $('#fGeoMsg');
+    if(!navigator.geolocation){ msg.textContent = 'この端末では位置情報を取得できません。手入力してください。'; return; }
+    msg.textContent = '取得中…';
+    navigator.geolocation.getCurrentPosition(function(pos){
+      $('#fLat').value = pos.coords.latitude.toFixed(6);
+      $('#fLng').value = pos.coords.longitude.toFixed(6);
+      msg.textContent = '取得しました（誤差 約' + Math.round(pos.coords.accuracy) + 'm）';
+    }, function(err){
+      msg.textContent = '取得できませんでした（' + err.message + '）。手入力してください。';
+    }, { enableHighAccuracy:true, timeout:12000, maximumAge:0 });
+  });
+}
+
+function openTrap(t){
+  var isNew = !t;
+  openModal(isNew ? 'わなを登録' : 'わなを編集', trapForm(t), function(){
+    var o = t || { id: uid() };
+    o.code   = $('#fCode').value.trim();
+    o.type   = $('#fType').value;
+    o.place  = $('#fPlace').value.trim();
+    o.setAt  = $('#fSetAt').value;
+    o.lat    = $('#fLat').value.trim();
+    o.lng    = $('#fLng').value.trim();
+    o.note   = $('#fNote').value.trim();
+    o.active = $('#fActive').checked;
+    if(isNew) DB.traps.push(o);
+  }, isNew ? null : function(){
+    DB.traps = DB.traps.filter(function(x){ return x.id !== t.id; });
+    DB.patrols = DB.patrols.filter(function(x){ return x.trapId !== t.id; });
+  });
+  bindGeo();
+}
+
+function patrolForm(p, trapId){
+  p = p || {};
+  var traps = DB.traps.slice();
+  var cur = p.trapId || trapId || (traps[0] && traps[0].id);
+  return '<div class="grid">' +
+    field('日時', '<input type="datetime-local" id="fAt" value="' + esc(p.at || nowLocal()) + '">') +
+    field('わな', '<select id="fTrap">' + traps.map(function(t){
+      return '<option value="' + esc(t.id) + '"' + (t.id === cur ? ' selected' : '') + '>' +
+             esc((t.code||'(番号なし)') + ' ／ ' + (t.place||'')) + '</option>';
+    }).join('') + '</select>') +
+    field('結果', '<select id="fResult">' + selOpts(RESULTS, p.result || RESULTS[0]) + '</select>') +
+  '</div>' +
+  '<div class="grid">' +
+    field('獲物', '<select id="fSpecies"><option value="">—</option>' + selOpts(SPECIES, p.species || '') + '</select>') +
+    field('頭数・羽数', '<input type="number" id="fCount" min="0" step="1" value="' + esc(p.count || '') + '" inputmode="numeric">') +
+    field('性別', '<select id="fSex">' + selOpts(['','オス','メス','不明'], p.sex || '') + '</select>') +
+    field('推定体重(kg)', '<input type="text" id="fWeight" value="' + esc(p.weight || '') + '" inputmode="decimal">') +
+  '</div>' +
+  field('メモ', '<textarea id="fPNote" placeholder="処理方法、搬出先、次回の対応など">' + esc(p.note||'') + '</textarea>');
+}
+
+function openPatrol(p, trapId){
+  if(!DB.traps.length){ alert('先にわなを登録してください。'); return; }
+  var isNew = !p;
+  openModal(isNew ? '見回りを記録' : '見回り記録を編集', patrolForm(p, trapId), function(){
+    var o = p || { id: uid() };
+    o.at      = $('#fAt').value;
+    o.trapId  = $('#fTrap').value;
+    o.result  = $('#fResult').value;
+    o.species = $('#fSpecies').value;
+    o.count   = num($('#fCount').value);
+    o.sex     = $('#fSex').value;
+    o.weight  = $('#fWeight').value.trim();
+    o.note    = $('#fPNote').value.trim();
+    if(o.lat == null) o.lat = '';      /* 保存データの形を揃えておく */
+    if(o.lng == null) o.lng = '';
+    if(o.result === '撤去'){
+      var t = DB.traps.filter(function(x){ return x.id === o.trapId; })[0];
+      if(t) t.active = false;
+    }
+    if(isNew) DB.patrols.push(o);
+  }, isNew ? null : function(){
+    DB.patrols = DB.patrols.filter(function(x){ return x.id !== p.id; });
+  });
+}
+
+function renderPatrolSummary(){
+  var due = num(DB.meta.dueDays) || 1;
+  var lp0 = lastPatrolMap();
+  var active = DB.traps.filter(function(t){ return t.active !== false; });
+  var overdue = active.filter(function(t){
+    var lp = lp0[t.id];
+    var d = lp ? daysSince(lp.at) : daysSince(t.setAt);
+    return d != null && d >= due;
+  });
+  var caught = DB.patrols.reduce(function(s,p){ return s + (p.result === '捕獲' ? num(p.count) : 0); }, 0);
+
+  $('#tActive').innerHTML = active.length + '<small>基</small>';
+  $('#tDue').innerHTML    = overdue.length + '<small>基</small>';
+  $('#tCatch').innerHTML  = caught + '<small>頭・羽</small>';
+  $('#tRec').innerHTML    = DB.patrols.length + '<small>件</small>';
+  $('#tDueBox').className = 'tile' + (overdue.length ? ' alert' : '');
+
+  $('#patrolAlerts').innerHTML = overdue.length
+    ? '<div class="banner warn"><b>' + overdue.length + '基</b>のわなが' + due + '日以上見回られていません：' +
+      overdue.map(function(t){ return esc(t.code || '(番号なし)'); }).join('、') +
+      '<br>錯誤捕獲や獲物の衰弱を防ぐため、早めに確認してください。</div>'
+    : '';
+}
+
+/* ==================================================================
+   実包帳簿
+   ================================================================== */
+function ammoLabel(a){ return (a.label || '') + '・' + (a.kind || ''); }
+
+/* 年月日の古い順。同じ日は登録した順を保つ。
+   並べ替えのたびに indexOf で位置を探すと行数の二乗に効いてくるため、先に控えておく */
+function sortedLedger(){
+  var pos = new Map();
+  for(var i=0;i<DB.ledger.length;i++) pos.set(DB.ledger[i], i);
+  return DB.ledger.slice().sort(function(a,b){
+    var da = String(a.date), db = String(b.date);
+    if(da !== db) return da < db ? -1 : 1;     /* ISO形式なので単純比較でよい */
+    return pos.get(a) - pos.get(b);
+  });
+}
+
+/** 各行時点の残数を積み上げて返す */
+function computeLedger(){
+  var run = {};
+  DB.ammos.forEach(function(a){ run[a.id] = 0; });
+  return sortedLedger().map(function(r){
+    var bal = {}, total = 0;
+    DB.ammos.forEach(function(a){
+      var io = (r.io && r.io[a.id]) || { i:0, o:0 };
+      run[a.id] = run[a.id] + num(io.i) - num(io.o);
+      bal[a.id] = run[a.id];
+      total += run[a.id];
+    });
+    return { row:r, bal:bal, total:total };
+  });
+}
+
+function renderLedger(){
+  var tb = $('#ledgerTable');
+  if(!DB.ammos.length){
+    tb.innerHTML = '<tr><td class="empty">先に「適合実包」を登録してください。</td></tr>';
+    return;
+  }
+  var calcAll = computeLedger();
+  var calc = showAllLedger ? calcAll : calcAll.slice(Math.max(0, calcAll.length - PAGE));
+  setMore('ledgerMore', calcAll.length, calc.length);
+  var h1 = '<tr><th rowspan="2">年月日</th><th rowspan="2">使用銃<br>(許可番号)</th><th rowspan="2">摘要</th>';
+  var h2 = '<tr>';
+  DB.ammos.forEach(function(a){
+    h1 += '<th colspan="3">適合実包（' + esc(ammoLabel(a)) + '）</th>';
+    h2 += '<th class="n">受</th><th class="n">払</th><th class="n">残</th>';
+  });
+  h1 += '<th rowspan="2" class="n">合計残数<br>(個)</th><th rowspan="2" class="noprint"></th></tr>';
+  h2 += '</tr>';
+
+  if(!calc.length){
+    tb.innerHTML = '<thead>' + h1 + h2 + '</thead><tbody><tr><td class="empty" colspan="' +
+      (4 + DB.ammos.length*3) + '">記帳がありません。</td></tr></tbody>';
+    return;
+  }
+
+  var limit = num(DB.meta.limit) || 800;
+  var gunById = Object.create(null);
+  DB.guns.forEach(function(g){ gunById[g.id] = g; });
+  var body = calc.map(function(c){
+    var r = c.row;
+    var gun = gunById[r.gunId];
+    var summary = [];
+    if(r.transfer && r.transfer !== '—') summary.push(r.transfer);
+    if(r.purpose  && r.purpose  !== '—') summary.push(r.purpose);
+    if(r.place) summary.push(r.place);
+    if(r.note)  summary.push(r.note);
+
+    var tds = '';
+    DB.ammos.forEach(function(a){
+      var io = (r.io && r.io[a.id]) || { i:0, o:0 };
+      tds += '<td class="n">' + (num(io.i) || '') + '</td>' +
+             '<td class="n">' + (num(io.o) || '') + '</td>' +
+             '<td class="n"' + (c.bal[a.id] < 0 ? ' style="color:#b3261e;font-weight:700"' : '') +
+             '>' + c.bal[a.id] + '</td>';
+    });
+    return '<tr>' +
+      '<td>' + esc(String(r.date).replace(/-/g,'/')) + '</td>' +
+      '<td>' + esc(gun ? (gun.permitNo || gun.name || '') : '') + '</td>' +
+      '<td>' + esc(summary.join('／')) + '</td>' + tds +
+      '<td class="n"' + (c.total > limit ? ' style="color:#b3261e;font-weight:700"' : '') + '>' + c.total + '</td>' +
+      '<td class="noprint"><button class="btn ghost sm" data-act="editledger" data-id="' + esc(r.id) + '">編集</button></td>' +
+    '</tr>';
+  }).join('');
+
+  tb.innerHTML = '<thead>' + h1 + h2 + '</thead><tbody>' + body + '</tbody>';
+}
+
+function ledgerForm(r){
+  r = r || {};
+  var io = r.io || {};
+  var ammoRows = DB.ammos.map(function(a){
+    var v = io[a.id] || { i:0, o:0 };
+    return '<tr><th>' + esc(ammoLabel(a)) + '</th>' +
+      '<td><input type="number" min="0" step="1" inputmode="numeric" data-in="' + esc(a.id) + '" value="' + (num(v.i)||'') + '"></td>' +
+      '<td><input type="number" min="0" step="1" inputmode="numeric" data-out="' + esc(a.id) + '" value="' + (num(v.o)||'') + '"></td></tr>';
+  }).join('');
+
+  return '<div class="grid">' +
+    field('年月日', '<input type="date" id="fDate" value="' + esc(r.date || todayISO()) + '">') +
+    field('使用銃', '<select id="fGun"><option value="">—</option>' + DB.guns.map(function(g){
+      return '<option value="' + esc(g.id) + '"' + (g.id === r.gunId ? ' selected' : '') + '>' +
+             esc((g.permitNo || '') + (g.name ? ' ／ ' + g.name : '')) + '</option>';
+    }).join('') + '</select>', '実包を消費した銃を特定できるように') +
+  '</div>' +
+  '<div class="grid">' +
+    field('譲受の種別', '<select id="fTransfer">' + selOpts(TRANSFERS, r.transfer || '—') + '</select>', '「受」のとき') +
+    field('消費用途', '<select id="fPurpose">' + selOpts(PURPOSES, r.purpose || '—') + '</select>', '「払」のとき') +
+  '</div>' +
+  field('場所', '<input type="text" id="fPlace2" value="' + esc(r.place||'') + '" placeholder="受＝購入先／払＝射撃場・猟場等">',
+        '「受」は購入先、「払」は消費した射撃場・猟場等を記入します') +
+  field('摘要（補足）', '<textarea id="fLNote" placeholder="捕獲した鳥獣の種類と数、射撃大会名と点数など">' + esc(r.note||'') + '</textarea>') +
+  '<h3 style="font-size:.84rem;margin:1rem 0 .4rem">受払（個）</h3>' +
+  '<div class="tw"><table><thead><tr><th>適合実包</th><th>受</th><th>払</th></tr></thead><tbody>' +
+  ammoRows + '</tbody></table></div>';
+}
+
+function openLedger(r){
+  if(!DB.ammos.length){ alert('先に「適合実包」を登録してください。'); return; }
+  var isNew = !r;
+  openModal(isNew ? '記帳する' : '記帳を編集', ledgerForm(r), function(){
+    var o = r || { id: uid() };
+    o.date     = $('#fDate').value;
+    if(!o.date){ alert('年月日を入力してください。'); return false; }
+    o.gunId    = $('#fGun').value;
+    o.transfer = $('#fTransfer').value;
+    o.purpose  = $('#fPurpose').value;
+    o.place    = $('#fPlace2').value.trim();
+    o.note     = $('#fLNote').value.trim();
+    o.io = {};
+    DB.ammos.forEach(function(a){
+      var i = num($('[data-in="'  + a.id + '"]').value);
+      var u = num($('[data-out="' + a.id + '"]').value);
+      if(i || u) o.io[a.id] = { i:i, o:u };
+    });
+    if(isNew) DB.ledger.push(o);
+  }, isNew ? null : function(){
+    DB.ledger = DB.ledger.filter(function(x){ return x.id !== r.id; });
+  });
+}
+
+function renderAmmos(){
+  var box = $('#ammoList');
+  box.innerHTML = DB.ammos.length
+    ? DB.ammos.map(function(a){
+        return '<div class="trap"><div><div class="code">' + esc(ammoLabel(a)) + '</div>' +
+          '<div class="meta">' + (a.kind === 'ライフル' ? 'ライフル実包' : '散弾実包（' + esc(a.kind) + '）') + '</div></div>' +
+          '<div class="acts"><button class="btn ghost sm" data-act="editammo" data-id="' + esc(a.id) + '">編集</button></div></div>';
+      }).join('')
+    : '<p class="empty">適合実包が登録されていません。</p>';
+}
+
+function openAmmo(a){
+  var isNew = !a;
+  if(isNew && DB.ammos.length >= 6){ alert('適合実包は6種までです。'); return; }
+  a = a || {};
+  openModal(isNew ? '適合実包を追加' : '適合実包を編集',
+    '<div class="grid">' +
+      field('番径・口径', '<input type="text" id="fLabel" value="' + esc(a.label||'') + '" placeholder="例：12番 ／ 308WINmag">') +
+      field('種別', '<select id="fKind">' + selOpts(AMMO_KINDS, a.kind || AMMO_KINDS[0]) + '</select>') +
+    '</div>' +
+    '<p class="hint">ライフル実包以外は「散弾」「単弾」の別を必ず分けて登録してください（令和7年3月1日施行の改正による記載事項）。</p>',
+    function(){
+      var o = a.id ? a : { id: uid() };
+      o.label = $('#fLabel').value.trim();
+      o.kind  = $('#fKind').value;
+      if(!o.label){ alert('番径・口径を入力してください。'); return false; }
+      if(isNew) DB.ammos.push(o);
+    },
+    isNew ? null : function(){
+      DB.ammos = DB.ammos.filter(function(x){ return x.id !== a.id; });
+      DB.ledger.forEach(function(r){ if(r.io) delete r.io[a.id]; });
+    });
+}
+
+function renderGuns(){
+  var box = $('#gunList');
+  box.innerHTML = DB.guns.length
+    ? DB.guns.map(function(g){
+        return '<div class="trap"><div><div class="code">' + esc(g.permitNo || '(許可番号なし)') + '</div>' +
+          '<div class="meta">' + esc(g.name || '') + (g.gunNo ? ' ／ 銃番号 ' + esc(g.gunNo) : '') + '</div></div>' +
+          '<div class="acts"><button class="btn ghost sm" data-act="editgun" data-id="' + esc(g.id) + '">編集</button></div></div>';
+      }).join('')
+    : '<p class="empty">銃が登録されていません。わな猟のみの方は登録不要です。</p>';
+}
+
+function openGun(g){
+  var isNew = !g; g = g || {};
+  openModal(isNew ? '銃を追加' : '銃を編集',
+    '<div class="grid">' +
+      field('許可番号', '<input type="text" id="fPermit" value="' + esc(g.permitNo||'') + '" placeholder="例：東京第00000号">') +
+      field('銃番号', '<input type="text" id="fGunNo" value="' + esc(g.gunNo||'') + '">') +
+      field('呼び名', '<input type="text" id="fGName" value="' + esc(g.name||'') + '" placeholder="例：上下二連 12番">') +
+    '</div>' +
+    '<p class="hint">替え銃身がある場合は、呼び名に含めるなど特定できるようにしてください。</p>',
+    function(){
+      var o = g.id ? g : { id: uid() };
+      o.permitNo = $('#fPermit').value.trim();
+      o.gunNo    = $('#fGunNo').value.trim();
+      o.name     = $('#fGName').value.trim();
+      if(isNew) DB.guns.push(o);
+    },
+    isNew ? null : function(){ DB.guns = DB.guns.filter(function(x){ return x.id !== g.id; }); });
+}
+
+function renderAmmoSummary(){
+  var calc = computeLedger();
+  var last = calc[calc.length - 1];
+  var stock = last ? last.total : 0;
+  var limit = num(DB.meta.limit) || 800;
+  var year = todayISO().slice(0,4);
+  var used = DB.ledger.reduce(function(s,r){
+    if(String(r.date).slice(0,4) !== year) return s;
+    var t = 0; for(var k in r.io){ if(r.io.hasOwnProperty(k)) t += num(r.io[k].o); }
+    return s + t;
+  }, 0);
+
+  $('#tStock').innerHTML = stock + '<small>個</small>';
+  $('#tUsed').innerHTML  = used + '<small>個</small>';
+  $('#tRows').innerHTML  = DB.ledger.length + '<small>行</small>';
+  $('#tStockBox').className = 'tile' + (stock > limit ? ' bad' : (stock > limit * 0.9 ? ' alert' : ''));
+
+  var msgs = [];
+  if(stock > limit){
+    msgs.push('<div class="banner bad"><b>合計残弾数が ' + stock + ' 個</b>で、自宅保管の限度（' + limit +
+      '個）を<b>超えています。</b>散弾実包・ライフル実包の合計で ' + limit + ' 個以内に収める必要があります。</div>');
+  } else if(stock > limit * 0.9){
+    msgs.push('<div class="banner warn">合計残弾数が <b>' + stock + ' 個</b>です。自宅保管の限度（' + limit +
+      '個）に近づいています。</div>');
+  }
+  /* マイナスは最終行だけでなく途中の行でも起こる。
+     年月日が前後していると帳簿の途中に負の残数が印字されてしまうため、全行を見る */
+  var negLabels = [], firstNeg = null;
+  calc.forEach(function(c, i){
+    DB.ammos.forEach(function(a){
+      if(c.bal[a.id] < 0){
+        if(!firstNeg) firstNeg = { no:i+1, date:c.row.date };
+        if(negLabels.indexOf(ammoLabel(a)) < 0) negLabels.push(ammoLabel(a));
+      }
+    });
+  });
+  if(negLabels.length){
+    msgs.push('<div class="banner bad">残数がマイナスになっている行があります（' + esc(negLabels.join('、')) +
+      '）。最初は <b>' + firstNeg.no + '行目' +
+      (firstNeg.date ? '（' + esc(String(firstNeg.date).replace(/-/g,'/')) + '）' : '') + '</b>です。' +
+      '受払の入力漏れや、年月日の前後が入れ替わっていないかご確認ください。</div>');
+  }
+  $('#ammoAlerts').innerHTML = msgs.join('');
+}
+
+/* ==================================================================
+   印刷
+   ================================================================== */
+function printView(html){
+  /* 表をそのまま複製すると id まで二重になるため、複製側の id は落とす */
+  $('#printArea').innerHTML = String(html).replace(/\sid="(ledgerTable|patrolTable)"/g, '');
+  $$('main > .view').forEach(function(v){ v.classList.remove('printing'); });
+  $('#v-print').classList.add('printing');
+  window.print();
+  setTimeout(function(){
+    $('#v-print').classList.remove('printing');
+    $('#printArea').innerHTML = '';     /* 印刷後に残しておく必要はない */
+  }, 800);
+}
+
+function printHeader(title){
+  var m = DB.meta || {};
+  return '<h2 style="font-size:13pt;margin:0 0 4pt">【' + esc(title) + '】</h2>' +
+    '<div style="font-size:9pt;margin-bottom:6pt">' +
+      '氏名：' + esc(m.owner || '＿＿＿＿＿＿＿＿') +
+      '　　狩猟者登録番号：' + esc(m.hunterNo || '＿＿＿＿＿＿＿＿') +
+      '　　出力日：' + todayISO().replace(/-/g,'/') +
+    '</div>';
+}
+
+function printLedger(){
+  if(!DB.ammos.length){ alert('先に適合実包を登録してください。'); return; }
+  /* 画面が直近ぶんに絞られていても、印刷は必ず全件を出す */
+  var keep = showAllLedger; showAllLedger = true; renderLedger();
+  printLedgerBody();
+  showAllLedger = keep; renderLedger();
+}
+function printLedgerBody(){
+  printView(
+    printHeader('実包管理帳簿') +
+    $('#ledgerTable').outerHTML +
+    '<p style="font-size:8pt;line-height:1.7;margin-top:6pt">' +
+    '※ 譲受種別は、許可譲受・無許可譲受・有害鳥獣駆除譲受。摘要の欄「受」は実包等の購入先、「払」は消費射撃場・猟場等を記入。<br>' +
+    '※ 自宅保管限度数量は、散弾・ライフル実包合計 ' + (num(DB.meta.limit)||800) + ' 個以内。<br>' +
+    '※ 使用した猟銃が特定できる内容（許可番号、銃番号、替え銃身等）を記載する。<br>' +
+    '※ 散弾実包又はライフル実包の別、散弾実包であれば散弾又は単弾の別を記載する。<br>' +
+    '※ 射撃場のレシート・スコアカード等を実包の消費・残弾管理証明のため保存すること。帳簿は最終記載日から3年間保存すること。<br>' +
+    '※ 本紙は Venatio が出力した記録です。様式は都道府県警察により異なる場合があります。' +
+    '</p>');
+}
+
+function printPatrol(){
+  var keep = showAllPatrol; showAllPatrol = true; renderPatrolTable();
+  printView(printHeader('わな見回り記録') + $('#patrolTable').outerHTML);
+  showAllPatrol = keep; renderPatrolTable();
+}
+
+/* ==================================================================
+   データ入出力
+   ================================================================== */
+$('#btnExport').addEventListener('click', function(){
+  download('venatio-backup-' + todayISO() + '.json', JSON.stringify(DB, null, 2), 'application/json');
+});
+$('#btnImport').addEventListener('click', function(){ $('#fileInput').click(); });
+$('#fileInput').addEventListener('change', function(e){
+  var f = e.target.files && e.target.files[0];
+  if(!f) return;
+  var fr = new FileReader();
+  fr.onload = function(){
+    try{
+      var d = JSON.parse(fr.result);
+      if(!d || typeof d !== 'object' || Array.isArray(d)) throw new Error('形式が違います');
+      if(!Array.isArray(d.traps) && !Array.isArray(d.ledger)) throw new Error('Venatio の書き出しファイルではないようです');
+      if(!confirm('現在のデータをこのファイルの内容で置き換えます。よろしいですか？')) return;
+      DB = normDB(d);
+      save(); renderAll();
+      alert('読み込みました。');
+    }catch(err){ alert('読み込めませんでした：' + err.message); }
+  };
+  fr.readAsText(f);
+  e.target.value = '';
+});
+$('#btnWipe').addEventListener('click', function(){
+  if(!confirm('保存されているすべての記録を消去します。元に戻せません。\n先にJSONで書き出しておくことを強くおすすめします。\n\n本当に消去しますか？')) return;
+  if(!confirm('最終確認です。すべての記録を消去します。')) return;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  DB = blank(); save(); renderAll();
+  alert('消去しました。');
+});
+
+$('#btnPatrolCsv').addEventListener('click', function(){
+  var rows = [['日時','わな管理番号','種別','設置場所','結果','獲物','頭数','性別','推定体重kg','メモ','緯度','経度']];
+  var byId2 = Object.create(null);
+  DB.traps.forEach(function(x){ byId2[x.id] = x; });
+  DB.patrols.slice().sort(function(a,b){ return String(b.at) < String(a.at) ? -1 : 1; }).forEach(function(p){
+    var t = byId2[p.trapId] || {};
+    rows.push([p.at, t.code||'', t.type||'', t.place||'', p.result, p.species||'', num(p.count)||'',
+               p.sex||'', p.weight||'', p.note||'', t.lat||'', t.lng||'']);
+  });
+  download('venatio-patrol-' + todayISO() + '.csv', toCsv(rows), 'text/csv');
+});
+
+$('#btnLedgerCsv').addEventListener('click', function(){
+  var head = ['年月日','使用銃','譲受種別','消費用途','場所','摘要'];
+  DB.ammos.forEach(function(a){ head.push(ammoLabel(a)+' 受', ammoLabel(a)+' 払', ammoLabel(a)+' 残'); });
+  head.push('合計残数');
+  var rows = [head];
+  var gunById2 = Object.create(null);
+  DB.guns.forEach(function(g2){ gunById2[g2.id] = g2; });
+  computeLedger().forEach(function(c){
+    var r = c.row;
+    var g = gunById2[r.gunId];
+    var line = [r.date, g ? (g.permitNo||g.name||'') : '', r.transfer||'', r.purpose||'', r.place||'', r.note||''];
+    DB.ammos.forEach(function(a){
+      var io = (r.io && r.io[a.id]) || { i:0, o:0 };
+      line.push(num(io.i)||'', num(io.o)||'', c.bal[a.id]);
+    });
+    line.push(c.total);
+    rows.push(line);
+  });
+  download('venatio-ledger-' + todayISO() + '.csv', toCsv(rows), 'text/csv');
+});
+
+$('#btnPatrolPrint').addEventListener('click', printPatrol);
+$('#btnLedgerPrint').addEventListener('click', printLedger);
+
+/* すでに手元のファイルを開いている場合、ダウンロードを勧めても意味がない */
+(function(){
+  if(location.protocol !== 'file:') return;
+  var a = document.getElementById('btnOffline');
+  var n = document.getElementById('dlNote');
+  if(a) a.style.display = 'none';
+  if(n) n.innerHTML = '<b>すでにオフライン版をお使いです。</b>最新版はサイトから取得してください。';
+})();
+
+/* meta フィールド */
+[['mOwner','owner'],['mHunter','hunterNo'],['mDue','dueDays'],['mLimit','limit']].forEach(function(pair){
+  var el = $('#' + pair[0]);
+  el.addEventListener('input', function(){
+    DB.meta[pair[1]] = (pair[1] === 'dueDays' || pair[1] === 'limit') ? num(el.value) : el.value;
+    save(); renderPatrolSummary(); renderTraps(); renderAmmoSummary(); renderLedger();
+  });
+});
+
+/* ボタン */
+$('#btnAddTrap').addEventListener('click',   function(){ openTrap(null); });
+$('#btnAddLedger').addEventListener('click', function(){ openLedger(null); });
+$('#btnAddAmmo').addEventListener('click',   function(){ openAmmo(null); });
+$('#btnAddGun').addEventListener('click',    function(){ openGun(null); });
+$('#btnShowRemoved').addEventListener('click', function(){
+  showRemoved = !showRemoved;
+  this.textContent = showRemoved ? '稼働中のみ表示' : '撤去済みも表示';
+  renderTraps();
+});
+
+/* 委譲クリック */
+document.addEventListener('click', function(e){
+  var b = e.target.closest ? e.target.closest('[data-act]') : null;
+  if(!b) return;
+  var id = b.dataset.id, act = b.dataset.act;
+  var find = function(arr){ return arr.filter(function(x){ return x.id === id; })[0]; };
+  if(act === 'patrol')      openPatrol(null, id);
+  if(act === 'edittrap')    openTrap(find(DB.traps));
+  if(act === 'editpatrol')  openPatrol(find(DB.patrols));
+  if(act === 'editledger')  openLedger(find(DB.ledger));
+  if(act === 'editammo')    openAmmo(find(DB.ammos));
+  if(act === 'editgun')     openGun(find(DB.guns));
+});
+
+/* ========== 描画 ========== */
+function renderAll(){
+  renderPatrolSummary();
+  renderTraps();
+  renderPatrolTable();
+  renderAmmoSummary();
+  renderLedger();
+  renderAmmos();
+  renderGuns();
+  $('#mOwner').value  = DB.meta.owner || '';
+  $('#mHunter').value = DB.meta.hunterNo || '';
+  $('#mDue').value    = DB.meta.dueDays || 1;
+  $('#mLimit').value  = DB.meta.limit || 800;
+}
+renderAll();
+save();
+
+})();
+</script>
+</body>
+</html>

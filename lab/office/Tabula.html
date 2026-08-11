@@ -10,7 +10,7 @@
        / / / /_/ / /_/ / /_/ / / /_/ /
       /_/  \__,_/_.___/\__,_/_/\__,_/
 
-      見積書・請求書・納品書 作成システム
+      見積書・請求書・納品書・領収書 作成システム
       Estimate / Invoice / Delivery Note Builder
 
 ────────────────────────────────────────────────────────────────────────────────
@@ -29,7 +29,7 @@
 
       ▪ 許可されること
          ・個人・法人を問わず、業務での使用（商用利用を含む）
-         ・作成した見積書・請求書・納品書の自由な利用
+         ・作成した見積書・請求書・納品書・領収書の自由な利用
          ・社内での複製および利用
 
       ▪ 禁止されること
@@ -85,19 +85,19 @@
                frame-src 'none';
                object-src 'none';
                base-uri 'none'">
-<title>ArcaOffice Tabula — 見積書・請求書・納品書</title>
-<meta name="description" content="見積書・請求書・納品書をブラウザだけで作成できる無料ツール。インボイス制度・源泉徴収・軽減税率に対応し、入力データは端末内に保存され外部へ一切送信されません。インストール不要・オフライン動作。">
-<meta name="keywords" content="請求書,見積書,納品書,無料,テンプレート,作成,インボイス,適格請求書,源泉徴収,PDF,オフライン">
+<title>ArcaOffice Tabula — 見積書・請求書・納品書・領収書を無料で作成</title>
+<meta name="description" content="見積書・請求書・納品書・領収書をブラウザだけで作成できる無料ツール。インボイス制度・源泉徴収・軽減税率・収入印紙の判定に対応。入力データは端末内に保存され、外部へ一切送信されません。インストール不要・オフライン動作。">
+<meta name="keywords" content="請求書,見積書,納品書,領収書,無料,作成,テンプレート,インボイス,適格請求書,源泉徴収,収入印紙,PDF,オフライン">
 <link rel="canonical" href="https://arcahortus.com/lab/office/Tabula.html">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ja_JP">
-<meta property="og:title" content="ArcaOffice Tabula｜見積書・請求書・納品書を無料で作成">
-<meta property="og:description" content="ブラウザだけで完結。データは外部に送信されません。インボイス・源泉徴収・軽減税率対応。">
+<meta property="og:title" content="ArcaOffice Tabula｜見積書・請求書・納品書・領収書を無料で作成">
+<meta property="og:description" content="ブラウザだけで完結。データは外部に送信されません。インボイス・源泉徴収・軽減税率・収入印紙の判定に対応。">
 <meta property="og:url" content="https://arcahortus.com/lab/office/Tabula.html">
 <meta property="og:image" content="https://arcahortus.com/images/ogp-tabula.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://arcahortus.com/images/ogp-tabula.png">
-<meta name="theme-color" content="#1b1d22">
+<meta name="theme-color" content="#2c4a3e">
 <style>
 /* ============================================================
    ArcaOffice Tabula / Document Builder
@@ -393,6 +393,40 @@ label{display:block;font-size:11px;letter-spacing:.06em;color:var(--ink-3);margi
 
 .lead{font-size:.9em;color:#333;margin-bottom:.9em;letter-spacing:.05em}
 
+/* ---- 書類の変換ボタン ---- */
+.convert-row{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px}
+.convert-row button{
+  border:1px solid #b9c4bd;background:#fff;color:#2c4a3e;border-radius:6px;
+  padding:7px 12px;font-size:13px;cursor:pointer;font-family:inherit;
+}
+.convert-row button:hover{background:#eef3f0;border-color:#2c4a3e}
+.convert-row button:disabled{opacity:.35;cursor:default}
+
+/* ---- 領収書 ---- */
+.tadashi{
+  display:flex;align-items:baseline;gap:.9em;
+  font-size:.95em;margin:-.5em 0 1em;padding-bottom:.3em;
+  border-bottom:1px solid #ccc;letter-spacing:.05em;
+}
+.tadashi .k{color:#2c4a3e;letter-spacing:.3em;flex:0 0 auto}
+.tadashi .v{flex:1}
+.tadashi .suf{color:#666;flex:0 0 auto}
+.rc-row{display:flex;gap:1.2em;align-items:flex-start;margin-bottom:1.1em}
+.rc-row .rc-main{flex:1;min-width:0}
+.pay-line{font-size:.85em;color:#444;letter-spacing:.08em;margin-bottom:.5em}
+.pay-line .k{color:#666;letter-spacing:.16em;margin-right:.8em}
+.stamp-box{
+  flex:0 0 26mm;height:26mm;border:1px solid #7a8a80;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;font-size:.62em;color:#7a8a80;letter-spacing:.14em;line-height:1.6;
+}
+.stamp-box b{display:block;font-size:1.35em;letter-spacing:.2em;color:#2c4a3e;font-weight:500}
+.stamp-box .duty{font-size:1.05em;color:#2c4a3e;letter-spacing:.04em}
+.stamp-free{
+  flex:0 0 auto;align-self:center;font-size:.74em;color:#666;
+  border:1px dashed #b9c4bd;padding:.5em .9em;letter-spacing:.06em;line-height:1.7;
+}
+
 .terms{
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.15em 2em;
   font-size:.85em;margin-bottom:1.1em;
@@ -497,6 +531,11 @@ dialog.wide{max-width:680px}
   background:var(--bg);border:1px solid var(--line);border-radius:2px;
   padding:1px 5px;font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
 }
+.help .dl-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.help .dl-row .btn{text-decoration:none;display:inline-flex;align-items:center}
+.help .dl-note{font-size:12px;color:var(--ink-2)}
+.help h4{font-size:12.5px;font-weight:700;color:var(--ink);margin:14px 0 6px}
+.help kbd{background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:1px 6px;font-size:11px;font-family:inherit}
 .help .callout{
   border-left:2px solid var(--accent);background:var(--accent-soft);
   padding:11px 14px;margin:0 0 12px;border-radius:0 var(--radius) var(--radius) 0;
@@ -579,6 +618,7 @@ dialog.wide{max-width:680px}
     <button role="tab" data-doc="quote" aria-selected="true">見積書</button>
     <button role="tab" data-doc="invoice" aria-selected="false">請求書</button>
     <button role="tab" data-doc="delivery" aria-selected="false">納品書</button>
+    <button role="tab" data-doc="receipt" aria-selected="false">領収書</button>
   </div>
 
   <button class="help-btn" id="btnHelp" title="使い方とデータの保存について" aria-label="ヘルプ">?</button>
@@ -612,6 +652,36 @@ dialog.wide{max-width:680px}
           <div class="field" id="fld-due"><label>お支払期限</label><input type="date" data-path="meta.dueDate"></div>
           <div class="field" id="fld-delivdate"><label>納品日</label><input type="date" data-path="meta.deliveryDate"></div>
           <div class="field full"><label>件名</label><input data-path="meta.subject" placeholder="◯◯システム構築業務"></div>
+          <div class="field full" id="fld-tadashi">
+            <label>但し書き</label>
+            <input data-path="meta.tadashi" placeholder="◯◯システム構築費">
+            <div class="hint">領収書に「但し　◯◯　として」と印字されます。空欄なら件名を使います</div>
+          </div>
+          <div class="field" id="fld-paymethod">
+            <label>お支払方法</label>
+            <select data-path="meta.payMethod">
+              <option value="">（記載しない）</option>
+              <option value="現金">現金</option>
+              <option value="銀行振込">銀行振込</option>
+              <option value="クレジットカード">クレジットカード</option>
+              <option value="電子マネー・コード決済">電子マネー・コード決済</option>
+              <option value="小切手">小切手</option>
+              <option value="相殺">相殺</option>
+            </select>
+          </div>
+          <div class="field" id="fld-duty">
+            <label>収入印紙欄</label>
+            <label class="check"><input type="checkbox" data-path="opt.showDuty"> 印紙欄を表示する</label>
+            <div class="hint" id="dutyHint"></div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="grid g2">
+          <div class="field full">
+            <label>この内容から別の書類を作る</label>
+            <div class="convert-row" id="convertRow"></div>
+            <div class="hint">いま入力している宛先と明細をそのまま引き継ぎます。現在の書類は履歴に保存されます</div>
+          </div>
         </div>
         <div class="divider"></div>
         <div class="grid g2">
@@ -853,9 +923,70 @@ dialog.wide{max-width:680px}
       <p><b>月に一度はバックアップを。</b>　上部の「書き出し」→「全データを書き出し（JSON）」でファイルに保存できます。復元は同じ画面の「JSONを読み込み」です。バックアップさえあれば、PCの入れ替えでも別のブラウザへでもそのまま移せます。</p>
     </div>
 
+    <h3>手元に置いてオフラインで使う</h3>
+    <p>
+      このツールは<b>1つのHTMLファイルだけ</b>でできています。外部のライブラリもCDNも使っていません。
+      ファイルを自分のPCに保存してしまえば、<b>インターネットに繋がっていなくても全機能が動きます。</b>
+      サイトが無くなっても、あなたの手元のファイルは動き続けます。
+    </p>
+    <p class="dl-row">
+      <a class="btn primary" id="btnOffline" href="Tabula.html" download="ArcaOffice_Tabula.html">⇩ オフライン版をダウンロード</a>
+      <span class="dl-note" id="dlNote">Tabula 1.1 ／ 単一HTMLファイル</span>
+    </p>
+    <div class="callout warn"><p>
+      <b>ダウンロードする前に、いま入力中のデータをどうするか決めてください。</b><br>
+      入力内容はファイルの中ではなく<b>ブラウザ側</b>に保存されています。そのため、
+      ダウンロードしたファイルを開いても<b>いまの取引先マスタや履歴は入っていません</b>（白紙の状態で起動します）。<br>
+      引き継ぎたい場合は、先にこの画面の「書き出し」→「全データを書き出し（JSON）」でファイルに保存し、
+      ダウンロードした側で「JSONを読み込み」してください。
+    </p></div>
+    <p>これは裏を返せば、<b>ダウンロードしたファイルには、あなたの取引先情報も金額も一切含まれない</b>ということです。
+       ただし本ファイルの再配布はご遠慮いただいています。人に薦めるときは、このページのURLを教えてください。</p>
+    <h4>保存したあとの注意</h4>
+    <ul>
+      <li><b>置き場所は固定してください。</b>入力内容は「そのファイルをどこから開いたか」に紐づいて保存されるため、
+          別のフォルダへ移すと、ブラウザによっては前のデータが読めなくなります。
+          移動したいときは、先にJSONで書き出してから移してください。</li>
+      <li><b>ときどき最新版を取り直してください。</b>消費税率やインボイス制度の取扱いが変わっても、
+          手元のファイルは自動では更新されません。このツールは外部と通信しないため、
+          新版が出たことをお知らせすることもできません。
+          いま使っている版は画面下の「このソフトについて」で確認できます。</li>
+    </ul>
+
+    <h3>領収書と収入印紙</h3>
+    <p>
+      領収書タブでは、<b>但し書き</b>と<b>お支払方法</b>を入力できます。但し書きが空欄のときは件名を使います。
+    </p>
+    <p>
+      収入印紙の要否は、入力された金額から自動で判定して表示します。判定の根拠は次のとおりです。
+    </p>
+    <ul>
+      <li>記載金額が<b>5万円未満</b>なら非課税（印紙は不要）</li>
+      <li>消費税額を区分して記載していれば、<b>税抜金額</b>で判定できます。Tabula は税率別の対象額と消費税額を必ず印字するため、税抜で判定しています</li>
+      <li>5万円以上は、金額帯に応じて 200円／400円／600円／1,000円…と上がります（国税庁 タックスアンサー No.7105・No.7141、令和7年4月1日現在法令等）</li>
+      <li><b>クレジットカードや電子マネーでの決済は印紙不要</b>です。金銭の受領ではなく信用取引にあたるためです。ただし<b>その旨を領収書に明記する必要がある</b>ので、お支払方法欄を必ず表示してください</li>
+    </ul>
+    <div class="callout warn"><p>
+      金額以外の要素（営業に関しない受取書か、売上代金以外の受取か等）は、このツールでは判定していません。
+      判断に迷う場合は、税理士または所轄の税務署にご確認ください。
+    </p></div>
+
+    <h3>見積書から請求書を作る</h3>
+    <p>
+      「書類情報」の中にある<b>「この内容から別の書類を作る」</b>のボタンを押すと、
+      いま入力している宛先・明細・自社情報をそのまま引き継いで、別の種類の書類に切り替わります。
+      見積 → 請求 → 領収、という実務の流れをそのまま辿れます。
+    </p>
+    <ul>
+      <li>切り替える前の書類は、<b>自動で履歴に保存されます</b>。あとから履歴で呼び戻せます</li>
+      <li>書類番号は頭文字だけ差し替わります（<code>Q-2026-0001</code> → <code>I-2026-0001</code>）</li>
+      <li>発行日は当日に、日付欄は行き先に合わせて入り直します（請求書なら支払期限を翌月末に、納品書なら納品日を当日に）</li>
+      <li>領収書に変換したときは、但し書きに件名が入り、お支払方法が「銀行振込」で入ります</li>
+    </ul>
+
     <h3>基本の使い方</h3>
     <ol>
-      <li>上部のタブで<b>見積書／請求書／納品書</b>を選ぶ</li>
+      <li>上部のタブで<b>見積書／請求書／納品書／領収書</b>を選ぶ</li>
       <li>左側で<b>自社情報とロゴ</b>を一度だけ入力する（次回から自動で入ります）</li>
       <li><b>請求先</b>を入力し、「マスタに登録」しておくと次回からプルダウンで呼び出せます</li>
       <li><b>明細</b>を入力する。右側のプレビューが即座に更新されます</li>
@@ -923,9 +1054,9 @@ dialog.wide{max-width:680px}
       <div class="about-mark"></div>
       <div class="about-body">
         <div class="about-name">ArcaOffice <span>Tabula</span></div>
-        <div class="about-sub">見積書・請求書・納品書 作成システム</div>
+        <div class="about-sub">見積書・請求書・納品書・領収書 作成システム</div>
         <table class="kv" style="margin-top:10px">
-          <tr><th>バージョン</th><td>Tabula 1.0（2026年8月）</td></tr>
+          <tr><th>バージョン</th><td>Tabula 1.1（2026年8月）</td></tr>
           <tr><th>著作権</th><td>© 2026 ArcaHortus</td></tr>
           <tr><th>ご利用条件</th><td>
             無償でご利用いただけます。個人・法人を問わず、商用利用を含め業務でお使いいただけます。<br>
@@ -1034,8 +1165,54 @@ const DOC_TYPES = {
     dates:[["issueDate","発 行 日"],["deliveryDate","納 品 日"]],
     fields:{expiry:false,due:false,delivDate:true},
     prefix:"D", bankDefault:false
+  },
+  receipt: {
+    title:"領 収 書", plain:"領収書",
+    amountLabel:"領 収 金 額",
+    lead:"上記正に領収いたしました。",
+    dates:[["issueDate","発 行 日"]],
+    fields:{expiry:false,due:false,delivDate:false,tadashi:true,pay:true},
+    prefix:"R", bankDefault:false
   }
 };
+
+/* 印紙税額（第17号の1文書：売上代金に係る金銭又は有価証券の受取書）
+   出典：国税庁 タックスアンサー No.7105 / No.7141（令和7年4月1日現在法令等）
+   消費税額等を区分記載している場合は、税抜金額で判定できる（同 No.7124）。
+   Tabula は税率別の対象額と消費税額を必ず印字するため、税抜で判定している。 */
+const STAMP_TABLE = [
+  /* 5万円未満は上の判定で弾いているので、ここは5万円「以上」から始める */
+  [      1000000,    200],
+  [      2000000,    400],
+  [      3000000,    600],
+  [      5000000,   1000],
+  [     10000000,   2000],
+  [     20000000,   4000],
+  [     30000000,   6000],
+  [     50000000,  10000],
+  [    100000000,  20000],
+  [    200000000,  40000],
+  [    300000000,  60000],
+  [    500000000, 100000],
+  [   1000000000, 150000],
+  [ Infinity,     200000]
+];
+/* 領収書に貼る収入印紙の判定。
+   金額だけでは決まらない要素（営業に関しないもの・売上代金以外）は
+   利用者に注意を促すにとどめ、勝手に非課税と決めつけない。 */
+function stampDutyFor(netAmount, payMethod){
+  const m = String(payMethod||"");
+  if(/クレジット|カード|電子マネー|QR|コード決済/.test(m)){
+    return { need:false, amount:0,
+             reason:"クレジットカード等の信用取引による決済のため、金銭の受領事実がなく印紙は不要です。" };
+  }
+  const n = Math.max(0, Math.round(netAmount||0));
+  if(n < 50000) return { need:false, amount:0, reason:"記載金額が5万円未満のため非課税です。" };
+  for(const [lim, amt] of STAMP_TABLE){
+    if(n <= lim) return { need:true, amount:amt, reason:"" };
+  }
+  return { need:true, amount:200000, reason:"" };
+}
 const RATE_LABEL = { "10":"10%", "8":"8%", "0":"非課税" };
 const STORE_KEY = "arcaoffice.tabula.v1";
 const STORE_KEY_OLD = "arcahortus.office.v1";   // 旧名称のデータを引き継ぐため
@@ -1056,7 +1233,8 @@ function defaultState(){
     docType:"quote",
     paper:"A4",
     meta:{ no:"", issueDate:todayISO(), expiryDate:"", dueDate:"", deliveryDate:"",
-           subject:"", deliveryTerm:"", paymentTerm:"", deliveryPlace:"", otherTerm:"", notes:"" },
+           subject:"", deliveryTerm:"", paymentTerm:"", deliveryPlace:"", otherTerm:"", notes:"",
+           tadashi:"", payMethod:"" },
     client:{ name:"", honorific:"御中", postal:"", address1:"", address2:"",
              dept:"", person:"", personHonorific:"様", refNo:"" },
     issuer:{ name:"", postal:"", address1:"", address2:"", tel:"", fax:"", email:"",
@@ -1065,7 +1243,7 @@ function defaultState(){
            withholding:"", whBase:"net" },
     opt:{ colSpec:true, colUnit:true, colRate:true, fillRows:true,
           showBank:true, showLead:true, showTerms:true,
-          showStamp:false, stampLabels:"承認,確認,作成", copyLabel:"控" },
+          showStamp:false, stampLabels:"承認,確認,作成", copyLabel:"控", showDuty:true },
     rows:[ blankRow("item"), blankRow("item"), blankRow("item") ]
   };
 }
@@ -1098,6 +1276,53 @@ function persist(){
     }
   }
 }
+/* 保存データや読み込んだJSONが壊れていても起動できるよう、型を整えてから取り込む。
+   ここを通さないと、たとえば rows が配列でないだけで以降の描画がすべて落ちる。 */
+const ROW_TYPES = ["item","discount","subtotal","note"];
+const RATES = ["10","8","0"];
+function normalizeState(raw){
+  const base = defaultState();
+  let out;
+  try{ out = mergeDeep(base, (raw && typeof raw === "object" && !Array.isArray(raw)) ? raw : {}); }
+  catch(e){ out = base; }
+
+  if(!DOC_TYPES[out.docType]) out.docType = base.docType;
+  if(["A4","A5","duo"].indexOf(out.paper) < 0) out.paper = base.paper;
+
+  ["meta","client","issuer","calc","opt"].forEach(k=>{
+    if(!out[k] || typeof out[k] !== "object" || Array.isArray(out[k])) out[k] = base[k];
+  });
+  if(["exclusive","inclusive"].indexOf(out.calc.taxMode) < 0) out.calc.taxMode = base.calc.taxMode;
+  if(["floor","round","ceil"].indexOf(out.calc.round) < 0)    out.calc.round   = base.calc.round;
+  if(RATES.indexOf(String(out.calc.defaultRate)) < 0)         out.calc.defaultRate = base.calc.defaultRate;
+
+  if(!Array.isArray(out.rows)) out.rows = [];
+  out.rows = out.rows
+    .filter(r => r && typeof r === "object" && !Array.isArray(r))
+    .slice(0, 500)
+    .map(r => ({
+      type : ROW_TYPES.indexOf(r.type) >= 0 ? r.type : "item",
+      name : String(r.name == null ? "" : r.name),
+      spec : String(r.spec == null ? "" : r.spec),
+      qty  : (r.qty === "" || r.qty == null) ? "" : (isFinite(+r.qty) ? +r.qty : 1),
+      unit : String(r.unit == null ? "" : r.unit),
+      price: isFinite(+r.price) ? +r.price : 0,
+      rate : RATES.indexOf(String(r.rate)) >= 0 ? String(r.rate) : base.calc.defaultRate
+    }));
+  if(!out.rows.length) out.rows = base.rows;
+  return out;
+}
+/* store 側（マスタ・履歴）も配列であることを保証する */
+function normalizeStore(raw){
+  const o = (raw && typeof raw === "object" && !Array.isArray(raw)) ? raw : {};
+  return {
+    doc     : (o.doc && typeof o.doc === "object" && !Array.isArray(o.doc)) ? o.doc : null,
+    clients : Array.isArray(o.clients)  ? o.clients.filter(x=>x && typeof x==="object")  : [],
+    products: Array.isArray(o.products) ? o.products.filter(x=>x && typeof x==="object") : [],
+    history : Array.isArray(o.history)  ? o.history.filter(x=>x && typeof x==="object" && x.doc) : []
+  };
+}
+
 function restore(){
   try{
     // 現行キー → 無ければ旧キー（名称変更前のデータ）を読む
@@ -1107,9 +1332,8 @@ function restore(){
       if(raw) localStorage.setItem(STORE_KEY, raw);   // 現行キーへ移行
     }
     if(!raw) return false;
-    const s = JSON.parse(raw);
-    store = Object.assign({doc:null,clients:[],products:[],history:[]}, s);
-    if(store.doc) state = mergeDeep(defaultState(), store.doc);
+    store = normalizeStore(JSON.parse(raw));
+    if(store.doc) state = normalizeState(store.doc);
     return true;
   }catch(e){ return false; }
 }
@@ -1324,7 +1548,91 @@ function syncForm(){
   document.getElementById("fld-expiry").style.display = f.expiry? "" : "none";
   document.getElementById("fld-due").style.display = f.due? "" : "none";
   document.getElementById("fld-delivdate").style.display = f.delivDate? "" : "none";
+  document.getElementById("fld-tadashi").style.display   = f.tadashi? "" : "none";
+  document.getElementById("fld-paymethod").style.display = f.pay? "" : "none";
+  document.getElementById("fld-duty").style.display      = f.tadashi? "" : "none";
+  renderDutyHint();
+  renderConvertButtons();
 }
+
+/* 収入印紙の要否を入力欄の下に出す */
+function renderDutyHint(){
+  const el = document.getElementById("dutyHint");
+  if(!el) return;
+  if(state.docType !== "receipt"){ el.textContent = ""; return; }
+  const c = calculate();
+  const d = stampDutyFor(c.net, state.meta.payMethod);
+  el.innerHTML = d.need
+    ? `税抜 ${yen(c.net)} → <b>収入印紙 ${d.amount.toLocaleString("ja-JP")}円</b> が必要です。`
+      + `<br>営業に関しない受取書（個人間のやりとりなど）は非課税です。判断に迷う場合は税務署にご確認ください。`
+    : `<b>収入印紙は不要です。</b>${esc(d.reason)}`
+      + (/クレジット|カード|電子マネー|コード決済/.test(String(state.meta.payMethod||""))
+          ? `<br>印紙を不要とするには、領収書に決済方法を明記する必要があります（お支払方法欄が印字されます）。` : "");
+}
+
+/* 「この内容から別の書類を作る」ボタン */
+const CONVERT_LABEL = { quote:"見積書", invoice:"請求書", delivery:"納品書", receipt:"領収書" };
+function renderConvertButtons(){
+  const box = document.getElementById("convertRow");
+  if(!box) return;
+  box.innerHTML = Object.keys(CONVERT_LABEL)
+    .filter(k => k !== state.docType)
+    .map(k => `<button type="button" data-convert="${k}">${CONVERT_LABEL[k]}にする →</button>`)
+    .join("");
+}
+
+/* 月末日を返す（請求書の支払期限の既定値に使う） */
+function endOfMonth(dateISO, addMonths){
+  const b = dateISO ? new Date(dateISO+"T00:00:00") : new Date();
+  const d = new Date(b.getFullYear(), b.getMonth() + (addMonths||0) + 1, 0);
+  const z = d.getTimezoneOffset()*60000;
+  return new Date(d - z).toISOString().slice(0,10);
+}
+
+/* 書類番号の頭文字を変換先の記号に差し替える（Q-2026-0001 → I-2026-0001） */
+function reNumber(no, fromType, toType){
+  const s = String(no||"");
+  const fp = DOC_TYPES[fromType].prefix, tp = DOC_TYPES[toType].prefix;
+  if(!s) return "";
+  if(s.startsWith(fp)) return tp + s.slice(fp.length);
+  return s;
+}
+
+document.getElementById("convertRow").addEventListener("click", e=>{
+  const b = e.target.closest("button[data-convert]"); if(!b) return;
+  const to = b.dataset.convert, from = state.docType;
+  if(!confirm(`いまの内容を引き継いで${CONVERT_LABEL[to]}を作ります。\n`
+            + `現在の${CONVERT_LABEL[from]}は履歴に保存されます。\n\nよろしいですか？`)) return;
+
+  /* 変換前の書類を失わないよう、必ず履歴に残す */
+  const c0 = calculate();
+  store.history.push({
+    savedAt: new Date().toLocaleString("ja-JP"),
+    total: yen(c0.gross),
+    doc: JSON.parse(JSON.stringify(state))
+  });
+  if(store.history.length>200) store.history.shift();
+
+  const today = todayISO();
+  state.meta.no = reNumber(state.meta.no, from, to);
+  state.docType = to;
+  state.meta.issueDate = today;
+  state.meta.expiryDate = ""; state.meta.dueDate = ""; state.meta.deliveryDate = "";
+
+  if(to === "quote")    state.meta.expiryDate   = endOfMonth(today, 0);
+  if(to === "invoice"){ state.meta.dueDate      = endOfMonth(today, 1); state.opt.showBank = true; }
+  if(to === "delivery") state.meta.deliveryDate = today;
+  if(to === "receipt"){
+    if(!state.meta.tadashi) state.meta.tadashi = state.meta.subject || "";
+    if(!state.meta.payMethod) state.meta.payMethod = "銀行振込";
+    state.opt.showBank = false;
+    if(state.client.honorific === "御中" && state.client.person) state.client.honorific = "御中";
+  }
+  document.querySelectorAll("#docTabs button").forEach(x=>
+    x.setAttribute("aria-selected", String(x.dataset.doc===state.docType)));
+  syncAll();
+  toast(`${CONVERT_LABEL[from]}を履歴に保存し、${CONVERT_LABEL[to]}に切り替えました`);
+});
 function paintDrop(dzId, txtId, data, placeholder){
   const dz = document.getElementById(dzId);
   if(data){ dz.innerHTML = `<img src="${data}" alt="">`; }
@@ -1490,6 +1798,22 @@ function headerHTML(isCopy){
   const termsHTML = (state.opt.showTerms && terms.length)
     ? `<div class="terms">${terms.map(t=>`<div class="t"><span class="k">${esc(t[0])}</span><span class="v">${esc(t[1])}</span></div>`).join("")}</div>` : "";
 
+  /* 領収書のときだけ、但し書き・支払方法・収入印紙欄を組み立てる */
+  let tadashiHTML = "", receiptFoot = "";
+  if(state.docType === "receipt"){
+    const t = String(m.tadashi || m.subject || "").trim();
+    tadashiHTML = `<div class="tadashi"><span class="k">但し</span>`
+                + `<span class="v">${esc(t)}</span><span class="suf">として</span></div>`;
+    const duty = stampDutyFor(c.net, m.payMethod);
+    const payLine = m.payMethod
+      ? `<div class="pay-line"><span class="k">お支払方法</span>${esc(m.payMethod)}</div>` : "";
+    const box = !state.opt.showDuty ? ""
+      : duty.need
+        ? `<div class="stamp-box"><b>収入印紙</b><span class="duty">${duty.amount.toLocaleString("ja-JP")}円</span></div>`
+        : `<div class="stamp-free">${esc(duty.reason)}</div>`;
+    receiptFoot = `<div class="rc-row"><div class="rc-main">${payLine}__TERMS__</div>${box}</div>`;
+  }
+
   const labels = String(state.opt.stampLabels||"承認,確認,作成")
                    .split(/[,、，\s]+/).map(s=>s.trim()).filter(Boolean).slice(0,6);
   const stampHTML = (state.opt.showStamp && labels.length) ? `
@@ -1517,10 +1841,11 @@ function headerHTML(isCopy){
         ${is.seal? `<img class="seal" src="${is.seal}" alt="">` : ""}
       </div>
     </div>
-    ${m.subject? `<div class="subject-line"><span class="lbl">件　名</span><span class="val">${esc(m.subject)}</span></div>`:""}
+    ${(m.subject && state.docType!=="receipt")? `<div class="subject-line"><span class="lbl">件　名</span><span class="val">${esc(m.subject)}</span></div>`:""}
     ${amountBox}
+    ${tadashiHTML}
     ${state.opt.showLead? `<div class="lead">${esc(DOC_TYPES[state.docType].lead)}</div>`:""}
-    ${termsHTML}
+    ${state.docType==="receipt" ? receiptFoot.replace("__TERMS__", termsHTML) : termsHTML}
   `;
 }
 
@@ -1627,7 +1952,7 @@ let _pvReq = null;
 function schedulePreview(){
   if(_pvReq) return;
   const raf = window.requestAnimationFrame || (f=> setTimeout(f,16));
-  _pvReq = raf(()=>{ _pvReq = null; renderPreview(); });
+  _pvReq = raf(()=>{ _pvReq = null; renderPreview(); renderDutyHint(); });
 }
 
 /* ---- 画像の読み込み待ち ----
@@ -1864,6 +2189,15 @@ const dlgHistory = document.getElementById("dlgHistory");
 const dlgData = document.getElementById("dlgData");
 document.querySelectorAll("dialog [data-close]").forEach(b=> b.addEventListener("click", ()=> b.closest("dialog").close()));
 
+/* すでに手元のファイルを開いている場合、ダウンロードを勧めても意味がない */
+(function(){
+  if(location.protocol !== "file:") return;
+  const a = document.getElementById("btnOffline");
+  const n = document.getElementById("dlNote");
+  if(a) a.style.display = "none";
+  if(n) n.innerHTML = "<b>すでにオフライン版をお使いです。</b>最新版はサイトから取得してください。";
+})();
+
 const dlgHelp = document.getElementById("dlgHelp");
 document.getElementById("btnHelp").onclick = ()=> dlgHelp.showModal();
 document.getElementById("btnMaster").onclick = ()=>{ renderMaster(); dlgMaster.showModal(); };
@@ -1965,7 +2299,7 @@ function renderHistory(){
 document.getElementById("historyList").addEventListener("click", e=>{
   const l = e.target.closest("[data-load]"), d = e.target.closest("[data-hdel]");
   if(l){
-    state = mergeDeep(defaultState(), JSON.parse(JSON.stringify(store.history[+l.dataset.load].doc)));
+    state = normalizeState(JSON.parse(JSON.stringify(store.history[+l.dataset.load].doc)));
     syncAll(); dlgHistory.close(); toast("書類を読み込みました");
   }
   if(d){
@@ -2008,10 +2342,11 @@ jsonPick.addEventListener("change", ()=>{
   fr.onload = ()=>{
     try{
       const d = JSON.parse(fr.result);
-      if(d.__single && d.doc){ state = mergeDeep(defaultState(), d.doc); }
+      if(!d || typeof d !== "object" || Array.isArray(d)) throw new Error("形式が違います");
+      if(d.__single && d.doc){ state = normalizeState(d.doc); }
       else {
-        store = Object.assign({doc:null,clients:[],products:[],history:[]}, d);
-        if(store.doc) state = mergeDeep(defaultState(), store.doc);
+        store = normalizeStore(d);
+        if(store.doc) state = normalizeState(store.doc);
       }
       syncAll(); dlgData.close(); toast("読み込みました");
     }catch(err){ alert("JSONの読み込みに失敗しました：" + err.message); }

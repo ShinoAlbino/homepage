@@ -541,6 +541,120 @@ svg path.winPocket{fill:var(--gold);animation:pocketFlash .3s ease 6}
 .addOpts{display:flex;align-items:center;gap:14px;font-size:13px;margin-bottom:14px;opacity:.9}
 .addOpts input[type=number]{width:64px;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:15px}
 #plist{display:flex;flex-direction:column;gap:8px}
+
+/* ---- 設定パネル内のタブ ---- */
+.setTabs{display:flex;gap:6px;margin-bottom:14px}
+.setTabs button{
+  flex:1;padding:11px 4px;border-radius:10px;border:1px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.06);color:#fff;font-weight:900;font-size:14px;cursor:pointer;
+}
+.setTabs button.on{background:var(--gold);color:#3a1e00;border-color:var(--gold)}
+.setPane{display:none}
+.setPane.on{display:block}
+
+/* ---- 参加者 ---- */
+.mmodeRow{display:flex;gap:6px;margin-bottom:12px}
+.mmodeRow button{
+  flex:1;padding:10px 4px;border-radius:10px;border:1px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.06);color:#fff;font-weight:800;font-size:13px;cursor:pointer;line-height:1.4;
+}
+.mmodeRow button.on{background:var(--gold);color:#3a1e00;border-color:var(--gold)}
+#mlist{display:flex;flex-direction:column;gap:6px;max-height:44vh;overflow-y:auto}
+.mrow{
+  display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:14px;
+}
+.mrow.done{opacity:.55}
+.mrow.next{border-color:var(--gold);background:rgba(255,210,74,.14)}
+.mrow .mn{flex:1;font-weight:700;word-break:break-all}
+.mrow .mp{font-size:12px;opacity:.85;color:var(--gold);max-width:44%;text-align:right;word-break:break-all}
+.mrow button{
+  padding:5px 10px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:800;
+  background:rgba(255,255,255,.14);color:#fff;flex:0 0 auto;
+}
+.mrow .tagNext{background:var(--gold);color:#3a1e00;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:900}
+.mopt{
+  display:flex;align-items:center;gap:9px;margin-bottom:6px;padding:11px 13px;
+  border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);
+  font-size:14px;font-weight:800;cursor:pointer;user-select:none;
+}
+.mopt input{width:19px;height:19px;accent-color:var(--gold);flex:0 0 auto;cursor:pointer}
+.mrow .tries{
+  margin-left:.5em;font-size:11px;font-weight:900;color:#3a1e00;background:var(--gold);
+  border-radius:6px;padding:1px 6px;vertical-align:middle;
+}
+.mrow .ord{
+  flex:0 0 auto;min-width:1.9em;text-align:center;font-size:12px;font-weight:900;
+  color:rgba(255,255,255,.55);font-variant-numeric:tabular-nums;
+}
+.mrow.next .ord{color:var(--gold)}
+.mMove{display:flex;flex-direction:column;gap:2px;flex:0 0 auto}
+.mMove button{
+  padding:1px 7px;line-height:1.35;font-size:11px;border-radius:5px;border:none;cursor:pointer;
+  background:rgba(255,255,255,.16);color:#fff;font-weight:900;
+}
+.mMove button:disabled{opacity:.25;cursor:default}
+.bulkRow{margin-bottom:8px}
+.bulkRow textarea{
+  width:100%;min-height:84px;border-radius:10px;padding:10px 12px;font-size:14px;
+  border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:#fff;
+  font-family:inherit;line-height:1.7;resize:vertical;
+}
+.bulkRow textarea::placeholder{color:rgba(255,255,255,.42)}
+
+/* ---- 次の抽選者バナー ---- */
+#nextUp{
+  display:none;max-width:520px;margin:0 auto 10px;padding:11px 16px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(255,210,74,.2),rgba(255,210,74,.06));
+  border:2px solid var(--gold);text-align:center;line-height:1.5;
+}
+#nextUp.show{display:block}
+#nextUp .k{font-size:12px;letter-spacing:.2em;opacity:.8;display:block}
+#nextUp .v{font-size:clamp(20px,6vw,30px);font-weight:900;color:var(--gold);word-break:break-all}
+#nextUp .rest{font-size:12px;opacity:.75;margin-left:.6em}
+#nuOrder,#nuManual{display:none}
+#nuOrder.on,#nuManual.on{display:block}
+#pickMember{
+  width:100%;margin-top:6px;padding:11px 12px;border-radius:10px;font-family:inherit;
+  font-size:clamp(16px,4.6vw,20px);font-weight:800;
+  border:2px solid var(--gold);background:rgba(0,0,0,.35);color:var(--gold);
+}
+#pickMember option{background:#2a1b4d;color:#fff;font-weight:700}
+#nuManual .rest{display:block;margin:6px 0 0}
+
+/* ---- 当選者の表示 ---- */
+#resultPerson{
+  display:none;margin-top:14px;font-size:clamp(16px,5vw,26px);font-weight:900;letter-spacing:.06em;
+}
+#resultPerson.show{display:block}
+#resultPerson .k{font-size:.6em;opacity:.75;margin-right:.7em;letter-spacing:.2em}
+
+/* ---- 結果一覧 ---- */
+#rlist{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow-y:auto;margin-bottom:12px}
+.rrow{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:14px;
+}
+.rrow.hz{opacity:.6}
+.rrow .rn{flex:0 0 2em;opacity:.6;font-size:12px;font-variant-numeric:tabular-nums}
+.rrow .rp{flex:1;font-weight:700;word-break:break-all}
+.rrow .rw{flex:0 0 auto;color:var(--gold);font-weight:800;max-width:40%;text-align:right;word-break:break-all}
+.shareRow{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.shareRow input[type=text]{
+  width:100%;border-radius:10px;padding:11px 12px;font-size:14px;
+  border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:#fff;font-family:inherit;
+}
+.shareRow input::placeholder{color:rgba(255,255,255,.42)}
+.shareBtns{display:flex;gap:8px;flex-wrap:wrap}
+.shareBtns button{
+  flex:1;min-width:130px;padding:13px 8px;border-radius:12px;border:none;
+  font-weight:900;font-size:14px;cursor:pointer;background:var(--gold);color:#3a1e00;
+}
+.shareBtns button.sub{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3)}
+#shotWrap{display:none;margin-top:12px}
+#shotWrap.show{display:block}
+#shotWrap img{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.2);display:block}
+#shotWrap p{font-size:12px;opacity:.75;margin-top:8px;line-height:1.7;text-align:center}
 .prow{
   display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:12px;
   background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
@@ -640,6 +754,14 @@ svg path.winPocket{fill:var(--gold);animation:pocketFlash .3s ease 6}
   <div id="casinoShout"><b></b></div>
 </div>
 
+<div id="nextUp">
+  <div id="nuOrder"><span class="k">次の抽選者</span><span class="v"></span><span class="rest"></span></div>
+  <div id="nuManual">
+    <span class="k">抽選者を選ぶ</span>
+    <select id="pickMember"></select>
+    <span class="rest"></span>
+  </div>
+</div>
 <button id="spinBtn">🎲 抽選スタート</button>
 <div id="status"></div>
 <div id="chips"></div>
@@ -653,13 +775,21 @@ svg path.winPocket{fill:var(--gold);animation:pocketFlash .3s ease 6}
   <div id="resultCard">
     <div id="resultLabel"></div>
     <div id="resultPrize"></div>
+    <div id="resultPerson"><span class="k">当選者</span><span class="v"></span></div>
     <button id="resultNext">次の抽選へ ▶</button>
   </div>
 </div>
 
 <div class="overlay" id="settings">
   <div id="settingsCard">
-    <h2>⚙️ 賞品の登録・管理</h2>
+    <h2 id="setTitle">⚙️ 賞品の登録・管理</h2>
+    <div class="setTabs" id="setTabs">
+      <button data-pane="prize" class="on">🎁 賞品</button>
+      <button data-pane="member">👥 参加者</button>
+      <button data-pane="result">🏆 結果</button>
+    </div>
+
+    <div class="setPane on" id="pane-prize">
     <div class="modeRow">
       <button id="modeEq">🎲 等確率モード</button>
       <button id="modeWt">🏆 順位確率モード</button>
@@ -673,11 +803,73 @@ svg path.winPocket{fill:var(--gold);animation:pocketFlash .3s ease 6}
       <label><input type="checkbox" id="newHz"> ハズレ枠として登録</label>
     </div>
     <div id="plist"></div>
+    </div><!-- /pane-prize -->
+
+    <div class="setPane" id="pane-member">
+      <div class="mmodeRow">
+        <button id="mmOff">使わない</button>
+        <button id="mmManual">手動で選ぶ</button>
+        <button id="mmOrder">順番に指名</button>
+        <button id="mmAuto">全自動</button>
+      </div>
+      <label class="mopt">
+        <input type="checkbox" id="mRemoveDrawn" checked>
+        <span>引いた人を候補から外す</span>
+      </label>
+      <div class="hint" id="removeHint" style="margin:-4px 0 12px"></div>
+      <div class="addRow">
+        <input type="text" id="newMember" placeholder="参加者名を入力(例: 田中さん)" maxlength="20">
+        <button id="addMember">追加</button>
+      </div>
+      <div class="bulkRow">
+        <textarea id="bulkMember" placeholder="まとめて貼り付けもできます（改行・カンマ区切り）&#10;田中&#10;佐藤&#10;鈴木"></textarea>
+        <div class="shareBtns" style="margin-top:6px">
+          <button class="sub" id="bulkAdd">まとめて追加</button>
+          <button class="sub" id="shuffleMembers">🔀 順番をシャッフル</button>
+        </div>
+      </div>
+      <div id="mlist"></div>
+      <div class="hint" style="margin-top:12px">
+        ・<b>手動で選ぶ</b>：抽選のたびに、画面上部のリストから引く人を選びます。ゲームやビンゴで勝った人に引いてもらうときに。<br>
+        ・<b>順番に指名</b>：画面上部に「次の抽選者」が出ます。並び順どおりに一人ずつ引いていきます。<br>
+        ・<b>全自動</b>：ボタン一発で、誰に何が当たるかを同時に決めます。幹事ひとりで回せます。<br>
+        ・<b>引いた人を候補から外す</b>：オンなら一人一回。オフにすると同じ人が何度でも引けます（じゃんけんやゲームの勝者が繰り返し引く場合に）。<br>
+        ・「戻す」を押すと、その人を未抽選の状態に戻せます。<br>
+        ・<b>並び順は ▲▼ で入れ替えられます。</b>「順番に指名」では、未抽選の人に付いた番号が引く順です。<br>
+        ・参加者名はこの端末の中だけに保存され、外部には送信されません。
+      </div>
+    </div><!-- /pane-member -->
+
+    <div class="setPane" id="pane-result">
+      <div id="rlist"></div>
+      <div class="shareRow">
+        <input type="text" id="shotTitle" placeholder="会の名前（例: 2026年 忘年会）" maxlength="40">
+        <div class="shareBtns">
+          <button id="makeShot">🖼 結果画像を作る</button>
+          <button class="sub" id="copyText">📋 テキストでコピー</button>
+          <button class="sub" id="clearResults">🗑 結果を消す</button>
+        </div>
+      </div>
+      <div id="shotWrap">
+        <img id="shotImg" alt="抽選結果">
+        <div class="shareBtns" style="margin-top:10px">
+          <button id="saveShot">⬇ 画像を保存</button>
+          <button class="sub" id="shareShot">📤 共有する</button>
+        </div>
+        <p>画像は端末内で生成しています。どこにも送信されません。<br>
+           スマホの場合は画像を長押しでも保存できます。</p>
+      </div>
+      <div class="hint">
+        ・抽選するたびに、賞品と当選者がここに積まれていきます。<br>
+        ・「結果画像を作る」で、翌日そのまま社内チャットに貼れる一覧画像を書き出せます。
+      </div>
+    </div><!-- /pane-result -->
+
     <div class="setFoot">
       <button id="resetAll">↺ 当選状況リセット</button>
       <button id="closeSet">閉じる</button>
     </div>
-    <div class="hint">
+    <div class="hint" id="prizeHint">
       ・順位確率モードでは<b>順位が小さいほど当たりにくく</b>なります。特賞=1位、2等=2位…と<b>豪華な賞品順に番号を振るだけ</b>でOK(同順位は同確率。実際の%は自動計算されて表示)。<br>
       ・当選した賞品は自動で抽選対象から外れます。「復活」で戻せます。<br>
       ・ハズレ枠は当選しても消えず、残念演出になります。<br>
@@ -717,6 +909,14 @@ svg path.winPocket{fill:var(--gold);animation:pocketFlash .3s ease 6}
 "use strict";
 /* ================= state ================= */
 let prizes = [];           // {id,name,rank,hz,won}
+let members = [];          // {id,name,drawn,prize}
+let results = [];          // {n,prize,person,hz,sup,at}
+let mMode = 'off';         // 'off' | 'manual' | 'order' | 'auto'
+let pickedId = null;       // 手動モードで選ばれている抽選者
+let mRemoveDrawn = true;   // 引いた人を候補から外すか
+let mCursor = 0;           // 外さない設定のとき、順番モードが今どこを指しているか
+let shotTitle = '';
+let muid = 1;
 let mode = 'equal';        // 'equal' | 'rank'
 let soundOn = true;
 let spinning = false;
@@ -726,7 +926,7 @@ const $ = s => document.querySelector(s);
 const reels = [ $('#r0'), $('#r1'), $('#r2') ];
 reels.forEach(r => { r.seq = []; r.offset = 0; });
 
-function save(){ try{ localStorage.setItem('enkaiSlot', JSON.stringify({prizes,mode})); }catch(e){} }
+function save(){ try{ localStorage.setItem('enkaiSlot', JSON.stringify({prizes,mode,members,results,mMode,shotTitle,mRemoveDrawn,mCursor})); }catch(e){} }
 function load(){
   try{
     const d = JSON.parse(localStorage.getItem('enkaiSlot'));
@@ -742,60 +942,694 @@ function load(){
       mode = (d.mode==='rank'||d.mode==='weighted') ? 'rank' : 'equal';
       uid = prizes.reduce((m,p)=>Math.max(m, Number.isFinite(+p.id) ? +p.id : 0), 0)+1;
     }
+    /* 参加者・結果。旧バージョンの保存データには無い項目なので、無ければ空のまま始める */
+    if(d && Array.isArray(d.members)){
+      members = d.members.filter(m=>m && typeof m==='object').map(m=>{
+        /* 旧形式（drawn:true / prize:"賞品名"）は tries・wins に読み替える */
+        const wins  = Array.isArray(m.wins) ? m.wins.map(String).filter(Boolean)
+                    : (m.prize ? [String(m.prize)] : []);
+        const tries = Number.isFinite(+m.tries) ? Math.max(0, Math.round(+m.tries))
+                    : (m.drawn ? 1 : 0);
+        return {
+          id   : Number.isFinite(+m.id) ? +m.id : 0,
+          name : String(m.name == null ? '(名前なし)' : m.name).slice(0,20),
+          tries: Math.max(tries, wins.length),
+          wins : wins
+        };
+      });
+      muid = members.reduce((a,m)=>Math.max(a, m.id), 0)+1;
+    }
+    if(d && Array.isArray(d.results)){
+      results = d.results.filter(r=>r && typeof r==='object').map((r,i)=>({
+        n     : i+1,
+        prize : String(r.prize == null ? '' : r.prize),
+        person: String(r.person == null ? '' : r.person),
+        hz    : !!r.hz,
+        sup   : !!r.sup,
+        at    : Number(r.at) || Date.now()
+      }));
+    }
+    if(d && ['manual','order','auto'].indexOf(d.mMode) >= 0) mMode = d.mMode;
+    if(d && typeof d.shotTitle === 'string') shotTitle = d.shotTitle.slice(0,40);
+    if(d && typeof d.mRemoveDrawn === 'boolean') mRemoveDrawn = d.mRemoveDrawn;
+    if(d && Number.isFinite(+d.mCursor)) mCursor = Math.max(0, Math.round(+d.mCursor));
   }catch(e){}
 }
 
 /* ================= audio ================= */
-let AC = null;
-function initAudio(){
-  if(!AC){ try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
-  if(AC && AC.state === 'suspended') AC.resume();
+/* ------------------------------------------------------------------
+   音の設計方針
+
+   ・すべての音を master → サチュレーション → コンプレッサ の1本のバスに通す。
+     音同士が馴染み、演出が重なっても音割れしない。
+   ・自前生成した短いインパルス応答を畳み込んで残響を作る。
+     これが無いと、どれだけ音を作り込んでも「無響室で鳴らしたピー音」になる。
+   ・すべての音に 1〜8ms のアタックと、立ち上がりのわずかなピッチ落ちを付ける。
+     最大音量から瞬間的に始まる音は、発音体として不自然に聞こえる。
+   ・ローパスのカットオフを時間とともに閉じる。
+     高い成分から先に消えるのが自然な減衰で、これが「硬さ」の正体。
+   ・鳴らすたびにピッチ・音量・定位をわずかにばらす。
+     まったく同じ波形の反復は、それだけで機械の音に聞こえる。
+   ・打撃音は「立ち上がりのノイズ」「胴鳴り」「芯のピッチ」の3層で作る。
+     単一の波形では、何を叩いた音なのかが聴き手に伝わらない。
+   ------------------------------------------------------------------ */
+let AC = null, BUS = null, DRY = null, SEND = null, NOISE = null;
+
+/* 緩やかに潰すサチュレーション用カーブ */
+function _satCurve(k){
+  const n = 2048, c = new Float32Array(n);
+  for(let i=0;i<n;i++){ const x = i/(n-1)*2-1; c[i] = Math.tanh(x*k)/Math.tanh(k); }
+  return c;
 }
+
+/* 残響用インパルス応答を生成する。初期反射を数発置いて板の響きに寄せる */
+function _makeIR(sec, decay, damp){
+  const sr = AC.sampleRate, len = Math.max(1, (sec*sr)|0);
+  const buf = AC.createBuffer(2, len, sr);
+  for(let ch=0; ch<2; ch++){
+    const d = buf.getChannelData(ch);
+    let lp = 0;
+    for(let i=0;i<len;i++){
+      const v = (Math.random()*2-1) * Math.pow(1 - i/len, decay);
+      lp += (v - lp) * damp;
+      d[i] = lp * 0.9;
+    }
+    [0.013,0.021,0.033,0.047,0.061].forEach((ms,k)=>{
+      const i = ((ms*sr)|0) + ch*17;
+      if(i < len) d[i] += (k%2 ? -1 : 1) * 0.42 / (k+1);
+    });
+  }
+  return buf;
+}
+
+function _buildBus(){
+  const comp = AC.createDynamicsCompressor();
+  comp.threshold.value = -12; comp.knee.value = 20; comp.ratio.value = 3.2;
+  comp.attack.value = 0.006; comp.release.value = 0.26;
+
+  const sat = AC.createWaveShaper();
+  sat.curve = _satCurve(1.25);
+  try{ sat.oversample = '2x'; }catch(e){}
+
+  BUS = AC.createGain(); BUS.gain.value = 0.82;
+  DRY = AC.createGain(); DRY.gain.value = 1;
+
+  const conv = AC.createConvolver(); conv.buffer = _makeIR(1.5, 2.6, 0.34);
+  const wet  = AC.createGain(); wet.gain.value = 0.9;
+  SEND = AC.createGain(); SEND.gain.value = 1;
+
+  DRY.connect(BUS);
+  SEND.connect(conv); conv.connect(wet); wet.connect(BUS);
+  BUS.connect(sat); sat.connect(comp); comp.connect(AC.destination);
+
+  const len = (AC.sampleRate*2)|0;
+  NOISE = AC.createBuffer(1, len, AC.sampleRate);
+  const nd = NOISE.getChannelData(0);
+  for(let i=0;i<len;i++) nd[i] = Math.random()*2-1;
+}
+
+function initAudio(){
+  if(!AC){
+    try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
+    try{ _buildBus(); }catch(e){ AC = null; return; }
+  }
+  if(AC.state === 'suspended') AC.resume();
+}
+
+function _t(d){ return AC.currentTime + Math.max(0, d||0); }
+function _clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function _out(node, pan, verb){
+  if(AC.createStereoPanner && pan){
+    const p = AC.createStereoPanner();
+    p.pan.value = _clamp(pan, -1, 1);
+    node.connect(p); node = p;
+  }
+  node.connect(DRY);
+  if(verb > 0){
+    const s = AC.createGain(); s.gain.value = verb;
+    node.connect(s); s.connect(SEND);
+  }
+}
+
+/* ---- プリミティブ ---------------------------------------------- */
+
+/* フィルタを通したノイズ。打撃の立ち上がりと胴鳴りを作る */
+function _nz(o){
+  if(!AC || !soundOn) return;
+  o = o || {};
+  const dur = o.dur || .1, t = _t(o.delay);
+  const s = AC.createBufferSource();
+  s.buffer = NOISE; s.loop = true;
+  if(o.rate) s.playbackRate.value = o.rate;
+  const f = AC.createBiquadFilter();
+  f.type = o.type || 'bandpass';
+  f.frequency.setValueAtTime(_clamp(o.cut||1200, 20, 20000), t);
+  if(o.cutTo) f.frequency.exponentialRampToValueAtTime(_clamp(o.cutTo, 20, 20000), t+dur);
+  f.Q.value = o.q == null ? 1 : o.q;
+  const g = AC.createGain();
+  const a = Math.min(o.atk == null ? .002 : o.atk, dur*0.5);
+  const v = Math.max(.0002, (o.vol||.1) * (0.92 + Math.random()*0.16));
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(v, t+a);
+  g.gain.exponentialRampToValueAtTime(.0001, t+dur);
+  s.connect(f); f.connect(g);
+  _out(g, o.pan == null ? (Math.random()*.3-.15) : o.pan, o.verb||0);
+  s.start(t, Math.random()*1.5); s.stop(t+dur+.03);
+}
+
+/* ピッチが落ちる打撃音。芯・重心を作る */
+function _hit(o){
+  if(!AC || !soundOn) return;
+  o = o || {};
+  const dur = o.dur || .2, t = _t(o.delay);
+  const f0 = o.f0 || 160, f1 = o.f1 == null ? f0*0.55 : o.f1;
+  const osc = AC.createOscillator();
+  osc.type = o.type || 'sine';
+  osc.frequency.setValueAtTime(_clamp(f0,20,20000), t);
+  osc.frequency.exponentialRampToValueAtTime(_clamp(f1,20,20000), t + Math.min(dur, o.bend || dur*0.5));
+  const g = AC.createGain();
+  const a = Math.min(o.atk == null ? .003 : o.atk, dur*.4);
+  const v = Math.max(.0002, (o.vol||.3) * (0.94 + Math.random()*0.12));
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(v, t+a);
+  g.gain.exponentialRampToValueAtTime(.0001, t+dur);
+  osc.connect(g);
+  _out(g, o.pan||0, o.verb||0);
+  osc.start(t); osc.stop(t+dur+.04);
+}
+
+/* FMベル。金属的な倍音で「当たり」の質感を作る */
+function _bell(o){
+  if(!AC || !soundOn) return;
+  o = o || {};
+  const dur = o.dur || .6, f = o.freq || 880, t = _t(o.delay);
+  const car = AC.createOscillator(), mod = AC.createOscillator();
+  const mg = AC.createGain(), g = AC.createGain();
+  car.type = 'sine'; mod.type = 'sine';
+  car.frequency.value = f;
+  mod.frequency.value = f * (o.ratio || 3.47);
+  mg.gain.setValueAtTime(f * (o.index || 3.2), t);
+  mg.gain.exponentialRampToValueAtTime(Math.max(1, f*0.05), t + dur*0.55);
+  mod.connect(mg); mg.connect(car.frequency);
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(Math.max(.0002, o.vol||.12), t+.004);
+  g.gain.exponentialRampToValueAtTime(.0001, t+dur);
+  car.connect(g);
+  _out(g, o.pan||0, o.verb == null ? .25 : o.verb);
+  car.start(t); mod.start(t);
+  car.stop(t+dur+.06); mod.stop(t+dur+.06);
+}
+
+/* ---- カジノ向けの素材 -------------------------------------------
+   当たり音が作り物に聞こえる原因は、だいたい次の3つに集約される。
+     1. 毎回まったく同じ譜面が、等間隔のグリッドに並んでいる
+     2. 音source が単音で、コイン・鐘・歓声といった「場所の音」が無い
+     3. 鐘をFMで作っている（FMは倍音が規則的すぎて金属に聞こえにくい）
+   ここでは素材を用意して、当選音を5種類から毎回選ぶようにする。
+   ------------------------------------------------------------------ */
+
+/* 実際の鐘に近い非調和な倍音比。FM合成よりこちらの方が金属に聞こえる */
+const _BELL_P = [1, 2.00, 2.76, 5.40, 8.10, 10.7];
+const _BELL_A = [1, 0.55, 0.42, 0.22, 0.12, 0.07];
+
+/* 打鐘。頭に打棒のクリックを置いてから倍音を積む */
+function _bellHit(o){
+  o = o || {};
+  const f = o.freq||880, dur = o.dur||1.1, v = o.vol||.12, p = o.pan||0, d = o.delay||0;
+  _nz({ dur:.006, type:'highpass', cut:5500, q:.6, vol:v*.85, atk:.0003, delay:d, pan:p });
+  _BELL_P.forEach((r,i)=>{
+    const dd = dur * (1 - i*0.13);
+    if(dd <= .03) return;
+    const ff = f*r*(1 + (Math.random()*2-1)*0.002);
+    _hit({ f0:ff, f1:ff*0.998, dur:dd, bend:dd, vol:v*_BELL_A[i], atk:.001,
+           delay:d, pan:p + (i%2 ? .06 : -.06), type:'sine',
+           verb:o.verb == null ? .35 : o.verb });
+  });
+}
+
+/* コイン1枚。縁の当たりと、2本の高い倍音 */
+function _coin(o){
+  o = o || {};
+  const f = (o.freq||2600) * (0.72 + Math.random()*0.66);
+  const p = o.pan == null ? (Math.random()*2-1)*0.75 : o.pan;
+  const v = (o.vol||.085) * (0.55 + Math.random()*0.65);
+  const d = o.delay || 0;
+  _nz({ dur:.011, type:'bandpass', cut:f*1.7, q:3, vol:v*1.05, atk:.0004, delay:d, pan:p });
+  _hit({ f0:f, f1:f*0.994, dur:.09+Math.random()*.09, bend:.09, vol:v,
+         atk:.0006, delay:d, pan:p, type:'sine', verb:.3 });
+}
+
+/* コインの滝。最初は密に、だんだんまばらに落ちる */
+function _coinFall(o){
+  o = o || {};
+  const n = o.n||20, dur = o.dur||1.4, d0 = o.delay||0;
+  for(let i=0;i<n;i++){
+    const t = Math.pow(i/n, 0.72) * dur + Math.random()*0.035;
+    _coin({ delay:d0+t, vol:(o.vol||.085) * (1 - i/n*0.5), freq:o.freq });
+  }
+}
+
+/* クレジットのカウントアップ。チキチキチキ…と上がっていく */
+function _rollup(o){
+  o = o || {};
+  const n = o.n||26, dur = o.dur||1.1, d0 = o.delay||0, base = o.freq||1300;
+  for(let i=0;i<n;i++){
+    const k = i/n, t = d0 + Math.pow(k, 0.85)*dur;
+    const f = base * (1 + k*1.15), p = i%2 ? .2 : -.2;
+    _nz({ dur:.013, type:'bandpass', cut:f, q:6, vol:.048*(0.7+k*0.5), atk:.0004, delay:t, pan:p });
+    _hit({ f0:f, f1:f*0.9, dur:.028, vol:.042, atk:.0005, delay:t, type:'triangle', pan:p });
+  }
+}
+
+/* 歓声。持続したノイズに、粒立ちの拍手を散らす */
+function _clap(o){
+  o = o || {};
+  const dur = o.dur||1.8, d0 = o.delay||0, v = o.vol||.05;
+  _nz({ dur:dur, type:'bandpass', cut:1500, cutTo:2600, q:.8, vol:v, atk:dur*.18, delay:d0, verb:.6 });
+  for(let i=0;i<16;i++){
+    _nz({ dur:.02, type:'bandpass', cut:1800+Math.random()*2200, q:2.5,
+          vol:v*0.85*Math.random(), atk:.0006,
+          delay:d0 + Math.random()*dur, pan:(Math.random()*2-1)*.8 });
+  }
+}
+
+/* ブラスの和音スタブ。上の音ほどわずかに遅らせて人の演奏に寄せる */
+function _brass(chord, o){
+  o = o || {};
+  const dur = o.dur||.5, d0 = o.delay||0, v = o.vol||.055;
+  chord.forEach((f,i)=>{
+    const d = d0 + i*0.004 + Math.random()*0.004;
+    tone(f, dur, 'sawtooth', v*(1-i*0.1), d);
+    tone(f*1.005, dur*0.92, 'sawtooth', v*0.45*(1-i*0.1), d+0.006);
+  });
+  _nz({ dur:Math.min(.08,dur), type:'highpass', cut:2600, q:.7, vol:v*.75, atk:.001, delay:d0, verb:.3 });
+}
+
+/* 太鼓。ビーター＋胴＋倍音の3層 */
+function _timp(o){
+  o = o || {};
+  const f0 = o.f0||110, dur = o.dur||.55, v = o.vol||.22, d = o.delay||0;
+  _nz({ dur:.02, type:'lowpass', cut:2200, q:.8, vol:v*.45, atk:.0005, delay:d });
+  _hit({ f0:f0, f1:f0*0.88, dur:dur, bend:.35, vol:v, atk:.003, delay:d, type:'sine', verb:.25 });
+  _hit({ f0:f0*1.5, f1:f0*1.34, dur:dur*.5, bend:.2, vol:v*.3, atk:.002, delay:d, type:'triangle' });
+}
+
+/* きらめき。高いところにベルをばらまく */
+function _shimmer(o){
+  o = o || {};
+  const d0 = o.delay||0, span = o.dur||1.2, base = o.freq||2093;
+  const R = [1, 1.25, 1.5, 2, 2.5, 3];
+  for(let i=0;i<10;i++){
+    _bell({ freq:base*R[i%6]*(0.99+Math.random()*0.02), dur:.5+Math.random()*.6,
+            vol:.017, index:1.4, ratio:2.01,
+            delay:d0+Math.random()*span, pan:(Math.random()*2-1)*.8, verb:.65 });
+  }
+}
+
+/* 芯のある低音。純サイン一発だと、それだけで合成音に聞こえる */
+function _kick(o){
+  o = o || {};
+  const f0 = o.f0||130, f1 = o.f1||42, dur = o.dur||.45;
+  const v = o.vol||.3, p = o.pan||0, d = o.delay||0;
+  _nz({ dur:.012, type:'highpass', cut:1600, q:.7, vol:v*.32, atk:.0004, delay:d, pan:p });
+  _hit({ f0:f0,   f1:f1,     dur:dur,     bend:dur*.22, vol:v,     atk:.002, delay:d, pan:p, type:'sine' });
+  _hit({ f0:f0*2, f1:f1*2.2, dur:dur*.35, bend:dur*.1,  vol:v*.22, atk:.001, delay:d, pan:p, type:'triangle' });
+}
+
+const _CH = {
+  I : [523.25, 659.25,  783.99, 1046.50],
+  IV: [698.46, 880.00, 1046.50, 1396.91],
+  V : [783.99, 987.77, 1174.66, 1567.98],
+  Ih:[1046.50,1318.51, 1567.98, 2093.00]
+};
+const _PENTA = [523.25,587.33,659.25,783.99,880.00,1046.50,1174.66,
+                1318.51,1567.98,1760.00,2093.00,2349.32,2637.02,3135.96];
+
+/* ---- 当選音 5種 -------------------------------------------------- */
+
+/* A ／ 鐘の連打。昔ながらのスロットの当たり */
+function _winA(){
+  const n = 7, gap = .17;
+  for(let i=0;i<n;i++){
+    const d = i*gap + (Math.random()*2-1)*0.007;
+    _bellHit({ freq:i%2 ? 1046.5 : 1318.5, dur:.9, vol:.1, delay:d, pan:i%2 ? .2 : -.2 });
+    _coin({ delay:d+.02 }); _coin({ delay:d+.06 });
+  }
+  const e = n*gap;
+  _brass(_CH.I, { delay:e, dur:1.6, vol:.05 });
+  _timp({ delay:e, vol:.2 });
+  _coinFall({ delay:e+.05, n:20, dur:1.5 });
+}
+
+/* B ／ 上昇ラン。頂点できらめきとコインの滝 */
+function _winB(){
+  const n = 12;
+  for(let i=0;i<n;i++){
+    const d = Math.pow(i/n, .82) * .82 + Math.random()*0.006;
+    const f = _PENTA[i+2];
+    tone(f, .2, 'square', .045, d);
+    _bell({ freq:f*2, dur:.4, vol:.03, index:2, delay:d, verb:.45, pan:i%2 ? .25 : -.25 });
+    if(i%2===0) _coin({ delay:d });
+  }
+  _brass(_CH.Ih, { delay:.88, dur:1.8, vol:.045 });
+  _bellHit({ freq:2093, dur:1.6, vol:.11, delay:.88 });
+  _timp({ delay:.88, vol:.24, f0:98 });
+  _shimmer({ delay:.95, dur:1.3 });
+  _coinFall({ delay:.95, n:22, dur:1.8 });
+}
+
+/* C ／ ブラスの3連スタブ */
+function _winC(){
+  [[_CH.V,0],[_CH.IV,.24],[_CH.I,.48]].forEach(function(x){
+    const c = x[0], d = x[1];
+    _brass(c, { delay:d, dur:.26, vol:.06 });
+    _timp({ delay:d, vol:.2, f0:d ? 110 : 98 });
+    _coin({ delay:d+.03 }); _coin({ delay:d+.07 });
+  });
+  _brass(_CH.Ih, { delay:.76, dur:2.0, vol:.05 });
+  _bellHit({ freq:1046.5, dur:1.8, vol:.1, delay:.76 });
+  _coinFall({ delay:.82, n:18, dur:1.6 });
+  _clap({ delay:.9, dur:1.9, vol:.045 });
+}
+
+/* D ／ オーケストラヒットと鐘 */
+function _winD(){
+  _nz({ dur:.9, type:'lowpass', cut:8000, cutTo:600, q:.9, vol:.16, atk:.002, verb:.5 });
+  _brass([261.63,329.63,392.00,523.25,659.25], { dur:.9, vol:.055 });
+  _kick({ f0:150, f1:44, dur:.7, vol:.34 });
+  _timp({ vol:.26, f0:87 });
+  [0,.42,.84].forEach(function(d,i){
+    _bellHit({ freq:i===2 ? 1568 : 1046.5, dur:1.5, vol:.1, delay:.5+d });
+  });
+  _clap({ delay:.4, dur:2.2, vol:.05 });
+  _coinFall({ delay:.55, n:18, dur:1.9 });
+}
+
+/* E ／ クレジットのカウントアップ */
+function _winE(){
+  _bellHit({ freq:1318.5, dur:.8, vol:.09 });
+  _rollup({ delay:.14, n:28, dur:1.15, freq:1200 });
+  _brass(_CH.I, { delay:1.32, dur:1.7, vol:.05 });
+  _bellHit({ freq:2093, dur:1.5, vol:.1, delay:1.32 });
+  _timp({ delay:1.32, vol:.22 });
+  _coinFall({ delay:1.36, n:22, dur:1.7 });
+}
+
+const _WINS = [_winA,_winB,_winC,_winD,_winE];
+let _lastWin = -1;
+
+/* 毎回ちがう当選音を鳴らす。直前と同じものは選ばない */
+function sFanfare(){
+  let i;
+  do { i = (Math.random()*_WINS.length)|0; } while(_WINS.length > 1 && i === _lastWin);
+  _lastWin = i;
+  _WINS[i]();
+}
+
+/* 特賞。前触れを置いてから当選音、最後に長い余韻 */
+function sSuperFanfare(){
+  _nz({ dur:.55, type:'bandpass', cut:380, cutTo:7000, q:2.6, vol:.11, atk:.04, verb:.45 });
+  _rollup({ n:14, dur:.5, freq:900 });
+  _kick({ f0:175, f1:40, dur:.9, vol:.36, delay:.52 });
+  _nz({ dur:1.4, type:'highpass', cut:2800, cutTo:11000, q:.6, vol:.1, atk:.003, delay:.52, verb:.75 });
+  _timp({ delay:.52, vol:.3, f0:82 });
+  setTimeout(sFanfare, 560);
+  setTimeout(function(){
+    _coinFall({ n:24, dur:2.6, vol:.08 });
+    _clap({ dur:2.6, vol:.055 });
+  }, 1500);
+}
+
+/* ---- スタートの合図に使う素材 ------------------------------------ */
+
+/* 電鈴の単打。競馬のゲートベルやカジノのベルはこの音 */
+function _elecBell(o){
+  o = o || {};
+  const f = o.freq||1750, dur = o.dur||.16, v = o.vol||.1, p = o.pan||0, d = o.delay||0;
+  _nz({ dur:.004, type:'highpass', cut:6000, q:.6, vol:v*.8, atk:.0003, delay:d, pan:p });
+  /* 連打するときは倍音を2本に間引く。数十発鳴らすと生成コストが効いてくる */
+  const R = o.lite ? [1, 2.42]  : [1, 2.42, 4.10, 6.30];
+  const A = o.lite ? [1, .55]   : [1, .6, .35, .18];
+  R.forEach(function(r,i){
+    const dd = dur*(1 - i*0.16); if(dd <= .02) return;
+    const ff = f*r*(1 + (Math.random()*2-1)*0.003);
+    _hit({ f0:ff, f1:ff*0.997, dur:dd, bend:dd, vol:v*A[i], atk:.0008,
+           delay:d, pan:p, type:'sine', verb:.3 });
+  });
+}
+
+/* 電鈴の連打。ジリリリリ */
+function _bellRing(o){
+  o = o || {};
+  const dur = o.dur||.75, d0 = o.delay||0, gap = .037, f = o.freq||1750;
+  let k = 0;
+  for(let t=0; t<dur; t+=gap, k++){
+    _elecBell({ lite:true, freq:f*(k%2 ? 1.012 : 1), dur:.09,
+                vol:(o.vol||.085)*(0.85+Math.random()*0.3),
+                delay:d0 + t + Math.random()*0.004,
+                pan:k%2 ? .12 : -.12 });
+  }
+}
+
+/* 銅鑼。倍音ごとに立ち上がりをずらして、後から開いてくる感じを作る */
+function _gong(o){
+  o = o || {};
+  const f = o.freq||88, dur = o.dur||2.6, v = o.vol||.2, d = o.delay||0;
+  _nz({ dur:.03, type:'lowpass', cut:3000, q:.8, vol:v*.5, atk:.001, delay:d });
+  [1,1.52,2.13,2.87,3.61,4.90,6.40,8.10].forEach(function(r,i){
+    const dd = dur*(1 - i*0.09);
+    const ff = f*r*(1 + (Math.random()*2-1)*0.006);
+    _hit({ f0:ff, f1:ff*0.995, dur:dd, bend:dd, vol:v*Math.pow(0.72,i),
+           atk:.002 + i*0.012, delay:d, type:'sine', pan:i%2 ? .2 : -.2, verb:.55 });
+  });
+  _nz({ dur:dur*.7, type:'bandpass', cut:300, cutTo:1800, q:1.4, vol:v*.28, atk:.18, delay:d, verb:.6 });
+}
+
+/* 拍子木 */
+function _woodBlock(o){
+  o = o || {};
+  const f = o.freq||1250, v = o.vol||.16, p = o.pan||0, d = o.delay||0;
+  _nz({ dur:.006, type:'bandpass', cut:3200, q:2, vol:v*.9, atk:.0003, delay:d, pan:p });
+  _hit({ f0:f,     f1:f*0.96, dur:.07, bend:.05, vol:v,     atk:.0006, delay:d, pan:p, type:'sine', verb:.25 });
+  _hit({ f0:f*2.7, f1:f*2.60, dur:.04, bend:.03, vol:v*.35, atk:.0005, delay:d, pan:p, type:'sine', verb:.25 });
+  _hit({ f0:f*0.42,f1:f*0.40, dur:.05, bend:.04, vol:v*.3,  atk:.001,  delay:d, pan:p, type:'triangle' });
+}
+
+/* カジノチップ。粘土なので鳴りは短く鈍い。コインとは別物 */
+function _chip(o){
+  o = o || {};
+  const f = (o.freq||1500) * (0.85 + Math.random()*0.3);
+  const p = o.pan == null ? (Math.random()*2-1)*0.5 : o.pan;
+  const v = o.vol||.11, d = o.delay||0;
+  _nz({ dur:.014, type:'bandpass', cut:f*1.4, q:1.6, vol:v, atk:.0004, delay:d, pan:p });
+  _hit({ f0:f,   f1:f*0.8, dur:.04, bend:.03, vol:v*.7, atk:.0006, delay:d,      pan:p, type:'triangle', verb:.2 });
+  _hit({ f0:260, f1:190,   dur:.05, bend:.04, vol:v*.5, atk:.001,  delay:d+.002, pan:p, type:'sine' });
+}
+
+/* ---- カウントダウンとスタート合図 --------------------------------
+   3・2・1 に同じ矩形波を等間隔で並べるのが、いちばん作り物に聞こえる。
+   鳴らし方を4種類用意して、カウントの1打目で毎回どれかに決める。
+   3打目だけ少し高く強くして、次に何か起きることを予告する。
+   ------------------------------------------------------------------ */
+const _CNT = ['bell','wood','pulse','chip'];
+let _cntKind = 'bell';
+
+function sCount(i, kind){
+  if(i === 0) _cntKind = kind || _CNT[(Math.random()*_CNT.length)|0];
+  const k = kind || _cntKind;
+  const last = i >= 2;
+
+  if(k === 'rocket'){                                   /* 発射管制。無線のプツッと低い唸り */
+    _nz({ dur:.012, type:'highpass', cut:2600, q:1.2, vol:.07, atk:.0004 });
+    tone(last?1046:880, .1, 'square', .07, .012);
+    tone(last?1046:880, .1, 'square', .07, .16);
+    _hit({ f0:52, f1:44, dur:.5, bend:.4, vol:.14, atk:.05, type:'sine', verb:.3 });
+    return;
+  }
+  if(k === 'wood'){                                     /* 拍子木 */
+    _woodBlock({ vol:last?.19:.15, freq:last?1400:1250, pan:i%2 ? .15 : -.15 });
+    return;
+  }
+  if(k === 'pulse'){                                    /* 低いパルス。映画的な緊張 */
+    _nz({ dur:.008, type:'highpass', cut:5000, q:.7, vol:.075, atk:.0003 });
+    _hit({ f0:last?150:120, f1:last?58:48,   dur:.42, bend:.16, vol:.24, atk:.002, type:'sine',     verb:.35 });
+    _hit({ f0:last?600:480, f1:last?300:240, dur:.10, bend:.06, vol:.05, atk:.001, type:'triangle', verb:.4  });
+    return;
+  }
+  if(k === 'chip'){                                     /* ディーラーがチップを置く */
+    _chip({ vol:last?.14:.11 });
+    _chip({ delay:.035, vol:.08 });
+    if(last) _elecBell({ freq:1980, dur:.2, vol:.07, delay:.02 });
+    return;
+  }
+  _elecBell({ freq:last?1980:1750, dur:last?.24:.18, vol:last?.12:.1, pan:i%2 ? .16 : -.16 });
+}
+
+/* スタート。カウントで選ばれた種類に合わせて締める */
+function sGo(kind){
+  const k = kind || _cntKind;
+  if(k === 'wood'){
+    _woodBlock({ vol:.2 });
+    _gong({ delay:.02, vol:.2 });
+    return;
+  }
+  if(k === 'pulse'){
+    _kick({ f0:180, f1:40, dur:.8, vol:.34 });
+    _nz({ dur:1.1, type:'highpass', cut:2400, cutTo:9000, q:.6, vol:.08, atk:.002, verb:.6 });
+    _brass(_CH.V, { dur:.7, vol:.05 });
+    return;
+  }
+  if(k === 'chip'){
+    _elecBell({ freq:2100, dur:.3, vol:.13 });
+    _bellRing({ dur:.5, vol:.06, delay:.02, freq:2100 });
+    _chip({ delay:.05 }); _chip({ delay:.09 });
+    return;
+  }
+  _bellRing({ dur:.75, vol:.085 });                                   /* ゲート開放のジリリリ */
+  _kick({ f0:140, f1:44, dur:.5, vol:.24 });
+  _nz({ dur:.5, type:'bandpass', cut:1800, cutTo:600, q:2, vol:.07, atk:.004, delay:.02, verb:.35 });
+}
+
+/* フライング。電鈴を長めに鳴らして止める */
+function sFalseStart(){
+  _bellRing({ dur:.85, vol:.075, freq:1480 });
+  _hit({ f0:220, f1:180, dur:.5, bend:.4, vol:.1, atk:.02, type:'sawtooth', verb:.3 });
+}
+
+/* 既存の呼び出しをそのまま活かすための汎用トーン。
+   中身はデチューン2基＋ローパスのエンベロープ付きに作り直してある */
 function tone(freq, dur, type='square', vol=0.07, delay=0, glideTo=null){
   if(!AC || !soundOn) return;
-  if(!isFinite(freq) || freq<=0 || !isFinite(dur)) return;
-  const t = AC.currentTime + delay;
-  const o = AC.createOscillator(), g = AC.createGain();
-  o.type = type; o.frequency.setValueAtTime(freq, t);
-  if(glideTo) o.frequency.exponentialRampToValueAtTime(glideTo, t+dur);
-  g.gain.setValueAtTime(vol, t);
-  g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
-  o.connect(g); g.connect(AC.destination);
-  o.start(t); o.stop(t+dur+0.05);
+  if(!isFinite(freq) || freq<=0 || !isFinite(dur) || dur<=0) return;
+  const t = _t(delay);
+  const sub = freq < 130;
+
+  const f = AC.createBiquadFilter();
+  f.type = 'lowpass'; f.Q.value = sub ? 0.5 : 0.9;
+  f.frequency.setValueAtTime(_clamp(freq * (sub ? 6 : 9), 700, 14000), t);
+  f.frequency.exponentialRampToValueAtTime(_clamp(freq * (sub ? 3 : 2.1), 220, 12000), t + dur*0.85);
+
+  const mk = (det, lv)=>{
+    const o = AC.createOscillator(); o.type = type;
+    o.frequency.setValueAtTime(_clamp(freq * (glideTo ? 1 : 1.014), 20, 20000), t);
+    if(glideTo) o.frequency.exponentialRampToValueAtTime(_clamp(glideTo,20,20000), t+dur);
+    else        o.frequency.exponentialRampToValueAtTime(freq, t + Math.min(.018, dur*.3));
+    o.detune.value = det;
+    const og = AC.createGain(); og.gain.value = lv;
+    o.connect(og); og.connect(f);
+    o.start(t); o.stop(t+dur+.05);
+  };
+  mk(0, 1);
+  if(!sub && type !== 'sine') mk((Math.random()*2-1)*9 + 7, .55);
+
+  const g = AC.createGain();
+  const a = Math.min(dur*0.25, sub ? .006 : .0018);
+  const v = Math.max(.0002, vol * (0.94 + Math.random()*0.12));
+  g.gain.setValueAtTime(.0001, t);
+  g.gain.exponentialRampToValueAtTime(v, t+a);
+  g.gain.exponentialRampToValueAtTime(.0001, t+dur);
+  f.connect(g);
+  _out(g, (Math.random()*2-1)*0.12, sub ? 0.05 : 0.16);
 }
+
+/* ---- 各SE ------------------------------------------------------- */
+
 let lastTick = 0;
-function sTick(){ const n = performance.now(); if(n-lastTick<45) return; lastTick=n; tone(650+Math.random()*250, .03, 'square', .04); }
-function sTickRev(){ const n = performance.now(); if(n-lastTick<45) return; lastTick=n; tone(400+Math.random()*120, .04, 'sawtooth', .05); }
-function sStop(){ tone(170, .16, 'triangle', .2); tone(120, .2, 'sine', .15, .02); }
-function sReach(i, lv){ tone(i%2? (lv===2?1046:880):(lv===2?784:660), .13, 'square', .09); }
-function sHeart(){ tone(65, .18, 'sine', .4); tone(60, .16, 'sine', .32, .2); }
-function sKoma(){ tone(240, .09, 'square', .18); tone(120, .12, 'triangle', .2, .01); }
-function sZen(cc){ const notes=[523,659,784,1047,1319]; tone(notes[cc%5], .3, 'triangle', .07); tone(notes[cc%5]*2, .3, 'sine', .03); }
-function sFanfare(){
-  const seq = [523,659,784,1047,784,1047,1319];
-  seq.forEach((f,i)=> tone(f, .28, 'square', .09, i*.13));
-  seq.forEach((f,i)=> tone(f*2, .28, 'triangle', .05, i*.13));
-  tone(1568, .9, 'sawtooth', .05, seq.length*.13);
+
+/* リールの歯車が1コマ送られる音。高いバンドパスの共振＋ごく短いクリック */
+function sTick(){
+  const n = performance.now(); if(n-lastTick<45) return; lastTick = n;
+  const p = (Math.random()*2-1)*0.5;
+  _nz({ dur:.028, type:'bandpass', cut:2400+Math.random()*900, q:7, vol:.075, atk:.0008, pan:p, verb:.06 });
+  _nz({ dur:.006, type:'highpass', cut:5200, q:.7, vol:.05, atk:.0004, pan:p });
+  _hit({ f0:330+Math.random()*40, f1:230, dur:.03, vol:.05, atk:.001, pan:p, type:'triangle' });
 }
-function sSuperFanfare(){
-  sFanfare();
-  [1047,1319,1568,2093,1568,2093,2637].forEach((f,i)=> tone(f, .22, 'triangle', .06, .9+i*.1));
-  tone(2093, 1.2, 'sawtooth', .04, 1.7);
+
+/* 逆回転。同じ機構だが低く、鈍く */
+function sTickRev(){
+  const n = performance.now(); if(n-lastTick<45) return; lastTick = n;
+  const p = (Math.random()*2-1)*0.5;
+  _nz({ dur:.05, type:'bandpass', cut:900+Math.random()*250, q:5, vol:.085, atk:.002, pan:p, verb:.08 });
+  _hit({ f0:180, f1:120, dur:.05, vol:.07, type:'sawtooth', pan:p });
 }
-function sLose(){ tone(300, .5, 'sawtooth', .1, 0, 90); tone(220, .7, 'sawtooth', .08, .35, 60); }
+
+/* リール停止。この機械でいちばん大事な音なので4層で作る */
+function sStop(){
+  const p = (Math.random()*2-1)*.25;
+  _nz({ dur:.004, type:'highpass', cut:6000, q:.6, vol:.16, atk:.0003, pan:p });                        /* 当たった瞬間 */
+  _nz({ dur:.075, type:'bandpass', cut:1150, cutTo:420, q:3.4, vol:.13, atk:.001, pan:p, verb:.12 });   /* 金属の胴鳴り */
+  _hit({ f0:165, f1:78, dur:.13, bend:.05, vol:.32, atk:.0015, pan:p, verb:.1 });                       /* 芯 */
+  _kick({ f0:96, f1:46, dur:.22, vol:.24, pan:p });                                                     /* 沈み込み */
+}
+
+/* リーチ。ノイズを上に開いて緊張を作る */
+function sReach(i, lv){
+  const base = i%2 ? (lv===2?1046:880) : (lv===2?784:660);
+  const p = i%2 ? .35 : -.35;
+  tone(base, .14, 'sawtooth', lv===2?.085:.06);
+  tone(base*1.5, .12, 'square', lv===2?.04:.028, .01);
+  _nz({ dur:.18, type:'bandpass', cut:base*1.2, cutTo:base*3.4, q:4, vol:lv===2?.07:.045, atk:.004, pan:p, verb:.4 });
+  if(lv===2) _bell({ freq:base*2, dur:.7, vol:.05, index:2.4, verb:.5, pan:p });
+}
+
+/* 鼓動。アタックを鈍らせて body に寄せる */
+function sHeart(){
+  const beat = (d, v)=>{
+    _hit({ f0:78, f1:41, dur:.24, bend:.1, vol:v, atk:.008, delay:d, type:'sine' });
+    _nz({ dur:.1, type:'lowpass', cut:220, cutTo:90, q:1.2, vol:v*.35, atk:.006, delay:d, verb:.1 });
+  };
+  beat(0, .42); beat(.2, .3);
+}
+
+/* コマ送り */
+function sKoma(){
+  _nz({ dur:.005, type:'highpass', cut:4200, vol:.1, atk:.0004 });
+  _nz({ dur:.05, type:'bandpass', cut:1600, cutTo:700, q:5, vol:.09, atk:.001, verb:.1 });
+  _hit({ f0:250, f1:150, dur:.08, vol:.16, type:'triangle' });
+  _hit({ f0:120, f1:88, dur:.11, vol:.14, delay:.008 });
+}
+
+/* 全回転。金属ベルで */
+function sZen(cc){
+  const notes = [523,659,784,1047,1319], f = notes[cc%5];
+  _bell({ freq:f,   dur:.85, vol:.11,  ratio:3.47, index:3.4, verb:.55 });
+  _bell({ freq:f*2, dur:.5,  vol:.045, ratio:2.01, index:1.8, verb:.5, delay:.012 });
+  _nz({ dur:.25, type:'highpass', cut:5000, q:.7, vol:.02, atk:.003, verb:.5 });
+}
+
+/* ハズレ。2基をわずかにずらしてうねらせ、ローパスで閉じ切る */
+function sLose(){
+  tone(300, .55, 'sawtooth', .09, 0,   92);
+  tone(302, .55, 'sawtooth', .06, .01, 90);
+  _nz({ dur:.75, type:'lowpass', cut:1800, cutTo:180, q:1.4, vol:.055, atk:.01, verb:.2 });
+  tone(220, .7, 'triangle', .05, .3, 58);
+  _hit({ f0:90, f1:40, dur:.5, bend:.3, vol:.12, atk:.02, delay:.35 });
+}
+
 function sCrash(){
-  if(!AC || !soundOn) return;
-  const len = Math.floor(AC.sampleRate*0.4);
-  const buf = AC.createBuffer(1, len, AC.sampleRate);
-  const d = buf.getChannelData(0);
-  for(let i=0;i<len;i++) d[i] = (Math.random()*2-1)*Math.pow(1-i/len,2);
-  const s = AC.createBufferSource(); s.buffer = buf;
-  const g = AC.createGain(); g.gain.value = .3;
-  s.connect(g); g.connect(AC.destination); s.start();
-  tone(55, .5, 'sine', .3);
+  _nz({ dur:.05, type:'highpass', cut:4000, q:.6, vol:.2, atk:.0005 });
+  _nz({ dur:.9,  type:'lowpass',  cut:9000, cutTo:400, q:.9, vol:.22, atk:.002, verb:.45 });
+  _kick({ f0:170, f1:38, dur:.8, vol:.38 });
+  _hit({ f0:58, f1:32, dur:1.0, bend:.4, vol:.2, atk:.012, delay:.02, type:'sine' });
 }
-function sRiser(){ tone(180, 1.0, 'sawtooth', .09, 0, 1400); tone(180, 1.0, 'square', .05, .05, 1400); }
-function sZuru(){ tone(500, .25, 'sawtooth', .12, 0, 240); }
+
+/* 激アツ前兆。ノイズを開きながら、加速するフラッターを重ねる */
+function sRiser(){
+  _nz({ dur:1.05, type:'bandpass', cut:220, cutTo:7200, q:3.2, vol:.12, atk:.05, verb:.4 });
+  tone(180, 1.0, 'sawtooth', .075, 0,   1400);
+  tone(181, 1.0, 'sawtooth', .05,  .02, 1420);
+  _hit({ f0:40, f1:120, dur:1.0, bend:.95, vol:.2, atk:.15, type:'sine' });
+  for(let i=0;i<9;i++){
+    _nz({ dur:.03, type:'bandpass', cut:900+i*420, q:8, vol:.05, atk:.001,
+         delay:Math.pow(i/9, 1.7)*0.95, pan:(i%2 ? .4 : -.4) });
+  }
+}
+
+/* 滑り */
+function sZuru(){
+  tone(500, .26, 'sawtooth', .1, 0, 240);
+  _nz({ dur:.3, type:'bandpass', cut:2600, cutTo:700, q:2.6, vol:.06, atk:.004, verb:.15 });
+}
 
 /* ================= helpers ================= */
 const active = () => prizes.filter(p=>!p.won);
@@ -1320,9 +2154,29 @@ function finish(winner, isSuper){
 function showResult(winner, isSuper){
   const ov = $('#resultOverlay'), card = $('#resultCard'),
         lbl = $('#resultLabel'), prz = $('#resultPrize');
+  /* 同じ抽選で二重に記録しないための番人（保険のタイムアウト経路があるため） */
+  if(showResult._locked) return;
+  showResult._locked = true;
+
   /* 結果を出した時点で当選を確定・保存する(「次へ」前にリロードされても消えない) */
-  if(!winner.hz && !winner.won){ winner.won = true; save(); }
+  if(!winner.hz && !winner.won){ winner.won = true; }
   prz.textContent = winner.name;
+
+  /* 参加者モードなら、この抽選の当選者を確定させる */
+  const person = assignPerson(winner);
+  const pEl = $('#resultPerson');
+  if(person){
+    pEl.querySelector('.v').textContent = person.name;
+    pEl.classList.add('show');
+  }else{
+    pEl.classList.remove('show');
+  }
+  results.push({
+    n: results.length+1, prize: winner.name, person: person ? person.name : '',
+    hz: !!winner.hz, sup: !!isSuper, at: Date.now()
+  });
+  if(results.length > 500) results.shift();
+  save();
   ov.classList.remove('showWin','showSuper');
   if(winner.hz){
     card.className = 'lose';
@@ -1350,6 +2204,8 @@ function showResult(winner, isSuper){
 $('#resultNext').addEventListener('click', ()=>{
   const ov = $('#resultOverlay');
   const w = ov._winner;
+  showResult._locked = false;
+  $('#resultPerson').classList.remove('show');
   if(w && !w.hz && !w.won){ w.won = true; save(); }
   ov.classList.remove('show','showWin','showSuper');
   reels.forEach(r=>r.classList.remove('hit','strobe','glow','blur'));
@@ -1358,13 +2214,15 @@ $('#resultNext').addEventListener('click', ()=>{
   hideReach();
   spinning = false;
   $('#spinBtn').disabled = false;
-  renderChips(); renderList();
+  renderChips(); renderList(); renderNextUp();
+  if($('#settings').classList.contains('show')){ renderMembers(); renderResults(); }
   if(gameView==='race') buildLanes(active());
   if(gameView==='illumi') buildForest(active());
   if(gameView==='rocket') buildSpace(active());
   if(gameView==='casino') buildWheel(active());
   const act = active();
-  if(act.length===0) toast('🎊 全賞品が当選しました!');
+  if(mMode!=='off' && mRemoveDrawn && members.length && !notYet().length) toast('👥 参加者全員が引き終わりました');
+  else if(act.length===0) toast('🎊 全賞品が当選しました!');
   else if(act.every(p=>p.hz)) toast('残りはハズレ枠のみです。賞品を追加できます');
 });
 
@@ -1436,6 +2294,7 @@ function renderChips(){
   $('#chips').innerHTML = prizes.map(p=>
     `<span class="chip${p.won?' won':''}${p.hz?' hz':''}">${p.hz?'💀 ':''}${esc(p.name)}</span>`
   ).join('');
+  if(typeof renderNextUp === 'function') renderNextUp();
 }
 function pct(p){
   const act = active(), tot = act.reduce((s,q)=>s+weightOf(q),0);
@@ -1455,7 +2314,7 @@ function renderList(){
     </div>`).join('')
     : '<div style="opacity:.6;font-size:14px;text-align:center;padding:14px">まだ賞品がありません。上の欄から追加してください。</div>';
 }
-function openSettings(){ renderList(); $('#settings').classList.add('show'); }
+function openSettings(){ renderList(); setPane('prize'); $('#settings').classList.add('show'); }
 
 $('#setBtn').addEventListener('click', ()=>{ if(!spinning) openSettings(); });
 $('#closeSet').addEventListener('click', ()=>{
@@ -1494,7 +2353,462 @@ $('#plist').addEventListener('change', e=>{
   save(); renderList();
 });
 $('#resetAll').addEventListener('click', ()=>{
-  prizes.forEach(p=>p.won=false); save(); renderList(); renderChips(); toast('当選状況をリセットしました');
+  prizes.forEach(p=>p.won=false);
+  if(members.some(hasDrawn) || results.length){
+    if(confirm('参加者の抽選済みと、結果の記録もまとめてリセットしますか？\n\n' +
+               '［OK］賞品・参加者・結果をすべてリセット\n［キャンセル］賞品の当選状況だけリセット')){
+      members.forEach(m=>{ m.tries=0; m.wins=[]; });
+      results = []; pickedId = null; mCursor = 0;
+    }
+  }
+  save(); renderList(); renderChips(); renderMembers(); renderResults();
+  $('#shotWrap').classList.remove('show');
+  toast('リセットしました');
+});
+
+/* ================= 参加者 / 結果 ================= */
+/* 参加者名も抽選結果も、この端末の localStorage にしか保存されない。
+   共有画像も canvas で端末内生成しているため、外部への送信は一切発生しない。
+
+   member = { id, name, tries, wins[] }
+     tries … 引いた回数
+     wins  … 当たった賞品名（ハズレは入らない）
+   「引いた人を候補から外す」を切ると同じ人が何度でも引けるため、
+   当選は1つとは限らない。だから配列で持っている。 */
+
+const hasDrawn = m => (m.tries || 0) > 0;
+
+/* いま選べる人。設定によって、引いた人を含めるかどうかが変わる */
+function candidates(){
+  return mRemoveDrawn ? members.filter(m => !hasDrawn(m)) : members.slice();
+}
+/* まだ一度も引いていない人 */
+function notYet(){ return members.filter(m => !hasDrawn(m)); }
+
+/* 「次に引く人」。順番モードのみ。
+   引いた人を外さない設定のときは、リストを先頭から順に回していく */
+function nextMember(){
+  if(mMode !== 'order') return null;
+  if(!members.length) return null;
+  if(mRemoveDrawn) return notYet()[0] || null;
+  return members[((mCursor % members.length) + members.length) % members.length];
+}
+
+/* 手動モードでいま選ばれている人 */
+function pickedMember(){
+  if(mMode !== 'manual' || pickedId == null) return null;
+  const m = members.find(x => x.id === pickedId);
+  if(!m) return null;
+  if(mRemoveDrawn && hasDrawn(m)) return null;
+  return m;
+}
+
+/* 抽選結果に人を割り当てる */
+function assignPerson(winner){
+  if(mMode === 'off') return null;
+  const rest = candidates();
+  if(!rest.length) return null;
+
+  let m;
+  if(mMode === 'manual'){
+    m = pickedMember();
+    if(!m) return null;
+    pickedId = null;
+  }else if(mMode === 'auto'){
+    m = pick(rest);
+  }else{
+    m = nextMember();
+    if(!m) return null;
+  }
+
+  m.tries = (m.tries || 0) + 1;
+  if(!Array.isArray(m.wins)) m.wins = [];
+  if(!winner.hz) m.wins.push(winner.name);
+
+  /* 引いた人を外さない設定では、順番モードの位置を1つ進める */
+  if(!mRemoveDrawn && mMode === 'order'){
+    mCursor = (members.indexOf(m) + 1) % Math.max(1, members.length);
+  }
+  return m;
+}
+
+/* 抽選を始めてよいか。手動で未選択のまま回されるのを防ぐ */
+function canDraw(){
+  if(mMode === 'off' || !members.length) return true;
+  if(mMode === 'manual'){
+    if(!pickedMember()){
+      toast('先に「抽選者を選ぶ」から引く人を選んでください');
+      const s = $('#pickMember'); if(s){ s.focus(); }
+      return false;
+    }
+    return true;
+  }
+  if(!candidates().length){
+    toast('参加者が全員引き終わりました。参加者を追加するか、設定を変えてください');
+    return false;
+  }
+  return true;
+}
+
+function restText(){
+  const n = candidates().length;
+  if(!mRemoveDrawn) return `（参加者 ${members.length}名・何度でも当たります）`;
+  return n > 1 ? `（あと${n}名）` : (n === 1 ? '（最後の1名）' : '（全員が引き終わりました）');
+}
+
+function renderNextUp(){
+  const el = $('#nextUp'), oel = $('#nuOrder'), mel = $('#nuManual');
+  const rest = candidates();
+  oel.classList.remove('on'); mel.classList.remove('on');
+
+  if(mMode === 'order'){
+    const m = nextMember();
+    if(!m){ el.classList.remove('show'); return; }
+    oel.querySelector('.v').textContent = m.name;
+    oel.querySelector('.rest').textContent = restText();
+    oel.classList.add('on'); el.classList.add('show');
+    return;
+  }
+
+  if(mMode === 'manual'){
+    if(!rest.length){ el.classList.remove('show'); return; }
+    const sel = $('#pickMember');
+    if(pickedId != null && !rest.some(m => m.id === pickedId)) pickedId = null;
+    sel.innerHTML = '<option value="">— 引く人を選ぶ —</option>'
+      + rest.map(m => '<option value="' + m.id + '"' + (m.id===pickedId?' selected':'')
+          + '>' + esc(m.name) + (hasDrawn(m) ? '（' + m.tries + '回目）' : '') + '</option>').join('');
+    mel.querySelector('.rest').textContent = restText();
+    mel.classList.add('on'); el.classList.add('show');
+    return;
+  }
+
+  el.classList.remove('show');
+}
+
+/* その人の獲得状況の文言 */
+function winsText(m){
+  if(!hasDrawn(m)) return '';
+  const w = Array.isArray(m.wins) ? m.wins : [];
+  if(!w.length) return 'ざんねん';
+  return '🎁 ' + w.join('、');
+}
+
+function renderMembers(){
+  $('#mmOff').classList.toggle('on',    mMode === 'off');
+  $('#mmManual').classList.toggle('on', mMode === 'manual');
+  $('#mmOrder').classList.toggle('on',  mMode === 'order');
+  $('#mmAuto').classList.toggle('on',   mMode === 'auto');
+  $('#mRemoveDrawn').checked = mRemoveDrawn;
+  $('#removeHint').textContent = mRemoveDrawn
+    ? '一人一回です。引いた人は候補から消えます。'
+    : '引いた人も候補に残ります。同じ人が何度でも当たります。';
+
+  const nx = nextMember();
+  const showOrd = (mMode === 'order');
+  let ord = 0;
+  $('#mlist').innerHTML = members.length ? members.map((m,i)=>{
+    const drawn = hasDrawn(m);
+    const dim = mRemoveDrawn && drawn;          /* 外す設定のときだけ薄く見せる */
+    if(showOrd && (!mRemoveDrawn || !drawn)) ord++;
+    return `
+    <div class="mrow${dim?' done':''}${(nx&&nx.id===m.id)?' next':''}" data-mid="${m.id}">
+      <span class="mMove">
+        <button class="mup"   ${i===0?'disabled':''} aria-label="上へ">▲</button>
+        <button class="mdown" ${i===members.length-1?'disabled':''} aria-label="下へ">▼</button>
+      </span>
+      ${(showOrd && (!mRemoveDrawn || !drawn)) ? `<span class="ord">${ord}</span>` : ''}
+      ${(nx&&nx.id===m.id)?'<span class="tagNext">NEXT</span>':''}
+      <span class="mn">${esc(m.name)}${(!mRemoveDrawn && m.tries>1)?`<span class="tries">${m.tries}回</span>`:''}</span>
+      ${drawn ? `<span class="mp">${esc(winsText(m))}</span><button class="mback">戻す</button>` : ''}
+      <button class="mdel">削除</button>
+    </div>`;
+  }).join('')
+    : '<div style="opacity:.6;font-size:14px;text-align:center;padding:14px">まだ参加者がいません。上の欄から追加してください。</div>';
+  renderNextUp();
+}
+
+function renderResults(){
+  const won = results.filter(r=>!r.hz).length;
+  $('#rlist').innerHTML = results.length ? results.slice().reverse().map(r=>`
+    <div class="rrow${r.hz?' hz':''}">
+      <span class="rn">${r.n}</span>
+      <span class="rp">${r.hz ? 'ざんねん…' : esc(r.prize)}${r.sup?' ⚡':''}</span>
+      <span class="rw">${r.person? esc(r.person) : ''}</span>
+    </div>`).join('')
+    : '<div style="opacity:.6;font-size:14px;text-align:center;padding:14px">まだ抽選結果がありません。</div>';
+  $('#shotTitle').value = shotTitle;
+  $('#makeShot').disabled = won === 0;
+  $('#copyText').disabled = won === 0;
+}
+
+/* ---- 設定パネルのタブ ---- */
+const PANE_TITLE = { prize:'⚙️ 賞品の登録・管理', member:'👥 参加者の登録', result:'🏆 抽選結果' };
+function setPane(name){
+  document.querySelectorAll('#setTabs button').forEach(b=> b.classList.toggle('on', b.dataset.pane===name));
+  document.querySelectorAll('.setPane').forEach(p=> p.classList.toggle('on', p.id === 'pane-'+name));
+  $('#setTitle').textContent = PANE_TITLE[name] || PANE_TITLE.prize;
+  $('#prizeHint').style.display = name === 'prize' ? '' : 'none';
+  $('#resetAll').style.display  = name === 'prize' ? '' : 'none';
+  if(name === 'member') renderMembers();
+  if(name === 'result') renderResults();
+}
+$('#setTabs').addEventListener('click', e=>{
+  const b = e.target.closest('button[data-pane]'); if(!b) return;
+  setPane(b.dataset.pane);
+});
+
+/* ---- 参加者の追加・削除 ---- */
+function addMemberName(name){
+  name = String(name||'').trim().slice(0,20);
+  if(!name) return false;
+  if(members.length >= 200) return false;
+  members.push({ id: muid++, name, tries:0, wins:[] });
+  return true;
+}
+$('#addMember').addEventListener('click', ()=>{
+  if(!addMemberName($('#newMember').value)){ toast('参加者名を入力してください'); return; }
+  $('#newMember').value = '';
+  save(); renderMembers();
+});
+$('#newMember').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#addMember').click(); });
+
+$('#bulkAdd').addEventListener('click', ()=>{
+  const raw = $('#bulkMember').value;
+  const names = raw.split(/[\n,、,]+/).map(s=>s.trim()).filter(Boolean);
+  if(!names.length){ toast('貼り付ける名前がありません'); return; }
+  let n = 0;
+  for(const nm of names){ if(addMemberName(nm)) n++; }
+  $('#bulkMember').value = '';
+  save(); renderMembers();
+  toast(n ? `${n}名を追加しました` : '追加できませんでした（上限200名）');
+});
+
+$('#shuffleMembers').addEventListener('click', ()=>{
+  if(mRemoveDrawn){
+    /* 引いた人は上に固めたまま、未抽選の人だけを混ぜる */
+    members = members.filter(hasDrawn).concat(shuffle(notYet()));
+  }else{
+    members = shuffle(members);
+    mCursor = 0;
+  }
+  save(); renderMembers();
+  toast('順番をシャッフルしました');
+});
+
+$('#mlist').addEventListener('click', e=>{
+  const row = e.target.closest('.mrow'); if(!row) return;
+  const i = members.findIndex(x=>x.id == row.dataset.mid);
+  if(i < 0) return;
+  const m = members[i];
+  if(e.target.classList.contains('mdel')){
+    members.splice(i,1);
+    if(pickedId === m.id) pickedId = null;
+    save(); renderMembers(); return;
+  }
+  if(e.target.classList.contains('mback')){
+    m.tries = 0; m.wins = []; save(); renderMembers(); return;
+  }
+  /* 並べ替え。入れ替えた行が画面から消えないよう、位置を保ってから描き直す */
+  let j = -1;
+  if(e.target.classList.contains('mup')   && i > 0) j = i-1;
+  if(e.target.classList.contains('mdown') && i < members.length-1) j = i+1;
+  if(j >= 0){
+    const box = $('#mlist'), keep = box.scrollTop;
+    members[i] = members[j]; members[j] = m;
+    save(); renderMembers();
+    box.scrollTop = keep;
+  }
+});
+
+function setMMode(v){
+  mMode = v;
+  if(v !== 'manual') pickedId = null;
+  save(); renderMembers(); renderNextUp();
+}
+function needMembers(){
+  if(members.length) return true;
+  toast('先に参加者を追加してください');
+  return false;
+}
+$('#mmOff').addEventListener('click',    ()=> setMMode('off'));
+$('#mmManual').addEventListener('click', ()=>{ if(needMembers()) setMMode('manual'); });
+$('#mmOrder').addEventListener('click',  ()=>{ if(needMembers()) setMMode('order'); });
+$('#mmAuto').addEventListener('click',   ()=>{ if(needMembers()) setMMode('auto'); });
+
+$('#mRemoveDrawn').addEventListener('change', e=>{
+  mRemoveDrawn = e.target.checked;
+  mCursor = 0;
+  save(); renderMembers();
+});
+
+$('#pickMember').addEventListener('change', e=>{
+  const v = e.target.value;
+  pickedId = v === '' ? null : Number(v);
+  renderMembers();
+});
+
+$('#shotTitle').addEventListener('input', e=>{ shotTitle = e.target.value.slice(0,40); save(); });
+
+$('#clearResults').addEventListener('click', ()=>{
+  if(!results.length) return;
+  if(!confirm('抽選結果の記録を消します。よろしいですか？\n（賞品の当選状況と参加者は残ります）')) return;
+  results = []; save(); renderResults(); $('#shotWrap').classList.remove('show');
+  toast('結果を消しました');
+});
+
+/* ---- テキストでコピー ---- */
+$('#copyText').addEventListener('click', async ()=>{
+  const lines = [];
+  lines.push((shotTitle || '抽選結果') + '  ' + shotDate());
+  lines.push('');
+  results.filter(r=>!r.hz).forEach(r=>{
+    lines.push(r.person ? `${r.person}　→　${r.prize}` : r.prize);
+  });
+  const text = lines.join('\n');
+  try{
+    await navigator.clipboard.writeText(text);
+    toast('コピーしました');
+  }catch(e){
+    /* クリップボードが使えない環境では選択させる */
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('コピーしました'); }
+    catch(e2){ toast('コピーできませんでした'); }
+    document.body.removeChild(ta);
+  }
+});
+
+function shotDate(){
+  const d = new Date();
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
+/* ---- 結果画像の生成 ----
+   翌日そのまま社内チャットに貼られることを想定しているので、
+   縮小表示されても賞品名と当選者名が読めることを最優先に、白基調で組む。 */
+let shotBlob = null;
+function buildShot(){
+  const rows = results.filter(r=>!r.hz);
+  if(!rows.length) return null;
+
+  const S = 2;                               /* 解像度2倍で描いて縮小表示する */
+  const W = 1000;
+  const PAD = 56, HEAD = 168, ROW = 92, FOOT = 74;
+  const H = HEAD + ROW*rows.length + FOOT;
+
+  const cv = document.createElement('canvas');
+  cv.width = W*S; cv.height = H*S;
+  const g = cv.getContext('2d');
+  g.scale(S,S);
+  const FONT = '"Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",system-ui,sans-serif';
+
+  /* 背景 */
+  g.fillStyle = '#ffffff'; g.fillRect(0,0,W,H);
+
+  /* 上部の帯 */
+  const grd = g.createLinearGradient(0,0,W,HEAD-40);
+  grd.addColorStop(0,'#2b1a5e'); grd.addColorStop(1,'#4a2a8c');
+  g.fillStyle = grd; g.fillRect(0,0,W,HEAD-40);
+  g.fillStyle = '#ffd24a'; g.fillRect(0,HEAD-40,W,5);
+
+  g.textBaseline = 'middle';
+  g.fillStyle = '#ffffff';
+  g.font = `700 40px ${FONT}`;
+  const title = (shotTitle || '抽選結果').slice(0,26);
+  g.fillText(title, PAD, 60);
+
+  g.fillStyle = 'rgba(255,255,255,.72)';
+  g.font = `400 22px ${FONT}`;
+  g.fillText(`抽選結果　${shotDate()}　全${rows.length}件`, PAD, 104);
+  g.font = `400 19px ${FONT}`;
+  g.fillStyle = 'rgba(255,255,255,.5)';
+  g.textAlign = 'right';
+  g.fillText(rows.some(r=>r.person) ? '回数 ／ 名前 ／ 賞品' : '回数 ／ 賞品', W-PAD, 104);
+  g.textAlign = 'left';
+
+  /* 明細。左から 回数 → 名前 → 賞品 の順。行の上端を top、文字の中心を mid として揃える。
+     参加者モードを使っていない場合は名前が無いので、回数 → 賞品 の2列にする */
+  const anyPerson = rows.some(r => r.person);
+  rows.forEach((r,i)=>{
+    const top = HEAD + i*ROW, mid = top + ROW/2;
+    if(i % 2 === 0){ g.fillStyle = '#f7f6fb'; g.fillRect(0, top, W, ROW); }
+    g.fillStyle = '#e6e3ef'; g.fillRect(PAD, top+ROW-1, W-PAD*2, 1);
+
+    /* 回数 */
+    g.textAlign = 'left';
+    g.fillStyle = '#a9a2c4';
+    g.font = `700 22px ${FONT}`;
+    g.fillText(String(i+1).padStart(2,'0'), PAD, mid);
+
+    const leftX = PAD + 52, rightW = 330;
+
+    if(anyPerson){
+      /* 名前 */
+      g.fillStyle = '#1c1636';
+      g.font = `700 30px ${FONT}`;
+      g.fillText(clip(g, r.person || '—', W - PAD*2 - 52 - rightW - 24), leftX, mid);
+      /* 賞品 */
+      g.textAlign = 'right';
+      g.fillStyle = '#6b3fd4';
+      g.font = `700 30px ${FONT}`;
+      g.fillText(clip(g, r.prize, rightW), W-PAD, mid);
+    }else{
+      /* 名前が無いので賞品だけを左に置く */
+      g.fillStyle = '#1c1636';
+      g.font = `700 30px ${FONT}`;
+      g.fillText(clip(g, r.prize, W - PAD*2 - 52), leftX, mid);
+    }
+    g.textAlign = 'left';
+  });
+
+  /* フッター */
+  g.fillStyle = '#8d86a8';
+  g.font = `400 20px ${FONT}`;
+  g.textAlign = 'center';
+  g.fillText('抽選ゲーム　arcahortus.com', W/2, H - FOOT/2 - 10);
+  g.textAlign = 'left';
+
+  return cv;
+}
+
+/* 幅に収まらない文字列は末尾を省略する */
+function clip(g, text, maxW){
+  let s = String(text||'');
+  if(g.measureText(s).width <= maxW) return s;
+  while(s.length > 1 && g.measureText(s + '…').width > maxW) s = s.slice(0,-1);
+  return s + '…';
+}
+
+$('#makeShot').addEventListener('click', ()=>{
+  const cv = buildShot();
+  if(!cv){ toast('当選した賞品がまだありません'); return; }
+  $('#shotImg').src = cv.toDataURL('image/png');
+  $('#shotWrap').classList.add('show');
+  if(cv.toBlob) cv.toBlob(b=>{ shotBlob = b; }, 'image/png');
+  $('#shotWrap').scrollIntoView({ behavior:'smooth', block:'nearest' });
+});
+
+function shotFileName(){
+  return (shotTitle ? shotTitle.replace(/[\\/:*?"<>|]/g,'_') : '抽選結果') + '_' + shotDate() + '.png';
+}
+$('#saveShot').addEventListener('click', ()=>{
+  const src = $('#shotImg').src;
+  if(!src){ toast('先に画像を作ってください'); return; }
+  const a = document.createElement('a');
+  a.href = src; a.download = shotFileName();
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  toast('保存しました');
+});
+$('#shareShot').addEventListener('click', async ()=>{
+  if(!shotBlob){ toast('先に画像を作ってください'); return; }
+  const file = new File([shotBlob], shotFileName(), { type:'image/png' });
+  if(navigator.canShare && navigator.canShare({ files:[file] })){
+    try{ await navigator.share({ files:[file], title: shotTitle || '抽選結果' }); }
+    catch(e){ /* 利用者が閉じただけの場合があるので何も言わない */ }
+  }else{
+    toast('この端末では共有に対応していません。「画像を保存」をお使いください');
+  }
 });
 
 $('#sndBtn').addEventListener('click', ()=>{
@@ -1544,7 +2858,12 @@ function curveAt(cum, t){
   const i = Math.min(K-1, Math.floor(x)), f = x-i;
   return cum[i] + (cum[i+1]-cum[i])*f;
 }
-function sGallop(){ tone(90+Math.random()*30, .05, 'triangle', .05); }
+/* 蹄の音。低いノイズの thud に胴を重ねる */
+function sGallop(){
+  const p = (Math.random()*2-1)*.5;
+  _nz({ dur:.045, type:'lowpass', cut:900, cutTo:260, q:1.6, vol:.09, atk:.001, pan:p, verb:.12 });
+  _hit({ f0:95+Math.random()*25, f1:55, dur:.07, vol:.1, atk:.0015, pan:p, type:'triangle' });
+}
 const GAYA_TEXTS = ['差せー!!','行けー!!','そのままー!!','まくれー!!','粘れー!!','うおおおお!!','頑張れー!!','来い来い来い!!','いいぞー!!','抜けー!!'];
 function gaya(text){
   const wrap = $('#raceWrap');
@@ -1609,10 +2928,10 @@ async function runRace(winner, act){
   if(photo) pick(runners.filter(r=>r!==w)).final = 0.985;
 
   /* カウントダウン */
-  for(const c of ['3','2','1']){ com.textContent = '🕐 '+c; shout(c, 550); tone(440,.15,'square',.12); await wait(620); }
+  for(const [i,c] of ['3','2','1'].entries()){ com.textContent = '🕐 '+c; shout(c, 550); sCount(i); await wait(620); }
   com.textContent = '🏁 スタートしました!!';
   shout('スタート!!');
-  tone(880,.4,'square',.12); vibrate(80);
+  sGo(); vibrate(80);
   runners.forEach(r=>r.el.classList.add('dash'));
   $('#speedlines').classList.add('show');
 
@@ -1632,7 +2951,7 @@ async function runRace(winner, act){
       runners.forEach(rr=>{ rr.el.style.transform=`translate3d(${(t*0.1*usable).toFixed(1)}px,-50%,0)`; });
       if(t<1)requestAnimationFrame(f); else res();
     })(t0); });
-    tone(1400,.35,'square',.14); tone(1400,.35,'square',.14,.42);
+    sFalseStart();
     shout('フライング!!', 1300);
     runners.forEach(rr=>rr.el.classList.remove('dash'));
     com.textContent = '🎤 フライング!! 仕切り直しです!';
@@ -1644,10 +2963,10 @@ async function runRace(winner, act){
       if(t<1)requestAnimationFrame(f); else res();
     })(t0); });
     await wait(450);
-    for(const c of ['3','2','1']){ com.textContent = '🕐 '+c; shout(c, 450); tone(440,.15,'square',.12); await wait(520); }
+    for(const [i,c] of ['3','2','1'].entries()){ com.textContent = '🕐 '+c; shout(c, 450); sCount(i); await wait(520); }
     com.textContent = '🏁 今度こそスタート!!';
     shout('スタート!!');
-    tone(880,.4,'square',.12);
+    sGo();
     runners.forEach(rr=>rr.el.classList.add('dash'));
   }
 
@@ -2017,8 +3336,23 @@ async function runIllumi(winner, act){
 }
 
 /* ================= ロケット発射抽選 ================= */
-function sRoar(){ sCrash(); tone(55, 1.6, 'sawtooth', .2, 0, 38); tone(110, 1.2, 'sawtooth', .1, 0, 60); }
-function sAlarm(){ for(let i=0;i<6;i++) tone(i%2?988:659, .11, 'square', .1, i*.13); }
+/* 推進音。低く絞ったノイズと沈むサブで質量を出す */
+function sRoar(){
+  _nz({ dur:2.2, type:'lowpass',  cut:2600, cutTo:280, q:1.1, vol:.28, atk:.06, verb:.35 });
+  _nz({ dur:2.0, type:'bandpass', cut:130, q:2.2, vol:.22, atk:.05 });
+  _hit({ f0:150, f1:34, dur:1.8, bend:.7, vol:.34, atk:.02, type:'sine' });
+  tone(58,  1.6, 'sawtooth', .16, 0,   36);
+  tone(112, 1.2, 'sawtooth', .08, .02, 58);
+}
+/* 警報。2基をわずかにずらしてうなりを出す */
+function sAlarm(){
+  for(let i=0;i<6;i++){
+    const f = i%2 ? 988 : 659, d = i*.13;
+    tone(f, .12, 'square', .075, d);
+    tone(f*1.003, .12, 'sawtooth', .04, d+.002);
+    _nz({ dur:.12, type:'bandpass', cut:f*2, q:9, vol:.02, atk:.003, delay:d, verb:.3 });
+  }
+}
 function buildSpace(act){
   $('#planets').innerHTML = act.map(p=>{
     const hue = (p.id*67)%360;
@@ -2179,7 +3513,7 @@ async function runRocket(winner, act){
     return 'warpNenryo';
   })();
 
-  for(const c of ['3','2','1']){ shout(c, 550, 'rocketShout'); tone(440,.15,'square',.12); await wait(680); }
+  for(const [i,c] of ['3','2','1'].entries()){ shout(c, 550, 'rocketShout'); sCount(i, 'rocket'); await wait(680); }
   shout('発射!!', 1000, 'rocketShout');
   sRoar(); vibrate([120,60,200]);
   box.classList.remove('shakeHard'); void box.offsetWidth; box.classList.add('shakeHard');
@@ -2318,16 +3652,26 @@ async function runRocket(winner, act){
 }
 
 /* ================= カジノルーレット ================= */
+/* 玉の転がり。極短のクリックだけで質感を作る */
 function sRoll(){
-  tone(950+Math.random()*450, .022, 'sine', .05);
-  tone(260+Math.random()*90, .045, 'triangle', .07, .003);
+  const p = (Math.random()*2-1)*.6;
+  _nz({ dur:.016, type:'highpass', cut:4600+Math.random()*1800, q:.8, vol:.045, atk:.0004, pan:p });
+  _hit({ f0:250+Math.random()*80, f1:190, dur:.03, vol:.05, atk:.0008, pan:p, type:'triangle' });
 }
+/* 仕切りに当たるカコンッ */
 function sKnock(){
-  tone(1900, .025, 'square', .12);
-  tone(330, .07, 'triangle', .22, .004);
-  tone(130, .1, 'sine', .18, .01);
+  const p = (Math.random()*2-1)*.35;
+  _nz({ dur:.004, type:'highpass', cut:6500, q:.6, vol:.16, atk:.0003, pan:p });
+  _nz({ dur:.045, type:'bandpass', cut:1800, cutTo:820, q:5.5, vol:.11, atk:.0008, pan:p, verb:.12 });
+  _hit({ f0:340, f1:190, dur:.07, vol:.2,  atk:.001, pan:p, type:'triangle' });
+  _hit({ f0:132, f1:96,  dur:.11, vol:.16, atk:.004, delay:.006, pan:p });
 }
-function sKnockOne(){ tone(340+Math.random()*60, .06, 'triangle', .22); }
+function sKnockOne(){
+  const p = (Math.random()*2-1)*.3;
+  _nz({ dur:.005, type:'highpass', cut:5200, vol:.13, atk:.0003, pan:p });
+  _hit({ f0:350+Math.random()*50, f1:200, dur:.09, vol:.22, atk:.001, pan:p, type:'triangle', verb:.1 });
+  _hit({ f0:140, f1:100, dur:.13, vol:.13, atk:.005, delay:.006, pan:p });
+}
 function buildWheel(act){
   const svg = $('#wheelSVG');
   if(!act.length){ svg.innerHTML=''; return; }
@@ -2491,7 +3835,10 @@ async function runCasino(winner, act){
   return finish(winner, long && !winner.hz && Math.random()<0.3);
 }
 
-$('#spinBtn').addEventListener('click', ()=>{ gameView==='slot' ? spin() : gameView==='race' ? race() : gameView==='illumi' ? illumi() : gameView==='rocket' ? rocket() : casino(); });
+$('#spinBtn').addEventListener('click', ()=>{
+  if(!canDraw()) return;
+  gameView==='slot' ? spin() : gameView==='race' ? race() : gameView==='illumi' ? illumi() : gameView==='rocket' ? rocket() : casino();
+});
 addEventListener('resize', ()=>{ if(!spinning) reels.forEach(r=>{ if(r.seq.length) buildStrip(r); }); });
 
 /* ================= init ================= */
@@ -2504,6 +3851,8 @@ if(prizes.length===0){
   ];
 }
 renderChips();
+renderMembers();
+renderResults();
 reels.forEach(r=>{ if(active().length) buildStrip(r); });
 let savedView = 'slot';
 try{ const sv = localStorage.getItem('enkaiView'); if(sv==='race'||sv==='illumi'||sv==='rocket'||sv==='casino') savedView = sv; }catch(e){}
