@@ -21,6 +21,8 @@ hunting-exam/
 │   ├── data.js         【データ本体】鳥獣リスト・問題・銃各部名称
 │   ├── common.js       共通ユーティリティ（localStorage・シャッフル等）
 │   ├── flashcard.js / exam.js / mockexam.js / gunparts.js
+├── docs/               データ仕様・論点マスタ
+│   └── build/          data.js の生成環境（node build.js。手順は docs/build/BUILD.md）
 └── images/             鳥獣のイラスト + 猟銃写真（gun1.png〜gun4.png、後述）を入れるフォルダ
 ```
 
@@ -182,6 +184,8 @@ images/nihonzaru.jpg        ニホンザル
 ### 2-2. 知識試験の問題を追加する
 
 `QUESTIONS` 配列に以下の形式でオブジェクトを追加してください。
+なお `js/data.js` は `docs/build/` から生成しています。問題をまとめて追加する場合は
+`docs/build/BUILD.md` の手順で再生成するほうが、検証が自動で走るぶん安全です。
 
 ```js
 {
@@ -210,7 +214,7 @@ images/nihonzaru.jpg        ニホンザル
   下回ると30問に満たない模擬試験が生成されます。
 - `point` は演習ページの「論点」絞り込みと、論点別正答率の集計キーになります。
   既存の問題と同じ文字列を使ってください（表記が1文字でも違うと別の論点として扱われます）。
-  論点の一覧は `論点マスタ.md` を参照してください。
+  論点の一覧は `docs/論点マスタ.md` を参照してください。
 - 間違えた問題は `exam.html`（通常の演習ページ）で自動的に「間違えた問題のみ復習」の対象になります。
 
 ### 2-3. 猟銃の各部名称を追加・修正する
