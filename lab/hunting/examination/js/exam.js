@@ -32,7 +32,7 @@
     const license = licenseSelect.value;
     const cat = catSelect.value;
     const scoped = QUESTIONS.filter(
-      (q) => q.license.includes(license) && (cat === "all" || q.category === cat)
+      (q) => HuntingApp.matchesLicense(q, license) && (cat === "all" || q.category === cat)
     );
 
     // 分野ごとにまとめ、各論点の問題数を添えて表示する。
@@ -93,7 +93,7 @@
     // 誤答リストは免許をまたいで共通なので、今の免許で出題されうる分だけ数える。
     const wrongIds = getWrongSet();
     const license = licenseSelect.value;
-    const n = QUESTIONS.filter((q) => wrongIds.includes(q.id) && q.license.includes(license)).length;
+    const n = QUESTIONS.filter((q) => wrongIds.includes(q.id) && HuntingApp.matchesLicense(q, license)).length;
     wrongCountInfo.textContent =
       n > 0
         ? `現在、間違えたまま未復習の問題が ${n} 問あります。`
@@ -119,7 +119,7 @@
     const cat = catSelect.value;
     const point = pointSelect.value;
 
-    let pool = QUESTIONS.filter((q) => q.license.includes(license));
+    let pool = QUESTIONS.filter((q) => HuntingApp.matchesLicense(q, license));
     if (mode === "wrong") {
       const wrongIds = getWrongSet();
       pool = pool.filter((q) => wrongIds.includes(q.id));
@@ -150,13 +150,29 @@
     renderQuestion();
   }
 
+  // 全問モードでは免許をまたいで出題するため、どの免許の問題かを添える。
+  // 同じ問題文で免許ごとに正解が異なる問題（law085/law086 など）があり、
+  // これが無いと矛盾した内容が続けて出たように見えてしまう。
+  function licenseChip(q) {
+    if (licenseSelect.value !== HuntingApp.ANY_LICENSE) return "";
+    // 大半の法令・鳥獣・保護管理は4免許共通なので、列挙せず一言でまとめる。
+    // データ側の license 配列は順序が揃っていないため、表示順は常に
+    // LICENSE_LABEL の並び（網→わな→第一種→第二種）に固定する。
+    const order = Object.keys(HuntingApp.LICENSE_LABEL);
+    const names =
+      q.license.length === order.length
+        ? "全免許共通"
+        : order.filter((l) => q.license.includes(l)).map((l) => HuntingApp.LICENSE_LABEL[l]).join("・");
+    return `<span class="category-chip license-chip">${names}</span>`;
+  }
+
   function renderQuestion() {
     const q = quiz.list[quiz.idx];
     quizArea.innerHTML = `
       <div class="progress-bar"><div style="width:${Math.round((quiz.idx / quiz.list.length) * 100)}%"></div></div>
       <div class="q-index">問題 ${quiz.idx + 1} / ${quiz.list.length}</div>
       <div class="card">
-        <span class="category-chip">${CATEGORY_LABEL[q.category]}</span>
+        <span class="category-chip">${CATEGORY_LABEL[q.category]}</span>${licenseChip(q)}
         <h3>${q.question}</h3>
         <div class="choice-list" id="choiceList">
           ${q.choices.map((c, i) => `<button class="choice-btn" data-idx="${i}"><span class="num">${i + 1}</span><span>${c}</span></button>`).join("")}
@@ -229,7 +245,7 @@
 
     const wrongHtml = quiz.wrong.length
       ? `<h3>間違えた問題</h3><div class="parts-list">${quiz.wrong
-          .map((q) => `<div class="part-item"><b>[${CATEGORY_LABEL[q.category]}]</b> ${q.question}<br><span style="color:var(--color-correct)">正解: ${q.choices[q.answer]}</span></div>`)
+          .map((q) => `<div class="part-item"><b>[${CATEGORY_LABEL[q.category]}]</b>${licenseChip(q)} ${q.question}<br><span style="color:var(--color-correct)">正解: ${q.choices[q.answer]}</span></div>`)
           .join("")}</div>`
       : `<p>全問正解です！</p>`;
 
@@ -272,7 +288,7 @@
           ${history
             .map((h) => {
               // 旧レコードには license が無い。当時の既定値は第一種銃猟。
-              const lic = HuntingApp.LICENSE_LABEL[HuntingApp.normalizeLicense(h.license)];
+              const lic = HuntingApp.licenseLabel(HuntingApp.normalizeLicense(h.license));
               return `<tr><td>${h.date}</td><td>${lic}</td><td>${h.type}</td><td>${h.category}</td><td>${h.correct}/${h.total}</td><td>${h.rate}%</td></tr>`;
             })
             .join("")}

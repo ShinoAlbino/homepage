@@ -9,6 +9,20 @@ const HuntingApp = (function () {
   // 免許種別。data.js の QUESTIONS[].license に入る値と対応する。
   const LICENSE_LABEL = { net: "網猟", trap: "わな猟", gun1: "第一種銃猟", gun2: "第二種銃猟" };
 
+  // 演習ページだけが使う擬似的な免許種別。免許で絞らず全問を対象にする。
+  // 本試験は免許ごとに実施されるため、模擬試験ではこの値を使わない。
+  const ANY_LICENSE = "any";
+  const ANY_LICENSE_LABEL = "すべて（免許を問わず）";
+
+  function licenseLabel(v) {
+    return v === ANY_LICENSE ? ANY_LICENSE_LABEL : LICENSE_LABEL[v];
+  }
+
+  // 問題 q が免許 license の出題対象かどうか。
+  function matchesLicense(q, license) {
+    return license === ANY_LICENSE || q.license.includes(license);
+  }
+
   // 本試験の出題4分野。data.js の QUESTIONS[].category と対応する。
   const CATEGORY_LABEL = {
     law: "鳥獣法令",
@@ -32,12 +46,18 @@ const HuntingApp = (function () {
   // 保存済みの設定・履歴を読むときに新しい4値へ寄せる。
   function normalizeLicense(v) {
     if (v === "gun") return "gun1";
+    if (v === ANY_LICENSE) return ANY_LICENSE;
     return LICENSE_LABEL[v] ? v : "gun1";
   }
 
   // 免許種別 L の模擬試験を組む。分野ごとに固定数を抽出するため、
   // 単純ランダムのときのように保護管理が過剰に出ることがない。
+  // 本試験は免許ごとに実施されるので ANY_LICENSE は受け付けない
+  // （猟具の問題が免許をまたいで混ざり、本試験の再現にならないため）。
   function makeMockExam(license) {
+    if (!LICENSE_LABEL[license]) {
+      throw new Error("makeMockExam: 免許種別が不正です: " + license);
+    }
     const list = [];
     MOCK_DISTRIBUTION.forEach(function (d) {
       const pool = QUESTIONS.filter(function (q) {
@@ -147,6 +167,9 @@ const HuntingApp = (function () {
 
   return {
     LICENSE_LABEL,
+    ANY_LICENSE,
+    licenseLabel,
+    matchesLicense,
     CATEGORY_LABEL,
     MOCK_DISTRIBUTION,
     MOCK_TOTAL,

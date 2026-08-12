@@ -6,7 +6,7 @@
   const LICENSE_KEY = "mockexam.license";
   const DURATION_SEC = 90 * 60;
   const CATEGORY_LABEL = HuntingApp.CATEGORY_LABEL;
-  const LICENSE_LABEL = HuntingApp.LICENSE_LABEL;
+  const licenseLabel = HuntingApp.licenseLabel;
 
   const introPanel = document.getElementById("introPanel");
   const examArea = document.getElementById("examArea");
@@ -147,7 +147,7 @@
     resultArea.innerHTML = `
       <div class="card">
         <h2 class="${pass ? "badge-pass" : "badge-fail"}">${pass ? "🎉 合格" : "不合格"}</h2>
-        <p class="category-chip">${LICENSE_LABEL[currentLicense]}</p>
+        <p class="category-chip">${licenseLabel(currentLicense)}</p>
         <p style="font-size:0.9rem;">合格ラインは ${total}問中 ${passMark}問（${HuntingApp.PASS_RATE}%）。今回は <b>${correct}問</b> 正解${pass ? "で、合格ラインに達しています。" : "で、あと " + (passMark - correct) + "問 足りません。"}</p>
         ${timeUp ? '<p style="color:var(--color-wrong);">制限時間になったため自動的に採点されました。</p>' : ""}
         <div class="stat-grid">
@@ -195,7 +195,7 @@
           ${history
             .map(
               // 旧レコードは license が "gun"（第一種銃猟）で保存されている。
-              (h) => `<tr><td>${h.date}</td><td>${LICENSE_LABEL[HuntingApp.normalizeLicense(h.license)]}</td><td>${h.correct}/${h.total}</td><td>${h.rate}%</td><td class="${h.pass ? "badge-pass" : "badge-fail"}">${h.pass ? "合格" : "不合格"}</td></tr>`
+              (h) => `<tr><td>${h.date}</td><td>${licenseLabel(HuntingApp.normalizeLicense(h.license))}</td><td>${h.correct}/${h.total}</td><td>${h.rate}%</td><td class="${h.pass ? "badge-pass" : "badge-fail"}">${h.pass ? "合格" : "不合格"}</td></tr>`
             )
             .join("")}
         </tbody>

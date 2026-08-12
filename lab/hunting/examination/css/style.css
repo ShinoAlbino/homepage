@@ -460,6 +460,12 @@ table.history-table th, table.history-table td {
   margin-bottom: 8px;
 }
 
+/* 全問モードで、その問題がどの免許のものかを示すチップ。
+   分野チップと並べるので、隣接したときだけ間隔を空ける。 */
+.category-chip + .license-chip {
+  margin-left: 6px;
+}
+
 .q-index {
   font-size: 0.85rem;
   color: var(--color-text-muted);
