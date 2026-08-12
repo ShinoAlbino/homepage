@@ -6,6 +6,48 @@
 const HuntingApp = (function () {
   const NS = "huntingExam.";
 
+  // 免許種別。data.js の QUESTIONS[].license に入る値と対応する。
+  const LICENSE_LABEL = { net: "網猟", trap: "わな猟", gun1: "第一種銃猟", gun2: "第二種銃猟" };
+
+  // 本試験の出題4分野。data.js の QUESTIONS[].category と対応する。
+  const CATEGORY_LABEL = {
+    law: "鳥獣法令",
+    gear: "猟具の知識",
+    knowledge: "鳥獣の知識",
+    management: "鳥獣の保護管理",
+  };
+
+  // 例題集 p.23 に明記された本試験1回（30問）の分野別配分。
+  const MOCK_DISTRIBUTION = [
+    ["law", 13],
+    ["gear", 6],
+    ["knowledge", 9],
+    ["management", 2],
+  ];
+
+  const MOCK_TOTAL = MOCK_DISTRIBUTION.reduce((n, d) => n + d[1], 0);
+  const PASS_RATE = 70;
+
+  // 旧データでは免許を "gun"（第一種銃猟）/"trap" の2値で保存していた。
+  // 保存済みの設定・履歴を読むときに新しい4値へ寄せる。
+  function normalizeLicense(v) {
+    if (v === "gun") return "gun1";
+    return LICENSE_LABEL[v] ? v : "gun1";
+  }
+
+  // 免許種別 L の模擬試験を組む。分野ごとに固定数を抽出するため、
+  // 単純ランダムのときのように保護管理が過剰に出ることがない。
+  function makeMockExam(license) {
+    const list = [];
+    MOCK_DISTRIBUTION.forEach(function (d) {
+      const pool = QUESTIONS.filter(function (q) {
+        return q.license.includes(license) && q.category === d[0];
+      });
+      list.push.apply(list, pickRandom(pool, d[1]));
+    });
+    return shuffle(list);
+  }
+
   function lsGet(key, fallback) {
     try {
       const raw = localStorage.getItem(NS + key);
@@ -104,6 +146,13 @@ const HuntingApp = (function () {
   }
 
   return {
+    LICENSE_LABEL,
+    CATEGORY_LABEL,
+    MOCK_DISTRIBUTION,
+    MOCK_TOTAL,
+    PASS_RATE,
+    normalizeLicense,
+    makeMockExam,
     lsGet,
     lsSet,
     shuffle,

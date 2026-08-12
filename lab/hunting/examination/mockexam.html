@@ -34,11 +34,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="settings-row" style="margin-bottom:12px;">
       <label for="licenseSelect">免許種別</label>
       <select id="licenseSelect">
-        <option value="gun">第一種銃猟</option>
+        <option value="net">網猟</option>
         <option value="trap">わな猟</option>
+        <option value="gun1">第一種銃猟</option>
+        <option value="gun2">第二種銃猟</option>
       </select>
     </div>
-    <p>三肢択一 全30問（法令13問・猟具6問・鳥獣9問・保護管理2問の比率で出題）、制限時間90分。</p>
+    <p>三肢択一 全30問（法令13問・猟具6問・鳥獣9問・保護管理2問の固定配分で出題）、制限時間90分。猟具は選択した免許の問題だけが出ます。</p>
     <p>正答率<b>70%（21問）以上</b>で合格判定となります。開始すると全問が1ページに表示されるので、最後まで解答してから「採点する」を押してください。</p>
     <button class="btn block" id="startBtn">模擬試験を開始する</button>
   </div>
@@ -51,7 +53,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div id="historyTableWrap"></div>
   </div>
 </main>
-<footer class="app-footer">狩猟免許（第一種銃猟／わな猟）学習サイト</footer>
+<footer class="app-footer">狩猟免許（網猟／わな猟／第一種銃猟／第二種銃猟）学習サイト</footer>
 <script src="js/data.js"></script>
 <script src="js/common.js"></script>
 <script src="js/mockexam.js"></script>

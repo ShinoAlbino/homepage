@@ -5,10 +5,8 @@
   const HISTORY_KEY = "mockexam.history";
   const LICENSE_KEY = "mockexam.license";
   const DURATION_SEC = 90 * 60;
-  const CATEGORY_LABEL = { law: "鳥獣法令", gun: "猟具（銃器）", trap: "猟具（わな）", knowledge: "鳥獣の知識", management: "鳥獣の保護管理" };
-  const LICENSE_LABEL = { gun: "第一種銃猟", trap: "わな猟" };
-  const FIXED_COUNTS = { law: 13, knowledge: 9, management: 2 };
-  const TOOL_COUNT = 6;
+  const CATEGORY_LABEL = HuntingApp.CATEGORY_LABEL;
+  const LICENSE_LABEL = HuntingApp.LICENSE_LABEL;
 
   const introPanel = document.getElementById("introPanel");
   const examArea = document.getElementById("examArea");
@@ -18,31 +16,21 @@
   const startBtn = document.getElementById("startBtn");
   const licenseSelect = document.getElementById("licenseSelect");
 
-  licenseSelect.value = HuntingApp.lsGet(LICENSE_KEY, "gun");
+  // 旧版は "gun"/"trap" の2値で保存していたので、読み込み時に4値へ寄せる。
+  licenseSelect.value = HuntingApp.normalizeLicense(HuntingApp.lsGet(LICENSE_KEY, "gun1"));
   licenseSelect.addEventListener("change", () => {
     HuntingApp.lsSet(LICENSE_KEY, licenseSelect.value);
   });
-
-  function toolCategoryFor(license) {
-    return license === "trap" ? "trap" : "gun";
-  }
 
   let questions = [];
   let answers = {};
   let remainingSec = DURATION_SEC;
   let timerHandle = null;
   let finished = false;
-  let currentLicense = "gun";
+  let currentLicense = "gun1";
 
   function buildQuestionSet(license) {
-    const toolCat = toolCategoryFor(license);
-    const distribution = Object.assign({}, FIXED_COUNTS, { [toolCat]: TOOL_COUNT });
-    let list = [];
-    Object.keys(distribution).forEach((cat) => {
-      const pool = QUESTIONS.filter((q) => q.category === cat);
-      list = list.concat(HuntingApp.pickRandom(pool, distribution[cat]));
-    });
-    return HuntingApp.shuffle(list).map(HuntingApp.shuffleChoices);
+    return HuntingApp.makeMockExam(license).map(HuntingApp.shuffleChoices);
   }
 
   function startExam() {
@@ -147,7 +135,10 @@
     });
     const total = questions.length;
     const rate = Math.round((correct / total) * 100);
-    const pass = rate >= 70;
+    // 合否は問題数で判定する（30問中21問＝70%）。四捨五入した正答率で判定すると
+    // 20問正解（66.67%→67%）などが境界でぶれるため。
+    const passMark = Math.ceil((total * HuntingApp.PASS_RATE) / 100);
+    const pass = correct >= passMark;
 
     const history = HuntingApp.lsGet(HISTORY_KEY, []);
     history.unshift({ date: HuntingApp.todayStr(), license: currentLicense, correct, total, rate, pass, timeUp });
@@ -155,11 +146,12 @@
 
     resultArea.innerHTML = `
       <div class="card">
-        <h2>${pass ? "🎉 合格ライン到達" : "不合格ライン"}</h2>
+        <h2 class="${pass ? "badge-pass" : "badge-fail"}">${pass ? "🎉 合格" : "不合格"}</h2>
         <p class="category-chip">${LICENSE_LABEL[currentLicense]}</p>
+        <p style="font-size:0.9rem;">合格ラインは ${total}問中 ${passMark}問（${HuntingApp.PASS_RATE}%）。今回は <b>${correct}問</b> 正解${pass ? "で、合格ラインに達しています。" : "で、あと " + (passMark - correct) + "問 足りません。"}</p>
         ${timeUp ? '<p style="color:var(--color-wrong);">制限時間になったため自動的に採点されました。</p>' : ""}
         <div class="stat-grid">
-          <div class="stat-box"><div class="num ${pass ? "badge-pass" : "badge-fail"}">${rate}%</div><div class="lbl">正答率（合格ライン70%）</div></div>
+          <div class="stat-box"><div class="num ${pass ? "badge-pass" : "badge-fail"}">${rate}%</div><div class="lbl">正答率（合格ライン${HuntingApp.PASS_RATE}%）</div></div>
           <div class="stat-box"><div class="num">${correct}/${total}</div><div class="lbl">正解数</div></div>
         </div>
         <h3>分野別正答数</h3>
@@ -202,7 +194,8 @@
         <tbody>
           ${history
             .map(
-              (h) => `<tr><td>${h.date}</td><td>${LICENSE_LABEL[h.license] || "第一種銃猟"}</td><td>${h.correct}/${h.total}</td><td>${h.rate}%</td><td class="${h.pass ? "badge-pass" : "badge-fail"}">${h.pass ? "合格" : "不合格"}</td></tr>`
+              // 旧レコードは license が "gun"（第一種銃猟）で保存されている。
+              (h) => `<tr><td>${h.date}</td><td>${LICENSE_LABEL[HuntingApp.normalizeLicense(h.license)]}</td><td>${h.correct}/${h.total}</td><td>${h.rate}%</td><td class="${h.pass ? "badge-pass" : "badge-fail"}">${h.pass ? "合格" : "不合格"}</td></tr>`
             )
             .join("")}
         </tbody>

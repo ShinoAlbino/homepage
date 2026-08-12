@@ -34,8 +34,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="settings-row">
         <label for="licenseSelect">免許種別</label>
         <select id="licenseSelect">
-          <option value="gun">第一種銃猟</option>
+          <option value="net">網猟</option>
           <option value="trap">わな猟</option>
+          <option value="gun1">第一種銃猟</option>
+          <option value="gun2">第二種銃猟</option>
         </select>
       </div>
       <div class="settings-row">
@@ -47,7 +49,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="settings-row">
         <label for="catSelect">出題分野</label>
-        <select id="catSelect"></select>
+        <select id="catSelect">
+          <option value="all">すべて</option>
+          <option value="law">鳥獣法令</option>
+          <option value="gear">猟具の知識</option>
+          <option value="knowledge">鳥獣の知識</option>
+          <option value="management">鳥獣の保護管理</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <label for="pointSelect">論点</label>
+        <select id="pointSelect"></select>
       </div>
       <div class="settings-row">
         <label for="numSelect">出題数</label>
@@ -69,8 +81,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h3>成績履歴（直近20件）</h3>
     <div id="historyTableWrap"></div>
   </div>
+
+  <div class="card">
+    <h3>論点別の正答率</h3>
+    <p style="font-size:0.85rem;color:var(--color-text-muted);margin-top:0;">正答率の低い論点から表示します。弱点の把握に使ってください。</p>
+    <div id="pointStatsWrap"></div>
+  </div>
 </main>
-<footer class="app-footer">狩猟免許（第一種銃猟／わな猟）学習サイト</footer>
+<footer class="app-footer">狩猟免許（網猟／わな猟／第一種銃猟／第二種銃猟）学習サイト</footer>
 <script src="js/data.js"></script>
 <script src="js/common.js"></script>
 <script src="js/exam.js"></script>
