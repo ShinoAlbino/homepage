@@ -4,67 +4,101 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:; connect-src 'none'; img-src 'self' data: blob:; form-action 'none'; base-uri 'none';">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>狩猟記録帳 Venatio — わな見回り・実包管理帳簿</title>
+<title>狩猟記録 Venatio — わな見回り・実包管理帳簿</title>
 <meta name="description" content="わなの見回り記録と実包管理帳簿を、スマホひとつで記録・印刷できる無料ツール。令和7年3月改正（散弾・単弾の別）に対応。データは端末内にのみ保存され外部へ一切送信されません。オフライン動作。">
 <meta name="keywords" content="実包管理帳簿,わな,見回り,記録,狩猟,無料,テンプレート,散弾,単弾,有害鳥獣,捕獲記録,オフライン">
 <link rel="canonical" href="https://arcahortus.com/lab/hunting/Venatio.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="狩猟記録帳 Venatio — わな見回り・実包管理帳簿">
+<meta property="og:title" content="狩猟記録 Venatio — わな見回り・実包管理帳簿">
 <meta property="og:description" content="わなの見回り記録と実包管理帳簿を、スマホひとつで記録・印刷できる無料ツール。データは端末内にのみ保存され、外部へ一切送信されません。オフライン動作。">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:image" content="https://arcahortus.com/images/ogp-venatio.png">
 <meta property="og:url" content="https://arcahortus.com/lab/hunting/Venatio.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://arcahortus.com/images/ogp-venatio.png">
-<meta name="theme-color" content="#1e5b3f">
+<meta name="theme-color" content="#0C0E0D">
 <meta name="robots" content="index, follow">
 <style>
+/* 夜墨・金泥（仕様§8 案B）。電波の届かない山中で使う道具なので夜を既定にする。
+   明るい屋外用にヘッダー右端で昼へ切り替えられる（localStorageは使わない）。 */
 :root{
-  --green:#1e5b3f;
-  --green-d:#14402c;
-  --green-l:#2f7a56;
-  --leaf:#4a9d72;
-  --bg:#f4f6f3;
-  --card:#ffffff;
-  --ink:#1c2620;
-  --ink-2:#5a6b62;
-  --line:#d7dfd9;
-  --warn:#b7791f;
-  --warn-bg:#fdf6e7;
-  --danger:#b3261e;
-  --danger-bg:#fdecea;
-  --ok:#2f7a56;
-  --radius:10px;
-  --shadow:0 1px 2px rgba(20,40,30,.06), 0 4px 14px rgba(20,40,30,.06);
+  --green:#C2A05A;        /* 金泥（見出し・アクセント。#0C0E0D 上で 8.3:1） */
+  --green-d:#9C7C3A;
+  --green-l:#D8BB79;
+  --leaf:#C2A05A;
+  --bg:#0C0E0D;
+  --card:#111413;
+  --ink:#E8E4DA;
+  --ink-2:#A9B0AB;
+  --line:rgba(232,228,218,.18);
+  --warn:#C2A05A;
+  --warn-bg:rgba(194,160,90,.12);
+  --danger:#DDA08F;
+  --danger-bg:rgba(221,160,143,.12);
+  --ok:#7FB5A6;
+  --row-alt:rgba(232,228,218,.05);   /* 表の偶数行。地に薄く重ねるだけにする */
+  /* このページは外部通信を禁止しているのでWebフォントを読まない。
+     書体三層は端末に入っているものだけで組む（和文明朝はほぼ全環境にある）。 */
+  --mincho:'Hiragino Mincho ProN','Yu Mincho','YuMincho','MS PMincho',serif;
+  --gothic:system-ui,-apple-system,'Hiragino Kaku Gothic ProN','Noto Sans JP','Yu Gothic',sans-serif;
+  --mono:ui-monospace,SFMono-Regular,'SF Mono',Consolas,'Courier New',monospace;
+  --radius:0px;
+  --shadow:none;
+}
+/* 昼（紙と墨）。紙の地では金泥がAAに届かないので藍を使う */
+:root[data-theme="light"]{
+  --green:#1F3A4D;
+  --green-d:#142733;
+  --green-l:#2B5570;
+  --leaf:#1F3A4D;
+  --bg:#F2EFE8;
+  --card:#F2EFE8;
+  --ink:#14171A;
+  --ink-2:#3A403F;
+  --line:rgba(20,23,26,.16);
+  --row-alt:rgba(20,23,26,.045);
+  --warn:#1F3A4D;
+  --warn-bg:rgba(31,58,77,.08);
+  --danger:#B7382C;
+  --danger-bg:rgba(183,56,44,.08);
+  --ok:#2F5D45;
 }
 *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html,body{ margin:0; padding:0; }
 body{
   background:var(--bg); color:var(--ink);
-  font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
-  font-size:16px; line-height:1.7;
+  font-family:var(--gothic);
+  font-size:16px; line-height:1.75; letter-spacing:.02em;
   padding-bottom:env(safe-area-inset-bottom);
 }
-h1,h2,h3{ margin:0; line-height:1.4; }
+h1,h2,h3{ margin:0; line-height:1.4; font-family:var(--mincho); font-weight:800; letter-spacing:.05em; }
 button,input,select,textarea{ font:inherit; color:inherit; }
 
 /* ---------- header ---------- */
 header{
   position:sticky; top:0; z-index:50;
-  background:var(--green); color:#fff;
+  background:var(--bg); color:var(--ink);
   padding:env(safe-area-inset-top) 0 0;
-  box-shadow:0 2px 10px rgba(20,40,30,.18);
+  border-bottom:1px solid var(--line);
+  box-shadow:var(--shadow);
 }
 .hd{ display:flex; align-items:center; gap:.7rem; padding:.7rem 1rem .6rem; max-width:1100px; margin:0 auto; }
-.hd .logo{ font-size:1.4rem; }
+.hd .logo{ display:block; width:30px; height:30px; color:var(--green); flex:0 0 auto; }
+.hd .logo svg{ width:100%; height:100%; display:block; }
+/* 昼／夜トグル */
+.theme-toggle{ margin-left:auto; flex:0 0 auto; display:inline-flex; align-items:center; gap:6px;
+  min-height:34px; padding:5px 11px; border:1px solid var(--line); background:none; color:var(--ink-2);
+  font-family:var(--mono); font-size:.58rem; font-weight:700; letter-spacing:.18em; cursor:pointer; }
+.theme-toggle:hover{ color:var(--ink); border-color:var(--ink); }
+.theme-toggle svg{ width:14px; height:14px; display:block; }
 .hd h1{ font-size:1rem; font-weight:700; letter-spacing:.04em; }
 .hd h1 small{ display:block; font-size:.62rem; font-weight:400; opacity:.75; letter-spacing:.16em; }
 .tabs{ display:flex; max-width:1100px; margin:0 auto; }
 .tabs button{
-  flex:1; padding:.72rem .4rem; background:none; border:0; color:rgba(255,255,255,.68);
-  font-size:.84rem; font-weight:700; cursor:pointer; border-bottom:3px solid transparent;
+  flex:1; padding:.72rem .4rem; background:none; border:0; color:var(--ink-2);
+  font-size:.84rem; font-weight:500; letter-spacing:.06em; cursor:pointer; border-bottom:2px solid transparent;
 }
-.tabs button[aria-selected="true"]{ color:#fff; border-bottom-color:#9fe0be; background:rgba(255,255,255,.08); }
+.tabs button[aria-selected="true"]{ color:var(--ink); border-bottom-color:var(--green); font-weight:700; }
 
 /* ---------- layout ---------- */
 main{ max-width:1100px; margin:0 auto; padding:1rem 1rem 5rem; }
@@ -76,7 +110,7 @@ main{ max-width:1100px; margin:0 auto; padding:1rem 1rem 5rem; }
 }
 .card > h2{
   font-size:.94rem; color:var(--green); margin:-.15rem 0 .8rem;
-  padding-bottom:.5rem; border-bottom:2px solid #e8efea;
+  padding-bottom:.5rem; border-bottom:1px solid var(--line);
   display:flex; align-items:center; gap:.45rem; flex-wrap:wrap;
 }
 .card > h2 .sub{ font-size:.68rem; font-weight:400; color:var(--ink-2); }
@@ -88,7 +122,7 @@ main{ max-width:1100px; margin:0 auto; padding:1rem 1rem 5rem; }
   padding:.75rem .85rem; box-shadow:var(--shadow);
 }
 .tile .lb{ font-size:.68rem; color:var(--ink-2); letter-spacing:.04em; }
-.tile .vl{ font-size:1.7rem; font-weight:700; color:var(--green); line-height:1.25; }
+.tile .vl{ font-family:var(--mono); font-size:1.7rem; font-weight:700; font-variant-numeric:tabular-nums; color:var(--ink); line-height:1.25; }
 .tile .vl small{ font-size:.72rem; font-weight:400; margin-left:.15em; color:var(--ink-2); }
 .tile.alert{ border-color:#e8c98f; background:var(--warn-bg); }
 .tile.alert .vl{ color:var(--warn); }
@@ -101,8 +135,8 @@ main{ max-width:1100px; margin:0 auto; padding:1rem 1rem 5rem; }
 .f > label{ font-size:.72rem; font-weight:700; color:var(--ink-2); }
 .f > label .req{ color:var(--danger); font-weight:400; }
 input[type=text],input[type=number],input[type=date],input[type=datetime-local],select,textarea{
-  width:100%; padding:.6rem .65rem; border:1px solid var(--line); border-radius:8px;
-  background:#fff; min-height:44px;
+  width:100%; padding:.6rem .65rem; border:1px solid var(--line); border-radius:var(--radius);
+  background:var(--card); color:var(--ink); min-height:44px;
 }
 textarea{ min-height:76px; resize:vertical; line-height:1.6; }
 input:focus,select:focus,textarea:focus{ outline:2px solid var(--leaf); outline-offset:-1px; border-color:var(--leaf); }
@@ -110,34 +144,34 @@ input:focus,select:focus,textarea:focus{ outline:2px solid var(--leaf); outline-
 
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:.4rem;
-  min-height:46px; padding:.55rem 1.1rem; border-radius:8px; border:1px solid var(--green);
-  background:var(--green); color:#fff; font-weight:700; font-size:.88rem; cursor:pointer;
+  min-height:46px; padding:.55rem 1.1rem; border-radius:var(--radius); border:1px solid var(--ink);
+  background:var(--ink); color:var(--bg); font-weight:500; font-size:.88rem; letter-spacing:.08em; cursor:pointer;
 }
-.btn:hover{ background:var(--green-l); }
+.btn:hover{ background:none; color:var(--ink); }
 .btn:active{ transform:translateY(1px); }
-.btn.ghost{ background:#fff; color:var(--green); }
-.btn.ghost:hover{ background:#eef5f1; }
+.btn.ghost{ background:none; color:var(--ink); border-color:var(--line); }
+.btn.ghost:hover{ background:var(--row-alt); border-color:var(--ink); }
 .btn.sm{ min-height:38px; padding:.3rem .75rem; font-size:.78rem; }
-.btn.danger{ background:#fff; color:var(--danger); border-color:#e0a9a4; }
+.btn.danger{ background:none; color:var(--danger); border-color:currentColor; }
 .btn.wide{ width:100%; }
 a.btn{ text-decoration:none; }
 .row-btns{ display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.9rem; }
 
 /* ---------- banners ---------- */
-.banner{ border-radius:8px; padding:.7rem .85rem; font-size:.8rem; line-height:1.7; margin-bottom:.9rem; }
-.banner.warn{ background:var(--warn-bg); border:1px solid #e8c98f; color:#6d4a10; }
-.banner.bad{ background:var(--danger-bg); border:1px solid #e9b4af; color:#7d2019; }
-.banner.info{ background:#eef5f1; border:1px solid #cfe3d8; color:#1f4a37; }
+.banner{ border-radius:var(--radius); padding:.7rem .85rem; font-size:.8rem; line-height:1.7; margin-bottom:.9rem; }
+.banner.warn{ background:var(--warn-bg); border:1px solid var(--warn); color:var(--ink); }
+.banner.bad{ background:var(--danger-bg); border:1px solid var(--danger); color:var(--ink); }
+.banner.info{ background:var(--row-alt); border:1px solid var(--line); color:var(--ink); }
 .banner b{ font-weight:700; }
 
 /* ---------- lists ---------- */
 .tlist{ display:grid; gap:.6rem; }
 .trap{
-  border:1px solid var(--line); border-radius:9px; padding:.7rem .8rem; background:#fff;
+  border:1px solid var(--line); border-radius:var(--radius); padding:.7rem .8rem; background:var(--card);
   display:grid; grid-template-columns:1fr auto; gap:.4rem .8rem; align-items:center;
 }
-.trap.due{ border-color:#e8c98f; background:var(--warn-bg); }
-.trap.over{ border-color:#e9b4af; background:var(--danger-bg); }
+.trap.due{ border-color:var(--warn); background:var(--warn-bg); }
+.trap.over{ border-color:var(--danger); background:var(--danger-bg); }
 .trap.off{ opacity:.5; }
 .trap .code{ font-weight:700; font-size:.95rem; }
 .trap .meta{ font-size:.72rem; color:var(--ink-2); }
@@ -145,18 +179,18 @@ a.btn{ text-decoration:none; }
 .trap .acts{ grid-column:1/-1; display:flex; gap:.4rem; flex-wrap:wrap; }
 .pill{
   display:inline-block; font-size:.64rem; font-weight:700; padding:.1rem .45rem;
-  border-radius:99px; background:#e8efea; color:var(--green); margin-right:.3rem;
+  border-radius:var(--radius); border:1px solid currentColor; background:none; color:var(--green); margin-right:.3rem;
 }
-.pill.k{ background:#e5eef9; color:#1d4e89; }
-.pill.c{ background:#fdecea; color:var(--danger); }
+.pill.k{ background:none; color:var(--ink-2); }
+.pill.c{ background:none; color:var(--danger); }
 
 /* ---------- tables ---------- */
 .tw{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
 table{ border-collapse:collapse; width:100%; font-size:.78rem; }
 th,td{ border:1px solid var(--line); padding:.42rem .5rem; text-align:left; vertical-align:top; }
-th{ background:#eef3f0; font-weight:700; color:var(--green-d); white-space:nowrap; font-size:.72rem; }
+th{ background:var(--card); font-family:var(--mono); font-weight:700; color:var(--ink-2); white-space:nowrap; font-size:.66rem; letter-spacing:.1em; }
 td.n,th.n{ text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
-tbody tr:nth-child(even) td{ background:#fbfcfb; }
+tbody tr:nth-child(even) td{ background:var(--row-alt); }
 .empty{ text-align:center; color:var(--ink-2); font-size:.8rem; padding:1.6rem 0; }
 
 /* ---------- modal ---------- */
@@ -166,12 +200,12 @@ tbody tr:nth-child(even) td{ background:#fbfcfb; }
 .modal__pn{
   position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
   width:min(660px,94vw); max-height:88vh; overflow:auto;
-  background:#fff; border-radius:12px; padding:1.1rem 1.1rem 1.3rem;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.1rem 1.3rem;
   box-shadow:0 18px 50px rgba(10,25,18,.35);
 }
 .modal__pn h3{ font-size:1rem; color:var(--green); margin-bottom:.8rem; }
 
-details{ border:1px solid var(--line); border-radius:8px; background:#fff; margin-bottom:.7rem; }
+details{ border:1px solid var(--line); border-radius:var(--radius); background:var(--card); margin-bottom:.7rem; }
 details > summary{ cursor:pointer; padding:.65rem .8rem; font-size:.82rem; font-weight:700; color:var(--green); }
 details[open] > summary{ border-bottom:1px solid var(--line); }
 details .body{ padding:.8rem; }
@@ -179,11 +213,25 @@ details .body{ padding:.8rem; }
 .foot{ text-align:center; font-size:.68rem; color:var(--ink-2); padding:1.6rem 1rem 2rem; line-height:2; }
 .foot a{ color:var(--green); }
 
+/* ---------- 動きを減らす設定（仕様§10） ----------
+   モーダルの中央寄せ transform は位置決めなので残す。消すのは動きだけ。 */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    transition-duration:.01ms !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+  }
+  .btn:active{ transform:none; }
+}
+
 /* ---------- print ---------- */
 .printonly{ display:none; }
 @media print{
   @page{ size:A4 landscape; margin:8mm; }
-  body{ background:#fff; font-size:10pt; }
+  /* 夜墨のままでは白紙に白文字が乗ってしまうので、印刷時だけ変数ごと墨に戻す */
+  :root{ --bg:#fff; --card:#fff; --ink:#111; --ink-2:#444; --line:#999; --green:#111; --green-d:#111; --row-alt:#fff; }
+  body{ background:#fff; color:#111; font-size:10pt; }
   header,.tabs,.noprint,.foot{ display:none !important; }
   main{ max-width:none; padding:0; }
   .view{ display:none !important; }
@@ -202,8 +250,8 @@ details .body{ padding:.8rem; }
 
 <header class="noprint">
   <div class="hd">
-    <span class="logo">🏔️</span>
-    <h1>狩猟記録帳 Venatio<small>ARCA HORTUS LAB ／ FIELD RECORD</small></h1>
+    <span class="logo" aria-hidden="true"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 40 L22 26 L28 34 L36 20 L48 40"/><path d="M11 44 L49 44"/></g></svg></span>
+    <h1>狩猟記録 Venatio<small>ARCA HORTUS LAB ／ FIELD RECORD</small></h1>
   </div>
   <nav class="tabs" role="tablist">
     <button role="tab" aria-selected="true"  data-view="patrol">わな見回り</button>
@@ -406,7 +454,7 @@ details .body{ padding:.8rem; }
 </main>
 
 <div class="foot noprint">
-  狩猟記録帳 Venatio ／ ArcaOffice Series<br>
+  狩猟記録 Venatio ／ ArcaOffice Series<br>
   Produced by Arca Hortus Lab
 </div>
 
@@ -1292,6 +1340,32 @@ function renderAll(){
 renderAll();
 save();
 
+})();
+</script>
+<script>
+/* 昼／夜トグル（仕様§8）。既定は夜。localStorageは使わずセッション内のみ。 */
+(function () {
+  var ICON_DAY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.6v2.4M12 19v2.4M2.6 12h2.4M19 12h2.4M5.4 5.4l1.7 1.7M16.9 16.9l1.7 1.7M18.6 5.4l-1.7 1.7M7.1 16.9l-1.7 1.7"/></svg>';
+  var ICON_NIGHT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8a8.6 8.6 0 1 0 10.8 10.8Z"/></svg>';
+  var root = document.documentElement;
+  var hd = document.querySelector('.hd');
+  if (!hd) return;
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'theme-toggle noprint';
+  var paint = function () {
+    var isLight = root.dataset.theme === 'light';
+    btn.innerHTML = (isLight ? ICON_NIGHT : ICON_DAY) + '<span>' + (isLight ? '\u591c' : '\u663c') + '</span>';
+    btn.setAttribute('aria-label', (isLight ? '\u591c' : '\u663c') + '\u30e2\u30fc\u30c9\u306b\u5207\u308a\u66ff\u3048\u308b');
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', isLight ? '#F2EFE8' : '#0C0E0D');
+  };
+  btn.addEventListener('click', function () {
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+    paint();
+  });
+  paint();
+  hd.appendChild(btn);
 })();
 </script>
 </body>

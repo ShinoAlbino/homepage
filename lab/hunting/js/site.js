@@ -1,9 +1,113 @@
 /* ==========================================================================
    狩猟・ジビエ入門サイト 共通スクリプト
-   モバイルナビ / スクロール出現 / 数値カウントアップ
+   モバイルナビ / スクロール出現 / 数値カウントアップ / 紋アイコンの描画
    ========================================================================== */
 (function () {
   'use strict';
+
+  /* ==========================================================
+     猟期・季節アクセント・HUD帯
+     猟期は北海道を除く区域の 11/15〜翌2/15 を基準（北海道は 10/1〜1/31）。
+     月齢・日の入は端末の位置を使わず東京（N35.68 / E139.77）固定。
+     ========================================================== */
+  var TOKYO_LAT = 35.6812, TOKYO_LON = 139.7671;
+
+  /* 日本時間の年月日時分を取り出す（閲覧者の時計に依存させない） */
+  var jstParts = function (date) {
+    var f = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Tokyo', year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false
+    });
+    var p = {};
+    f.formatToParts(date).forEach(function (x) { p[x.type] = x.value; });
+    return { y: +p.year, m: +p.month, d: +p.day, hh: p.hour, mm: p.minute };
+  };
+
+  /* 猟期の状態。中なら残り日数、外なら次の解禁までの日数 */
+  var ryokiState = function (y, m, d) {
+    var today = Date.UTC(y, m - 1, d);
+    var inSeason = (m === 11 && d >= 15) || m === 12 || m === 1 || (m === 2 && d <= 15);
+    if (inSeason) {
+      var end = Date.UTC(m >= 11 ? y + 1 : y, 1, 15);
+      /* 残り日数は当日を含める（2/15 なら「残り 1 日」） */
+      return { inSeason: true, days: Math.round((end - today) / 86400000) + 1 };
+    }
+    var start = Date.UTC(y, 10, 15);
+    if (today > start) start = Date.UTC(y + 1, 10, 15);
+    return { inSeason: false, days: Math.round((start - today) / 86400000) };
+  };
+
+  /* 月齢（朔からの日数） */
+  var moonAge = function (date) {
+    var SYN = 29.530588853;
+    var age = ((date.getTime() - Date.UTC(2000, 0, 6, 18, 14)) / 86400000) % SYN;
+    return age < 0 ? age + SYN : age;
+  };
+
+  /* 日の出・日の入（sunrise equation の簡易版・誤差±2分程度） */
+  var sunTimes = function (date, lat, lonEast) {
+    var RAD = Math.PI / 180;
+    var jd = date.getTime() / 86400000 + 2440587.5;
+    var n = Math.ceil(jd - 2451545.0 + 0.0008);
+    var Js = n + 0.0009 - lonEast / 360;
+    var M = (357.5291 + 0.98560028 * Js) % 360;
+    var C = 1.9148 * Math.sin(M * RAD) + 0.02 * Math.sin(2 * M * RAD) + 0.0003 * Math.sin(3 * M * RAD);
+    var lam = (M + C + 180 + 102.9372) % 360;
+    var Jt = 2451545.0 + Js + 0.0053 * Math.sin(M * RAD) - 0.0069 * Math.sin(2 * lam * RAD);
+    var sinDec = Math.sin(lam * RAD) * Math.sin(23.44 * RAD);
+    var cosDec = Math.cos(Math.asin(sinDec));
+    var cosW = (Math.sin(-0.833 * RAD) - Math.sin(lat * RAD) * sinDec) / (Math.cos(lat * RAD) * cosDec);
+    if (cosW > 1 || cosW < -1) return null;
+    var w = (Math.acos(cosW) / RAD) / 360;
+    var toDate = function (j) { return new Date((j - 2440587.5) * 86400000); };
+    return { rise: toDate(Jt - w), set: toDate(Jt + w) };
+  };
+
+  var now = new Date();
+  var jst = jstParts(now);
+  var ryoki = ryokiState(jst.y, jst.m, jst.d);
+
+  /* 季節アクセント
+     --accent   … 紙の地の差し色（文字にも使うのでAA基準を満たす濃さ）
+     --ink-season … 夜の地に敷く遠山の色（暗い地に乗せるので淡く明るい側） */
+  var seasonKey = ryoki.inSeason ? 'ryoki' : (jst.m <= 5 ? 'haru' : jst.m <= 8 ? 'natsu' : 'aki');
+  var SEASON = {
+    ryoki: { accent: '#1F3A4D', ink: '#86A6BE', ja: '猟期', en: 'RYOKI' },
+    haru:  { accent: '#5A7A4A', ink: '#B6CE8A', ja: '春',   en: 'HARU' },
+    natsu: { accent: '#2F5D45', ink: '#7FB5A6', ja: '夏',   en: 'NATSU' },
+    aki:   { accent: '#B7382C', ink: '#DDA08F', ja: '秋',   en: 'AKI' }
+  };
+  var season = SEASON[seasonKey];
+  var root = document.documentElement;
+  /* data-accent が付いたページ（higai の藍固定など）はアクセントを季節で動かさない */
+  if (!root.dataset.accent) root.style.setProperty('--accent', season.accent);
+  root.style.setProperty('--ink-season', season.ink);
+  root.dataset.season = seasonKey;
+
+  /* HUD帯 */
+  var hud = document.getElementById('hud');
+  if (hud) {
+    var pad = function (v, n) { return String(v).padStart(n, '0'); };
+    var sun = sunTimes(now, TOKYO_LAT, TOKYO_LON);
+    var hhmm = function (d) {
+      if (!d) return '—';
+      var p = jstParts(d);
+      return p.hh + ':' + p.mm;
+    };
+    hud.innerHTML =
+      '<span class="hud-season"><i></i>' + season.ja + ' ' + season.en + '</span>' +
+      '<span>' + (ryoki.inSeason ? '猟期 残り' : '猟期まで') + ' <b>' + pad(ryoki.days, 3) + '</b> 日</span>' +
+      '<span>月齢 <b>' + moonAge(now).toFixed(1) + '</b></span>' +
+      '<span>日の出 <b>' + hhmm(sun && sun.rise) + '</b></span>' +
+      '<span>日の入 <b>' + hhmm(sun && sun.set) + '</b></span>' +
+      '<span class="hud-note">猟期は北海道以外（北海道 10/1〜1/31）／月齢・日の出入は東京基準、地域により前後します</span>' +
+      '<span class="hud-geo">N 35.68 / E 139.77</span>';
+    hud.hidden = false;
+  }
+
+  /* ナビアイコン（絵文字を使わない・線の紋で統一） */
+  var ICON_MENU = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>';
+  var ICON_CLOSE = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>';
 
   /* モバイルナビ開閉 */
   var toggle = document.querySelector('.nav-toggle');
@@ -12,13 +116,13 @@
     var closeNav = function () {
       links.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
-      toggle.textContent = '☰';
+      toggle.innerHTML = ICON_MENU;
     };
     toggle.addEventListener('click', function (e) {
       e.stopPropagation();
       var open = links.classList.toggle('open');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      toggle.textContent = open ? '✕' : '☰';
+      toggle.innerHTML = open ? ICON_CLOSE : ICON_MENU;
     });
     links.addEventListener('click', function (e) {
       if (e.target.tagName === 'A') closeNav();
@@ -67,84 +171,57 @@
     track.innerHTML += track.innerHTML;
   });
 
-  /* カードの3Dチルト（ポインタ精度が高い端末のみ） */
-  if (window.matchMedia('(pointer: fine)').matches && !reduceMotion) {
-    document.querySelectorAll('.info-card, a.link-card, .license-card').forEach(function (card) {
-      card.addEventListener('pointermove', function (e) {
-        var r = card.getBoundingClientRect();
-        var rx = ((e.clientY - r.top) / r.height - 0.5) * -6;
-        var ry = ((e.clientX - r.left) / r.width - 0.5) * 6;
-        card.style.transform = 'translateY(-6px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
-      });
-      card.addEventListener('pointerleave', function () {
-        card.style.transform = '';
-      });
+  /* 縦組み（仕様§4）
+     writing-mode は環境によって字送りが破綻するため、キーコピーは文字スタック方式で組む。
+     句読点は .pn を付けて右上へ寄せ、--i で落ちてくる順番を渡す。 */
+  var JSV_PUNCT = '、。，．';
+  document.querySelectorAll('.jsv').forEach(function (el) {
+    var text = el.textContent.trim();
+    if (!text) return;
+    el.textContent = '';
+    Array.prototype.forEach.call(text, function (ch, i) {
+      var span = document.createElement('span');
+      span.className = 'vch' + (JSV_PUNCT.indexOf(ch) >= 0 ? ' pn' : '');
+      span.style.setProperty('--i', i);
+      if (ch === ' ' || ch === ' ') { span.style.height = '.5em'; } else { span.textContent = ch; }
+      el.appendChild(span);
     });
+  });
+
+  /* 数値型（仕様§6-3）の墨の下線：スクロールで引かれる */
+  var underlines = document.querySelectorAll('.figures .stat');
+  if (underlines.length) {
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      underlines.forEach(function (el) { el.classList.add('is-in'); });
+    } else {
+      var uio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            uio.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.35 });
+      underlines.forEach(function (el) { uio.observe(el); });
+    }
   }
 
-  /* ヒーロー背景：漂う木の葉パーティクル */
-  var heroCanvas = document.querySelector('.hero-canvas');
-  if (heroCanvas && !reduceMotion) {
-    var hctx = heroCanvas.getContext('2d');
-    var hw = 0, hh = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    var leaves = [];
-    var LEAF_COLORS = ['rgba(255,217,184,0.8)', 'rgba(217,111,46,0.7)', 'rgba(180,255,217,0.55)', 'rgba(255,255,255,0.5)'];
-
-    var resizeHero = function () {
-      hw = heroCanvas.parentElement.clientWidth;
-      hh = heroCanvas.parentElement.clientHeight;
-      heroCanvas.width = hw * dpr;
-      heroCanvas.height = hh * dpr;
-      hctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var count = Math.min(46, Math.floor((hw * hh) / 22000));
-      leaves = Array.from({ length: count }, function () {
-        return {
-          x: Math.random() * hw,
-          y: Math.random() * hh,
-          s: 4 + Math.random() * 7,
-          vy: 0.25 + Math.random() * 0.5,
-          vx: (Math.random() - 0.3) * 0.6,
-          rot: Math.random() * Math.PI * 2,
-          vr: (Math.random() - 0.5) * 0.03,
-          sway: Math.random() * Math.PI * 2,
-          color: LEAF_COLORS[Math.floor(Math.random() * LEAF_COLORS.length)]
-        };
-      });
-    };
-    window.addEventListener('resize', resizeHero);
-    resizeHero();
-
-    var drawLeaf = function (leaf) {
-      hctx.save();
-      hctx.translate(leaf.x, leaf.y);
-      hctx.rotate(leaf.rot);
-      hctx.fillStyle = leaf.color;
-      hctx.beginPath();
-      hctx.ellipse(0, 0, leaf.s, leaf.s * 0.55, 0, 0, Math.PI * 2);
-      hctx.fill();
-      hctx.restore();
-    };
-
-    var heroRunning = true;
-    var heroFrame = function (t) {
-      if (!heroRunning) return;
-      hctx.clearRect(0, 0, hw, hh);
-      leaves.forEach(function (leaf) {
-        leaf.y += leaf.vy;
-        leaf.x += leaf.vx + Math.sin(t / 1600 + leaf.sway) * 0.35;
-        leaf.rot += leaf.vr;
-        if (leaf.y > hh + 10) { leaf.y = -10; leaf.x = Math.random() * hw; }
-        if (leaf.x < -10) leaf.x = hw + 10;
-        if (leaf.x > hw + 10) leaf.x = -10;
-        drawLeaf(leaf);
-      });
-      requestAnimationFrame(heroFrame);
-    };
-    requestAnimationFrame(heroFrame);
-    document.addEventListener('visibilitychange', function () {
-      heroRunning = !document.hidden;
-      if (heroRunning) requestAnimationFrame(heroFrame);
-    });
+  /* 紋アイコン：スクロールで線が「描かれる」 */
+  var mons = document.querySelectorAll('.mon.draw');
+  if (mons.length) {
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      mons.forEach(function (el) { el.classList.add('is-in'); });
+    } else {
+      var mio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            mio.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
+      mons.forEach(function (el) { mio.observe(el); });
+    }
   }
 
   /* スクロール出現 */
@@ -162,7 +239,9 @@
           setTimeout(function () { el.classList.remove('fade-up', 'visible'); }, 760);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      /* 閾値は割合ではなく「少しでも入ったら」。都道府県索引のように背の高い要素だと
+         12%が画面に収まらず、永遠に出現しないことがあった。 */
+    }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
     targets.forEach(function (el) { io.observe(el); });
   }
 

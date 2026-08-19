@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-accent="ai">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,11 +14,11 @@
 <meta property="og:url" content="https://arcahortus.com/lab/hunting/higai.html">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://arcahortus.com/lab/hunting/images/ogp.png">
-<meta name="theme-color" content="#1e5b3f">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔️</text></svg>">
+<meta name="theme-color" content="#14171A">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><g fill='none' stroke='rgb(20,23,26)' stroke-linecap='round' stroke-linejoin='round'><circle cx='30' cy='30' r='26' stroke-width='1.5'/><path d='M12 40 L22 26 L28 34 L36 20 L48 40' stroke-width='3.5'/><path d='M11 44 L49 44' stroke-width='3.5'/></g></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css">
 <script type="application/ld+json">
 {
@@ -76,12 +76,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+<!-- 共有SVG：墨の滲みフィルタ＋家紋アイコン（絵文字の置換） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <filter id="sumiEdge" x="-15%" y="-15%" width="130%" height="130%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.018 0.05" numOctaves="4" seed="12" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="sumiSoft" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03 0.06" numOctaves="3" seed="4" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G" result="d"/>
+    <feGaussianBlur in="d" stdDeviation="0.7"/>
+  </filter>
+
+  <filter id="sumiFine" x="-14%" y="-14%" width="128%" height="128%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="3" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+
+  <symbol id="ink-tozan" viewBox="0 0 1200 420">
+  <g filter="url(#sumiSoft)"><path d="M0,286 C60,286 92,222 152,218 C212,214 242,262 302,266 C362,270 402,196 472,192 C542,188 572,258 642,264 C712,270 752,202 822,199 C892,196 922,254 992,260 C1062,266 1112,220 1200,228 L1200,420 L0,420 Z" fill="var(--ink-season, #E8E4DA)" opacity="0.09"/></g>
+  <g filter="url(#sumiSoft)"><path d="M0,328 C80,328 132,270 202,266 C272,262 312,316 392,320 C472,324 512,254 592,251 C672,248 702,313 782,318 C862,323 902,266 982,263 C1062,260 1122,310 1200,306 L1200,420 L0,420 Z" fill="var(--ink-season, #E8E4DA)" opacity="0.13"/></g>
+  <g filter="url(#sumiEdge)"><path d="M0,380 C90,380 152,334 242,330 C332,326 382,376 482,380 C582,384 632,318 732,316 C832,314 882,374 982,378 C1082,382 1132,344 1200,348 L1200,430 L0,430 Z" fill="var(--ink-season, #E8E4DA)" opacity="0.22"/></g>
+  <rect x="-100" y="294" width="1400" height="26" fill="#14171A" opacity="0.8" filter="url(#sumiSoft)"/>
+  <rect x="-100" y="344" width="1400" height="18" fill="#14171A" opacity="0.62" filter="url(#sumiSoft)"/>
+</symbol>
+
+  <symbol id="mon-yama" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 40 L22 26 L28 34 L36 20 L48 40"/><path d="M11 44 L49 44"/></g></symbol>
+
+</defs></svg>
+<script>document.documentElement.classList.add('js');</script>
+
 <header class="site-nav">
   <a class="brand" href="index.html">
-    <span class="logo-mark">🏔️</span>
+    <span class="logo-mark"><svg class="mon" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-yama"/></svg></span>
     <span>狩猟とジビエの入口<small>HUNTING &amp; GIBIER GUIDE</small></span>
   </a>
-  <button class="nav-toggle" aria-label="メニューを開閉" aria-expanded="false">☰</button>
+  <button class="nav-toggle" aria-label="メニューを開閉" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg></button>
   <ul class="nav-links">
     <li><a href="index.html">ホーム</a></li>
     <li><a href="license.html">免許・費用</a></li>
@@ -91,6 +121,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <li><a href="examination/index.html" class="nav-cta">無料で試験対策</a></li>
   </ul>
 </header>
+<div class="hud" id="hud" aria-label="猟期と山の情報" hidden></div>
+
 
 <div class="quickfact-band">
   <strong>1,266</strong>市町村が鳥獣被害対策実施隊を設置／隊員<strong>42,950</strong>人（令和7年4月時点・農林水産省）
@@ -101,10 +133,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span class="eyebrow" style="margin-bottom:16px;">WILDLIFE DAMAGE CONTROL</span>
     <h1>有害鳥獣対策とは何か</h1>
     <p>「狩猟」のもうひとつの顔——農地と森を守るために、地域はどう動いているのか。制度・実施隊・報奨金・捕獲後のゆくえまで、公的資料に基づいて丁寧に解説します。</p>
-    <svg class="hero-mountains" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,90 L180,40 L340,85 L520,20 L720,95 L900,45 L1080,85 L1260,55 L1440,90 L1440,120 L0,120 Z" fill="rgba(247,244,236,0.35)"/>
-      <path d="M0,105 L220,70 L420,100 L640,60 L860,105 L1060,75 L1250,100 L1440,80 L1440,120 L0,120 Z" fill="#f7f4ec"/>
-    </svg>
+    <svg class="hero-ink" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><use href="#ink-tozan"/></svg>
+    <img class="hero-beast" src="images/boar.webp" width="547" height="683" alt="" aria-hidden="true" decoding="async">
   </section>
 
   <nav class="toc fade-up" aria-label="目次">
@@ -153,6 +183,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       市町村長等の許可（鳥獣保護管理法に基づく捕獲許可）を受けて行う「有害鳥獣捕獲」です。
       使う技術も免許も同じですが、法律上の根拠・実施できる期間・目的がまったく異なります。
     </p>
+    <!-- 左右2段組の縦書き見出しで対句に（仕様§8） -->
+    <div class="tsuiku fade-up">
+      <div class="tsuiku-col">
+        <h4 class="tsuiku-title">狩猟</h4>
+        <div class="tsuiku-body">
+          <span class="en">Hunting</span>
+          <p>猟期のあいだ、自分の判断で。<br>資源としての利用と、山の文化の継承のために。</p>
+          <span class="key">狩猟者登録・狩猟税</span>
+        </div>
+      </div>
+      <div class="tsuiku-col">
+        <h4 class="tsuiku-title">有害鳥獣捕獲</h4>
+        <div class="tsuiku-body">
+          <span class="en">Control</span>
+          <p>通年、市町村長等の許可を受けて。<br>農林業の被害と、地域の暮らしを守るために。</p>
+          <span class="key">捕獲許可証・報奨金</span>
+        </div>
+      </div>
+    </div>
     <div class="table-wrap fade-up">
       <table class="nice">
         <thead><tr><th>比較項目</th><th>狩猟</th><th>有害鳥獣捕獲（許可捕獲）</th></tr></thead>
@@ -182,6 +231,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       そして皮肉なことに、その獣害と最前線で向き合うはずの狩猟者自身が、担い手不足によって減少・高齢化しているのです。
       「獣は増える、対処する人は減る」という二重の悪循環が、令和6年度の農作物被害額 約188億円（うちシカ79億円・イノシシ45億円）
       という数字に表れています。
+    </p>
+
+    <div class="figures fade-up" style="margin-top:34px;">
+      <div class="stat">
+        <div class="num">約<span data-count="188">188</span><small>億円</small></div>
+        <div class="label">野生鳥獣による全国の農作物被害額（令和6年度）</div>
+        <div class="note">出典：農林水産省「全国の野生鳥獣による農作物被害状況（令和6年度）」</div>
+      </div>
+    </div>
+    <ul class="bars fade-up">
+      <li>
+        <span class="bar-label">ニホンジカ</span>
+        <span class="bar-track"><span class="bar-fill" style="width:42%"></span></span>
+        <span class="bar-num">79<small>億円</small></span>
+      </li>
+      <li>
+        <span class="bar-label">イノシシ</span>
+        <span class="bar-track"><span class="bar-fill" style="width:24%"></span></span>
+        <span class="bar-num">45<small>億円</small></span>
+      </li>
+      <li>
+        <span class="bar-label">その他の鳥獣</span>
+        <span class="bar-track"><span class="bar-fill" style="width:34%"></span></span>
+        <span class="bar-num">64<small>億円</small></span>
+      </li>
+    </ul>
+    <p class="src-note fade-up">
+      出典：農林水産省「全国の野生鳥獣による農作物被害状況（令和6年度）」。
+      「その他の鳥獣」は総額からシカ・イノシシの被害額を差し引いた値です。横棒の長さは総額に対する割合を表します。
     </p>
     <p class="fade-up">
       被害は経済的損失だけにとどまりません。せっかく育てた作物を収穫直前に食べ荒らされる体験は、農家の営農意欲そのものを削ぎ、
@@ -341,11 +419,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <footer class="site-footer">
   <div class="footer-inner">
     <div>
-      <h4>🏔️ 狩猟とジビエの入口</h4>
+      <h2><svg class="mon sm" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-yama"/></svg>狩猟とジビエの入口</h2>
       <p style="font-size:0.8rem;line-height:1.9;">狩猟に興味を持った人が、迷わず最初の一歩を踏み出せるように。魅力・制度・費用・窓口の情報を一箇所に整理した入門ガイドです。</p>
     </div>
     <div>
-      <h4>サイト内</h4>
+      <h2>サイト内</h2>
       <ul>
         <li><a href="index.html">ホーム</a></li>
         <li><a href="license.html">免許・費用ガイド</a></li>
@@ -357,7 +435,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </ul>
     </div>
     <div>
-      <h4>公的機関・関連団体</h4>
+      <h2>公的機関・関連団体</h2>
       <ul>
         <li><a href="https://www.maff.go.jp/j/seisan/tyozyu/higai/" target="_blank" rel="noopener noreferrer">農林水産省 鳥獣被害対策コーナー</a></li>
         <li><a href="https://www.env.go.jp/nature/choju/" target="_blank" rel="noopener noreferrer">環境省 鳥獣保護管理</a></li>

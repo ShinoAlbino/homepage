@@ -1,83 +1,70 @@
 /* ==========================================================================
-   狩猟免許（第一種銃猟）学習サイト 共通スタイル
-   モバイル優先（375px想定）レスポンシブ / ライト・ダーク両対応
+   狩猟免許 学習サイト 共通スタイル ／ 夜墨・金泥（仕様§8 案B）
+   モバイル優先（375px想定）。既定は夜。ヘッダーの「昼／夜」で切り替える
+   （山中の夜間で眩しくないことを優先した既定。localStorageは使わずセッション内のみ）。
    ========================================================================== */
 
 :root {
-  --color-bg: #f5f1e8;
-  --color-bg-elevated: #ffffff;
-  --color-text: #2b2b23;
-  --color-text-muted: #6b6558;
-  --color-primary: #2f5233;
-  --color-primary-strong: #1e3a22;
-  --color-accent: #b5651d;
-  --color-border: #d8d0bd;
-  --color-card: #ffffff;
-  --color-correct: #2f7a3d;
-  --color-correct-bg: #e3f3e5;
-  --color-wrong: #b3261e;
-  --color-wrong-bg: #fbe4e2;
-  --color-game: #2f5233;
-  --color-game-bg: #e1ead9;
-  --color-nongame: #8a4b12;
-  --color-nongame-bg: #f5e2cc;
-  --shadow: 0 2px 8px rgba(0,0,0,0.08);
-  --radius: 14px;
+  /* 書体三層（仕様§4）。
+     山で使う道具なので、Webフォントは読まず端末内のものだけで組む
+     （電波の弱い場所での初回表示と、Venatio との一貫性を優先した）。 */
+  --mincho: 'Hiragino Mincho ProN', 'Yu Mincho', 'YuMincho', 'MS PMincho', serif;
+  --gothic: system-ui, -apple-system, 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Courier New', monospace;
+
+  /* 夜墨（既定） */
+  --color-bg: #0C0E0D;
+  --color-bg-elevated: #14171A;
+  --color-card: #111413;
+  --color-text: #E8E4DA;
+  --color-text-muted: #A9B0AB;
+  --color-border: rgba(232, 228, 218, 0.18);
+  /* 金泥。#9C7C3A on #0C0E0D = 4.9:1、明るい側 #C2A05A = 8.3:1 */
+  --color-primary: #9C7C3A;
+  --color-primary-strong: #C2A05A;
+  --color-accent: #C2A05A;
+  /* 主ボタンは地と墨を反転させる（本体サイトの .btn-primary と同じ考え方） */
+  --btn-bg: #E8E4DA;
+  --btn-fg: #0C0E0D;
+  /* 正誤は機能なので残すが、彩度は落として墨に寄せる */
+  --color-correct: #7FB5A6;
+  --color-correct-bg: rgba(127, 181, 166, 0.12);
+  --color-wrong: #DDA08F;
+  --color-wrong-bg: rgba(221, 160, 143, 0.12);
+  --color-game: #7FB5A6;
+  --color-game-bg: rgba(127, 181, 166, 0.12);
+  --color-nongame: #C2A05A;
+  --color-nongame-bg: rgba(194, 160, 90, 0.12);
+
+  /* 形：角丸と影を捨てる（仕様§1-2） */
+  --radius: 0px;
+  --shadow: none;
+  --hair: 1px solid var(--color-border);
   --tap-min: 48px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #16181a;
-    --color-bg-elevated: #1f2225;
-    --color-text: #ece8de;
-    --color-text-muted: #a8a397;
-    --color-primary: #6fae76;
-    --color-primary-strong: #8fcf96;
-    --color-accent: #e0993d;
-    --color-border: #3a3d38;
-    --color-card: #23262a;
-    --color-correct: #6fcf7c;
-    --color-correct-bg: #1d3320;
-    --color-wrong: #ff8a80;
-    --color-wrong-bg: #3a1f1d;
-    --color-game: #8fcf96;
-    --color-game-bg: #1d3320;
-    --color-nongame: #e0993d;
-    --color-nongame-bg: #3a2c17;
-    --shadow: 0 2px 10px rgba(0,0,0,0.4);
-  }
-}
-
-:root[data-theme="dark"] {
-  --color-bg: #16181a;
-  --color-bg-elevated: #1f2225;
-  --color-text: #ece8de;
-  --color-text-muted: #a8a397;
-  --color-primary: #6fae76;
-  --color-primary-strong: #8fcf96;
-  --color-accent: #e0993d;
-  --color-border: #3a3d38;
-  --color-card: #23262a;
-  --color-correct: #6fcf7c;
-  --color-correct-bg: #1d3320;
-  --color-wrong: #ff8a80;
-  --color-wrong-bg: #3a1f1d;
-  --color-game: #8fcf96;
-  --color-game-bg: #1d3320;
-  --color-nongame: #e0993d;
-  --color-nongame-bg: #3a2c17;
-}
+/* 昼（紙と墨）。明るい屋外で読むためのモード */
 :root[data-theme="light"] {
-  --color-bg: #f5f1e8;
-  --color-bg-elevated: #ffffff;
-  --color-text: #2b2b23;
-  --color-text-muted: #6b6558;
-  --color-primary: #2f5233;
-  --color-primary-strong: #1e3a22;
-  --color-accent: #b5651d;
-  --color-border: #d8d0bd;
-  --color-card: #ffffff;
+  --color-bg: #F2EFE8;
+  --color-bg-elevated: #E9E5DB;
+  --color-card: #F2EFE8;
+  --color-text: #14171A;
+  --color-text-muted: #3A403F;
+  --color-border: rgba(20, 23, 26, 0.16);
+  /* 紙の地では金泥がAAに届かないので藍を使う（#1F3A4D = 10.3:1） */
+  --color-primary: #1F3A4D;
+  --color-primary-strong: #1F3A4D;
+  --color-accent: #1F3A4D;
+  --btn-bg: #14171A;
+  --btn-fg: #F2EFE8;
+  --color-correct: #2F5D45;
+  --color-correct-bg: rgba(47, 93, 69, 0.1);
+  --color-wrong: #B7382C;
+  --color-wrong-bg: rgba(183, 56, 44, 0.1);
+  --color-game: #2F5D45;
+  --color-game-bg: rgba(47, 93, 69, 0.1);
+  --color-nongame: #B7382C;
+  --color-nongame-bg: rgba(183, 56, 44, 0.1);
 }
 
 * { box-sizing: border-box; }
@@ -87,8 +74,9 @@ html, body {
   padding: 0;
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", system-ui, sans-serif;
-  line-height: 1.6;
+  font-family: var(--gothic);
+  line-height: 1.75;
+  letter-spacing: 0.02em;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -98,7 +86,7 @@ body {
   overflow-x: hidden;
 }
 
-a { color: var(--color-primary-strong); }
+a { color: var(--color-accent); }
 
 .app-header {
   position: sticky;
@@ -106,14 +94,16 @@ a { color: var(--color-primary-strong); }
   z-index: 20;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 10px 12px;
-  background: var(--color-primary);
-  color: #fff;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-bottom: var(--hair);
   box-shadow: var(--shadow);
 }
 .app-header .back-link {
-  color: #fff;
+  color: var(--color-text);
   text-decoration: none;
   font-size: 1.3rem;
   padding: 6px 10px;
@@ -123,12 +113,35 @@ a { color: var(--color-primary-strong); }
   align-items: center;
   justify-content: center;
 }
+/* トップの戻りリンクは折り返して独立した行にする（狭い画面でh1が縦一列に潰れるため） */
+.app-header > p { flex: 1 0 100%; margin: 6px 0 0; font-size: 0.78rem; }
 .app-header h1 {
-  font-size: 1.05rem;
+  min-width: 0;
+  font-size: 1.02rem;
   margin: 0;
   flex: 1;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.05em;
 }
+/* 昼／夜トグル（仕様§8。localStorageは使わずセッション内のみ） */
+.theme-toggle {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: var(--hair);
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+}
+.theme-toggle:hover { color: var(--color-text); border-color: var(--color-text); }
+.theme-toggle svg { width: 15px; height: 15px; display: block; }
 
 main {
   max-width: 640px;
@@ -145,6 +158,7 @@ main {
   margin-bottom: 14px;
 }
 
+h1, h2, h3 { font-family: var(--mincho); font-weight: 800; letter-spacing: 0.06em; }
 h2 { font-size: 1.15rem; margin: 0 0 10px; }
 h3 { font-size: 1rem; margin: 0 0 8px; }
 p { margin: 0 0 10px; }
@@ -154,13 +168,14 @@ p { margin: 0 0 10px; }
   align-items: center;
   justify-content: center;
   min-height: var(--tap-min);
-  padding: 10px 18px;
-  border-radius: 12px;
-  border: none;
-  background: var(--color-primary);
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--btn-bg);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: 0.96rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   cursor: pointer;
   text-decoration: none;
   gap: 8px;
@@ -173,8 +188,8 @@ p { margin: 0 0 10px; }
   color: var(--color-text);
   border: 1px solid var(--color-border);
 }
-.btn.accent { background: var(--color-accent); }
-.btn.danger { background: var(--color-wrong); }
+.btn.accent { background: none; color: var(--color-accent); border-color: currentColor; }
+.btn.danger { background: none; color: var(--color-wrong); border-color: currentColor; }
 .btn.block { width: 100%; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -202,7 +217,14 @@ p { margin: 0 0 10px; }
   color: var(--color-text);
   min-height: 64px;
 }
-.menu-card .icon { font-size: 1.8rem; flex-shrink: 0; }
+/* 紋アイコン（絵文字の置換） */
+.mon { width: 34px; height: 34px; display: block; overflow: visible; }
+.menu-card .icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: var(--color-accent);
+}
 .menu-card .label { font-weight: 700; font-size: 1.05rem; }
 .menu-card .desc { font-size: 0.85rem; color: var(--color-text-muted); margin-top: 2px; }
 .menu-card:active { transform: scale(0.99); }
@@ -217,7 +239,7 @@ p { margin: 0 0 10px; }
   gap: 10px;
   min-height: 56px;
 }
-.menu-card.compact .icon { font-size: 1.5rem; }
+.menu-card.compact .icon .mon { width: 28px; height: 28px; }
 .menu-card.compact .label { font-size: 0.95rem; }
 .menu-card.compact .desc { font-size: 0.78rem; }
 
@@ -230,7 +252,7 @@ p { margin: 0 0 10px; }
   padding: 0;
   list-style: none;
 }
-.links-inline a { color: var(--color-primary-strong); }
+.links-inline a { color: var(--color-accent); }
 
 /* トップページ下部の補足情報（メインメニューと視覚的に区別する） */
 .sub-sections {
@@ -240,7 +262,7 @@ p { margin: 0 0 10px; }
   color: var(--color-text-muted);
 }
 .sub-sections section { margin-bottom: 20px; }
-.sub-sections h3 {
+.sub-sections h2 {
   font-size: 0.82rem;
   font-weight: 600;
   color: var(--color-text-muted);
@@ -252,24 +274,27 @@ p { margin: 0 0 10px; }
 
 .tag {
   display: inline-block;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 0.8rem;
+  padding: 3px 11px;
+  border-radius: var(--radius);
+  border: 1px solid currentColor;
+  font-family: var(--mono);
+  font-size: 0.7rem;
   font-weight: 700;
+  letter-spacing: 0.1em;
 }
-.tag.game { background: var(--color-game-bg); color: var(--color-game); }
-.tag.nongame { background: var(--color-nongame-bg); color: var(--color-nongame); }
+.tag.game { color: var(--color-game); }
+.tag.nongame { color: var(--color-nongame); }
 
+/* 帯グラフは色を足さず、墨（地の文字色）の濃淡だけで表す（仕様§8） */
 .progress-bar {
-  height: 8px;
+  height: 4px;
   background: var(--color-border);
-  border-radius: 999px;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .progress-bar > div {
   height: 100%;
-  background: var(--color-primary);
+  background: var(--color-text);
   transition: width 0.2s ease;
 }
 
@@ -295,9 +320,9 @@ p { margin: 0 0 10px; }
 .reveal-box {
   text-align: center;
   padding: 14px 10px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: var(--color-bg-elevated);
-  border: 1px dashed var(--color-border);
+  border: var(--hair);
   margin-bottom: 10px;
   min-height: 56px;
   display: flex;
@@ -344,7 +369,7 @@ p { margin: 0 0 10px; }
 .switch .slider {
   position: absolute; inset: 0;
   background: var(--color-border);
-  border-radius: 999px;
+  border-radius: var(--radius);
   transition: 0.2s;
   cursor: pointer;
 }
@@ -365,7 +390,7 @@ input[type="range"] { width: 100%; }
 select {
   min-height: var(--tap-min);
   padding: 8px 10px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-border);
   background: var(--color-bg-elevated);
   color: var(--color-text);
@@ -381,7 +406,7 @@ select {
   text-align: left;
   min-height: var(--tap-min);
   padding: 12px 14px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   border: 1px solid var(--color-border);
   background: var(--color-bg-elevated);
   color: var(--color-text);
@@ -406,9 +431,9 @@ select {
 .explanation-box {
   margin-top: 12px;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: var(--color-bg-elevated);
-  border-left: 4px solid var(--color-primary);
+  border-left: 2px solid var(--color-accent);
   font-size: 0.92rem;
 }
 
@@ -421,11 +446,17 @@ select {
 .stat-box {
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: var(--radius);
   padding: 12px;
   text-align: center;
 }
-.stat-box .num { font-size: 1.6rem; font-weight: 800; color: var(--color-primary-strong); }
+.stat-box .num {
+  font-family: var(--mono);
+  font-size: 1.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
 .stat-box .lbl { font-size: 0.8rem; color: var(--color-text-muted); }
 
 table.history-table {
@@ -443,6 +474,8 @@ table.history-table th, table.history-table td {
 .badge-fail { color: var(--color-wrong); font-weight: 700; }
 
 .timer-display {
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
   font-variant-numeric: tabular-nums;
   font-weight: 800;
   font-size: 1.1rem;
@@ -451,9 +484,11 @@ table.history-table th, table.history-table td {
 
 .category-chip {
   display: inline-block;
-  font-size: 0.75rem;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  font-size: 0.68rem;
   padding: 2px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
   color: var(--color-text-muted);
@@ -467,7 +502,9 @@ table.history-table th, table.history-table td {
 }
 
 .q-index {
-  font-size: 0.85rem;
+  font-family: var(--mono);
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
   color: var(--color-text-muted);
   margin-bottom: 4px;
 }
@@ -495,7 +532,7 @@ table.history-table th, table.history-table td {
   width: 100%;
   min-width: 480px;
   background: #f2f2f2;
-  border-radius: 8px;
+  border-radius: var(--radius);
   overflow: hidden;
 }
 .gun-image-wrap img {
@@ -510,10 +547,11 @@ table.history-table th, table.history-table td {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: rgba(47, 82, 51, 0.88);
-  border: 2px solid #fff;
-  color: #fff;
-  font-size: 13px;
+  background: var(--color-text);
+  border: 2px solid var(--color-bg);
+  color: var(--color-bg);
+  font-family: var(--mono);
+  font-size: 12px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -529,11 +567,11 @@ table.history-table th, table.history-table td {
 }
 .parts-list .part-item {
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
 }
-.parts-list .part-item b { color: var(--color-primary-strong); }
+.parts-list .part-item b { color: var(--color-accent); }
 
 .empty-state {
   text-align: center;
@@ -551,4 +589,17 @@ footer.app-footer {
 @media (min-width: 640px) {
   .btn-grid { grid-template-columns: 1fr 1fr; }
   .controls-row .btn { flex: initial; min-width: 140px; }
+}
+
+/* ===== 動きを減らす設定（仕様§10） =====
+   位置決めの transform（スイッチのつまみ・銃のマーカー・モーダルの中央寄せ）は
+   レイアウトそのものなので消さない。消すのは「動き」だけ。 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  .btn:active, .menu-card:active { transform: none; }
 }

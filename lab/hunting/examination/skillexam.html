@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>実技試験の流れ | 狩猟免許学習</title>
   <link rel="canonical" href="https://arcahortus.com/lab/hunting/examination/skillexam.html" />
+<meta name="theme-color" content="#0C0E0D">
 <link rel="stylesheet" href="css/style.css">
 <style>
   .step-list { display: grid; gap: 10px; margin-top: 10px; }
@@ -12,19 +13,20 @@
     display: flex; gap: 12px; align-items: flex-start;
     background: var(--color-bg-elevated);
     border: 1px solid var(--color-border);
-    border-radius: 12px; padding: 12px;
+    border-radius: var(--radius); padding: 12px;
   }
   .step-item .step-no {
     flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
-    background: var(--color-primary); color: #fff;
+    background: var(--color-text); color: var(--color-bg);
+    font-family: var(--mono);
     display: flex; align-items: center; justify-content: center;
     font-weight: 700; font-size: 0.95rem;
   }
   .step-item b { display: block; margin-bottom: 2px; }
   .step-item p { margin: 0; font-size: 0.88rem; color: var(--color-text-muted); }
   .point-box {
-    margin-top: 12px; padding: 12px; border-radius: 12px;
-    background: var(--color-wrong-bg); border-left: 4px solid var(--color-wrong);
+    margin-top: 12px; padding: 12px; border-radius: var(--radius);
+    background: var(--color-wrong-bg); border-left: 2px solid var(--color-wrong);
     font-size: 0.88rem;
   }
   .point-box b { color: var(--color-wrong); }
@@ -53,7 +55,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main>
 
   <div class="card">
-    <h3>技能試験の共通ルール</h3>
+    <h2>技能試験の共通ルール</h2>
     <p style="font-size:0.92rem;">
       技能試験は<b>減点方式</b>で採点されます。100点満点からスタートし、操作の誤りごとに減点され、
       減点合計が30点を超えると不合格（<b>70点以上で合格</b>）です。
@@ -161,7 +163,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </section>
 
   <div class="card">
-    <h3>試験対策のヒント</h3>
+    <h2>試験対策のヒント</h2>
     <ul style="font-size:0.9rem;padding-left:18px;">
       <li>都道府県猟友会などが実施する<b>事前講習会（予備講習）</b>で実物の銃・わな・網に触れておくのが最も効果的です。</li>
       <li>銃猟は「銃口の向き」「脱包確認」「引金に指をかけない」の3点を徹底すれば大きな減点は避けられます。</li>
@@ -192,5 +194,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
+<script src="js/theme.js"></script>
 </body>
 </html>

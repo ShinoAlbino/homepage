@@ -42,6 +42,7 @@
 }
 </script>
 
+<meta name="theme-color" content="#0C0E0D">
 <link rel="stylesheet" href="css/style.css">
 
 <!-- Google Tag Manager -->
@@ -59,8 +60,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+<!-- 紋アイコン（絵文字の置換・仕様§1-1／§5） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="mon-shika" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M29 50 C24 42 18 33 16 23 C15 17 17 12 21 9"/><path d="M31 50 C36 42 42 33 44 23 C45 17 43 12 39 9"/><path d="M20 39 C15 36 12 31 12 25"/><path d="M40 39 C45 36 48 31 48 25"/><path d="M25 50 L35 50"/></g></symbol>
+  <symbol id="mon-tori" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 34 C20 26 26 20 33 20 C39 20 43 24 43 30 C43 36 38 40 32 40 C26 40 21 38 20 34 Z"/><path d="M27 29 C31 27 36 28 39 32"/><path d="M22 26 L14 28 L22 30"/><path d="M28 40 L28 46"/><path d="M34 40 L34 46"/><path d="M19 47 L41 47"/></g></symbol>
+  <symbol id="mon-inoshishi" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 45 C12 38 10 24 18 13 C17 25 19 37 26 43 Z"/><path d="M39 45 C48 38 50 24 42 13 C43 25 41 37 34 43 Z"/><path d="M24 47 C27 50 33 50 36 47"/></g></symbol>
+  <symbol id="mon-fude" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M46 13 L31 28"/><path d="M39 17 L43 21"/><path d="M31 28 L27 32"/><path d="M27 32 C23 36 18 42 14 47 C19 43 25 38 29 34"/></g></symbol>
+  <symbol id="mon-tokei" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="32" r="16"/><path d="M30 22 L30 32 L37 36"/><path d="M24 12 L36 12"/><path d="M30 12 L30 16"/></g></symbol>
+  <symbol id="mon-ju" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 30 L38 23"/><path d="M11 34 L39 27"/><path d="M38 23 L50 27 L47 39 L37 33 Z"/><path d="M36 33 C34 36 33 38 31 38"/></g></symbol>
+  <symbol id="mon-mato" viewBox="0 0 60 60"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-width="1"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="30" cy="30" r="15"/><circle cx="30" cy="30" r="7.5"/><circle cx="30" cy="30" r="1.4"/></g></symbol>
+</defs></svg>
+
 <header class="app-header">
-  <h1>🦌 狩猟免許 学習（網猟／わな猟／第一種銃猟／第二種銃猟）</h1>
+  <h1>狩猟免許 学習（網猟／わな猟／第一種銃猟／第二種銃猟）</h1>
   <p style="margin-top:6px;font-size:0.8rem;"><a href="../index.html" style="color:inherit;opacity:0.85;">← 狩猟・ジビエ入門トップへ戻る</a></p>
 </header>
 <main>
@@ -71,7 +83,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="menu-grid">
     <a class="menu-card" href="flashcard.html?scope=all">
-      <div class="icon">🦌</div>
+      <div class="icon"><svg class="mon" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-shika"/></svg></div>
       <div>
         <div class="label">狩猟鳥獣フラッシュ暗記（全種）</div>
         <div class="desc">狩猟鳥獣43種(全46種)の画像→種名をめくって覚える<br>見覚えのない鳥獣は非狩猟鳥獣</div>
@@ -79,14 +91,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </a>
     <div class="menu-row">
       <a class="menu-card compact" href="flashcard.html?scope=bird">
-        <div class="icon">🐦</div>
+        <div class="icon"><svg class="mon" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-tori"/></svg></div>
         <div>
           <div class="label">鳥類のみ</div>
           <div class="desc">26種</div>
         </div>
       </a>
       <a class="menu-card compact" href="flashcard.html?scope=mammal">
-        <div class="icon">🦊</div>
+        <div class="icon"><svg class="mon" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-inoshishi"/></svg></div>
         <div>
           <div class="label">獣類のみ</div>
           <div class="desc">17種(全20種)</div>
@@ -94,28 +106,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </a>
     </div>
     <a class="menu-card" href="exam.html">
-      <div class="icon">📚</div>
+      <div class="icon"><svg class="mon" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-fude"/></svg></div>
       <div>
         <div class="label">知識試験 過去問演習</div>
         <div class="desc">4種類の免許から選ぶか、免許を問わず全問まとめて演習。法令・猟具・鳥獣・保護管理の三肢択一を、論点別の絞り込みと弱点表示つきで繰り返せます（全331問収録）</div>
       </div>
     </a>
     <a class="menu-card" href="mockexam.html">
-      <div class="icon">⏱️</div>
+      <div class="icon"><svg class="mon" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-tokei"/></svg></div>
       <div>
         <div class="label">模擬試験（30問・90分）</div>
         <div class="desc">4種類の免許から選んで本試験形式で実施。法令13・猟具6・鳥獣9・保護管理2の固定配分、70%以上で合格判定</div>
       </div>
     </a>
     <a class="menu-card" href="gunparts.html">
-      <div class="icon">🔫</div>
+      <div class="icon"><svg class="mon" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-ju"/></svg></div>
       <div>
         <div class="label">猟銃・空気銃の各部名称</div>
         <div class="desc">散弾銃（上下二連・自動式）・空気銃・ライフル銃の各部名称を写真で暗記</div>
       </div>
     </a>
     <a class="menu-card" href="skillexam.html">
-      <div class="icon">🎯</div>
+      <div class="icon"><svg class="mon" viewBox="0 0 60 60" aria-hidden="true"><use href="#mon-mato"/></svg></div>
       <div>
         <div class="label">実技試験の流れ</div>
         <div class="desc">猟銃・空気銃・わな・網の技能試験の内容と流れ、減点ポイントを解説</div>
@@ -125,7 +137,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <aside class="sub-sections">
     <section>
-      <h3>関連リンク</h3>
+      <h2>関連リンク</h2>
       <ul class="links-inline">
         <li><a href="https://www.env.go.jp/nature/choju/" target="_blank" rel="noopener noreferrer">環境省 鳥獣保護管理</a></li>
         <li><a href="https://www.env.go.jp/nature/choju/hunt/hunt2.html" target="_blank" rel="noopener noreferrer">狩猟制度の概要</a></li>
@@ -135,7 +147,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </ul>
     </section>
     <section>
-      <h3>このサイトについて</h3>
+      <h2>このサイトについて</h2>
       <p>
         狩猟鳥獣リストは環境省の定義（令和4年9月15日時点、46種）に、知識試験問題は狩猟読本の範囲に基づき作成しています。
         鳥獣の写真は準備中の種のみ、代わりのイラスト表示になります。
@@ -147,5 +159,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   狩猟免許（網猟／わな猟／第一種銃猟／第二種銃猟）学習サイト / 個人学習用<br>
   <span style="font-size:0.72rem;opacity:0.8;">掲載しているイラスト・画像の著作権は各権利者に帰属します。無断転載・複製・再配布はご遠慮ください。</span>
 </footer>
+<script src="js/theme.js"></script>
 </body>
 </html>

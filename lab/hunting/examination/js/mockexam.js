@@ -146,7 +146,7 @@
 
     resultArea.innerHTML = `
       <div class="card">
-        <h2 class="${pass ? "badge-pass" : "badge-fail"}">${pass ? "🎉 合格" : "不合格"}</h2>
+        <h2 class="${pass ? "badge-pass" : "badge-fail"}">${pass ? "合格" : "不合格"}</h2>
         <p class="category-chip">${licenseLabel(currentLicense)}</p>
         <p style="font-size:0.9rem;">合格ラインは ${total}問中 ${passMark}問（${HuntingApp.PASS_RATE}%）。今回は <b>${correct}問</b> 正解${pass ? "で、合格ラインに達しています。" : "で、あと " + (passMark - correct) + "問 足りません。"}</p>
         ${timeUp ? '<p style="color:var(--color-wrong);">制限時間になったため自動的に採点されました。</p>' : ""}
