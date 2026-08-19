@@ -37,7 +37,9 @@
   /* ===== 書体三層 ===== */
   --mincho: 'Shippori Mincho B1', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
   --gothic: 'Zen Kaku Gothic New', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
-  --mono: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* IBM Plex Mono はゼロに斜線が入るので、0と8を取り違えにくい。
+     フォールバックの Consolas / SF Mono も同様にゼロが判別できるものを選んでいる。 */
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, 'SF Mono', Consolas, monospace;
   --font: var(--gothic);
 
   /* ===== 余白（AI感対策の即効薬：旧値の約2倍） ===== */
@@ -513,14 +515,16 @@ img.ink-photo { filter: saturate(0.9); opacity: 0.92; }
   background: var(--paper);
   border-bottom: var(--hair);
   font-family: var(--mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.18em;
-  line-height: 1.6;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  line-height: 1.7;
   color: var(--sumi-2);
-  font-variant-numeric: tabular-nums;
+  /* 桁を揃えたうえで、ゼロに斜線を入れて 8 との誤読を防ぐ */
+  font-variant-numeric: tabular-nums slashed-zero;
+  font-feature-settings: 'zero' 1;
 }
 .hud[hidden] { display: none; }
-.hud b { color: var(--accent); font-weight: 700; letter-spacing: 0.1em; }
+.hud b { color: var(--accent); font-weight: 700; font-size: 1.06em; letter-spacing: 0.08em; }
 /* 季節の見出し。色だけでは伝わらないので名前と色見本を並べる */
 .hud .hud-season {
   display: inline-flex;
@@ -532,7 +536,7 @@ img.ink-photo { filter: saturate(0.9); opacity: 0.92; }
   border-right: var(--hair);
 }
 .hud .hud-season i { width: 8px; height: 8px; background: currentColor; flex: 0 0 auto; }
-.hud .hud-note { letter-spacing: 0.06em; font-size: 0.92em; }
+.hud .hud-note { letter-spacing: 0.04em; font-size: 0.84em; }
 .hud .hud-geo { margin-left: auto; white-space: nowrap; }
 @media (max-width: 900px) {
   .hud .hud-note { display: none; }
