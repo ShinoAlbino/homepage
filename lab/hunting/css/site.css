@@ -247,13 +247,16 @@ img.ink-photo { filter: saturate(0.9); opacity: 0.92; }
   color: var(--sumi);
 }
 .brand .logo-mark .mon { width: 36px; height: 36px; }
+/* 読み仮名と語義を置くので、等幅の広いレタースペースはやめて本文書体で組む */
 .brand small {
   display: block;
-  font-family: var(--mono);
-  font-size: 0.54rem;
+  margin-top: 3px;
+  font-family: var(--gothic);
+  font-size: 0.58rem;
   font-weight: 400;
   color: var(--sumi-2);
-  letter-spacing: 0.22em;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 .nav-links {

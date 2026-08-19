@@ -96,7 +96,8 @@
     };
     hud.innerHTML =
       '<span class="hud-season"><i></i>' + season.ja + ' ' + season.en + '</span>' +
-      '<span>' + (ryoki.inSeason ? '猟期 残り' : '猟期まで') + ' <b>' + pad(ryoki.days, 3) + '</b> 日</span>' +
+      /* 残日数はゼロ埋めしない（088 が 88 と読み違えられるため）。時刻の 05:04 は桁を揃える */
+      '<span>' + (ryoki.inSeason ? '猟期 残り' : '猟期まで') + ' <b>' + ryoki.days + '</b> 日</span>' +
       '<span>月齢 <b>' + moonAge(now).toFixed(1) + '</b></span>' +
       '<span>日の出 <b>' + hhmm(sun && sun.rise) + '</b></span>' +
       '<span>日の入 <b>' + hhmm(sun && sun.set) + '</b></span>' +
