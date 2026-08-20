@@ -1343,6 +1343,35 @@ details.cut[open] .cut-open::after { content: ' −'; }
   color: var(--sumi-2);
 }
 
+/* ===== 資格一覧（リンクではない索引・about） ===== */
+.qual-list { list-style: none; counter-reset: idx; border-top: var(--hair); }
+.qual-list li { border-bottom: var(--hair); }
+.qual-list .qual {
+  display: grid;
+  grid-template-columns: auto minmax(0, 12em) minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: clamp(12px, 2.2vw, 28px);
+  padding: 17px 4px;
+}
+.qual-list .idx {
+  counter-increment: idx;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.qual-list .idx::before { content: counter(idx, decimal-leading-zero); }
+.qual-list .ttl {
+  font-family: var(--mincho);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--sumi);
+  letter-spacing: 0.05em;
+}
+.qual-list .desc { font-size: 0.82rem; color: var(--sumi-2); line-height: 1.95; }
+
 /* ===== 対句（左右2段の縦書き見出し・仕様§8 higai） ===== */
 .tsuiku {
   display: grid;
@@ -1959,6 +1988,8 @@ details.faq .faq-body { padding: 0 40px 24px 2px; font-size: 0.86rem; color: var
   .info-card, a.link-card { padding: 26px 22px 28px; }
   .sign-foot { grid-template-columns: minmax(0, 1fr); }
   .tsuiku { grid-template-columns: minmax(0, 1fr); }
+  .qual-list .qual { grid-template-columns: auto minmax(0, 1fr); row-gap: 8px; }
+  .qual-list .desc { grid-column: 2 / -1; }
   /* 都道府県索引：地方見出しを横に寝かせ、県名と導線を2段に折る */
   .region { grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
   .region-name { writing-mode: horizontal-tb !important; letter-spacing: 0.12em; justify-self: start; }
