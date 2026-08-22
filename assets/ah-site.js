@@ -3,6 +3,7 @@
 
    - 背景の星（canvas#ah-stars）
    - HUD の実時刻（#ah-clock）
+   - .fade-in の表示解除（archive.html 用）
    - 最終同期日（#ah-sync）
    - フッターのセッションID（#ah-session-id）
    - A.R.C.A. TERMINAL の起動シーケンス（#ah-boot）
@@ -82,6 +83,14 @@
     setInterval(tick, 1000);
   }
 
+  /* ── .fade-in の表示（archive.html 用） ───────────── */
+  /* css/style.css の .fade-in{opacity:0} を解除する。
+     旧 js/main.js の fadeInElements() を引き継いだもの。 */
+  function initFade() {
+    var els = document.querySelectorAll('.fade-in');
+    for (var i = 0; i < els.length; i++) els[i].classList.add('active');
+  }
+
   /* ── 最終同期日（#ah-sync） ───────────────────────── */
   function initSync() {
     var el = document.getElementById('ah-sync');
@@ -135,6 +144,7 @@
 
   function boot() {
     initStars();
+    initFade();
     initClock();
     initSync();
     initSession();

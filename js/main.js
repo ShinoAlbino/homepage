@@ -1,26 +1,39 @@
+// ヘッダー／フッターをページ内に直接書くページ（案B以降）では
+// #header / #footer-container が存在しない。取得を試みずにそのまま初期化する。
 document.addEventListener("DOMContentLoaded", function () {
   // 1. ヘッダーの読み込み
-  fetch('header.html')
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById('header').innerHTML = data;
-      fadeInElements(); 
-      
-      // ヘッダーが画面に現れた「直後」にメニュー機能を起動する
-      initHamburgerMenu();
-      // Nexus表示演出
-      animateNexusCards();
-    });
+  const headerMount = document.getElementById('header');
+  if (headerMount) {
+    fetch('header.html')
+      .then(res => res.text())
+      .then(data => {
+        headerMount.innerHTML = data;
+        fadeInElements();
+
+        // ヘッダーが画面に現れた「直後」にメニュー機能を起動する
+        initHamburgerMenu();
+        // Nexus表示演出
+        animateNexusCards();
+      });
+  } else {
+    fadeInElements();
+    initHamburgerMenu();
+    animateNexusCards();
+  }
 
   // 2. フッターの読み込み
-  fetch('footer.html')
-    .then(res => res.text())
-    .then(data => {
-      const footerContainer = document.getElementById('footer-container');
-      footerContainer.innerHTML = data;
-      initSessionId();
-      setTimeout(() => { fadeInElements(); }, 100);
-    });
+  const footerContainer = document.getElementById('footer-container');
+  if (footerContainer) {
+    fetch('footer.html')
+      .then(res => res.text())
+      .then(data => {
+        footerContainer.innerHTML = data;
+        initSessionId();
+        setTimeout(() => { fadeInElements(); }, 100);
+      });
+  } else {
+    initSessionId();
+  }
 });
 
 // アニメーション適用

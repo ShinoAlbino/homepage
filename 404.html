@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FATAL ERROR | Arca Hortus</title>
   <link rel="icon" href="images/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="assets/ah-tokens.css" />
   <link rel="stylesheet" href="css/style.css" />
   <style>
     body.error-body {
-        background: #000;
+        background: var(--void);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -23,8 +24,8 @@
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
         background-image: 
-            radial-gradient(#151515 10%, transparent 10%),
-            radial-gradient(#151515 10%, transparent 10%);
+            radial-gradient(#12161d 10%, transparent 10%),
+            radial-gradient(#12161d 10%, transparent 10%);
         background-size: 3px 3px;
         background-position: 0 0, 1.5px 1.5px;
         opacity: 0.2;
@@ -56,7 +57,7 @@
         text-align: center;
         border: 1px solid #ff3232;
         padding: 60px 40px;
-        background: rgba(5, 0, 0, 0.95);
+        background: rgba(5, 7, 12, 0.95);
         box-shadow: 0 0 50px rgba(255, 0, 0, 0.2);
         position: relative;
         z-index: 10; /* コンテンツを最前面に */
@@ -118,7 +119,7 @@
     }
 
     .warning-box {
-        color: #e0e0ff;
+        color: var(--text);
         font-size: 0.9rem;
         text-align: left;
         border-left: 2px solid #ff3232;

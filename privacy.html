@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Privacy Policy | Arca Hortus</title>
   <link rel="canonical" href="https://arcahortus.com/privacy.html" />
@@ -9,9 +9,37 @@
   <link rel="icon" href="images/favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css">
-  <!-- Google Tag Manager -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+JP:wght@200;300;500&family=Noto+Sans+JP:wght@200;300;400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" />
+  <link rel="stylesheet" href="assets/ah-tokens.css" />
+  <link rel="stylesheet" href="assets/ah-common.css" />
+
+  <style>
+  /* ── 規程ページ固有 ───────────────────────────────── */
+  .ah-nobr{ white-space:nowrap }
+
+  /* 事業者情報などの表（現行の <table> 構造をそのまま使う） */
+  .ah-table-wrap{ overflow-x:auto; margin:4px 0 0 }
+  .ah-table{ width:100%; border-collapse:collapse; font-size:13.5px }
+  .ah-table th,
+  .ah-table td{ padding:13px 16px; border-bottom:1px solid var(--line-soft); text-align:left; vertical-align:top }
+  .ah-table tr:last-child th,
+  .ah-table tr:last-child td{ border-bottom:0 }
+  .ah-table th{
+    width:34%; white-space:nowrap; border-right:1px solid var(--line-soft);
+    font-family:var(--mono); font-weight:400; font-size:10px; letter-spacing:.14em; color:var(--ice-dim);
+  }
+  @media (max-width:640px){
+    .ah-table th{ width:auto }
+  }
+
+  /* 制定・改訂の署名行 */
+  .ah-sig{
+    margin:22px 0 0; padding-top:16px; border-top:1px solid var(--line-soft);
+    font-family:var(--mono); font-size:10px; letter-spacing:.16em; line-height:2; color:var(--muted);
+  }
+  </style>
+
+<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -21,90 +49,135 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
      crossorigin="anonymous"></script>
 </head>
-<body class="privacy-page">
+
+<body class="ah-body">
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-  <div id="header"></div>
+<!-- ══ 背景（4層） ══ -->
+<div class="ah-bg" aria-hidden="true">
+  <canvas id="ah-stars"></canvas>
+  <div class="ah-bg-tick"></div>
+  <div class="ah-bg-section"></div>
+  <div class="ah-bg-veil"></div>
+</div>
 
-  <main class="page-container fade-in">
-    <header class="page-header">
-      <h1><span class="nobr">プライバシーポリシー</span><span class="nobr">（個人情報保護方針）</span><br><span class="en">Privacy Policy</span></h1>
-      <p class="doc-number">Document ID: AH-LGL-P01 / Revised: 2026.07.16 / Classification: PUBLIC</p>
-      <p class="en">The English text on this page is a reference translation offered for convenience. Where the two readings diverge, the Japanese text is the one that governs.</p>
-    </header>
+<!-- ══ 左計器レール ══ -->
+<aside class="ah-rail" aria-hidden="true">
+  <svg class="ah-rail-glyph" viewBox="0 0 120 120" fill="none">
+    <circle cx="60" cy="60" r="54" stroke="#4f8ea6" stroke-width="3"/>
+    <path d="M60 24 L91 42 L91 78 L60 96 L29 78 L29 42 Z" stroke="#a7dcec" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M60 60 L60 96 M60 60 L29 42 M60 60 L91 42" stroke="#a7dcec" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="78" cy="51" r="5.5" fill="#b8463c"/>
+  </svg>
+  <div class="ah-rail-vert">Privacy Policy &nbsp;&middot;&nbsp; AH-LGL-P01 &nbsp;&middot;&nbsp; Classification Public</div>
+  <div class="ah-rail-lamps"><i class="ah-on"></i><i class="ah-on"></i><i class="ah-warn"></i><i></i></div>
+</aside>
 
-    <section class="org-section">
-      <div class="section-tag">General Provisions</div>
+<div class="ah-wrap">
+
+  <!-- ══ ヘッダー ══ -->
+  <header class="ah-site-head">
+    <div class="ah-mark"><a href="index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="about.html">About</a>
+      <a href="recommend.html">TopPicks</a>
+      <a href="nexus.html">Nexus</a>
+      <a href="archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+    </nav>
+  </header>
+
+  <p class="ah-crumb"><a href="index.html">INDEX</a> &nbsp;/&nbsp; PRIVACY / プライバシーポリシー</p>
+
+  <main class="ah-shell-narrow">
+    <div class="ah-doc-head">
+      <p class="ah-doc-id">Document ID: AH-LGL-P01 / Revised: 2026.07.16 / Classification: PUBLIC</p>
+      <h1 class="ah-doc-jp"><span class="ah-nobr">プライバシーポリシー</span><span class="ah-nobr">（個人情報保護方針）</span></h1>
+      <p class="ah-doc-en">Privacy Policy</p>
+      <p class="ah-doc-note">The English text on this page is a reference translation offered for convenience. Where the two readings diverge, the Japanese text is the one that governs.</p>
+    </div>
+
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">GENERAL PROVISIONS</span>
       <h2>第1条：総則</h2>
-      <p>本ポリシーは、箱庭次元研究機構（Arca Hortus Dimension Research Organization。以下「当機構」）が運営するウェブサイト「Arca Hortus」（https://arcahortus.com/ 及びその配下の全ページ。以下「当拠点」）において、利用者（以下「ユーザー」）の情報をどのように取得し、利用し、保護するかを定めるものです。</p>
-      <p>当機構は、個人情報の保護に関する法律（平成15年法律第57号。以下「個人情報保護法」）、電気通信事業法その他の関係法令およびガイドラインを遵守し、ユーザーの情報を「観測データ」としてではなく、一人の人間に属する尊重されるべき情報として、適正に取り扱います。</p>
-      <p>当拠点を利用された場合、ユーザーは本ポリシーの内容を確認し、これに同意したものとみなします。同意いただけない場合は、恐れ入りますが当拠点の利用を中止してください。</p>
-      <p class="en">
+      <div class="ah-body-col">
+        <p>本ポリシーは、箱庭次元研究機構（Arca Hortus Dimension Research Organization。以下「当機構」）が運営するウェブサイト「Arca Hortus」（https://arcahortus.com/ 及びその配下の全ページ。以下「当拠点」）において、利用者（以下「ユーザー」）の情報をどのように取得し、利用し、保護するかを定めるものです。</p>
+        <p>当機構は、個人情報の保護に関する法律（平成15年法律第57号。以下「個人情報保護法」）、電気通信事業法その他の関係法令およびガイドラインを遵守し、ユーザーの情報を「観測データ」としてではなく、一人の人間に属する尊重されるべき情報として、適正に取り扱います。</p>
+        <p>当拠点を利用された場合、ユーザーは本ポリシーの内容を確認し、これに同意したものとみなします。同意いただけない場合は、恐れ入りますが当拠点の利用を中止してください。</p>
+        <p class="ah-en">
         This Policy sets out how the Arca Hortus Dimension Research Organization (hereinafter "the Organization") acquires, uses, and protects the information of those who visit it (hereinafter "the User") across the website "Arca Hortus" (https://arcahortus.com/ and every page beneath it; hereinafter "the Outpost").<br><br>
         The Organization observes the Act on the Protection of Personal Information (Act No. 57 of 2003), the Telecommunications Business Act, and the other laws and guidelines that bear upon them. It handles what the User leaves behind not as "observation data", but as information belonging to a person — and therefore deserving of respect.<br><br>
         By using the Outpost, the User is deemed to have read this Policy and consented to it. If you cannot consent to it, we ask, with regret, that you discontinue your use of the Outpost.
-      </p>
+        </p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Operator</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">OPERATOR</span>
       <h2>第2条：事業者情報</h2>
-      <div class="info-table-wrapper">
-          <table class="info-table">
-              <tr><th>運営組織</th><td>箱庭次元研究機構（Arca Hortus Dimension Research Organization）<br>略称：箱庭機構</td></tr>
-              <tr><th>運営責任者</th><td>管理者（The Administrator）</td></tr>
-              <tr><th>連絡窓口</th><td>当拠点内のお問い合わせフォームまたは公式SNSアカウント<br>※お問い合わせへの回答には数日を要する場合があります</td></tr>
-          </table>
-      </div>
-      <p class="en">
+      <div class="ah-body-col">
+        <div class="ah-table-wrap">
+        <table class="ah-table">
+        <tr><th>運営組織</th><td>箱庭次元研究機構（Arca Hortus Dimension Research Organization）<br>略称：箱庭機構</td></tr>
+        <tr><th>運営責任者</th><td>管理者（The Administrator）</td></tr>
+        <tr><th>連絡窓口</th><td>当拠点内のお問い合わせフォームまたは公式SNSアカウント<br>※お問い合わせへの回答には数日を要する場合があります</td></tr>
+        </table>
+        </div>
+        <p class="ah-en">
         <b>Operating body:</b> Arca Hortus Dimension Research Organization (abbreviated: the Hakoniwa Organization)<br>
         <b>Officer responsible:</b> The Administrator<br>
         <b>Point of contact:</b> the inquiry form within the Outpost, or the official social media accounts. Please note that a reply may take several days to reach you.
-      </p>
+        </p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Data Collection</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">DATA COLLECTION</span>
       <h2>第3条：取得する情報および取得方法</h2>
+      <div class="ah-body-col">
+        <h3>3.1 ユーザーから直接ご提供いただく情報</h3>
+        <p>お問い合わせ、各種企画への参加、有料コンテンツの購入等に際し、氏名またはハンドルネーム、メールアドレス、その他ご入力いただく内容を取得する場合があります。</p>
+        <p class="ah-en"><b>3.1 Information you provide to us directly.</b> When you make an inquiry, take part in one of our projects, or purchase paid content, we may acquire your name or handle, your e-mail address, and whatever else you choose to enter.</p>
 
-      <h3>3.1 ユーザーから直接ご提供いただく情報</h3>
-      <p>お問い合わせ、各種企画への参加、有料コンテンツの購入等に際し、氏名またはハンドルネーム、メールアドレス、その他ご入力いただく内容を取得する場合があります。</p>
-      <p class="en"><b>3.1 Information you provide to us directly.</b> When you make an inquiry, take part in one of our projects, or purchase paid content, we may acquire your name or handle, your e-mail address, and whatever else you choose to enter.</p>
-
-      <h3>3.2 当拠点の利用に伴い自動的に取得する情報</h3>
-      <p>当拠点へのアクセスに伴い、以下の情報が自動的に取得されることがあります。</p>
-      <ul>
+        <h3>3.2 当拠点の利用に伴い自動的に取得する情報</h3>
+        <p>当拠点へのアクセスに伴い、以下の情報が自動的に取得されることがあります。</p>
+        <ul>
         <li>IPアドレス、ブラウザの種類・バージョン、OS、端末情報、画面解像度</li>
         <li>参照元URL、閲覧ページ、滞在時間、クリック等の行動ログ</li>
         <li>Cookieおよびこれに類する技術（ローカルストレージ等）により生成される識別子</li>
-      </ul>
-      <p>これらの情報は、原則としてそれ単体で特定の個人を識別できるものではありません。当機構が虚構世界の演出上「観測記録」等と表現する場合であっても、実際の取得情報が本条の範囲を超えることはありません。</p>
-      <p class="en">
+        </ul>
+        <p>これらの情報は、原則としてそれ単体で特定の個人を識別できるものではありません。当機構が虚構世界の演出上「観測記録」等と表現する場合であっても、実際の取得情報が本条の範囲を超えることはありません。</p>
+        <p class="ah-en">
         <b>3.2 Information acquired automatically through use of the Outpost.</b> Your visit may of itself leave the following behind:<br>
         - IP address, browser type and version, operating system, device information, screen resolution<br>
         - Referring URL, pages viewed, time spent, and behavioural logs such as clicks<br>
         - Identifiers generated by cookies and comparable technologies (local storage and the like)<br><br>
         As a rule, none of this identifies a particular individual on its own. Even where the Organization, for the sake of the fiction, calls such things "observation records", what is actually acquired never exceeds the bounds of this Article.
-      </p>
+        </p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Purpose of Use</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">PURPOSE OF USE</span>
       <h2>第4条：利用目的</h2>
-      <p>当機構は、取得した情報を以下の目的の範囲内で利用します。</p>
-      <ol>
+      <div class="ah-body-col">
+        <p>当機構は、取得した情報を以下の目的の範囲内で利用します。</p>
+        <ol>
         <li>お問い合わせへの対応および本人確認のため</li>
         <li>当拠点のコンテンツ・サービスの提供、維持、改善のため</li>
         <li>アクセス状況の分析および利便性向上のため</li>
         <li>新規コンテンツ、企画、グッズ等に関するご案内のため</li>
         <li>利用規約に違反する行為（不正アクセス、スクレイピング、迷惑行為等）への対応のため</li>
         <li>法令に基づく義務の履行のため</li>
-      </ol>
-      <p>利用目的を変更する場合は、変更前の目的と関連性を有する合理的な範囲でこれを行い、当拠点上で公表します。</p>
-      <p class="en">
+        </ol>
+        <p>利用目的を変更する場合は、変更前の目的と関連性を有する合理的な範囲でこれを行い、当拠点上で公表します。</p>
+        <p class="ah-en">
         The Organization uses what it acquires only within the following purposes:<br>
         1. To respond to inquiries and to confirm identity<br>
         2. To provide, maintain, and improve the content and services of the Outpost<br>
@@ -113,131 +186,179 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         5. To deal with conduct that violates the Terms of Service (unauthorised access, scraping, nuisance behaviour, and the like)<br>
         6. To discharge obligations imposed by law<br><br>
         Should these purposes be changed, the change will be kept within a reasonable scope bearing a connection to the purposes preceding it, and will be announced upon the Outpost.
-      </p>
+        </p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Cookies &amp; Analytics</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">COOKIES &AMP; ANALYTICS</span>
       <h2>第5条：Cookie等の利用およびアクセス解析</h2>
+      <div class="ah-body-col">
+        <h3>5.1 Cookieについて</h3>
+        <p>Cookieとは、ウェブサイトの利用時にブラウザに保存される小さなテキストファイルです。ユーザーは、ブラウザの設定によりCookieの受け入れを拒否し、または削除することができます。ただしその場合、当拠点の一部機能（演出の既読管理等）が正常に動作しないことがあります。</p>
+        <p class="ah-en"><b>5.1 On cookies.</b> A cookie is a small text file stored in your browser as you use a website. You may refuse or delete them through your browser settings. Should you do so, some functions of the Outpost — remembering which sequences you have already seen, for instance — may cease to work as intended.</p>
 
-      <h3>5.1 Cookieについて</h3>
-      <p>Cookieとは、ウェブサイトの利用時にブラウザに保存される小さなテキストファイルです。ユーザーは、ブラウザの設定によりCookieの受け入れを拒否し、または削除することができます。ただしその場合、当拠点の一部機能（演出の既読管理等）が正常に動作しないことがあります。</p>
-      <p class="en"><b>5.1 On cookies.</b> A cookie is a small text file stored in your browser as you use a website. You may refuse or delete them through your browser settings. Should you do so, some functions of the Outpost — remembering which sequences you have already seen, for instance — may cease to work as intended.</p>
-
-      <h3>5.2 Google アナリティクス / Google タグマネージャー</h3>
-      <p>当拠点では、アクセス解析のためにGoogle LLCが提供する「Google アナリティクス」および「Google タグマネージャー」を使用しています。これらはCookie等を利用して、個人を特定しない形式でトラフィックデータを収集します。収集されるデータの取り扱いについては、以下をご参照ください。</p>
-      <ul>
+        <h3>5.2 Google アナリティクス / Google タグマネージャー</h3>
+        <p>当拠点では、アクセス解析のためにGoogle LLCが提供する「Google アナリティクス」および「Google タグマネージャー」を使用しています。これらはCookie等を利用して、個人を特定しない形式でトラフィックデータを収集します。収集されるデータの取り扱いについては、以下をご参照ください。</p>
+        <ul>
         <li><a href="https://policies.google.com/privacy?hl=ja" target="_blank" rel="noopener noreferrer">Google プライバシーポリシー</a></li>
         <li><a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener noreferrer">Google のサービスを使用するサイトやアプリから収集した情報の Google による使用</a></li>
         <li><a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener noreferrer">Google アナリティクス オプトアウト アドオン</a></li>
-      </ul>
+        </ul>
 
-      <p class="en"><b>5.2 Google Analytics / Google Tag Manager.</b> The Outpost uses "Google Analytics" and "Google Tag Manager", provided by Google LLC, to analyse access. These employ cookies and similar means to gather traffic data in a form that does not identify individuals. For how that data is handled, please see Google's Privacy Policy, "How Google uses information from sites or apps that use our services", and the Google Analytics Opt-out Browser Add-on, all linked above.</p>
+        <p class="ah-en"><b>5.2 Google Analytics / Google Tag Manager.</b> The Outpost uses "Google Analytics" and "Google Tag Manager", provided by Google LLC, to analyse access. These employ cookies and similar means to gather traffic data in a form that does not identify individuals. For how that data is handled, please see Google's Privacy Policy, "How Google uses information from sites or apps that use our services", and the Google Analytics Opt-out Browser Add-on, all linked above.</p>
 
-      <h3>5.3 外部送信に関する事項</h3>
-      <p>前項の解析ツールおよび第6条の広告サービスの利用に伴い、ユーザーの端末から当該事業者へ、閲覧履歴・端末情報等が送信されます。送信される情報の内容、送信先、利用目的は本条および第6条の記載のとおりです。</p>
-      <p class="en"><b>5.3 Concerning transmission to outside parties.</b> Through the analytics tools above and the advertising services in Article 6, browsing history, device information, and the like are transmitted from the User's device to those providers. What is sent, where it goes, and to what end are as described in this Article and in Article 6.</p>
+        <h3>5.3 外部送信に関する事項</h3>
+        <p>前項の解析ツールおよび第6条の広告サービスの利用に伴い、ユーザーの端末から当該事業者へ、閲覧履歴・端末情報等が送信されます。送信される情報の内容、送信先、利用目的は本条および第6条の記載のとおりです。</p>
+        <p class="ah-en"><b>5.3 Concerning transmission to outside parties.</b> Through the analytics tools above and the advertising services in Article 6, browsing history, device information, and the like are transmitted from the User's device to those providers. What is sent, where it goes, and to what end are as described in this Article and in Article 6.</p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Advertising</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">ADVERTISING</span>
       <h2>第6条：広告配信およびアフィリエイトプログラム</h2>
+      <div class="ah-body-col">
+        <h3>6.1 Google AdSense</h3>
+        <p>当拠点は、第三者配信の広告サービス「Google AdSense」を利用する場合があります。広告配信事業者は、ユーザーの興味に応じた広告（パーソナライズ広告）を表示するため、当拠点や他サイトへのアクセスに関する情報（氏名・住所・メールアドレス・電話番号は含まれません）をCookie等により取得することがあります。</p>
+        <p>パーソナライズ広告は、<a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Googleの広告設定</a>で無効にできます。また、<a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">www.aboutads.info</a>にアクセスすれば、第三者配信事業者のCookieの使用を無効にできます。</p>
+        <p class="ah-en"><b>6.1 Google AdSense.</b> The Outpost may use the third-party advertising service "Google AdSense". In order to display advertisements suited to your interests (personalised advertising), the distributor may acquire, by cookies and similar means, information about your visits to the Outpost and to other sites — this does not include your name, address, e-mail address, or telephone number. Personalised advertising can be turned off at Google's Ad Settings, linked above; cookies used by third-party distributors can likewise be disabled at www.aboutads.info.</p>
 
-      <h3>6.1 Google AdSense</h3>
-      <p>当拠点は、第三者配信の広告サービス「Google AdSense」を利用する場合があります。広告配信事業者は、ユーザーの興味に応じた広告（パーソナライズ広告）を表示するため、当拠点や他サイトへのアクセスに関する情報（氏名・住所・メールアドレス・電話番号は含まれません）をCookie等により取得することがあります。</p>
-      <p>パーソナライズ広告は、<a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer">Googleの広告設定</a>で無効にできます。また、<a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">www.aboutads.info</a>にアクセスすれば、第三者配信事業者のCookieの使用を無効にできます。</p>
-      <p class="en"><b>6.1 Google AdSense.</b> The Outpost may use the third-party advertising service "Google AdSense". In order to display advertisements suited to your interests (personalised advertising), the distributor may acquire, by cookies and similar means, information about your visits to the Outpost and to other sites — this does not include your name, address, e-mail address, or telephone number. Personalised advertising can be turned off at Google's Ad Settings, linked above; cookies used by third-party distributors can likewise be disabled at www.aboutads.info.</p>
+        <h3>6.2 Amazonアソシエイト・プログラム</h3>
+        <p>当機構は、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。</p>
+        <p>Amazonのアソシエイトとして、当機構は適格販売により収入を得ています。得られた収益は、当拠点の維持・運営およびコンテンツ制作（すなわち、箱庭の拡張）の費用に充当されます。</p>
+        <p class="ah-en"><b>6.2 Amazon Associates Programme.</b> The Organization is a participant in the Amazon Associates Programme, an affiliate programme established to provide a means for sites to earn referral fees by advertising and linking to Amazon.co.jp. As an Amazon Associate, the Organization earns from qualifying purchases. What is earned is put toward the upkeep of the Outpost and the making of its content — which is to say, toward the widening of the miniature garden.</p>
 
-      <h3>6.2 Amazonアソシエイト・プログラム</h3>
-      <p>当機構は、Amazon.co.jpを宣伝しリンクすることによってサイトが紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。</p>
-      <p>Amazonのアソシエイトとして、当機構は適格販売により収入を得ています。得られた収益は、当拠点の維持・運営およびコンテンツ制作（すなわち、箱庭の拡張）の費用に充当されます。</p>
-      <p class="en"><b>6.2 Amazon Associates Programme.</b> The Organization is a participant in the Amazon Associates Programme, an affiliate programme established to provide a means for sites to earn referral fees by advertising and linking to Amazon.co.jp. As an Amazon Associate, the Organization earns from qualifying purchases. What is earned is put toward the upkeep of the Outpost and the making of its content — which is to say, toward the widening of the miniature garden.</p>
-
-      <h3>6.3 その他のアフィリエイト</h3>
-      <p>当拠点には、上記のほか各種アフィリエイトプログラムによるリンクが含まれる場合があります。リンクを経由して行われる商品・サービスの購入契約は、ユーザーとリンク先事業者との間で成立するものであり、当機構は当該取引について責任を負いません。</p>
-      <p class="en"><b>6.3 Other affiliate programmes.</b> Besides the above, the Outpost may contain links arising from various affiliate programmes. Any contract of purchase made by way of such a link is formed between the User and the linked provider; the Organization bears no responsibility for that transaction.</p>
+        <h3>6.3 その他のアフィリエイト</h3>
+        <p>当拠点には、上記のほか各種アフィリエイトプログラムによるリンクが含まれる場合があります。リンクを経由して行われる商品・サービスの購入契約は、ユーザーとリンク先事業者との間で成立するものであり、当機構は当該取引について責任を負いません。</p>
+        <p class="ah-en"><b>6.3 Other affiliate programmes.</b> Besides the above, the Outpost may contain links arising from various affiliate programmes. Any contract of purchase made by way of such a link is formed between the User and the linked provider; the Organization bears no responsibility for that transaction.</p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Third-Party Disclosure</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">THIRD-PARTY DISCLOSURE</span>
       <h2>第7条：第三者提供の制限</h2>
-      <p>当機構は、次の場合を除き、あらかじめユーザーの同意を得ることなく、個人情報を第三者に提供しません。</p>
-      <ol>
+      <div class="ah-body-col">
+        <p>当機構は、次の場合を除き、あらかじめユーザーの同意を得ることなく、個人情報を第三者に提供しません。</p>
+        <ol>
         <li>法令に基づく場合</li>
         <li>人の生命、身体または財産の保護のために必要がある場合であって、本人の同意を得ることが困難であるとき</li>
         <li>公衆衛生の向上または児童の健全な育成の推進のために特に必要がある場合であって、本人の同意を得ることが困難であるとき</li>
         <li>国の機関もしくは地方公共団体またはその委託を受けた者が法令の定める事務を遂行することに対して協力する必要がある場合</li>
-      </ol>
-      <p>いかなる場合においても、当機構がユーザーの個人情報を第三者に売却することはありません。</p>
-      <p class="en">
+        </ol>
+        <p>いかなる場合においても、当機構がユーザーの個人情報を第三者に売却することはありません。</p>
+        <p class="ah-en">
         Save in the following cases, the Organization does not provide personal information to a third party without first obtaining the User's consent:<br>
         1. Where required by law<br>
         2. Where necessary to protect a person's life, body, or property, and consent is difficult to obtain<br>
         3. Where particularly necessary for improving public health or promoting the sound upbringing of children, and consent is difficult to obtain<br>
         4. Where cooperation is needed with a national or local government body, or one entrusted by them, in carrying out duties prescribed by law<br><br>
         Under no circumstances does the Organization sell a User's personal information to anyone.
-      </p>
+        </p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Security</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">SECURITY</span>
       <h2>第8条：安全管理措置および委託</h2>
-      <p>当機構は、取り扱う個人情報の漏えい、滅失または毀損の防止その他の安全管理のために、必要かつ適切な措置を講じます。当拠点の通信はTLSにより暗号化されています。</p>
-      <p>個人情報の取り扱いの全部または一部を外部（ホスティング事業者、決済事業者等）に委託する場合は、適切な委託先を選定し、必要な監督を行います。</p>
-      <p class="en">
+      <div class="ah-body-col">
+        <p>当機構は、取り扱う個人情報の漏えい、滅失または毀損の防止その他の安全管理のために、必要かつ適切な措置を講じます。当拠点の通信はTLSにより暗号化されています。</p>
+        <p>個人情報の取り扱いの全部または一部を外部（ホスティング事業者、決済事業者等）に委託する場合は、適切な委託先を選定し、必要な監督を行います。</p>
+        <p class="ah-en">
         The Organization takes such measures as are necessary and appropriate to prevent the leakage, loss, or damage of the personal information it handles, and to keep it otherwise secure. Communication with the Outpost is encrypted by TLS.<br><br>
         Where the handling of personal information is entrusted in whole or in part to an outside party — a hosting provider, a payment provider, and so forth — the Organization selects that party with care and exercises the necessary oversight.
-      </p>
+        </p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Retention</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">RETENTION</span>
       <h2>第9条：保有期間</h2>
-      <p>当機構は、取得した個人情報を、利用目的の達成に必要な期間に限り保有し、当該期間の経過後は、法令上の保存義務がある場合を除き、遅滞なく消去または匿名化します。</p>
-      <p class="en">The Organization retains the personal information it has acquired only for as long as the purpose of use requires. Once that period has passed, it is erased or rendered anonymous without delay, unless the law obliges the Organization to keep it.</p>
+      <div class="ah-body-col">
+        <p>当機構は、取得した個人情報を、利用目的の達成に必要な期間に限り保有し、当該期間の経過後は、法令上の保存義務がある場合を除き、遅滞なく消去または匿名化します。</p>
+        <p class="ah-en">The Organization retains the personal information it has acquired only for as long as the purpose of use requires. Once that period has passed, it is erased or rendered anonymous without delay, unless the law obliges the Organization to keep it.</p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Your Rights</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">YOUR RIGHTS</span>
       <h2>第10条：開示、訂正、利用停止等の請求</h2>
-      <p>ユーザーは、当機構が保有する自己の個人情報について、開示、訂正・追加・削除、利用停止・消去、第三者提供の停止を請求することができます。請求を行う場合は、第2条に定める連絡窓口までお申し出ください。</p>
-      <p>当機構は、請求者が本人であることを確認のうえ、法令の定めに従い、合理的な期間内に対応します。なお、法令上当機構が対応義務を負わない場合は、その旨を通知します。</p>
-      <p class="en">
+      <div class="ah-body-col">
+        <p>ユーザーは、当機構が保有する自己の個人情報について、開示、訂正・追加・削除、利用停止・消去、第三者提供の停止を請求することができます。請求を行う場合は、第2条に定める連絡窓口までお申し出ください。</p>
+        <p>当機構は、請求者が本人であることを確認のうえ、法令の定めに従い、合理的な期間内に対応します。なお、法令上当機構が対応義務を負わない場合は、その旨を通知します。</p>
+        <p class="ah-en">
         With respect to the personal information the Organization holds about them, the User may request disclosure; correction, addition, or deletion; cessation of use or erasure; and cessation of provision to third parties. To make such a request, please approach the point of contact set out in Article 2.<br><br>
         Having confirmed that the person making the request is who they say they are, the Organization will respond within a reasonable period and in accordance with the law. Where the law places the Organization under no obligation to act, it will say so.
-      </p>
+        </p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Minors</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">MINORS</span>
       <h2>第11条：未成年者の利用</h2>
-      <p>未成年のユーザーが個人情報を提供する場合、または有料コンテンツを購入する場合は、事前に親権者等の法定代理人の同意を得たうえで行ってください。</p>
-      <p class="en">Where a User who is a minor provides personal information or purchases paid content, please first obtain the consent of a parent or other legal representative.</p>
+      <div class="ah-body-col">
+        <p>未成年のユーザーが個人情報を提供する場合、または有料コンテンツを購入する場合は、事前に親権者等の法定代理人の同意を得たうえで行ってください。</p>
+        <p class="ah-en">Where a User who is a minor provides personal information or purchases paid content, please first obtain the consent of a parent or other legal representative.</p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Disclaimer</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">DISCLAIMER</span>
       <h2>第12条：免責事項</h2>
-      <p>当拠点に掲載される情報については正確性の確保に努めていますが、その完全性・最新性・有用性を保証するものではありません。当拠点はフィクション（創作）を含み、実在の人物・団体・事件・次元とは関係ありません。</p>
-      <p>当拠点の利用または利用不能により生じたいかなる損害についても、当機構の故意または重過失による場合を除き、当機構は責任を負いません。リンク先の外部サイトにおける情報の取り扱いについては、各サイトのプライバシーポリシーをご確認ください。</p>
-      <p class="en">
+      <div class="ah-body-col">
+        <p>当拠点に掲載される情報については正確性の確保に努めていますが、その完全性・最新性・有用性を保証するものではありません。当拠点はフィクション（創作）を含み、実在の人物・団体・事件・次元とは関係ありません。</p>
+        <p>当拠点の利用または利用不能により生じたいかなる損害についても、当機構の故意または重過失による場合を除き、当機構は責任を負いません。リンク先の外部サイトにおける情報の取り扱いについては、各サイトのプライバシーポリシーをご確認ください。</p>
+        <p class="ah-en">
         While the Organization endeavours to keep the information published on the Outpost accurate, it does not guarantee that information to be complete, current, or useful. The Outpost contains fiction, and bears no relation to any actual person, body, incident, or dimension.<br><br>
         The Organization bears no responsibility for any damage arising from the use of the Outpost, or from being unable to use it, save where such damage is caused by the Organization's intent or gross negligence. As for how information is handled on external sites reached by link, please consult the privacy policy of each.
-      </p>
+        </p>
+        </section>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Revision</div>
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">REVISION</span>
       <h2>第13条：本ポリシーの改訂</h2>
-      <p>当機構は、法令の改正、社会情勢の変化、または当拠点の機能追加に応じて、本ポリシーを改訂することがあります。重要な変更を行う場合は、当拠点上でわかりやすく告知します。改訂後のポリシーは、当拠点に掲載された時点から効力を生じます。</p>
-      <p class="en">The Organization may revise this Policy as the law is amended, as circumstances shift, or as functions are added to the Outpost. Where a change of consequence is made, notice will be given plainly upon the Outpost. A revised Policy takes effect from the moment it is posted there.</p>
-      <p class="doc-number">制定：2024.05.22 ／ 最終改訂：2026.07.16</p>
+      <div class="ah-body-col">
+        <p>当機構は、法令の改正、社会情勢の変化、または当拠点の機能追加に応じて、本ポリシーを改訂することがあります。重要な変更を行う場合は、当拠点上でわかりやすく告知します。改訂後のポリシーは、当拠点に掲載された時点から効力を生じます。</p>
+        <p class="ah-en">The Organization may revise this Policy as the law is amended, as circumstances shift, or as functions are added to the Outpost. Where a change of consequence is made, notice will be given plainly upon the Outpost. A revised Policy takes effect from the moment it is posted there.</p>
+        <p class="ah-sig">制定：2024.05.22 ／ 最終改訂：2026.07.16</p>
+        </section>
+      </div>
     </section>
 
   </main>
 
-  <div id="footer-container"></div>
+  <!-- ══ フッター ══ -->
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="terms.html">利用規約</a>
+        <a href="404.html">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
 
-  <script src="js/main.js"></script>
+</div>
+
+<script src="assets/ah-site.js"></script>
 </body>
 </html>

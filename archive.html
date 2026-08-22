@@ -11,6 +11,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <!-- 共通ヘッダー・フッター用。body に ah-body を付けていないので
+       地色・本文タイポは css/style.css のまま。<main> 内部には影響しない。 -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Noto+Serif+JP:wght@300&family=JetBrains+Mono:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/ah-tokens.css" />
+  <link rel="stylesheet" href="assets/ah-common.css" />
+  <style>
+    /* 計器レールは archive が全幅レイアウトのため置かない。
+       ヘッダー・フッターだけが新デザインになる。 */
+    .ah-site-head{ margin:-20px -20px 0 }   /* body の padding:20px を打ち消す */
+    .ah-site-foot{ margin:clamp(50px,8vw,96px) -20px -20px }
+  </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
      crossorigin="anonymous"></script>
 </head>
@@ -18,7 +29,17 @@
 
   <canvas id="particle-canvas"></canvas>
 
-  <div id="header"></div>
+  <!-- ══ ヘッダー（案B共通） ══ -->
+  <header class="ah-site-head">
+    <div class="ah-mark"><a href="index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="about.html">About</a>
+      <a href="recommend.html">TopPicks</a>
+      <a href="nexus.html">Nexus</a>
+      <a href="archive.html" class="ah-here" aria-current="page">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+    </nav>
+  </header>
 
   <main class="archive-main">
     
@@ -688,10 +709,29 @@
     </div>
   </div>
 
-  <div id="footer-container"></div>
+  <!-- ══ フッター（案B共通） ══ -->
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="terms.html">利用規約</a>
+        <a href="404.html">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
 
   <script src="js/particles.js"></script>
-  <script src="js/main.js"></script>
   <script src="js/archive.js"></script>
+  <script src="assets/ah-site.js"></script>
 </body>
 </html>
