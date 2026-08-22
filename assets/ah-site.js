@@ -3,6 +3,7 @@
 
    - 背景の星（canvas#ah-stars）
    - HUD の実時刻（#ah-clock）
+   - 最終同期日（#ah-sync）
    - フッターのセッションID（#ah-session-id）
    - A.R.C.A. TERMINAL の起動シーケンス（#ah-boot）
 
@@ -81,6 +82,14 @@
     setInterval(tick, 1000);
   }
 
+  /* ── 最終同期日（#ah-sync） ───────────────────────── */
+  function initSync() {
+    var el = document.getElementById('ah-sync');
+    if (!el) return;
+    var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); };
+    el.textContent = d.getFullYear() + '.' + p(d.getMonth() + 1) + '.' + p(d.getDate());
+  }
+
   /* ── セッションID ─────────────────────────────────── */
   function initSession() {
     var el = document.getElementById('ah-session-id');
@@ -127,6 +136,7 @@
   function boot() {
     initStars();
     initClock();
+    initSync();
     initSession();
     initBoot();
   }
