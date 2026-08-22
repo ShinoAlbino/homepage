@@ -5,3 +5,6 @@
 # リポジトリ全体が配信されるため、コミットすると公開されてしまう
 lab/hunting/docs/
 lab/hunting/examination/docs/
+
+# リメイクの指示書・デザインモック（公開対象ではない）
+design/

@@ -1,0 +1,104 @@
+/* ============================================================
+   ArcaHortus / COMMON SCRIPT  (案B: DIMENSIONAL SECTION)
+
+   - 背景の星（canvas#ah-stars）
+   - HUD の実時刻（#ah-clock）
+   - フッターのセッションID（#ah-session-id）
+
+   いずれも対象要素が無いページでは何もしない。
+   prefers-reduced-motion: reduce の場合、星は流れず明滅もしない。
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── 星 ───────────────────────────────────────────── */
+  function initStars() {
+    var cv = document.getElementById('ah-stars');
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d');
+    var stars = [], w = 0, h = 0, dpr = 1;
+
+    function build() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = cv.clientWidth;
+      h = cv.clientHeight;
+      if (!w || !h) return;
+      cv.width = w * dpr;
+      cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.round(w * h / 11000);
+      stars = [];
+      for (var i = 0; i < n; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1 + 0.22,
+          a: Math.random() * 0.45 + 0.1,
+          s: Math.random() * 0.0008 + 0.0002,
+          p: Math.random() * 6.28,
+          d: Math.random() * 0.012 + 0.003
+        });
+      }
+    }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        var a = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * s.s + s.p));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, 6.2832);
+        ctx.fillStyle = 'rgba(192,222,238,' + a.toFixed(3) + ')';
+        ctx.fill();
+        if (!reduce) { s.y += s.d; if (s.y > h) s.y = -2; }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    build();
+    requestAnimationFrame(draw);
+
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(build, 180);
+    });
+  }
+
+  /* ── 実時刻 ───────────────────────────────────────── */
+  function initClock() {
+    var el = document.getElementById('ah-clock');
+    if (!el) return;
+    var p = function (n) { return String(n).padStart(2, '0'); };
+    function tick() {
+      var d = new Date();
+      el.textContent = p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  /* ── セッションID ─────────────────────────────────── */
+  function initSession() {
+    var el = document.getElementById('ah-session-id');
+    if (!el) return;
+    var hex = function () {
+      return Math.floor(Math.random() * 0xffff).toString(16).toUpperCase().padStart(4, '0');
+    };
+    el.textContent = 'AH-' + hex() + '-' + hex();
+  }
+
+  function boot() {
+    initStars();
+    initClock();
+    initSession();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();

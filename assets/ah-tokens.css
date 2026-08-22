@@ -1,0 +1,46 @@
+/* ============================================================
+   ArcaHortus / DESIGN TOKENS  (案B: DIMENSIONAL SECTION)
+   ここでは変数の定義だけを行う。見た目は ah-common.css 側。
+   ============================================================ */
+
+:root{
+  /* ── 地色（青みを持たせた黒。純グレーは使わない） ── */
+  --void:#05070c;        /* ページ地 */
+  --deep:#080c14;        /* 一段沈んだ面 */
+  --surface:#0b1019;     /* パネル */
+  --surface-2:#0f1622;   /* パネル（ホバー／強調） */
+
+  /* ── 罫線 ── */
+  --line:#1a2432;        /* 見える罫線 */
+  --line-soft:#121a26;   /* 消え入る罫線（既定はこちら） */
+
+  /* ── アクセント ── */
+  --ice:#a7dcec;         /* 主アクセント。リンク／発光／強調 */
+  --ice-dim:#4f8ea6;     /* ラベル／副次 */
+  --ice-deep:#1b3f4f;    /* 枠線／塗りの下地 */
+
+  /* ── 意味色（アクセントとは別系統。装飾に使わない） ── */
+  --brass:#c6a662;       /* 機密・権限（LV.4 など） */
+  --breach:#b8463c;      /* 侵蝕・警告（BREACHES / NOTICE / EXP） */
+  --verdant:#6fbf8f;     /* 正常・開放（OPEN / SECURE） */
+
+  /* ── 文字 ── */
+  --text:#c7d2dd;
+  --text-strong:#e9f2f7;
+  --muted:#6c7b8c;
+  --faint:#3d4a58;       /* 装飾ラベル専用。読ませる文には使わない */
+
+  /* ── 書体 ── */
+  --serif-en:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --serif-jp:"Noto Serif JP",Yu Mincho,"Hiragino Mincho ProN",serif;
+  --sans-jp:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  /* ── レイアウト ── */
+  --rail:78px;                      /* 左計器レールの幅 */
+  --gutter:clamp(20px,4vw,56px);
+}
+
+@media (max-width:640px){
+  :root{ --rail:0px; }
+}

@@ -1,0 +1,309 @@
+/* ============================================================
+   ArcaHortus / COMMON  (案B: DIMENSIONAL SECTION)
+
+   すべてのクラスに ah- を付けている。
+   archive.html の <main> 内に .doc-id / .en / .page-header / .section-tag が
+   実在し、無印だと直撃で衝突するため（指示書 §0-3）。
+
+   ページ地・本文タイポは body.ah-body にスコープしてある。
+   archive.html は ah-body を付けないので、既存の見た目が変わらない。
+   ============================================================ */
+
+/* ── 基本（新デザイン適用ページのみ） ───────────────────── */
+body.ah-body,
+body.ah-body *,
+body.ah-body *::before,
+body.ah-body *::after{ box-sizing:border-box }
+
+html{ -webkit-text-size-adjust:100% }
+
+body.ah-body{
+  margin:0;
+  background:var(--void);
+  color:var(--text);
+  font-family:var(--sans-jp);
+  font-weight:300;
+  font-size:15px;
+  line-height:1.9;
+  letter-spacing:.02em;
+  overflow-x:hidden;
+}
+body.ah-body a{ color:inherit; text-decoration:none }
+
+/* 共通パーツは単体で成立させる（archive など ah-body でない地に置いても崩れないように） */
+.ah-rail,.ah-rail *,
+.ah-site-head,.ah-site-head *,
+.ah-site-foot,.ah-site-foot *,
+.ah-bg,.ah-bg *{ box-sizing:border-box }
+
+:focus-visible{ outline:1px solid var(--ice); outline-offset:3px }
+
+/* ── 背景（4層） ─────────────────────────────────────── */
+.ah-bg{ position:fixed; inset:0; z-index:0; pointer-events:none }
+.ah-bg #ah-stars{ position:absolute; inset:0; width:100%; height:100% }
+.ah-bg-veil{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(85% 60% at 22% 18%, rgba(30,78,98,.28) 0%, rgba(5,7,12,0) 60%),
+    radial-gradient(70% 60% at 92% 88%, rgba(60,48,28,.16) 0%, rgba(5,7,12,0) 60%);
+}
+.ah-bg-section{
+  position:absolute; inset:0; opacity:.5;
+  background-image:linear-gradient(to bottom, rgba(150,200,220,.05) 1px, transparent 1px);
+  background-size:100% 7px;
+  mask-image:linear-gradient(to bottom, #000 0%, transparent 55%);
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, transparent 55%);
+}
+.ah-bg-tick{
+  position:absolute; left:0; right:0; top:0; bottom:0;
+  background-image:linear-gradient(to right, rgba(150,200,220,.05) 1px, transparent 1px);
+  background-size:120px 100%; opacity:.6;
+}
+
+/* ── 左計器レール ───────────────────────────────────── */
+.ah-rail{
+  position:fixed; left:0; top:0; bottom:0; width:var(--rail); z-index:35;
+  border-right:1px solid var(--line-soft);
+  background:linear-gradient(to bottom, rgba(8,12,20,.94), rgba(5,7,12,.9));
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+  padding:22px 0 18px;
+}
+.ah-rail-glyph{ width:26px; opacity:.85 }
+.ah-rail-vert{
+  writing-mode:vertical-rl; font-family:var(--mono); font-size:9.5px; letter-spacing:.42em;
+  color:var(--faint); text-transform:uppercase;
+}
+.ah-rail-lamps{ display:flex; flex-direction:column; gap:9px; align-items:center }
+.ah-rail-lamps i{ width:5px; height:5px; border-radius:50%; background:var(--faint) }
+.ah-rail-lamps i.ah-on{
+  background:var(--verdant); box-shadow:0 0 7px var(--verdant);
+  animation:ah-pulse 3.4s ease-in-out infinite;
+}
+.ah-rail-lamps i.ah-warn{ background:var(--brass); box-shadow:0 0 7px var(--brass) }
+@keyframes ah-pulse{ 0%,100%{opacity:.35} 50%{opacity:1} }
+
+/* ── 本体の器 ───────────────────────────────────────── */
+.ah-wrap{ position:relative; z-index:1; margin-left:var(--rail) }
+.ah-shell{ width:min(1180px,100% - var(--gutter)*2); margin-inline:auto }
+
+/* ── ヘッダー ───────────────────────────────────────── */
+.ah-site-head{
+  position:sticky; top:0; z-index:30;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:20px; padding:14px var(--gutter);
+  border-bottom:1px solid var(--line-soft);
+  background:linear-gradient(to bottom, rgba(5,7,12,.94), rgba(5,7,12,.6));
+  backdrop-filter:blur(9px); -webkit-backdrop-filter:blur(9px);
+}
+.ah-mark a{ color:inherit; text-decoration:none }
+.ah-mark b{ font-family:var(--serif-en); font-weight:500; font-size:22px; letter-spacing:.05em; color:var(--text-strong) }
+.ah-mark span{ margin-left:10px; font-family:var(--mono); font-size:9px; letter-spacing:.3em; color:var(--faint) }
+.ah-site-nav{ display:flex; gap:2px; flex-wrap:wrap }
+.ah-site-nav a{
+  padding:7px 12px; font-family:var(--mono); font-size:11px; letter-spacing:.15em;
+  color:var(--muted); text-decoration:none; border:1px solid transparent; transition:.35s ease;
+}
+.ah-site-nav a:hover{ color:var(--ice); border-color:var(--ice-deep); background:rgba(27,63,79,.2) }
+.ah-site-nav a.ah-here{ color:var(--text-strong); border-color:var(--ice-deep); background:rgba(27,63,79,.3) }
+.ah-tag{ margin-left:6px; padding:1px 5px; font-size:8.5px; letter-spacing:.13em; border:1px solid currentColor }
+.ah-t-brass{ color:var(--brass) }
+.ah-t-verdant{ color:var(--verdant) }
+
+/* ── パンくず ───────────────────────────────────────── */
+.ah-crumb{ padding:24px var(--gutter) 0; font-family:var(--mono); font-size:10px; letter-spacing:.2em; color:var(--faint) }
+.ah-crumb a{ color:inherit; text-decoration:none }
+.ah-crumb a:hover{ color:var(--ice-dim) }
+
+/* ── ページ見出し（左寄せ・断面型） ─────────────────── */
+.ah-doc-head{ padding:clamp(34px,6vw,62px) 0 clamp(24px,3vw,36px) }
+.ah-doc-id{
+  margin:0; display:flex; align-items:center; gap:12px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.3em; color:var(--ice-dim); text-transform:uppercase;
+}
+.ah-doc-id::before{ content:""; width:46px; height:1px; background:var(--ice-dim); flex:none }
+.ah-doc-jp{
+  margin:20px 0 0; font-family:var(--serif-jp); font-weight:300;
+  font-size:clamp(22px,4vw,34px); letter-spacing:.22em; color:var(--text-strong);
+  text-shadow:0 0 30px rgba(122,196,222,.18);
+}
+.ah-doc-en{
+  margin:10px 0 0; font-family:var(--serif-en); font-weight:300; font-style:italic;
+  font-size:clamp(17px,2.6vw,25px); letter-spacing:.04em; color:var(--ice);
+}
+.ah-doc-note{
+  margin:20px 0 0; max-width:52ch; font-size:13px; color:var(--muted);
+  padding-left:16px; border-left:1px solid var(--line);
+}
+
+/* ── メタ帯 ─────────────────────────────────────────── */
+.ah-meta{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  border:1px solid var(--line-soft); background:rgba(11,16,25,.72); margin-top:clamp(24px,3vw,34px);
+}
+.ah-meta > div{
+  padding:13px 16px; border-right:1px solid var(--line-soft);
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; color:var(--faint);
+}
+.ah-meta > div:last-child{ border-right:0 }
+.ah-meta b{
+  display:block; margin-top:6px; font-size:12.5px; letter-spacing:.1em; font-weight:500;
+  color:var(--text); font-variant-numeric:tabular-nums;
+}
+
+/* 意味色（値の状態表示にのみ使う） */
+.ah-v-ok{ color:var(--verdant) }
+.ah-v-warn{ color:var(--brass) }
+.ah-v-bad{ color:var(--breach) }
+.ah-v-ice{ color:var(--ice) }
+
+/* ── 墨消し ─────────────────────────────────────────── */
+.ah-redact{
+  display:inline-block; min-width:64px; height:11px; vertical-align:-1px;
+  background:repeating-linear-gradient(90deg,#141d29 0 3px,#101825 3px 6px);
+  border:1px solid #1c2736;
+}
+
+/* ── 実測バー ───────────────────────────────────────── */
+.ah-bar{ display:block; margin-top:7px; height:2px; background:#141d29; position:relative; overflow:hidden }
+.ah-bar i{ position:absolute; left:0; top:0; bottom:0; background:var(--ice-dim); box-shadow:0 0 8px var(--ice-dim) }
+
+/* ── 記録パネル ─────────────────────────────────────── */
+.ah-record{
+  position:relative; margin-top:clamp(26px,4vw,40px);
+  padding:clamp(30px,4vw,44px) clamp(22px,4vw,42px);
+  border:1px solid var(--line-soft);
+  background:linear-gradient(to bottom right, rgba(15,22,34,.68), rgba(8,12,20,.55));
+  display:grid; grid-template-columns:1fr; gap:clamp(20px,3vw,30px) clamp(26px,4vw,52px); align-items:start;
+}
+@media (min-width:900px){
+  .ah-record{ grid-template-columns:210px minmax(0,1fr) }
+  .ah-record > h2{ position:sticky; top:78px }
+}
+.ah-corner{ position:absolute; width:11px; height:11px; border:1px solid var(--ice-deep) }
+.ah-c-tl{ top:7px; left:7px; border-right:0; border-bottom:0 }
+.ah-c-br{ bottom:7px; right:7px; border-left:0; border-top:0 }
+.ah-chip{
+  position:absolute; top:-9px; left:clamp(22px,4vw,42px); padding:2px 10px; background:var(--void);
+  border:1px solid var(--ice-deep); font-family:var(--mono); font-size:9px; letter-spacing:.24em; color:var(--ice);
+}
+.ah-record h2{
+  margin:0; font-family:var(--serif-jp); font-weight:300;
+  font-size:clamp(17px,2.4vw,21px); letter-spacing:.14em; line-height:1.7; color:var(--text-strong);
+}
+.ah-record h2 em{
+  display:block; margin-top:7px; font-family:var(--serif-en); font-style:italic; font-weight:300;
+  font-size:.86em; letter-spacing:.04em; color:var(--ice-dim);
+}
+.ah-body-col{ max-width:62ch }
+.ah-record p{ margin:0 0 1.1em }
+.ah-record p:last-child{ margin-bottom:0 }
+
+/* 英訳ブロック */
+.ah-en{
+  margin-top:20px; padding-top:18px; border-top:1px dashed rgba(26,36,50,.9);
+  font-family:var(--serif-en); font-style:italic; font-size:14px; line-height:1.95; color:var(--muted);
+}
+
+/* ── 番号付きリスト（事業領域など） ─────────────────── */
+.ah-ops{ margin:0; padding:0; border-top:1px solid var(--line-soft) }
+.ah-ops li{
+  list-style:none; display:grid; grid-template-columns:56px 1fr; gap:clamp(12px,2vw,24px);
+  padding:20px 4px; border-bottom:1px solid var(--line-soft);
+}
+.ah-ops .ah-n{
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--ice-dim);
+  font-variant-numeric:tabular-nums; padding-top:3px;
+}
+.ah-ops h3{ margin:0; font-family:var(--sans-jp); font-weight:500; font-size:14.5px; letter-spacing:.09em; color:var(--text-strong) }
+.ah-ops p{ margin:7px 0 0; font-size:13px; color:var(--muted) }
+.ah-ops .ah-en-line{ margin:8px 0 0; font-family:var(--serif-en); font-style:italic; font-size:13px; color:var(--muted) }
+
+/* ── 定義テーブル ───────────────────────────────────── */
+.ah-spec{ margin-top:clamp(26px,4vw,40px); border:1px solid var(--line-soft); background:rgba(11,16,25,.6) }
+.ah-spec dl{ margin:0; display:grid; grid-template-columns:160px 1fr }
+.ah-spec dt{
+  padding:14px 18px; border-bottom:1px solid var(--line-soft); border-right:1px solid var(--line-soft);
+  font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--ice-dim);
+}
+.ah-spec dd{ margin:0; padding:14px 18px; border-bottom:1px solid var(--line-soft); font-size:13.5px }
+.ah-spec dl > :nth-last-child(-n+2){ border-bottom:0 }
+
+/* ── 汎用グループ見出し ─────────────────────────────── */
+.ah-grp{ margin-top:clamp(46px,7vw,80px) }
+.ah-grp-head{ display:flex; align-items:baseline; gap:16px; padding-bottom:14px; border-bottom:1px solid var(--line-soft) }
+.ah-grp-num{ font-family:var(--mono); font-size:11px; letter-spacing:.18em; color:var(--ice-dim); font-variant-numeric:tabular-nums }
+.ah-grp-title{ margin:0; font-family:var(--serif-jp); font-weight:300; font-size:clamp(16px,2.4vw,20px); letter-spacing:.2em; color:var(--text-strong) }
+.ah-grp-en{ margin-left:auto; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--faint) }
+
+/* ── セクション見出し ───────────────────────────────── */
+.ah-sec{ padding:clamp(76px,11vw,132px) 0 }
+.ah-sec-head{
+  display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  padding-bottom:18px; border-bottom:1px solid var(--line-soft); margin-bottom:clamp(30px,5vw,50px);
+}
+.ah-sec-label{ margin:0; font-family:var(--mono); font-size:10px; letter-spacing:.4em; color:var(--ice-dim); text-transform:uppercase }
+.ah-sec-title{ margin:10px 0 0; font-family:var(--serif-jp); font-weight:300; font-size:clamp(19px,3vw,27px); letter-spacing:.22em; color:var(--text-strong) }
+.ah-sec-note{ margin:0; font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--faint) }
+
+/* ── ボタン ─────────────────────────────────────────── */
+.ah-btn{
+  position:relative; display:inline-block; padding:12px 26px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.2em;
+  border:1px solid var(--ice-deep); color:var(--ice); background:rgba(27,63,79,.16);
+  transition:.4s cubic-bezier(.2,.7,.3,1);
+}
+.ah-btn:hover{ background:rgba(27,63,79,.42); border-color:var(--ice-dim); letter-spacing:.26em }
+.ah-btn.ah-ghost{ border-color:var(--line); color:var(--muted); background:transparent }
+.ah-btn.ah-ghost:hover{ color:var(--text); border-color:var(--faint); background:rgba(15,22,34,.6) }
+
+/* ── 提携・協力機関 ─────────────────────────────────── */
+.ah-orgs{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft) }
+.ah-org{ display:flex; align-items:center; gap:12px; padding:16px; background:var(--surface); transition:background .4s ease }
+.ah-org:hover{ background:var(--surface-2) }
+.ah-org-sig{ flex:none; width:25px; height:25px; display:grid; place-items:center; border:1px solid var(--line); overflow:hidden }
+.ah-org-sig img{ width:16px; height:16px; object-fit:contain }
+.ah-org b{ display:block; font-weight:400; font-size:11.5px; letter-spacing:.05em; color:var(--text) }
+.ah-org-en{ display:block; font-family:var(--mono); font-size:8.5px; letter-spacing:.15em; color:var(--faint); margin-top:3px }
+
+/* ── フッター ───────────────────────────────────────── */
+.ah-site-foot{
+  margin-top:clamp(50px,8vw,96px); border-top:1px solid var(--line-soft);
+  background:linear-gradient(to bottom, rgba(7,10,16,.7), rgba(3,5,9,.96));
+  padding:clamp(40px,6vw,66px) var(--gutter) 30px;
+}
+.ah-foot-grid{
+  width:min(1180px,100%); margin-inline:auto; display:flex; justify-content:space-between;
+  gap:26px; flex-wrap:wrap; align-items:flex-start;
+}
+.ah-foot-mark{ font-family:var(--serif-en); font-weight:500; font-size:21px; letter-spacing:.06em; color:var(--text-strong) }
+.ah-foot-credit{ margin:8px 0 0; font-size:11px; color:var(--muted) }
+.ah-foot-links{ display:flex; gap:20px; flex-wrap:wrap; font-size:12px; color:var(--muted) }
+.ah-foot-links a{ color:inherit; text-decoration:none }
+.ah-foot-links a:hover{ color:var(--ice) }
+.ah-foot-sess{
+  width:min(1180px,100%); margin:26px auto 0; padding-top:16px; border-top:1px solid var(--line-soft);
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--faint);
+  display:flex; gap:16px; flex-wrap:wrap;
+}
+
+/* ── レスポンシブ ───────────────────────────────────── */
+@media (max-width:860px){ .ah-orgs{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:460px){ .ah-orgs{ grid-template-columns:1fr } }
+@media (max-width:820px){
+  .ah-grp-head{ flex-wrap:wrap }
+  .ah-grp-en{ margin-left:0; flex-basis:100% }
+}
+@media (max-width:640px){
+  .ah-rail{ display:none }
+  .ah-site-head{ flex-direction:column; align-items:flex-start; gap:10px }
+  .ah-site-nav{ margin-left:-12px }
+  .ah-spec dl{ grid-template-columns:1fr }
+  .ah-spec dt{ border-right:0; padding-bottom:0; border-bottom:0 }
+  .ah-spec dd{ padding-top:6px }
+}
+
+/* ── モーション停止 ─────────────────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none!important; transition-duration:.01ms!important }
+}
