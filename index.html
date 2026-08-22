@@ -11,9 +11,13 @@
 
   <!-- OGP -->
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Arca Hortus" />
   <meta property="og:title" content="Arca Hortus Dimension Research Organization | 箱庭次元研究機構" />
   <meta property="og:description" content="神秘的な研究機関、箱庭研究所へようこそ。" />
   <meta property="og:image" content="https://arcahortus.com/images/ogp-top.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Arca Hortus Dimension Research Organization" />
   <meta property="og:url" content="https://arcahortus.com/" />
 
   <!-- Twitter -->
@@ -26,8 +30,166 @@
   <link rel="apple-touch-icon" href="images/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+JP:wght@200;300;500&family=Noto+Sans+JP:wght@200;300;400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" />
+  <link rel="stylesheet" href="assets/ah-tokens.css" />
+  <link rel="stylesheet" href="assets/ah-common.css" />
+
+  <style>
+  /* ── TOP 固有 ─────────────────────────────────────── */
+
+  /* ヒーロー（断面） */
+  .ah-hero{
+    min-height:calc(100svh - 56px);
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,42%);
+    align-items:center; gap:clamp(24px,5vw,72px);
+    padding:clamp(50px,8vw,90px) 0 clamp(40px,6vw,70px);
+  }
+  .ah-hero-l{ position:relative }
+  .ah-coord{
+    margin:0; display:flex; align-items:center; gap:12px;
+    font-family:var(--mono); font-size:10px; letter-spacing:.32em; color:var(--ice-dim); text-transform:uppercase;
+  }
+  .ah-coord::before{ content:""; width:46px; height:1px; background:var(--ice-dim); flex:none }
+  .ah-hero-title{
+    margin:22px 0 0; font-family:var(--serif-en); font-weight:300; font-style:italic;
+    font-size:clamp(40px,7.4vw,82px); line-height:1.02; letter-spacing:0; color:var(--text-strong);
+    text-wrap:balance;
+  }
+  .ah-hero-title span{
+    display:block; font-style:normal; font-weight:400; font-size:.42em;
+    letter-spacing:.03em; color:var(--ice); margin-top:.28em;
+  }
+  .ah-hero-jp{
+    margin:26px 0 0; font-family:var(--serif-jp); font-weight:300;
+    font-size:clamp(14px,2vw,19px); letter-spacing:.4em; color:var(--text);
+  }
+  .ah-hero-lead{
+    margin:22px 0 0; max-width:42ch; font-size:13.5px; line-height:2.05; color:var(--muted);
+    padding-left:16px; border-left:1px solid var(--line);
+  }
+  .ah-hero-cta{ margin-top:34px; display:flex; gap:12px; flex-wrap:wrap }
+
+  .ah-hero-r{ position:relative; display:grid; place-items:center; aspect-ratio:1 }
+  .ah-hero-r::before{
+    content:""; position:absolute; inset:6%; border-radius:50%;
+    background:radial-gradient(circle, rgba(90,168,196,.22) 0%, rgba(5,7,12,0) 66%);
+    animation:ah-breathe 12s ease-in-out infinite;
+  }
+  @keyframes ah-breathe{ 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
+  .ah-frame{ position:absolute; inset:0; width:100%; height:100% }
+  .ah-spin-a{ animation:ah-spin 110s linear infinite; transform-origin:50% 50% }
+  .ah-spin-b{ animation:ah-spin 70s linear infinite reverse; transform-origin:50% 50% }
+  @keyframes ah-spin{ to{ transform:rotate(360deg) } }
+  .ah-emblem{
+    position:relative; width:44%; height:auto;
+    filter:drop-shadow(0 0 26px rgba(122,196,222,.3));
+  }
+
+  /* A.R.C.A. TERMINAL（起動シーケンス） */
+  .ah-term{
+    font-family:var(--mono); font-size:11px; letter-spacing:.1em; color:var(--ice-dim);
+    padding:11px 16px; border:1px solid var(--line-soft); border-bottom:0;
+    background:rgba(11,16,25,.72); min-height:2.6em; line-height:1.4;
+  }
+  .ah-term::after{
+    content:"_"; animation:ah-caret 1.2s steps(1) infinite; color:var(--ice);
+  }
+  @keyframes ah-caret{ 0%,50%{opacity:1} 51%,100%{opacity:0} }
+
+  /* HUD帯 */
+  .ah-hud{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    border:1px solid var(--line-soft); background:rgba(11,16,25,.72);
+  }
+  .ah-hud > div{
+    padding:13px 16px; border-right:1px solid var(--line-soft);
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; color:var(--faint);
+  }
+  .ah-hud > div:last-child{ border-right:0 }
+  .ah-hud b{
+    display:block; margin-top:6px; font-size:13px; letter-spacing:.1em; font-weight:500;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ゲートカード */
+  .ah-gates{ display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); gap:14px }
+  @media (min-width:1040px){
+    .ah-gates{ grid-template-columns:repeat(6,1fr) }
+    .ah-gates .ah-gate:nth-child(-n+3){ grid-column:span 2 }   /* 開放3枚 */
+    .ah-gates .ah-gate:nth-child(n+4){ grid-column:span 3 }    /* 制限2枚 */
+  }
+  .ah-gate{
+    position:relative; padding:26px 24px 22px;
+    background:linear-gradient(to bottom right, rgba(15,22,34,.72), rgba(8,12,20,.62));
+    border:1px solid var(--line-soft); overflow:hidden;
+    transition:.45s cubic-bezier(.2,.7,.3,1);
+    display:flex; flex-direction:column; min-height:196px;
+  }
+  .ah-gate::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(135deg, rgba(167,220,236,.09), rgba(167,220,236,0) 42%);
+    opacity:0; transition:opacity .45s ease;
+  }
+  .ah-gate:hover{ border-color:var(--ice-deep); transform:translateY(-3px); box-shadow:0 24px 50px -32px rgba(0,0,0,.95) }
+  .ah-gate:hover::after{ opacity:1 }
+  .ah-gate .ah-corner{ border-color:var(--ice-dim); opacity:0; transition:opacity .45s ease }
+  .ah-gate:hover .ah-corner{ opacity:.9 }
+  .ah-gate-top{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--faint);
+  }
+  .ah-lamp{ display:inline-flex; align-items:center; gap:6px }
+  .ah-lamp i{ width:5px; height:5px; border-radius:50%; background:var(--verdant); box-shadow:0 0 7px var(--verdant) }
+  .ah-lamp.ah-l-warn{ color:var(--brass) }
+  .ah-lamp.ah-l-warn i{ background:var(--brass); box-shadow:0 0 7px var(--brass) }
+  .ah-lamp.ah-l-bad{ color:var(--breach) }
+  .ah-lamp.ah-l-bad i{ background:var(--breach); box-shadow:0 0 7px var(--breach) }
+  .ah-gate h3{
+    margin:20px 0 0; font-family:var(--serif-en); font-weight:400; font-size:29px;
+    letter-spacing:.04em; color:var(--text-strong); line-height:1.15;
+  }
+  .ah-gate h3 em{
+    display:block; margin-top:5px; font-family:var(--serif-jp); font-style:normal; font-weight:300;
+    font-size:12px; letter-spacing:.22em; color:var(--ice-dim);
+  }
+  .ah-gate p{ margin:14px 0 0; font-size:12.5px; line-height:1.85; color:var(--muted) }
+  .ah-gate .ah-go{
+    margin-top:auto; padding-top:18px; font-family:var(--mono); font-size:10px; letter-spacing:.24em;
+    color:var(--ice-dim); display:flex; align-items:center; gap:8px;
+  }
+  .ah-gate .ah-go span{ transition:transform .4s ease }
+  .ah-gate:hover .ah-go span{ transform:translateX(5px) }
+
+  /* 告知 */
+  .ah-notice{
+    display:grid; grid-template-columns:auto 1fr; gap:clamp(16px,3vw,32px); align-items:center;
+    padding:24px clamp(18px,3vw,32px); border:1px solid rgba(184,70,60,.24);
+    background:linear-gradient(to right, rgba(34,13,12,.5), rgba(8,12,20,.5) 70%);
+  }
+  .ah-notice-k{
+    font-family:var(--mono); font-size:10px; letter-spacing:.28em; color:var(--breach);
+    writing-mode:vertical-rl; text-orientation:mixed; padding:2px 0;
+  }
+  .ah-notice p{ margin:0; font-family:var(--mono); font-size:11px; line-height:2.15; letter-spacing:.09em; color:var(--muted) }
+
+  /* 墨消しのホバー開示（現行の data-reveal を維持） */
+  .ah-redact[data-reveal]{ position:relative; cursor:help }
+  .ah-redact[data-reveal]::after{
+    content:attr(data-reveal); position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.1em; white-space:nowrap;
+    color:var(--breach); opacity:0; transition:opacity .4s ease;
+  }
+  .ah-redact[data-reveal]:hover::after{ opacity:.9 }
+
+  @media (max-width:900px){
+    .ah-hero{ grid-template-columns:1fr }
+    .ah-hero-r{ order:-1; width:min(320px,66vw); margin-inline:auto; aspect-ratio:1 }
+  }
+  @media (max-width:640px){
+    .ah-notice{ grid-template-columns:1fr }
+    .ah-notice-k{ writing-mode:horizontal-tb }
+  }
+  </style>
 
   <script type="application/ld+json">
 {
@@ -59,117 +221,220 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body class="ah-body">
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-  <canvas id="particle-canvas"></canvas>
 
-  <!-- ヘッダー読み込み先 -->
-  <div id="header"></div>
-
-    <main class="welcome-section">
-
-<!-- ヒーロー画像＋テキスト -->
-<div class="hero-image fade-in">
-  <img src="images/sample1.png" alt="Hero Image" width="479" height="472">
+<!-- ══ 背景（4層） ══ -->
+<div class="ah-bg" aria-hidden="true">
+  <canvas id="ah-stars"></canvas>
+  <div class="ah-bg-tick"></div>
+  <div class="ah-bg-section"></div>
+  <div class="ah-bg-veil"></div>
 </div>
 
-    <h1>Welcome to...</h1>
-    <p>Arca Hortus Dimension Research Organization</p>
+<!-- ══ 左計器レール ══ -->
+<aside class="ah-rail" aria-hidden="true">
+  <svg class="ah-rail-glyph" viewBox="0 0 120 120" fill="none">
+    <circle cx="60" cy="60" r="54" stroke="#4f8ea6" stroke-width="3"/>
+    <path d="M60 24 L91 42 L91 78 L60 96 L29 78 L29 42 Z" stroke="#a7dcec" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M60 60 L60 96 M60 60 L29 42 M60 60 L91 42" stroke="#a7dcec" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="78" cy="51" r="5.5" fill="#b8463c"/>
+  </svg>
+  <div class="ah-rail-vert">Arca Hortus &nbsp;&middot;&nbsp; Sector ██ &nbsp;&middot;&nbsp; Observation Deck</div>
+  <div class="ah-rail-lamps"><i class="ah-on"></i><i class="ah-on"></i><i class="ah-warn"></i><i></i></div>
+</aside>
 
-    <!-- 次元観測ターミナル -->
-    <div class="terminal-readout fade-in" aria-hidden="true">
-      <div class="terminal-line" id="boot-sequence"></div>
-      <div class="terminal-status">
-        <span class="status-item">DIMENSIONAL STABILITY: <span class="status-ok">97.3%</span></span>
-        <span class="status-item">OBSERVER LINK: <span class="status-ok">SECURE</span></span>
-        <span class="status-item">CONTAINMENT: <span class="status-warn blink">3 BREACHES</span></span>
-        <span class="status-item">MEMETIC AGENT: <span class="redacted">████████</span></span>
+<div class="ah-wrap">
+
+  <!-- ══ ヘッダー ══ -->
+  <header class="ah-site-head">
+    <div class="ah-mark"><a href="index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="about.html">About</a>
+      <a href="recommend.html">TopPicks</a>
+      <a href="nexus.html">Nexus</a>
+      <a href="archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ══ ヒーロー ══ -->
+    <section class="ah-shell ah-hero">
+      <div class="ah-hero-l">
+        <p class="ah-coord">Dimensional Section &nbsp;/&nbsp; X:██ Y:██ Z:0.0</p>
+        <h1 class="ah-hero-title">Welcome to&#8202;…<span>Arca Hortus</span></h1>
+        <p class="ah-hero-jp">箱庭次元研究機構</p>
+        <p class="ah-hero-lead">
+          創作と探究のための小さな次元（Dimension）を構築・記録することを目的とした実験的プロジェクトです。<br>
+          貴方の好奇心は満たされていますか？
+        </p>
+        <div class="ah-hero-cta">
+          <a class="ah-btn" href="about.html">機構概要を見る</a>
+          <a class="ah-btn ah-ghost" href="nexus.html">作品群へ接続</a>
+        </div>
       </div>
-    </div>
 
-    <div class="social-links fade-in">
-      <!--<a href="https://x.com/ShinoAlbino" target="_blank">ShinoTwitter</a>-->
-      <a href="about.html" target="_self">About</a>
-      <a href="recommend.html" target="_self">TopPicks</a>
-      <a href="nexus.html" target="_self">Nexus</a>
-      <a href="archive.html" target="_self" class="link-classified">Archive <span class="clearance-tag">LV.4</span></a>
-      <a href="lab/index.html" target="_self" class="nav-lab">Laboratory <span class="clearance-tag tag-exp">EXP</span></a>
-      <!--<a href="https://youtube.com/your_channel" target="_blank">YouTube</a>-->
-    </div>
+      <div class="ah-hero-r">
+        <svg class="ah-frame" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+          <g class="ah-spin-a">
+            <circle cx="100" cy="100" r="94" stroke="rgba(167,220,236,.14)" stroke-width=".6"/>
+            <circle cx="100" cy="100" r="86" stroke="rgba(167,220,236,.26)" stroke-width=".5" stroke-dasharray="1.5 8"/>
+          </g>
+          <g class="ah-spin-b">
+            <circle cx="100" cy="100" r="72" stroke="rgba(198,166,98,.16)" stroke-width=".6" stroke-dasharray="34 16"/>
+          </g>
+          <g stroke="rgba(167,220,236,.35)" stroke-width=".7">
+            <path d="M100 0v14M100 186v14M0 100h14M186 100h14"/>
+          </g>
+          <path d="M6 100h188" stroke="rgba(167,220,236,.12)" stroke-width=".5" stroke-dasharray="2 6"/>
+        </svg>
+        <img class="ah-emblem" src="images/sample1.png" alt="Arca Hortus 紋章" width="479" height="472" fetchpriority="high">
+      </div>
+    </section>
 
-    <p class="access-notice fade-in">
-      NOTICE: 当領域の閲覧記録は自動的に<span class="redacted" data-reveal="観測局">██████</span>へ送信されます。<br>
-      未認可の深層アクセスは<span class="redacted" data-reveal="物語再構成">████████</span>処分の対象となります。
-    </p>
+    <!-- ══ 次元観測ターミナル ＋ HUD ══ -->
+    <section class="ah-shell" aria-label="次元観測ターミナル">
+      <div class="ah-term" id="ah-boot" aria-hidden="true"></div>
+      <div class="ah-hud">
+        <div>DIMENSIONAL STABILITY<b class="ah-v-ok">97.3%</b><span class="ah-bar"><i style="width:97.3%"></i></span></div>
+        <div>OBSERVER LINK<b class="ah-v-ice">SECURE</b><span class="ah-bar"><i style="width:100%"></i></span></div>
+        <div>CONTAINMENT<b class="ah-v-bad">3 BREACHES</b><span class="ah-bar"><i style="width:22%;background:var(--breach);box-shadow:0 0 8px var(--breach)"></i></span></div>
+        <div>MEMETIC AGENT<b><i class="ah-redact"></i></b><span class="ah-bar"><i style="width:48%;background:var(--brass);box-shadow:0 0 8px var(--brass)"></i></span></div>
+        <div>LOCAL TIME<b class="ah-v-warn" id="ah-clock">--:--:--</b><span class="ah-bar"><i style="width:66%"></i></span></div>
+      </div>
+    </section>
+
+    <!-- ══ 接続端末（ゲートカード） ══ -->
+    <section class="ah-shell ah-sec">
+      <div class="ah-sec-head">
+        <div>
+          <p class="ah-sec-label">Access Terminals</p>
+          <h2 class="ah-sec-title">接続端末</h2>
+        </div>
+        <p class="ah-sec-note">05 GATEWAYS ／ 3 OPEN ／ 2 RESTRICTED</p>
+      </div>
+
+      <div class="ah-gates">
+        <a class="ah-gate" href="about.html">
+          <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+          <div class="ah-gate-top"><span>GATE 00</span><span class="ah-lamp"><i></i>OPEN</span></div>
+          <h3>About<em>機構概要</em></h3>
+          <p>組織憲章、主要事業領域、名称の定義、長期的展望。</p>
+          <div class="ah-go">ACCESS <span>→</span></div>
+        </a>
+
+        <a class="ah-gate" href="recommend.html">
+          <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+          <div class="ah-gate-top"><span>GATE 01</span><span class="ah-lamp"><i></i>OPEN</span></div>
+          <h3>TopPicks<em>推奨品録</em></h3>
+          <p>運営および管理者の生存維持において、高い有用性が認められた物品の記録。</p>
+          <div class="ah-go">ACCESS <span>→</span></div>
+        </a>
+
+        <a class="ah-gate" href="nexus.html">
+          <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+          <div class="ah-gate-top"><span>GATE 02</span><span class="ah-lamp"><i></i>OPEN</span></div>
+          <h3>Nexus<em>外部接続拠点</em></h3>
+          <p>主要作品群、外部通信経路、研究支援への接続。</p>
+          <div class="ah-go">ACCESS <span>→</span></div>
+        </a>
+
+        <a class="ah-gate" href="archive.html">
+          <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+          <div class="ah-gate-top"><span>GATE 03</span><span class="ah-lamp ah-l-warn"><i></i>LV.4</span></div>
+          <h3>Archive<em>記録保管庫</em></h3>
+          <p>収蔵記録の閲覧領域。権限区分 LV.4 以上の照合を要する。</p>
+          <div class="ah-go">ACCESS <span>→</span></div>
+        </a>
+
+        <a class="ah-gate" href="lab/index.html">
+          <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+          <div class="ah-gate-top"><span>GATE 04</span><span class="ah-lamp ah-l-bad"><i></i>EXP</span></div>
+          <h3>Laboratory<em>実験区画</em></h3>
+          <p>試験運用中の観測装置群。挙動は保証されない。</p>
+          <div class="ah-go">ACCESS <span>→</span></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ══ 告知 ══ -->
+    <section class="ah-shell" style="padding-bottom:clamp(60px,9vw,96px)">
+      <div class="ah-notice">
+        <div class="ah-notice-k">▲ NOTICE</div>
+        <p>
+          当領域の閲覧記録は自動的に<i class="ah-redact" style="min-width:104px" data-reveal="観測局"></i>へ送信されます。<br>
+          未認可の深層アクセスは<i class="ah-redact" style="min-width:88px" data-reveal="物語再構成"></i>処分の対象となります。
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ 提携・協力機関 ══ -->
+    <section class="ah-shell" style="padding-bottom:clamp(20px,4vw,40px)">
+      <div class="ah-sec-head" style="margin-bottom:22px">
+        <div>
+          <p class="ah-sec-label">Affiliated Organizations</p>
+          <h2 class="ah-sec-title" style="font-size:clamp(15px,2vw,18px)">提携・協力機関</h2>
+        </div>
+        <p class="ah-sec-note">06 ENTITIES LINKED</p>
+      </div>
+      <div class="ah-orgs">
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-ethics.png" alt="" width="16" height="16"></span>
+          <span><b>箱庭世界倫理委員会</b><span class="ah-org-en">Ethics Committee</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-gna.png" alt="" width="16" height="16"></span>
+          <span><b>Global Narrative Archive</b><span class="ah-org-en">G.N.A Database</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-void.png" alt="" width="16" height="16"></span>
+          <span><b>VOID Tech Industries</b><span class="ah-org-en">Deep Void Research</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-bo.png" alt="" width="16" height="16"></span>
+          <span><b>境界線観測財団</b><span class="ah-org-en">Boundary Observation Foundation</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-shro.png" alt="" width="16" height="16"></span>
+          <span><b>S.H.R.O.S.</b><span class="ah-org-en">S.H.R.O. Strategic Lab</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-acas.png" alt="" width="16" height="16"></span>
+          <span><b>A.C.A.S.</b><span class="ah-org-en">Specialized Tactical Solutions</span></span>
+        </div>
+      </div>
+    </section>
+
   </main>
 
+  <!-- ══ フッター ══ -->
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="terms.html">利用規約</a>
+        <a href="404.html">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
 
-      <section class="affiliates-section">
-    <p class="affiliates-title">AFFILIATED ORGANIZATIONS / 提携・協力機関</p>
-    <div class="affiliates-grid">
-        
-        <div class="affiliate-item">
-            <img src="images/logo-ethics.png" alt="" class="affiliate-logo" width="16" height="16">
-            <div class="affiliate-info">
-                <span class="affiliate-name">箱庭世界倫理委員会</span>
-                <span class="affiliate-en">Ethics Committee</span>
-            </div>
-        </div>
+</div>
 
-        <div class="affiliate-item">
-            <img src="images/logo-gna.png" alt="" class="affiliate-logo" width="16" height="16">
-            <div class="affiliate-info">
-                <span class="affiliate-name">Global Narrative Archive</span>
-                <span class="affiliate-en">G.N.A Database</span>
-            </div>
-        </div>
-
-        <div class="affiliate-item">
-            <img src="images/logo-void.png" alt="" class="affiliate-logo" width="16" height="16">
-            <div class="affiliate-info">
-                <span class="affiliate-name">VOID Tech Industries</span>
-                <span class="affiliate-en">Deep Void Research</span>
-            </div>
-        </div>
-
-        <div class="affiliate-item">
-            <img src="images/logo-bo.png" alt="" class="affiliate-logo" width="16" height="16">
-            <div class="affiliate-info">
-                <span class="affiliate-name">境界線観測財団</span>
-                <span class="affiliate-en">Boundary Observation Foundation</span>
-            </div>
-        </div>
-
-        <div class="affiliate-item">
-            <img src="images/logo-shro.png" alt="" class="affiliate-logo" width="16" height="16">
-            <div class="affiliate-info">
-                <span class="affiliate-name">S.H.R.O.S.</span>
-                <span class="affiliate-en">S.H.R.O. Strategic Lab</span>
-            </div>
-        </div>
-
-        <div class="affiliate-item">
-            <img src="images/logo-acas.png" alt="" class="affiliate-logo" width="16" height="16">
-            <div class="affiliate-info">
-                <span class="affiliate-name">A.C.A.S.</span>
-                <span class="affiliate-en">Specialized Tactical Solutions</span>
-            </div>
-        </div>
-
-        </div>
-</section>
-
-
-  <!-- フッター読み込み先（ここに移動！） -->
-  <div id="footer-container"></div>
-
-  <!-- JS -->
-  <script src="js/particles.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/load-footer.js"></script>
+<script src="assets/ah-site.js"></script>
 </body>
 </html>
-

@@ -4,6 +4,7 @@
    - 背景の星（canvas#ah-stars）
    - HUD の実時刻（#ah-clock）
    - フッターのセッションID（#ah-session-id）
+   - A.R.C.A. TERMINAL の起動シーケンス（#ah-boot）
 
    いずれも対象要素が無いページでは何もしない。
    prefers-reduced-motion: reduce の場合、星は流れず明滅もしない。
@@ -90,10 +91,44 @@
     el.textContent = 'AH-' + hex() + '-' + hex();
   }
 
+  /* ── A.R.C.A. TERMINAL 起動シーケンス ─────────────── */
+  function initBoot() {
+    var line = document.getElementById('ah-boot');
+    if (!line) return;
+
+    var messages = [
+      '> A.R.C.A. TERMINAL v2.1 ... 接続確立',
+      '> 境界線同期中 ... OK',
+      '> 観測者の精神波形を照合 ... 一致',
+      '> ようこそ、既知の観測者。'
+    ];
+
+    if (reduce) {
+      line.textContent = messages[messages.length - 1];
+      return;
+    }
+
+    var msgIndex = 0, charIndex = 0;
+    function type() {
+      var msg = messages[msgIndex];
+      if (charIndex <= msg.length) {
+        line.textContent = msg.slice(0, charIndex);
+        charIndex++;
+        setTimeout(type, 34 + Math.random() * 40);
+      } else if (msgIndex < messages.length - 1) {
+        msgIndex++;
+        charIndex = 0;
+        setTimeout(type, 900);
+      }
+    }
+    setTimeout(type, 600);
+  }
+
   function boot() {
     initStars();
     initClock();
     initSession();
+    initBoot();
   }
 
   if (document.readyState === 'loading') {
