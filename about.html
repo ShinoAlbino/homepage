@@ -8,9 +8,25 @@
   <link rel="icon" href="images/favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-  <!-- Google Tag Manager -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+JP:wght@200;300;500&family=Noto+Sans+JP:wght@200;300;400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" />
+  <link rel="stylesheet" href="assets/ah-tokens.css" />
+  <link rel="stylesheet" href="assets/ah-common.css" />
+
+  <style>
+  /* ── About 固有 ───────────────────────────────────── */
+
+  /* 事業領域リストは記録パネルの右列いっぱいに敷く */
+  .ah-record > .ah-ops{ margin-top:-6px }
+
+  /* 定義テーブル下の英文注記 */
+  .ah-spec + .ah-en{ margin-top:22px; padding-top:0; border-top:0 }
+  .ah-spec + .ah-en b{ font-style:normal; font-weight:500; color:var(--ice-dim) }
+
+  /* 略称などの補足 */
+  .ah-sub{ color:var(--muted); font-size:12.5px }
+  </style>
+
+<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -20,173 +36,212 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
      crossorigin="anonymous"></script>
 </head>
-<body class="about-page">
+
+<body class="ah-body">
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-  <div id="header"></div>
+<!-- ══ 背景（4層） ══ -->
+<div class="ah-bg" aria-hidden="true">
+  <canvas id="ah-stars"></canvas>
+  <div class="ah-bg-tick"></div>
+  <div class="ah-bg-section"></div>
+  <div class="ah-bg-veil"></div>
+</div>
 
-  <main class="page-container fade-in">
-    <header class="page-header">
-      <h1><span class="nobr">箱庭次元研究機構</span> <span class="nobr">概要</span><br><span class="en">Institutional Profile: Arca Hortus</span></h1>
-      <p class="doc-number">Document ID: AH-GEN-001 / Version 1.0.4</p>
-      <div class="classification-bar" aria-hidden="true">
-        <div class="cls-cell"><span class="cls-label">ITEM #</span>AH-000</div>
-        <div class="cls-cell"><span class="cls-label">OBJECT CLASS</span><span class="cls-safe">THAUMIEL</span></div>
-        <div class="cls-cell"><span class="cls-label">DISRUPTION</span><span class="cls-danger">EKHI</span></div>
-        <div class="cls-cell"><span class="cls-label">CLEARANCE</span>LEVEL 2 / 公開可</div>
-        <div class="cls-cell"><span class="cls-label">SITE</span><span class="redacted">██████</span></div>
+<!-- ══ 左計器レール ══ -->
+<aside class="ah-rail" aria-hidden="true">
+  <svg class="ah-rail-glyph" viewBox="0 0 120 120" fill="none">
+    <circle cx="60" cy="60" r="54" stroke="#4f8ea6" stroke-width="3"/>
+    <path d="M60 24 L91 42 L91 78 L60 96 L29 78 L29 42 Z" stroke="#a7dcec" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M60 60 L60 96 M60 60 L29 42 M60 60 L91 42" stroke="#a7dcec" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="78" cy="51" r="5.5" fill="#b8463c"/>
+  </svg>
+  <div class="ah-rail-vert">Institutional Profile &nbsp;&middot;&nbsp; AH-GEN-001 &nbsp;&middot;&nbsp; Clearance Lv.2</div>
+  <div class="ah-rail-lamps"><i class="ah-on"></i><i class="ah-on"></i><i class="ah-warn"></i><i></i></div>
+</aside>
+
+<div class="ah-wrap">
+
+  <!-- ══ ヘッダー ══ -->
+  <header class="ah-site-head">
+    <div class="ah-mark"><a href="index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="about.html" class="ah-here" aria-current="page">About</a>
+      <a href="recommend.html">TopPicks</a>
+      <a href="nexus.html">Nexus</a>
+      <a href="archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+    </nav>
+  </header>
+
+  <p class="ah-crumb"><a href="index.html">INDEX</a> &nbsp;/&nbsp; ABOUT / 機構概要</p>
+
+  <main class="ah-shell">
+
+    <!-- ══ 見出し ══ -->
+    <div class="ah-doc-head">
+      <p class="ah-doc-id">Document ID: AH-GEN-001 &nbsp;/&nbsp; Version 1.0.4</p>
+      <h1 class="ah-doc-jp">箱庭次元研究機構 概要</h1>
+      <p class="ah-doc-en">Institutional Profile: Arca Hortus</p>
+    </div>
+
+    <!-- ══ メタ帯 ══ -->
+    <div class="ah-meta" aria-hidden="true">
+      <div>ITEM #<b>AH-000</b></div>
+      <div>OBJECT CLASS<b class="ah-v-ok">THAUMIEL</b></div>
+      <div>DISRUPTION<b class="ah-v-bad">EKHI</b></div>
+      <div>CLEARANCE<b class="ah-v-ice">LEVEL 2 / 公開可</b></div>
+      <div>SITE<b><i class="ah-redact"></i></b></div>
+    </div>
+
+    <!-- ══ 組織憲章 ══ -->
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">CHARTER</span>
+      <h2>組織憲章：使命と理念<em>Charter: Mission and Principles</em></h2>
+      <div class="ah-body-col">
+        <p>箱庭次元研究機構（Arca Hortus Dimension Research Organization）は、創作と探究のための小さな次元（Dimension）を構築・記録することを目的とした実験的プロジェクトです。</p>
+        <p>貴方の好奇心は満たされていますか？</p>
+        <p class="ah-en">Arca Hortus is an experimental project dedicated to the creation and exploration of self-contained narrative microcosms.<br>Are your curiosities satisfied?</p>
       </div>
-    </header>
-
-    <section class="org-section">
-      <div class="section-tag">Charter</div>
-      <h2>組織憲章：使命と理念 / Charter: Mission and Principles</h2>
-      <p>箱庭次元研究機構（Arca Hortus Dimension Research Organization）は、創作と探究のための小さな次元（Dimension）を構築・記録することを目的とした実験的プロジェクトです。<br>貴方の好奇心は満たされていますか？</p>
-      <p class="en">Arca Hortus is an experimental project dedicated to the creation and exploration of self-contained narrative microcosms.<br>Are your curiosities satisfied?</p>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Operations</div>
-      <h2>主要事業領域 / Our Activities</h2>
-      <ul class="activity-list">
-        <li>
-            <strong>00. 領域内でのQOL(Quality of Life)の向上</strong>
-            <p>各個体毎に生存上要する領域の質を向上させ、同時にQOD(Quality of Death)を高める。</p>
-        </li>
-        <li>
-            <strong>01. 世界観構築及びアーカイブ事業</strong>
-            <p>オリジナル世界観の構築と、その恒久的保存のためのアーカイブ化。</p>
-        </li>
-        <li>
-            <strong>02. コンテンツ開発・公開事業</strong>
-            <p>物語・キャラクター・ビジュアル等の創作、及び多角的なメディアでの公開。</p>
-        </li>
-        <li>
-            <strong>03. 戦略的思考実験・文章記録</strong>
-            <p>特定の研究テーマに基づく思考実験の実施、及びそのプロセス・結果の記録。</p>
-        </li>
-        <li>
-            <strong>04. クリエイティブ・サポート</strong>
-            <p>クリエイティビティを有する全ての人々の活動支援、管理･運営補助、及び環境提供。</p>
-        </li>
+    <!-- ══ 主要事業領域 ══ -->
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">OPERATIONS</span>
+      <h2>主要事業領域<em>Our Activities</em></h2>
+      <ul class="ah-ops">
+        <li><span class="ah-n">00</span><div>
+          <h3>領域内でのQOL(Quality of Life)の向上</h3>
+          <p>各個体毎に生存上要する領域の質を向上させ、同時にQOD(Quality of Death)を高める。</p>
+          <p class="ah-en-line"><b>Raising the Quality of Life within the domain</b><br>Improving, for each individual body, the quality of the space its survival requires — and with it, raising the Quality of Death.</p>
+        </div></li>
+        <li><span class="ah-n">01</span><div>
+          <h3>世界観構築及びアーカイブ事業</h3>
+          <p>オリジナル世界観の構築と、その恒久的保存のためのアーカイブ化。</p>
+          <p class="ah-en-line"><b>Worldbuilding and archival work</b><br>Constructing original story universes, and archiving them so that they endure.</p>
+        </div></li>
+        <li><span class="ah-n">02</span><div>
+          <h3>コンテンツ開発・公開事業</h3>
+          <p>物語・キャラクター・ビジュアル等の創作、及び多角的なメディアでの公開。</p>
+          <p class="ah-en-line"><b>Content development and publication</b><br>Creating stories, characters, and visual designs, and releasing them across a range of media.</p>
+        </div></li>
+        <li><span class="ah-n">03</span><div>
+          <h3>戦略的思考実験・文章記録</h3>
+          <p>特定の研究テーマに基づく思考実験の実施、及びそのプロセス・結果の記録。</p>
+          <p class="ah-en-line"><b>Strategic thought experiments and written records</b><br>Conducting thought experiments on particular research themes, and recording both the process and the result.</p>
+        </div></li>
+        <li><span class="ah-n">04</span><div>
+          <h3>クリエイティブ・サポート</h3>
+          <p>クリエイティビティを有する全ての人々の活動支援、管理･運営補助、及び環境提供。</p>
+          <p class="ah-en-line"><b>Creative support</b><br>Supporting the activity of everyone who holds creativity — assisting with management and operation, and providing the environment in which to work.</p>
+        </div></li>
       </ul>
-      <p class="en">
-        <b>00. Raising the Quality of Life within the domain</b><br>
-        Improving, for each individual body, the quality of the space its survival requires — and with it, raising the Quality of Death.<br><br>
-        <b>01. Worldbuilding and archival work</b><br>
-        Constructing original story universes, and archiving them so that they endure.<br><br>
-        <b>02. Content development and publication</b><br>
-        Creating stories, characters, and visual designs, and releasing them across a range of media.<br><br>
-        <b>03. Strategic thought experiments and written records</b><br>
-        Conducting thought experiments on particular research themes, and recording both the process and the result.<br><br>
-        <b>04. Creative support</b><br>
-        Supporting the activity of everyone who holds creativity — assisting with management and operation, and providing the environment in which to work.
-      </p>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Etymology</div>
-      <h2>名称の定義 / Origin of the Name</h2>
-      <p>“Arca” は「箱」、“Hortus” は「庭」を意味するラテン語に由来します。当機構が管理する創作世界は、閉じた空間で静かに育まれる箱庭のような存在であることを定義しています。</p>
-      <p class="en">"Arca" (box) and "Hortus" (garden) represent our core philosophy: narrative microcosms quietly cultivated in enclosed spaces.</p>
+    <!-- ══ 名称の定義 ══ -->
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">ETYMOLOGY</span>
+      <h2>名称の定義<em>Origin of the Name</em></h2>
+      <div class="ah-body-col">
+        <p>“Arca” は「箱」、“Hortus” は「庭」を意味するラテン語に由来します。当機構が管理する創作世界は、閉じた空間で静かに育まれる箱庭のような存在であることを定義しています。</p>
+        <p class="ah-en">"Arca" (box) and "Hortus" (garden) represent our core philosophy: narrative microcosms quietly cultivated in enclosed spaces.</p>
+      </div>
     </section>
 
-    <section class="org-section">
-      <div class="section-tag">Vision</div>
-      <h2>長期的展望 / Future Vision</h2>
-      <p>将来的には、独立した複数のプロジェクトを連結し、最終的に単一の大規模なユニバースへと収束させる構想を有しています。物語と現実の境界を曖昧に、QOLを上げ豊かな生活へ。</p>
-      <p class="en">Interweaving storylines that converge into a single expansive universe, developing interfaces that blur the boundary between fiction and reality.</p>
+    <!-- ══ 長期的展望 ══ -->
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">VISION</span>
+      <h2>長期的展望<em>Future Vision</em></h2>
+      <div class="ah-body-col">
+        <p>将来的には、独立した複数のプロジェクトを連結し、最終的に単一の大規模なユニバースへと収束させる構想を有しています。物語と現実の境界を曖昧に、QOLを上げ豊かな生活へ。</p>
+        <p class="ah-en">Interweaving storylines that converge into a single expansive universe, developing interfaces that blur the boundary between fiction and reality.</p>
+      </div>
     </section>
 
-    <section class="org-info">
-        <table class="info-table">
-            <tr>
-                <th>組織名</th>
-                <td>箱庭次元研究機構（Arca Hortus Dimension Research Organization）<br>略称：箱庭機構</td>
-            </tr>
-            <tr>
-                <th>設立</th>
-                <td>[設立年]年 [月]月（紀元前/後の定義は秘匿）</td>
-            </tr>
-            <tr>
-                <th>所在地</th>
-                <td>分散型ネットワーク上の非公開セクター</td>
-            </tr>
-            <tr>
-                <th>最高責任者</th>
-                <td>管理者（The Administrator）</td>
-            </tr>
-        </table>
-        <p class="en">
-            <b>Name:</b> Arca Hortus Dimension Research Organization (abbreviated: the Hakoniwa Organization)<br>
-            <b>Established:</b> [year], [month] — whether this falls before or after the common era is withheld<br>
-            <b>Location:</b> an undisclosed sector upon a distributed network<br>
-            <b>Head:</b> The Administrator
-        </p>
+    <!-- ══ 定義テーブル ══ -->
+    <div class="ah-spec">
+      <dl>
+        <dt>組織名</dt>
+        <dd>箱庭次元研究機構（Arca Hortus Dimension Research Organization）<br><span class="ah-sub">略称：箱庭機構</span></dd>
+        <dt>設立</dt>
+        <dd>観測地点基準地による特異点域（紀元前/後の定義は秘匿）</dd>
+        <dt>所在地</dt>
+        <dd>境界点狭間/分散型ネットワーク上の非公開セクター</dd>
+        <dt>最高責任者</dt>
+        <dd>管理者（The Administrator）<br><span class="ah-sub">各区画担当責任者</span></dd>
+      </dl>
+    </div>
+
+    <p class="ah-en">
+      <b>Name:</b> Arca Hortus Dimension Research Organization (abbreviated: the Hakoniwa Organization)<br>
+      <b>Established:</b> [year], [month] — whether this falls before or after the common era is withheld<br>
+      <b>Location:</b> an undisclosed sector upon a distributed network<br>
+      <b>Head:</b> The Administrator
+    </p>
+
+    <!-- ══ 提携・協力機関 ══ -->
+    <section class="ah-grp">
+      <div class="ah-grp-head">
+        <span class="ah-grp-num">06</span>
+        <h2 class="ah-grp-title">提携・協力機関</h2>
+        <span class="ah-grp-en">AFFILIATED ORGANIZATIONS ／ 06 ENTITIES LINKED</span>
+      </div>
+      <div class="ah-orgs" style="margin-top:clamp(20px,3vw,28px)">
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-ethics.png" alt="" width="16" height="16"></span>
+          <span><b>箱庭世界倫理委員会</b><span class="ah-org-en">Ethics Committee</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-gna.png" alt="" width="16" height="16"></span>
+          <span><b>Global Narrative Archive</b><span class="ah-org-en">G.N.A Database</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-void.png" alt="" width="16" height="16"></span>
+          <span><b>VOID Tech Industries</b><span class="ah-org-en">Deep Void Research</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-bo.png" alt="" width="16" height="16"></span>
+          <span><b>境界線観測財団</b><span class="ah-org-en">Boundary Observation Foundation</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-shro.png" alt="" width="16" height="16"></span>
+          <span><b>S.H.R.O.S.</b><span class="ah-org-en">S.H.R.O. Strategic Lab</span></span>
+        </div>
+        <div class="ah-org">
+          <span class="ah-org-sig"><img src="images/logo-acas.png" alt="" width="16" height="16"></span>
+          <span><b>A.C.A.S.</b><span class="ah-org-en">Specialized Tactical Solutions</span></span>
+        </div>
+      </div>
     </section>
 
   </main>
 
-      <section class="affiliates-section">
-    <p class="affiliates-title">AFFILIATED ORGANIZATIONS / 提携・協力機関</p>
-    <div class="affiliates-grid">
-        
-        <div class="affiliate-item">
-            <img src="images/logo-ethics.png" alt="" class="affiliate-logo">
-            <div class="affiliate-info">
-                <span class="affiliate-name">箱庭世界倫理委員会</span>
-                <span class="affiliate-en">Ethics Committee</span>
-            </div>
-        </div>
+  <!-- ══ フッター ══ -->
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="terms.html">利用規約</a>
+        <a href="404.html">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
 
-        <div class="affiliate-item">
-            <img src="images/logo-gna.png" alt="" class="affiliate-logo">
-            <div class="affiliate-info">
-                <span class="affiliate-name">Global Narrative Archive</span>
-                <span class="affiliate-en">G.N.A Database</span>
-            </div>
-        </div>
+</div>
 
-        <div class="affiliate-item">
-            <img src="images/logo-void.png" alt="" class="affiliate-logo">
-            <div class="affiliate-info">
-                <span class="affiliate-name">VOID Tech Industries</span>
-                <span class="affiliate-en">Deep Void Research</span>
-            </div>
-        </div>
-
-        <div class="affiliate-item">
-            <img src="images/logo-bo.png" alt="" class="affiliate-logo">
-            <div class="affiliate-info">
-                <span class="affiliate-name">境界線観測財団</span>
-                <span class="affiliate-en">Boundary Observation Foundation</span>
-            </div>
-        </div>
-
-        <div class="affiliate-item">
-            <img src="images/logo-shro.png" alt="" class="affiliate-logo">
-            <div class="affiliate-info">
-                <span class="affiliate-name">S.H.R.O.S.</span>
-                <span class="affiliate-en">S.H.R.O. Strategic Lab</span>
-            </div>
-        </div>
-
-        <div class="affiliate-item">
-            <img src="images/logo-acas.png" alt="" class="affiliate-logo">
-            <div class="affiliate-info">
-                <span class="affiliate-name">A.C.A.S.</span>
-                <span class="affiliate-en">Specialized Tactical Solutions</span>
-            </div>
-        </div>
-
-        </div>
-</section>
-
-  <div id="footer-container"></div>
-
-  <script src="js/main.js"></script>
+<script src="assets/ah-site.js"></script>
 </body>
 </html>
