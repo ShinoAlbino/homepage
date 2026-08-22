@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>クレジット・ライセンス | Arca Hortus</title>
   <link rel="canonical" href="https://arcahortus.com/credits.html" />
@@ -9,9 +9,44 @@
   <link rel="icon" href="images/favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css">
-  <!-- Google Tag Manager -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+JP:wght@200;300;500&family=Noto+Sans+JP:wght@200;300;400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" />
+  <link rel="stylesheet" href="assets/ah-tokens.css" />
+  <link rel="stylesheet" href="assets/ah-common.css" />
+
+  <style>
+  /* ── 規程ページ固有 ───────────────────────────────── */
+  .ah-nobr{ white-space:nowrap }
+
+  /* 事業者情報などの表（現行の <table> 構造をそのまま使う） */
+  .ah-table-wrap{ overflow-x:auto; margin:4px 0 0 }
+  .ah-table{ width:100%; border-collapse:collapse; font-size:13.5px }
+  .ah-table th,
+  .ah-table td{ padding:13px 16px; border-bottom:1px solid var(--line-soft); text-align:left; vertical-align:top }
+  .ah-table tr:last-child th,
+  .ah-table tr:last-child td{ border-bottom:0 }
+  .ah-table th{
+    width:34%; white-space:nowrap; border-right:1px solid var(--line-soft);
+    font-family:var(--mono); font-weight:400; font-size:10px; letter-spacing:.14em; color:var(--ice-dim);
+  }
+  @media (max-width:640px){
+    .ah-table th{ width:auto }
+  }
+
+  /* 未確定項目の注記 */
+  .ah-note-pending{ font-size:.82em; font-style:italic; color:var(--muted) }
+
+  /* 本文中のリンク */
+  .ah-body-col a{ color:var(--ice); border-bottom:1px solid var(--ice-deep); transition:.3s ease }
+  .ah-body-col a:hover{ border-bottom-color:var(--ice) }
+
+  /* 制定・改訂の署名行 */
+  .ah-sig{
+    margin:22px 0 0; padding-top:16px; border-top:1px solid var(--line-soft);
+    font-family:var(--mono); font-size:10px; letter-spacing:.16em; line-height:2; color:var(--muted);
+  }
+  </style>
+
+<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -21,60 +56,118 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
      crossorigin="anonymous"></script>
 </head>
-<body class="credits-page">
+
+<body class="ah-body">
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-  <div id="header"></div>
+<!-- ══ 背景（4層） ══ -->
+<div class="ah-bg" aria-hidden="true">
+  <canvas id="ah-stars"></canvas>
+  <div class="ah-bg-tick"></div>
+  <div class="ah-bg-section"></div>
+  <div class="ah-bg-veil"></div>
+</div>
 
-  <main class="page-container fade-in">
-    <header class="page-header">
-      <h1><span class="nobr">クレジット・ライセンス</span><br><span class="en">Credits &amp; Licenses</span></h1>
-      <p class="doc-number">Document ID: AH-LGL-C03 / Revised: 2026.07.24 / Classification: PUBLIC</p>
-    </header>
+<!-- ══ 左計器レール ══ -->
+<aside class="ah-rail" aria-hidden="true">
+  <svg class="ah-rail-glyph" viewBox="0 0 120 120" fill="none">
+    <circle cx="60" cy="60" r="54" stroke="#4f8ea6" stroke-width="3"/>
+    <path d="M60 24 L91 42 L91 78 L60 96 L29 78 L29 42 Z" stroke="#a7dcec" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M60 60 L60 96 M60 60 L29 42 M60 60 L91 42" stroke="#a7dcec" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="78" cy="51" r="5.5" fill="#b8463c"/>
+  </svg>
+  <div class="ah-rail-vert">Credits &amp; Licenses &nbsp;&middot;&nbsp; AH-LGL-C03 &nbsp;&middot;&nbsp; Classification Public</div>
+  <div class="ah-rail-lamps"><i class="ah-on"></i><i class="ah-on"></i><i class="ah-warn"></i><i></i></div>
+</aside>
 
-    <section class="org-section">
-      <div class="section-tag">Credits</div>
+<div class="ah-wrap">
+
+  <!-- ══ ヘッダー ══ -->
+  <header class="ah-site-head">
+    <div class="ah-mark"><a href="index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="about.html">About</a>
+      <a href="recommend.html">TopPicks</a>
+      <a href="nexus.html">Nexus</a>
+      <a href="archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+    </nav>
+  </header>
+
+  <p class="ah-crumb"><a href="index.html">INDEX</a> &nbsp;/&nbsp; CREDITS / クレジット・ライセンス</p>
+
+  <main class="ah-shell-narrow">
+    <div class="ah-doc-head">
+      <p class="ah-doc-id">Document ID: AH-LGL-C03 / Revised: 2026.07.24 / Classification: PUBLIC</p>
+      <h1 class="ah-doc-jp"><span class="ah-nobr">クレジット・ライセンス</span></h1>
+      <p class="ah-doc-en">Credits &amp; Licenses</p>
+    </div>
+
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">CREDITS</span>
       <h2>クレジット表記</h2>
-      <div class="info-table-wrapper">
-        <table class="info-table">
-          <tr>
-            <th>音声</th>
-            <td>VOICEVOX:<a href="https://www.meimeihimari.com/" target="_blank" rel="noopener noreferrer">冥鳴ひまり</a><br>
-              VOICEVOX:<a href="https://voicevox.hiroshiba.jp/product/nurserobo_typet/" target="_blank" rel="noopener noreferrer">ナースロボ＿タイプＴ</a></td>
-          </tr>
-          <tr>
-            <th>イラスト</th>
-            <td>イラスト：<a href="https://x.com/rbrsrk2" target="_blank" rel="noopener noreferrer">RB2</a>様</td>
-          </tr>
-          <tr>
-            <th>背景画像</th>
-            <td>AI生成 <span class="note-pending">（詳細は準備中）</span></td>
-          </tr>
-          <tr>
-            <th>OSSライセンス</th>
-            <td><a href="lab/live/THIRD-PARTY-LICENSES.txt" target="_blank" rel="noopener noreferrer">OSSライセンスはこちら</a></td>
-          </tr>
-          <tr>
-            <th>引用・参考</th>
-            <td>
-              <a href="https://voicevox.hiroshiba.jp/term/" target="_blank" rel="noopener noreferrer">VOICEVOX 利用規約</a><br>
-              <a href="https://voicevox.hiroshiba.jp/qa/" target="_blank" rel="noopener noreferrer">VOICEVOX Q&amp;A</a><br>
-              <a href="https://www.meimeihimari.com/terms-of-use" target="_blank" rel="noopener noreferrer">冥鳴ひまり 利用規約</a><br>
-              <a href="https://voisona.com/static/pdf/ja/nurse-robot-type-t_guidelines.pdf" target="_blank" rel="noopener noreferrer">ナースロボ＿タイプＴ 利用ガイドライン</a>
-            </td>
-          </tr>
+      <div class="ah-body-col">
+        <div class="ah-table-wrap">
+        <table class="ah-table">
+        <tr>
+        <th>音声</th>
+        <td>VOICEVOX:<a href="https://www.meimeihimari.com/" target="_blank" rel="noopener noreferrer">冥鳴ひまり</a><br>
+        VOICEVOX:<a href="https://voicevox.hiroshiba.jp/product/nurserobo_typet/" target="_blank" rel="noopener noreferrer">ナースロボ＿タイプＴ</a></td>
+        </tr>
+        <tr>
+        <th>イラスト</th>
+        <td>イラスト：<a href="https://x.com/rbrsrk2" target="_blank" rel="noopener noreferrer">RB2</a>様</td>
+        </tr>
+        <tr>
+        <th>背景画像</th>
+        <td>AI生成 <span class="ah-note-pending">（詳細は準備中）</span></td>
+        </tr>
+        <tr>
+        <th>OSSライセンス</th>
+        <td><a href="lab/live/THIRD-PARTY-LICENSES.txt" target="_blank" rel="noopener noreferrer">OSSライセンスはこちら</a></td>
+        </tr>
+        <tr>
+        <th>引用・参考</th>
+        <td>
+        <a href="https://voicevox.hiroshiba.jp/term/" target="_blank" rel="noopener noreferrer">VOICEVOX 利用規約</a><br>
+        <a href="https://voicevox.hiroshiba.jp/qa/" target="_blank" rel="noopener noreferrer">VOICEVOX Q&amp;A</a><br>
+        <a href="https://www.meimeihimari.com/terms-of-use" target="_blank" rel="noopener noreferrer">冥鳴ひまり 利用規約</a><br>
+        <a href="https://voisona.com/static/pdf/ja/nurse-robot-type-t_guidelines.pdf" target="_blank" rel="noopener noreferrer">ナースロボ＿タイプＴ 利用ガイドライン</a>
+        </td>
+        </tr>
         </table>
+        </div>
+        <p class="ah-en">Credits &amp; license notices for all Arca Hortus / Laboratory / Live contents.</p>
       </div>
-      <p class="en">Credits &amp; license notices for all Arca Hortus / Laboratory / Live contents.</p>
     </section>
-
   </main>
 
-  <div id="footer-container"></div>
+  <!-- ══ フッター ══ -->
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="terms.html">利用規約</a>
+        <a href="https://x.com/ArcaHortus" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
 
-  <script src="js/main.js"></script>
+</div>
+
+<script src="assets/ah-site.js"></script>
 </body>
 </html>

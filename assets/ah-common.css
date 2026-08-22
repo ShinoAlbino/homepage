@@ -28,7 +28,9 @@ body.ah-body{
   letter-spacing:.02em;
   overflow-x:hidden;
 }
-body.ah-body a{ color:inherit; text-decoration:none }
+/* :where() で詳細度を 0 にしておく。素の body.ah-body a だと詳細度が
+   .ah-site-nav a などを上回ってしまい、後続の色指定が全部潰れる。 */
+body.ah-body :where(a){ color:inherit; text-decoration:none }
 
 /* 共通パーツは単体で成立させる（archive など ah-body でない地に置いても崩れないように） */
 .ah-rail,.ah-rail *,
