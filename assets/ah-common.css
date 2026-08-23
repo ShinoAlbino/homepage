@@ -115,7 +115,7 @@ body.ah-body :where(a){ color:inherit; text-decoration:none }
 .ah-t-verdant{ color:var(--verdant) }
 
 /* ── パンくず ───────────────────────────────────────── */
-.ah-crumb{ padding:24px var(--gutter) 0; font-family:var(--mono); font-size:10px; letter-spacing:.2em; color:var(--faint) }
+.ah-crumb{ padding:24px var(--gutter) 0; font-family:var(--mono); font-size:10px; letter-spacing:.2em; color:var(--muted) }
 .ah-crumb a{ color:inherit; text-decoration:none }
 .ah-crumb a:hover{ color:var(--ice-dim) }
 
@@ -249,7 +249,7 @@ body.ah-body :where(a){ color:inherit; text-decoration:none }
 .ah-grp-head{ display:flex; align-items:baseline; gap:16px; padding-bottom:14px; border-bottom:1px solid var(--line-soft) }
 .ah-grp-num{ font-family:var(--mono); font-size:11px; letter-spacing:.18em; color:var(--ice-dim); font-variant-numeric:tabular-nums }
 .ah-grp-title{ margin:0; font-family:var(--serif-jp); font-weight:300; font-size:clamp(16px,2.4vw,20px); letter-spacing:.2em; color:var(--text-strong) }
-.ah-grp-en{ margin-left:auto; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--faint) }
+.ah-grp-en{ margin-left:auto; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--muted) }
 
 /* ── セクション見出し ───────────────────────────────── */
 .ah-sec{ padding:clamp(76px,11vw,132px) 0 }
@@ -259,7 +259,7 @@ body.ah-body :where(a){ color:inherit; text-decoration:none }
 }
 .ah-sec-label{ margin:0; font-family:var(--mono); font-size:10px; letter-spacing:.4em; color:var(--ice-dim); text-transform:uppercase }
 .ah-sec-title{ margin:10px 0 0; font-family:var(--serif-jp); font-weight:300; font-size:clamp(19px,3vw,27px); letter-spacing:.22em; color:var(--text-strong) }
-.ah-sec-note{ margin:0; font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--faint) }
+.ah-sec-note{ margin:0; font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--muted) }
 
 /* ── ボタン ─────────────────────────────────────────── */
 .ah-btn{
