@@ -203,6 +203,17 @@ body.ah-body :where(a){ color:inherit; text-decoration:none }
 .ah-record p{ margin:0 0 1.1em }
 .ah-record p:last-child{ margin-bottom:0 }
 
+/* 本文中のリンク（body.ah-body :where(a) の色継承を上書きする） */
+.ah-body-col a,
+.ah-spec dd a,
+.ah-ops a{
+  color:var(--ice); border-bottom:1px solid var(--ice-deep);
+  transition:border-color .3s ease, color .3s ease;
+}
+.ah-body-col a:hover,
+.ah-spec dd a:hover,
+.ah-ops a:hover{ border-bottom-color:var(--ice) }
+
 /* 英訳ブロック */
 .ah-en{
   margin-top:20px; padding-top:18px; border-top:1px dashed rgba(26,36,50,.9);
