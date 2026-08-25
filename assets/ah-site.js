@@ -17,11 +17,19 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ── 星 ───────────────────────────────────────────── */
+  /* canvas に data-cosmos が付いていると「宇宙モード」になる（TOPのみ）。
+     密度を上げ、等級を3階層に分け、色温度に幅を持たせ、
+     一等星にはにじみ（ハロ）と十字の回折光を足す。
+     付いていないページは従来どおりの淡い星のまま。 */
   function initStars() {
     var cv = document.getElementById('ah-stars');
     if (!cv || !cv.getContext) return;
+    var cosmos = cv.dataset.cosmos !== undefined;
     var ctx = cv.getContext('2d');
     var stars = [], w = 0, h = 0, dpr = 1;
+
+    // 色温度：青白 / 白 / アイスブルー / 淡い琥珀
+    var HUES = [[192,222,238], [226,236,244], [167,220,236], [214,190,150]];
 
     function build() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -31,15 +39,25 @@
       cv.width = w * dpr;
       cv.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = Math.round(w * h / 11000);
+      var n = Math.round(w * h / (cosmos ? 7000 : 11000));
       stars = [];
       for (var i = 0; i < n; i++) {
+        var tier = 0;                       // 0=星屑 1=中等星 2=一等星
+        if (cosmos) {
+          var roll = Math.random();
+          tier = roll > 0.96 ? 2 : (roll > 0.80 ? 1 : 0);
+        }
+        var r, a;
+        if (tier === 2)      { r = Math.random() * 0.7 + 1.2; a = Math.random() * 0.35 + 0.55; }
+        else if (tier === 1) { r = Math.random() * 0.5 + 0.7; a = Math.random() * 0.3  + 0.3;  }
+        else                 { r = Math.random() * (cosmos ? 0.5 : 1) + 0.22;
+                               a = Math.random() * (cosmos ? 0.3 : 0.45) + 0.08; }
         stars.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: Math.random() * 1 + 0.22,
-          a: Math.random() * 0.45 + 0.1,
-          s: Math.random() * 0.0008 + 0.0002,
+          r: r, a: a, tier: tier,
+          c: cosmos ? HUES[Math.random() > 0.86 ? 3 : (Math.random() * 3) | 0] : HUES[0],
+          s: Math.random() * 0.0008 + 0.0002,   // 明滅周期 約6〜30秒
           p: Math.random() * 6.28,
           d: Math.random() * 0.012 + 0.003
         });
@@ -51,10 +69,29 @@
       for (var i = 0; i < stars.length; i++) {
         var s = stars[i];
         var a = reduce ? s.a : s.a * (0.55 + 0.45 * Math.sin(t * s.s + s.p));
+        var c = s.c[0] + ',' + s.c[1] + ',' + s.c[2];
+
+        if (s.tier === 2) {
+          // にじみ
+          var g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 6);
+          g.addColorStop(0, 'rgba(' + c + ',' + (a * 0.5).toFixed(3) + ')');
+          g.addColorStop(1, 'rgba(' + c + ',0)');
+          ctx.fillStyle = g;
+          ctx.fillRect(s.x - s.r * 6, s.y - s.r * 6, s.r * 12, s.r * 12);
+          // 十字の回折光
+          ctx.strokeStyle = 'rgba(' + c + ',' + (a * 0.28).toFixed(3) + ')';
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(s.x - s.r * 5, s.y); ctx.lineTo(s.x + s.r * 5, s.y);
+          ctx.moveTo(s.x, s.y - s.r * 5); ctx.lineTo(s.x, s.y + s.r * 5);
+          ctx.stroke();
+        }
+
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, 6.2832);
-        ctx.fillStyle = 'rgba(192,222,238,' + a.toFixed(3) + ')';
+        ctx.fillStyle = 'rgba(' + c + ',' + a.toFixed(3) + ')';
         ctx.fill();
+
         if (!reduce) { s.y += s.d; if (s.y > h) s.y = -2; }
       }
       requestAnimationFrame(draw);

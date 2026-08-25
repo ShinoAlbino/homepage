@@ -37,6 +37,34 @@
   <style>
   /* ── TOP 固有 ─────────────────────────────────────── */
 
+  /* 星雲（TOPのみ）。ぼかしフィルタは使わず、グラデーションの
+     裾の広さだけで柔らかさを出している（全画面 blur は描画負荷が高いため）。 */
+  .ah-bg-nebula{
+    position:absolute; inset:-12%;
+    background:
+      radial-gradient(38% 30% at 18% 22%, rgba(58,104,150,.26)  0%, rgba(5,7,12,0) 70%),
+      radial-gradient(30% 26% at 78% 15%, rgba(92,62,136,.20)   0%, rgba(5,7,12,0) 72%),
+      radial-gradient(24% 20% at 88% 42%, rgba(60,110,140,.14)  0%, rgba(5,7,12,0) 72%),
+      radial-gradient(44% 34% at 64% 78%, rgba(26,90,108,.23)   0%, rgba(5,7,12,0) 74%),
+      radial-gradient(26% 22% at 32% 88%, rgba(140,96,52,.12)   0%, rgba(5,7,12,0) 70%);
+    animation:ah-nebula 96s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  @keyframes ah-nebula{
+    from{ transform:translate3d(-1.2%,-0.8%,0) scale(1) }
+    to  { transform:translate3d( 1.2%, 0.8%,0) scale(1.06) }
+  }
+
+  /* 銀河帯（TOPのみ）。斜めに走る淡い星屑の帯。 */
+  .ah-bg-galaxy{
+    position:absolute; left:-25%; right:-25%; top:4%; height:64%;
+    transform:rotate(-16deg); transform-origin:50% 50%;
+    background:
+      radial-gradient(58% 44% at 50% 50%, rgba(150,180,210,.085) 0%, rgba(5,7,12,0) 68%),
+      radial-gradient(34% 26% at 36% 46%, rgba(196,208,228,.065) 0%, rgba(5,7,12,0) 70%),
+      radial-gradient(28% 20% at 70% 56%, rgba(120,158,196,.055) 0%, rgba(5,7,12,0) 72%);
+  }
+
   /* ヒーロー（断面） */
   .ah-hero{
     min-height:calc(100svh - 56px);
@@ -80,9 +108,13 @@
   .ah-spin-a{ animation:ah-spin 110s linear infinite; transform-origin:50% 50% }
   .ah-spin-b{ animation:ah-spin 70s linear infinite reverse; transform-origin:50% 50% }
   @keyframes ah-spin{ to{ transform:rotate(360deg) } }
+  /* topImage1.png は四隅まで不透明な白なので、そのまま置くと
+     暗い宇宙に白い正方形が浮いてしまう。紋章は円の中に収まっているため
+     円形に切り抜いて、縁を淡く発光させて背景になじませる。 */
   .ah-emblem{
     position:relative; width:44%; height:auto;
-    filter:drop-shadow(0 0 26px rgba(122,196,222,.3));
+    border-radius:50%;
+    box-shadow:0 0 0 1px rgba(167,220,236,.28), 0 0 34px rgba(122,196,222,.34);
   }
 
   /* A.R.C.A. TERMINAL（起動シーケンス） */
@@ -227,9 +259,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-<!-- ══ 背景（4層） ══ -->
+<!-- ══ 背景（TOPのみ星雲と銀河帯を足した6層） ══ -->
 <div class="ah-bg" aria-hidden="true">
-  <canvas id="ah-stars"></canvas>
+  <div class="ah-bg-nebula"></div>
+  <div class="ah-bg-galaxy"></div>
+  <canvas id="ah-stars" data-cosmos></canvas>
   <div class="ah-bg-tick"></div>
   <div class="ah-bg-section"></div>
   <div class="ah-bg-veil"></div>
@@ -293,7 +327,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </g>
           <path d="M6 100h188" stroke="rgba(167,220,236,.12)" stroke-width=".5" stroke-dasharray="2 6"/>
         </svg>
-        <img class="ah-emblem" src="images/sample1.png" alt="Arca Hortus 紋章" width="479" height="472" fetchpriority="high">
+        <img class="ah-emblem" src="images/topImage1.png" alt="Arca Hortus 紋章" width="479" height="472" fetchpriority="high">
       </div>
     </section>
 
