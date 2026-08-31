@@ -1372,6 +1372,17 @@ details.cut[open] .cut-open::after { content: ' −'; }
 }
 .qual-list .desc { font-size: 0.82rem; color: var(--sumi-2); line-height: 1.95; }
 
+/* 狩猟に直接かかわらない資格は一段控えめに置く。
+   色は --sumi-2 のまま（--sumi-3 は文字に使えないため）、
+   字送りと余白だけで従属関係を出す。 */
+.qual-list li.is-minor .qual { padding: 12px 4px; }
+.qual-list li.is-minor .ttl {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--sumi-2);
+}
+.qual-list li.is-minor .desc { font-size: 0.76rem; }
+
 /* ===== 対句（左右2段の縦書き見出し・仕様§8 higai） ===== */
 .tsuiku {
   display: grid;
