@@ -147,8 +147,7 @@
   .ah-gates{ display:grid; grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); gap:14px }
   @media (min-width:1040px){
     .ah-gates{ grid-template-columns:repeat(6,1fr) }
-    .ah-gates .ah-gate:nth-child(-n+3){ grid-column:span 2 }   /* 開放3枚 */
-    .ah-gates .ah-gate:nth-child(n+4){ grid-column:span 3 }    /* 制限2枚 */
+    .ah-gates .ah-gate{ grid-column:span 2 }                   /* 3枚 × 2段 */
   }
   .ah-gate{
     position:relative; padding:26px 24px 22px;
@@ -176,6 +175,8 @@
   .ah-lamp.ah-l-warn i{ background:var(--brass); box-shadow:0 0 7px var(--brass) }
   .ah-lamp.ah-l-bad{ color:var(--breach) }
   .ah-lamp.ah-l-bad i{ background:var(--breach); box-shadow:0 0 7px var(--breach) }
+  .ah-lamp.ah-l-ice{ color:var(--ice) }
+  .ah-lamp.ah-l-ice i{ background:var(--ice); box-shadow:0 0 7px var(--ice) }
   .ah-gate h3{
     margin:20px 0 0; font-family:var(--serif-en); font-weight:400; font-size:29px;
     letter-spacing:.04em; color:var(--text-strong); line-height:1.15;
@@ -292,6 +293,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="nexus.html">Nexus</a>
       <a href="archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
       <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+      <a href="weather/">Kanshodai<span class="ah-tag ah-t-ice">LIVE</span></a>
     </nav>
   </header>
 
@@ -350,7 +352,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p class="ah-sec-label">Access Terminals</p>
           <h2 class="ah-sec-title">接続端末</h2>
         </div>
-        <p class="ah-sec-note">05 GATEWAYS ／ 3 OPEN ／ 2 RESTRICTED</p>
+        <p class="ah-sec-note">06 GATEWAYS ／ 3 OPEN ／ 2 RESTRICTED ／ 1 EXTERNAL</p>
       </div>
 
       <div class="ah-gates">
@@ -393,6 +395,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p>試験運用中の観測装置群。挙動は保証されない。</p>
           <div class="ah-go">ACCESS <span>→</span></div>
         </a>
+
+        <a class="ah-gate" href="weather/">
+          <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+          <div class="ah-gate-top"><span>GATE 05</span><span class="ah-lamp ah-l-ice"><i></i>EXT</span></div>
+          <h3>Kanshodai<em>観象台</em></h3>
+          <p>境界線観測財団より開放された、現実側の観測端末。気象・防災・海洋・軌道・星空を常時中継する。</p>
+          <div class="ah-go">ACCESS <span>→</span></div>
+        </a>
       </div>
     </section>
 
@@ -414,7 +424,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <p class="ah-sec-label">Affiliated Organizations</p>
           <h2 class="ah-sec-title" style="font-size:clamp(15px,2vw,18px)">提携・協力機関</h2>
         </div>
-        <p class="ah-sec-note">06 ENTITIES LINKED</p>
+        <p class="ah-sec-note">06 ENTITIES ／ 01 FEED OPEN</p>
       </div>
       <div class="ah-orgs">
         <div class="ah-org">
@@ -429,10 +439,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="ah-org-sig"><img src="images/logo-void.png" alt="" width="16" height="16"></span>
           <span><b>VOID Tech Industries</b><span class="ah-org-en">Deep Void Research</span></span>
         </div>
-        <div class="ah-org">
+        <a class="ah-org" href="weather/" title="境界線観測財団の観測網へ接続する">
           <span class="ah-org-sig"><img src="images/logo-bo.png" alt="" width="16" height="16"></span>
           <span><b>境界線観測財団</b><span class="ah-org-en">Boundary Observation Foundation</span></span>
-        </div>
+          <span class="ah-org-feed">FEED OPEN</span>
+        </a>
         <div class="ah-org">
           <span class="ah-org-sig"><img src="images/logo-shro.png" alt="" width="16" height="16"></span>
           <span><b>S.H.R.O.S.</b><span class="ah-org-en">S.H.R.O. Strategic Lab</span></span>

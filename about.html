@@ -24,6 +24,26 @@
 
   /* 略称などの補足 */
   .ah-sub{ color:var(--muted); font-size:12.5px }
+
+  /* 提携機関のうち、観測網が開放されている機関の注記 */
+  .ah-org-note{
+    margin-top:1px; padding:clamp(18px,3vw,26px);
+    border:1px solid var(--line-soft); border-top:0;
+    background:linear-gradient(to bottom right, rgba(15,22,34,.55), rgba(8,12,20,.5));
+  }
+  .ah-org-note p{ margin:0 0 12px; font-size:13px; line-height:2.05; color:var(--text) }
+  .ah-org-note p:last-child{ margin-bottom:0 }
+  .ah-org-note em{ font-style:normal; color:var(--ice) }
+  .ah-org-note a{ color:var(--ice); text-decoration:none; border-bottom:1px solid var(--ice-deep) }
+  .ah-org-note a:hover{ border-bottom-color:var(--ice) }
+  .ah-org-note .ah-org-note-k{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.2em;
+    color:var(--ice-dim); margin-bottom:14px;
+  }
+  .ah-org-note .ah-en{
+    margin-top:16px; padding-top:14px; border-top:1px dashed rgba(26,36,50,.9);
+    font-size:14px; color:var(--muted);
+  }
   </style>
 
 <!-- Google Tag Manager -->
@@ -74,6 +94,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="nexus.html">Nexus</a>
       <a href="archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
       <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+      <a href="weather/">Kanshodai<span class="ah-tag ah-t-ice">LIVE</span></a>
     </nav>
   </header>
 
@@ -187,7 +208,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="ah-grp-head">
         <span class="ah-grp-num">06</span>
         <h2 class="ah-grp-title">提携・協力機関</h2>
-        <span class="ah-grp-en">AFFILIATED ORGANIZATIONS ／ 06 ENTITIES LINKED</span>
+        <span class="ah-grp-en">AFFILIATED ORGANIZATIONS ／ 06 ENTITIES ／ 01 FEED OPEN</span>
       </div>
       <div class="ah-orgs" style="margin-top:clamp(20px,3vw,28px)">
         <div class="ah-org">
@@ -202,10 +223,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="ah-org-sig"><img src="images/logo-void.png" alt="" width="16" height="16"></span>
           <span><b>VOID Tech Industries</b><span class="ah-org-en">Deep Void Research</span></span>
         </div>
-        <div class="ah-org">
+        <a class="ah-org" href="weather/" title="境界線観測財団の観測網へ接続する">
           <span class="ah-org-sig"><img src="images/logo-bo.png" alt="" width="16" height="16"></span>
           <span><b>境界線観測財団</b><span class="ah-org-en">Boundary Observation Foundation</span></span>
-        </div>
+          <span class="ah-org-feed">FEED OPEN</span>
+        </a>
         <div class="ah-org">
           <span class="ah-org-sig"><img src="images/logo-shro.png" alt="" width="16" height="16"></span>
           <span><b>S.H.R.O.S.</b><span class="ah-org-en">S.H.R.O. Strategic Lab</span></span>
@@ -214,6 +236,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="ah-org-sig"><img src="images/logo-acas.png" alt="" width="16" height="16"></span>
           <span><b>A.C.A.S.</b><span class="ah-org-en">Specialized Tactical Solutions</span></span>
         </div>
+      </div>
+
+      <!-- 唯一、観測網が開放されている機関 -->
+      <div class="ah-org-note">
+        <p class="ah-org-note-k">▸ 境界線観測財団 ／ BOUNDARY OBSERVATION FOUNDATION</p>
+        <p>物語と現実の境界面そのものを観測対象とする機関。当機構が境界を曖昧にしていく側であるのに対し、財団は境界が今どこにあるのかを測り続ける側にあります。関心の向きは正反対ですが、観測している面は同一です。</p>
+        <p>現在、財団は現実側の観測網の一部を当機構へ開放しています。その閲覧端末が<a href="weather/">観象台（KANSHODAI）</a>です。気象庁をはじめとする各国機関の発表を財団が中継しているに過ぎず、観測値そのものは当機構の生成物ではありません。</p>
+        <p>なお、箱庭次元の<em>内側</em>を観測する設備は<a href="lab/live/index.html">次元観測区画</a>が別途担っています。外を観るのが観象台、内を観るのが観測区画、そのあいだに立つのが財団という配置です。</p>
+        <p class="ah-en">The Foundation observes the boundary itself. Its outward-facing feed is open to us as <b>Kanshodai</b>; the inward-facing one remains the Observation Deck's own.</p>
       </div>
     </section>
 
