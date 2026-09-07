@@ -13,8 +13,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        overflow: hidden;
+        /* 分類帯を足したぶん縦が伸びるので、はみ出したら縦スクロールを許す */
+        min-height: 100vh;
+        overflow-x: hidden;
+        padding: 24px 16px;
         position: relative;
     }
 
@@ -56,7 +58,7 @@
     .error-wrapper {
         text-align: center;
         border: 1px solid #ff3232;
-        padding: 60px 40px;
+        padding: 36px 40px 48px;
         background: rgba(5, 7, 12, 0.95);
         box-shadow: 0 0 50px rgba(255, 0, 0, 0.2);
         position: relative;
@@ -150,6 +152,15 @@
 </head>
 <body class="error-body">
   <div class="error-wrapper">
+    <p class="doc-number">Document ID: AH-ERR-404 / Version 1.0.0</p>
+    <div class="classification-bar" aria-hidden="true">
+      <div class="cls-cell"><span class="cls-label">ITEM #</span>AH-E404</div>
+      <div class="cls-cell"><span class="cls-label">OBJECT CLASS</span><span class="cls-danger">NEUTRALIZED</span></div>
+      <div class="cls-cell"><span class="cls-label">DISRUPTION</span><span class="cls-danger">DARK</span></div>
+      <div class="cls-cell"><span class="cls-label">CLEARANCE</span>LEVEL 0 / 該当なし</div>
+      <div class="cls-cell"><span class="cls-label">ISSUED BY</span>事務局</div>
+      <div class="cls-cell"><span class="cls-label">SITE</span>[DATA EXPUNGED]</div>
+    </div>
     <div class="glitch-code">404</div>
     <div class="error-status">Entity Not Found</div>
     

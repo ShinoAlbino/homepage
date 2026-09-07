@@ -116,6 +116,23 @@ body::after{
 .idstrip .sp{flex:1}
 .idstrip .warn{color:var(--gold)}
 
+/* 統一文書書式（文書番号・分類帯）／機構共通仕様 AH-EXEC-003 */
+.doc-strip{padding:10px 14px 0}
+.doc-number{
+  font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--ink-dim);
+  text-transform:uppercase;margin:0 0 8px;
+}
+.classification-bar{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));
+  border:1px solid var(--line);background:rgba(4,7,12,.7);
+  font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;
+}
+.classification-bar .cls-cell{padding:8px 12px;border-right:1px solid var(--line);color:var(--ink)}
+.classification-bar .cls-cell:last-child{border-right:0}
+.classification-bar .cls-label{display:block;font-size:8.5px;letter-spacing:.18em;color:var(--ink-dim);margin-bottom:3px}
+.classification-bar .cls-safe{color:var(--mint)}
+.classification-bar .cls-danger{color:var(--red)}
+
 .consolefoot{
   margin:20px 16px 0;padding-top:10px;border-top:1px solid var(--line);
   display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
@@ -936,6 +953,18 @@ svg path.winPocket{fill:#ffd24a;animation:pocketFlash .3s ease 6}
   <span class="seq">SEQ AH-52AF-3978</span>
   <span class="sp"></span>
   <span class="warn">CONTAINMENT: STABLE</span>
+</div>
+
+<div class="doc-strip">
+  <p class="doc-number">Document ID: AH-LAB-S03 / Version 1.0.0</p>
+  <div class="classification-bar" aria-hidden="true">
+    <div class="cls-cell"><span class="cls-label">ITEM #</span>AH-L03</div>
+    <div class="cls-cell"><span class="cls-label">OBJECT CLASS</span><span class="cls-danger">EUCLID</span></div>
+    <div class="cls-cell"><span class="cls-label">DISRUPTION</span><span class="cls-danger">KENEQ</span></div>
+    <div class="cls-cell"><span class="cls-label">CLEARANCE</span>LEVEL 1 / 公開可</div>
+    <div class="cls-cell"><span class="cls-label">ISSUED BY</span>解析支援室</div>
+    <div class="cls-cell"><span class="cls-label">SITE</span>SECTOR-03</div>
+  </div>
 </div>
 
 <header>

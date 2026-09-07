@@ -140,6 +140,24 @@ body::before{
 .btn[aria-pressed="true"]{background:var(--accent);color:#1a1206;border-color:var(--accent);font-weight:700}
 
 /* ---------- panels ---------- */
+/* 統一文書書式（文書番号・分類帯）／機構共通仕様 AH-EXEC-003 */
+.doc-strip{padding:14px 0 0}
+.doc-number{
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--ink-3);
+  text-transform:uppercase;margin:0 0 8px;
+}
+.classification-bar{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  border:1px solid var(--line);border-radius:var(--r);background:var(--panel);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;margin-bottom:14px;
+}
+.classification-bar .cls-cell{padding:8px 12px;border-right:1px solid var(--line);color:var(--ink)}
+.classification-bar .cls-cell:last-child{border-right:0}
+.classification-bar .cls-label{display:block;font-size:8.5px;letter-spacing:.18em;color:var(--ink-3);margin-bottom:3px}
+.classification-bar .cls-safe{color:var(--live)}
+.classification-bar .cls-danger{color:var(--alert-warn)}
+/* 全画面モード・埋め込みモードでは計器面を優先し文書書式を隠す */
+body.fs .doc-strip,body.embed .doc-strip{display:none}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
 .panel-h{
   display:flex;align-items:center;gap:10px;
@@ -808,6 +826,18 @@ body.modal-open{overflow:hidden}
 </header>
 
 <div class="wrap">
+  <div class="doc-strip">
+    <p class="doc-number">Document ID: AH-KSD-001 / Version 1.0.0</p>
+    <div class="classification-bar" aria-hidden="true">
+      <div class="cls-cell"><span class="cls-label">ITEM #</span>AH-B01</div>
+      <div class="cls-cell"><span class="cls-label">OBJECT CLASS</span><span class="cls-safe">SAFE</span></div>
+      <div class="cls-cell"><span class="cls-label">DISRUPTION</span><span class="cls-danger">VLAM</span></div>
+      <div class="cls-cell"><span class="cls-label">CLEARANCE</span>LEVEL 1 / 公開可</div>
+      <div class="cls-cell"><span class="cls-label">ISSUED BY</span>次元観測部</div>
+      <div class="cls-cell"><span class="cls-label">SITE</span>観象台</div>
+    </div>
+  </div>
+
   <div id="snapnote" class="snapnote hidden"></div>
 
   <!-- ================= MONITOR WALL ================= -->

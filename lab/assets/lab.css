@@ -1115,3 +1115,41 @@ a.app-item:focus-visible .app-go {
   /* 演出は出さず、通常のリンクとして直接遷移させる */
   #ah-gate{ display:none !important; }
 }
+
+/* ===== 統一文書書式（文書番号・分類帯） ===== */
+.doc-number {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  margin: 28px 0 10px;
+}
+
+.classification-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  border: 1px solid var(--line);
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 2rem;
+}
+
+.classification-bar .cls-cell {
+  padding: 10px 14px;
+  border-right: 1px solid var(--line);
+  color: var(--text);
+}
+
+.classification-bar .cls-cell:last-child { border-right: none; }
+
+.classification-bar .cls-label {
+  display: block;
+  font-size: 0.55rem;
+  color: var(--text-dim);
+  margin-bottom: 3px;
+}
+
+.classification-bar .cls-safe { color: var(--green); }
+.classification-bar .cls-danger { color: var(--amber); }

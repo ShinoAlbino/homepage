@@ -2044,3 +2044,48 @@ details.faq .faq-body { padding: 0 40px 24px 2px; font-size: 0.86rem; color: var
   .news-skel .bar { animation: none; }
   .mon.draw, .js .mon.draw { stroke-dashoffset: 0; transition: none; }
 }
+
+/* ==========================================================================
+   統一文書書式（文書番号・分類帯）／ 機構共通仕様 AH-EXEC-003
+   紙と墨の配色に合わせた明色版。--sumi-3 は罫線専用なので文字には使わない。
+   ========================================================================== */
+.doc-strip {
+  padding: clamp(20px, 3vw, 30px) clamp(20px, 6vw, 60px) 0;
+}
+
+.doc-number {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--sumi-2);
+  margin: 0 0 10px;
+}
+
+.classification-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  border: var(--hair);
+  background: var(--paper-2);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+}
+
+.classification-bar .cls-cell {
+  padding: 10px 14px;
+  border-right: var(--hair);
+  color: var(--sumi);
+}
+
+.classification-bar .cls-cell:last-child { border-right: none; }
+
+.classification-bar .cls-label {
+  display: block;
+  font-size: 0.54rem;
+  letter-spacing: 0.16em;
+  color: var(--sumi-2);
+  margin-bottom: 3px;
+}
+
+.classification-bar .cls-safe { color: var(--fukamidori); }
+.classification-bar .cls-danger { color: var(--shu); }

@@ -187,6 +187,45 @@ button { font-family: inherit; cursor: pointer; }
 }
 .gate-org a:hover { color: var(--holo); }
 
+/* ---------- 統一文書書式(文書番号・分類帯)／機構共通仕様 AH-EXEC-003 ---------- */
+.doc-strip {
+  max-width: min(560px, 86vw);
+  margin: 1.6rem auto 0;
+  text-align: left;
+}
+.doc-number {
+  margin: 0 0 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.classification-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  border: 1px solid var(--panel-line);
+  background: rgba(10, 16, 26, 0.55);
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+}
+.classification-bar .cls-cell {
+  padding: 7px 10px;
+  border-right: 1px solid var(--panel-line);
+  color: var(--text);
+}
+.classification-bar .cls-cell:last-child { border-right: none; }
+.classification-bar .cls-label {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 0.5rem;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+}
+.classification-bar .cls-safe { color: var(--holo); }
+.classification-bar .cls-danger { color: var(--warm); }
+
 /* ---------- 戻るボタン(入口・LIVE共通。UIフェーズ2-4) ---------- */
 .back-button {
   display: grid;
