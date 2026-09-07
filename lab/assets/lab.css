@@ -1153,35 +1153,3 @@ a.app-item:focus-visible .app-go {
 
 .classification-bar .cls-safe { color: var(--green); }
 .classification-bar .cls-danger { color: var(--amber); }
-
-/* ===== 保守記録への導線（研究区画の直下） ===== */
-.sector-maint {
-  margin-top: 22px;
-  text-align: right;
-}
-
-.sector-maint a {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 16px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  color: var(--text-dim);
-  text-decoration: none;
-  transition: color 0.3s ease, border-color 0.3s ease;
-}
-
-.sector-maint a:hover,
-.sector-maint a:focus-visible {
-  color: var(--green);
-  border-color: var(--line-strong);
-}
-
-.sector-maint .jp {
-  font-family: var(--serif);
-  letter-spacing: 0.08em;
-}
