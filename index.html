@@ -128,6 +128,25 @@
   }
   @keyframes ah-caret{ 0%,50%{opacity:1} 51%,100%{opacity:0} }
 
+  /* 本日の通達（日付を種に data/notices.json から一件を選出） */
+  .ah-notice{
+    margin-top:clamp(26px,4vw,38px);
+    border:1px solid var(--line-soft); border-left:2px solid var(--ice-deep);
+    background:rgba(11,16,25,.72); padding:16px 20px;
+  }
+  .ah-notice-head{
+    display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:9px; letter-spacing:.22em; color:var(--ice-dim);
+  }
+  .ah-notice-date{ margin-left:auto; color:var(--faint); font-variant-numeric:tabular-nums }
+  .ah-notice-text{
+    margin:12px 0 0; max-width:62ch; font-size:13.5px; line-height:2; color:var(--text);
+  }
+  .ah-notice-dept{
+    margin:10px 0 0; font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--muted);
+  }
+  .ah-notice-dept::before{ content:"── " }
+
   /* HUD帯 */
   .ah-hud{
     display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -358,6 +377,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </section>
 
+    <!-- ══ 本日の通達 ══ -->
+    <section class="ah-shell" aria-labelledby="ah-notice-k">
+      <div class="ah-notice">
+        <p class="ah-notice-head">
+          <span id="ah-notice-k">本日の通達 ／ NOTICE OF THE DAY</span>
+          <span class="ah-notice-date" id="ah-notice-date">----.--.--</span>
+        </p>
+        <p class="ah-notice-text" id="ah-notice-text">通達を照会しています…</p>
+        <p class="ah-notice-dept" id="ah-notice-dept"></p>
+      </div>
+    </section>
+
     <!-- ══ 接続端末（ゲートカード） ══ -->
     <section class="ah-shell ah-sec">
       <div class="ah-sec-head">
@@ -494,5 +525,73 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script src="assets/ah-site.js"></script>
+<script>
+/* ============================================================
+   本日の通達。assets/data/notices.json から、日付（JST）を種にして
+   一件を選ぶ。乱数は使わないので、同じ日は必ず同じ通達が出る。
+   ============================================================ */
+(function () {
+  'use strict';
+
+  // JST の暦日を YYYY-MM-DD で得る（閲覧者の時間帯に左右されない）
+  function jstDate() {
+    var t = new Date(Date.now() + 9 * 3600 * 1000);
+    return t.toISOString().slice(0, 10);
+  }
+
+  // FNV-1a に最終撹拌を足す。日付は末尾一文字しか変わらないため、
+  // 撹拌を入れないと隣り合う日に同じ通達が出やすくなる。
+  function seedOf(str) {
+    var h = 0x811c9dc5;
+    for (var i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+    }
+    h ^= h >>> 16;
+    h = Math.imul(h, 0x85ebca6b) >>> 0;
+    h ^= h >>> 13;
+    h = Math.imul(h, 0xc2b2ae35) >>> 0;
+    h ^= h >>> 16;
+    return h >>> 0;
+  }
+
+  // weight を持ち数で表現し、種で一件を引く
+  function pick(list, seed) {
+    var total = 0, i;
+    for (i = 0; i < list.length; i++) {
+      total += Math.max(1, list[i].weight || 1);
+    }
+    var n = seed % total;
+    for (i = 0; i < list.length; i++) {
+      n -= Math.max(1, list[i].weight || 1);
+      if (n < 0) return list[i];
+    }
+    return list[list.length - 1];
+  }
+
+  var date = jstDate();
+  var elDate = document.getElementById('ah-notice-date');
+  var elText = document.getElementById('ah-notice-text');
+  var elDept = document.getElementById('ah-notice-dept');
+  elDate.textContent = date.replace(/-/g, '.');
+
+  fetch('assets/data/notices.json', { cache: 'no-cache' })
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function (data) {
+      var list = data.notices || [];
+      if (!list.length) throw new Error('empty');
+      var n = pick(list, seedOf(date));
+      elText.textContent = n.text;
+      elDept.textContent = n.dept;
+    })
+    .catch(function () {
+      elText.textContent = '本日の通達はありません。';
+      elDept.textContent = '事務局';
+    });
+})();
+</script>
 </body>
 </html>

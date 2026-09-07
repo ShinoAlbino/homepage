@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>保守記録・障害情報 | Arca Hortus</title>
+  <link rel="canonical" href="https://arcahortus.com/maintenance.html" />
+  <meta name="description" content="箱庭次元研究機構 通商部 購買課による保守記録。全区画（SECTOR）の稼働状態と、納入機材に生じた障害の記録を時系列で公開しています。" />
+  <link rel="icon" href="images/favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+JP:wght@200;300;500&family=Noto+Sans+JP:wght@200;300;400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" />
+  <link rel="stylesheet" href="assets/ah-tokens.css" />
+  <link rel="stylesheet" href="assets/ah-common.css" />
+
+  <style>
+  /* ── 保守記録ページ固有 ───────────────────────────── */
+
+  /* 区画稼働状態の一覧 */
+  .ah-stat{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:1px; background:var(--line-soft); border:1px solid var(--line-soft);
+    margin-top:clamp(20px,3vw,28px);
+  }
+  .ah-stat-cell{ padding:16px 18px; background:var(--surface) }
+  .ah-stat-head{ display:flex; align-items:baseline; gap:10px }
+  .ah-stat-id{
+    font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--ice-dim);
+    font-variant-numeric:tabular-nums;
+  }
+  .ah-stat-badge{
+    margin-left:auto; padding:1px 7px; border:1px solid currentColor;
+    font-family:var(--mono); font-size:8.5px; letter-spacing:.16em; white-space:nowrap;
+  }
+  .ah-stat-name{ margin:9px 0 0; font-family:var(--serif-jp); font-weight:300; font-size:15px; letter-spacing:.12em; color:var(--text-strong) }
+  .ah-stat-en{ margin:3px 0 0; font-family:var(--mono); font-size:8.5px; letter-spacing:.15em; color:var(--faint) }
+  .ah-stat-note{ margin:11px 0 0; font-size:12px; line-height:1.9; color:var(--muted) }
+
+  /* 状態色（意味色のみ。装飾には使わない） */
+  .st-active{ color:var(--verdant) }
+  .st-unstable{ color:var(--brass) }
+  .st-quarantined{ color:var(--breach) }
+  .st-sealed{ color:var(--faint) }
+
+  /* 障害記録の時系列 */
+  .ah-inc{ margin-top:clamp(20px,3vw,28px); border-top:1px solid var(--line-soft) }
+  .ah-inc-item{
+    display:grid; grid-template-columns:112px 1fr; gap:0 20px;
+    padding:18px 0; border-bottom:1px solid var(--line-soft);
+  }
+  .ah-inc-date{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; color:var(--ice-dim);
+    font-variant-numeric:tabular-nums; padding-top:2px;
+  }
+  .ah-inc-meta{
+    display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center;
+    font-family:var(--mono); font-size:9px; letter-spacing:.16em;
+  }
+  .ah-inc-sector{ color:var(--ice-dim) }
+  .ah-inc-badge{ padding:1px 6px; border:1px solid currentColor }
+  .ah-inc-title{
+    margin:9px 0 0; font-family:var(--serif-jp); font-weight:300;
+    font-size:14.5px; letter-spacing:.08em; line-height:1.8; color:var(--text-strong);
+  }
+  .ah-inc-detail{ margin:8px 0 0; max-width:62ch; font-size:13px; line-height:2; color:var(--text) }
+  .ah-inc-vendor{
+    margin:9px 0 0; font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--muted);
+  }
+  .ah-inc-vendor::before{ content:"納入元 ／ "; color:var(--faint) }
+
+  @media (max-width:640px){
+    .ah-inc-item{ grid-template-columns:1fr; gap:8px }
+  }
+
+  /* 読込中・失敗時の表示 */
+  .ah-load{
+    padding:22px 0; font-family:var(--mono); font-size:10px;
+    letter-spacing:.18em; color:var(--muted);
+  }
+
+  /* 倫理委員会の注記（朱注／1ページ1箇所） */
+  .ah-eth{
+    margin-top:clamp(26px,4vw,38px); padding:15px 18px;
+    border-left:2px solid var(--breach); background:rgba(184,70,60,.05);
+    max-width:62ch;
+  }
+  .ah-eth-k{
+    margin:0 0 7px; font-family:var(--mono); font-size:9px;
+    letter-spacing:.22em; color:var(--breach);
+  }
+  .ah-eth p{ margin:0; font-size:12.5px; line-height:2; color:var(--muted) }
+  </style>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MRDPGGL9');</script>
+<!-- End Google Tag Manager -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5730182021026574"
+     crossorigin="anonymous"></script>
+</head>
+
+<body class="ah-body">
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- ══ 背景（4層） ══ -->
+<div class="ah-bg" aria-hidden="true">
+  <canvas id="ah-stars"></canvas>
+  <div class="ah-bg-tick"></div>
+  <div class="ah-bg-section"></div>
+  <div class="ah-bg-veil"></div>
+</div>
+
+<!-- ══ 左計器レール ══ -->
+<aside class="ah-rail" aria-hidden="true">
+  <svg class="ah-rail-glyph" viewBox="0 0 120 120" fill="none">
+    <circle cx="60" cy="60" r="54" stroke="#4f8ea6" stroke-width="3"/>
+    <path d="M60 24 L91 42 L91 78 L60 96 L29 78 L29 42 Z" stroke="#a7dcec" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M60 60 L60 96 M60 60 L29 42 M60 60 L91 42" stroke="#a7dcec" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="78" cy="51" r="5.5" fill="#b8463c"/>
+  </svg>
+  <div class="ah-rail-vert">Maintenance &amp; Incident Log &nbsp;&middot;&nbsp; AH-VTI-001 &nbsp;&middot;&nbsp; Procurement Division</div>
+  <div class="ah-rail-lamps"><i class="ah-on"></i><i class="ah-warn"></i><i class="ah-warn"></i><i></i></div>
+</aside>
+
+<div class="ah-wrap">
+
+  <!-- ══ ヘッダー ══ -->
+  <header class="ah-site-head">
+    <div class="ah-mark"><a href="index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="about.html">About</a>
+      <a href="recommend.html">TopPicks</a>
+      <a href="nexus.html">Nexus</a>
+      <a href="archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+      <a href="weather/">Kanshodai<span class="ah-tag ah-t-ice">LIVE</span></a>
+    </nav>
+  </header>
+
+  <p class="ah-crumb"><a href="index.html">INDEX</a> &nbsp;/&nbsp; <a href="lab/index.html">LABORATORY</a> &nbsp;/&nbsp; MAINTENANCE / 保守記録</p>
+
+  <main class="ah-shell-narrow">
+
+    <!-- ══ 見出し ══ -->
+    <div class="ah-doc-head">
+      <p class="ah-doc-id">Document ID: AH-VTI-001 &nbsp;/&nbsp; Version 1.0.0</p>
+      <h1 class="ah-doc-jp">保守記録・障害情報</h1>
+      <p class="ah-doc-en">Maintenance &amp; Incident Log</p>
+      <p class="ah-doc-note">全区画の稼働状態と、当機構が調達した機材に生じた事象の記録。障害の原因欄に記す納入元の呼称は、いずれも納品書の記載に従う。</p>
+    </div>
+
+    <!-- ══ 分類帯 ══ -->
+    <div class="ah-meta" aria-hidden="true">
+      <div>ITEM #<b>AH-M01</b></div>
+      <div>OBJECT CLASS<b class="ah-v-bad">EUCLID</b></div>
+      <div>DISRUPTION<b class="ah-v-bad">KENEQ</b></div>
+      <div>CLEARANCE<b class="ah-v-ice">LEVEL 1 / 公開可</b></div>
+      <div>ISSUED BY<b>通商部 購買課</b></div>
+      <div>SITE<b>保守区画</b></div>
+    </div>
+
+    <!-- ══ 01 区画稼働状態 ══ -->
+    <section class="ah-grp">
+      <div class="ah-grp-head">
+        <span class="ah-grp-num">01</span>
+        <h2 class="ah-grp-title">区画稼働状態</h2>
+        <span class="ah-grp-en">SECTOR STATUS</span>
+      </div>
+      <div id="ah-stat" class="ah-stat" hidden></div>
+      <p id="ah-stat-load" class="ah-load">照会中 ／ QUERYING SECTOR STATUS…</p>
+    </section>
+
+    <!-- ══ 02 障害記録 ══ -->
+    <section class="ah-grp">
+      <div class="ah-grp-head">
+        <span class="ah-grp-num">02</span>
+        <h2 class="ah-grp-title">障害記録</h2>
+        <span class="ah-grp-en">INCIDENT RECORDS ／ <span id="ah-inc-count">--</span> ENTRIES</span>
+      </div>
+      <div id="ah-inc" class="ah-inc" hidden></div>
+      <p id="ah-inc-load" class="ah-load">照会中 ／ RETRIEVING INCIDENT RECORDS…</p>
+
+      <!-- 朱注：倫理委員会（本ページ1箇所のみ） -->
+      <aside class="ah-eth">
+        <p class="ah-eth-k">▸ 箱庭世界倫理委員会 注記 ／ COMMITTEE ON WORLD ETHICS</p>
+        <p>本記録における原因の帰属は、当委員会によって検証されたものではない。納入元の責に帰さない事象が同一の書式で記録されている可能性が指摘されている。記述の再検討が勧告される。</p>
+      </aside>
+    </section>
+
+  </main>
+
+  <!-- ══ フッター ══ -->
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="terms.html">利用規約</a>
+        <a href="https://x.com/ArcaHortus" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
+
+</div>
+
+<script src="assets/ah-site.js"></script>
+<script>
+/* ============================================================
+   保守記録の描画。データは assets/data/maintenance.json に分離し、
+   このファイルには一件も持たせない（追記は JSON 側だけで完結する）。
+   ============================================================ */
+(function () {
+  'use strict';
+
+  // 状態の呼称と配色クラス。JSON 側の値をそのまま鍵にする。
+  var STATUS = {
+    ACTIVE:      { jp: '稼働',     cls: 'st-active' },
+    UNSTABLE:    { jp: '不安定',   cls: 'st-unstable' },
+    QUARANTINED: { jp: '検疫隔離', cls: 'st-quarantined' },
+    SEALED:      { jp: '封印',     cls: 'st-sealed' }
+  };
+
+  function statusOf(key) {
+    return STATUS[key] || { jp: key, cls: 'st-sealed' };
+  }
+
+  // 文字列はすべて textContent 経由で入れる（JSON を素通しにしない）
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function renderSectors(list) {
+    var box = document.getElementById('ah-stat');
+    list.forEach(function (s) {
+      var st = statusOf(s.status);
+      var cell = el('div', 'ah-stat-cell');
+
+      var head = el('div', 'ah-stat-head');
+      head.appendChild(el('span', 'ah-stat-id', s.id));
+      head.appendChild(el('span', 'ah-stat-badge ' + st.cls, s.status));
+      cell.appendChild(head);
+
+      cell.appendChild(el('p', 'ah-stat-name', s.name));
+      if (s.en)   cell.appendChild(el('p', 'ah-stat-en', s.en));
+      if (s.note) cell.appendChild(el('p', 'ah-stat-note', s.note));
+
+      box.appendChild(cell);
+    });
+    box.hidden = false;
+    document.getElementById('ah-stat-load').remove();
+  }
+
+  function renderRecords(list) {
+    var box = document.getElementById('ah-inc');
+    list.forEach(function (r) {
+      var st = statusOf(r.status);
+      var item = el('div', 'ah-inc-item');
+
+      item.appendChild(el('div', 'ah-inc-date', r.date));
+
+      var body = el('div');
+      var meta = el('div', 'ah-inc-meta');
+      meta.appendChild(el('span', 'ah-inc-sector', r.sector));
+      meta.appendChild(el('span', 'ah-inc-badge ' + st.cls, r.status));
+      body.appendChild(meta);
+
+      body.appendChild(el('h3', 'ah-inc-title', r.title));
+      if (r.detail) body.appendChild(el('p', 'ah-inc-detail', r.detail));
+      if (r.vendor) body.appendChild(el('p', 'ah-inc-vendor', r.vendor));
+
+      item.appendChild(body);
+      box.appendChild(item);
+    });
+    box.hidden = false;
+    document.getElementById('ah-inc-count').textContent =
+      String(list.length).padStart(2, '0');
+    document.getElementById('ah-inc-load').remove();
+  }
+
+  function fail(msg) {
+    ['ah-stat-load', 'ah-inc-load'].forEach(function (id) {
+      var n = document.getElementById(id);
+      if (n) n.textContent = msg;
+    });
+  }
+
+  fetch('assets/data/maintenance.json', { cache: 'no-cache' })
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function (data) {
+      // 記録は新しい順に並べる（JSON の並びには依存しない）
+      var records = (data.records || []).slice().sort(function (a, b) {
+        return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
+      });
+      renderSectors(data.sectors || []);
+      renderRecords(records);
+    })
+    .catch(function () {
+      fail('照会に失敗しました ／ RECORD RETRIEVAL FAILED');
+    });
+})();
+</script>
+</body>
+</html>

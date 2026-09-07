@@ -25,6 +25,60 @@
   /* 略称などの補足 */
   .ah-sub{ color:var(--muted); font-size:12.5px }
 
+  /* 提携機関の詳細（折りたたみ）。開いた中身は .ah-org-note と同じ地。 */
+  .ah-org-files{ margin-top:1px; border:1px solid var(--line-soft); border-top:0 }
+  .ah-org-file{ border-bottom:1px solid var(--line-soft) }
+  .ah-org-file:last-child{ border-bottom:0 }
+  .ah-org-file > summary{
+    list-style:none; cursor:pointer; padding:15px clamp(16px,3vw,26px);
+    display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+    background:var(--surface); transition:background .4s ease;
+  }
+  .ah-org-file > summary::-webkit-details-marker{ display:none }
+  .ah-org-file > summary:hover,
+  .ah-org-file > summary:focus-visible{ background:var(--surface-2) }
+  .ah-org-file-k{
+    font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--ice-dim);
+    font-variant-numeric:tabular-nums; flex:none;
+  }
+  .ah-org-file > summary b{ font-weight:400; font-size:12.5px; letter-spacing:.06em; color:var(--text) }
+  .ah-org-file > summary em{
+    font-style:normal; font-family:var(--mono); font-size:8.5px;
+    letter-spacing:.15em; color:var(--faint);
+  }
+  /* 開閉の徴。閉じているときは ＋、開いているときは － */
+  .ah-org-file > summary::after{
+    content:"+"; margin-left:auto; font-family:var(--mono); font-size:13px; color:var(--ice-dim);
+  }
+  .ah-org-file[open] > summary::after{ content:"2" }
+  .ah-org-file-b{
+    padding:clamp(16px,3vw,26px); border-top:1px solid var(--line-soft);
+    background:linear-gradient(to bottom right, rgba(15,22,34,.55), rgba(8,12,20,.5));
+  }
+  .ah-org-file-b p{ margin:0 0 12px; font-size:13px; line-height:2.05; color:var(--text) }
+  .ah-org-file-b p:last-child{ margin-bottom:0 }
+  .ah-org-file-b em{ font-style:normal; color:var(--ice) }
+  .ah-org-file-b a{ color:var(--ice); text-decoration:none; border-bottom:1px solid var(--ice-deep) }
+  .ah-org-file-b a:hover{ border-bottom-color:var(--ice) }
+  .ah-org-file-b dl{ margin:14px 0 0; display:grid; grid-template-columns:auto 1fr; gap:8px 16px }
+  .ah-org-file-b dt{
+    font-family:var(--mono); font-size:9px; letter-spacing:.16em; color:var(--ice-dim);
+    white-space:nowrap; padding-top:4px;
+  }
+  .ah-org-file-b dd{ margin:0; font-size:12.5px; line-height:1.95; color:var(--muted) }
+  @media (max-width:560px){
+    .ah-org-file-b dl{ grid-template-columns:1fr; gap:2px 0 }
+    .ah-org-file-b dd{ margin-bottom:10px }
+  }
+
+  /* 三機関の連鎖構造 */
+  .ah-org-chain{
+    margin-top:22px; padding:15px 18px; border-left:2px solid var(--ice-deep);
+    background:rgba(11,16,25,.5); max-width:62ch;
+  }
+  .ah-org-chain p{ margin:0; font-size:12.5px; line-height:2; color:var(--muted) }
+  .ah-org-chain b{ font-weight:400; color:var(--ice) }
+
   /* 提携機関のうち、観測網が開放されている機関の注記 */
   .ah-org-note{
     margin-top:1px; padding:clamp(18px,3vw,26px);
@@ -239,13 +293,95 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
 
-      <!-- 唯一、観測網が開放されている機関 -->
-      <div class="ah-org-note">
-        <p class="ah-org-note-k">▸ 境界線観測財団 ／ BOUNDARY OBSERVATION FOUNDATION</p>
-        <p>物語と現実の境界面そのものを観測対象とする機関。当機構が境界を曖昧にしていく側であるのに対し、財団は境界が今どこにあるのかを測り続ける側にあります。関心の向きは正反対ですが、観測している面は同一です。</p>
-        <p>現在、財団は現実側の観測網の一部を当機構へ開放しています。その閲覧端末が<a href="weather/">観象台（KANSHODAI）</a>です。気象庁をはじめとする各国機関の発表を財団が中継しているに過ぎず、観測値そのものは当機構の生成物ではありません。</p>
-        <p>なお、箱庭次元の<em>内側</em>を観測する設備は<a href="lab/live/index.html">次元観測区画</a>が別途担っています。外を観るのが観象台、内を観るのが観測区画、そのあいだに立つのが財団という配置です。</p>
-        <p class="ah-en">The Foundation observes the boundary itself. Its outward-facing feed is open to us as <b>Kanshodai</b>; the inward-facing one remains the Observation Deck's own.</p>
+      <!-- 各機関の詳細。協定番号は PACT-01〜06。増設しない。 -->
+      <div class="ah-org-files">
+
+        <details class="ah-org-file">
+          <summary><span class="ah-org-file-k">PACT-01</span><b>箱庭世界倫理委員会</b><em>Committee on World Ethics</em></summary>
+          <div class="ah-org-file-b">
+            <p>世界の倫理を審議する委員会。箱庭とは即ち世界であるため、その名に国名へ相当する語を冠しません。当機構の<em>上位監督機関</em>にあたり、認可なくして当機構は次元をひとつも開けません。</p>
+            <p>文書は全文が受動態で書かれ、結論は必ず末尾に置かれます。色は朱の一色のみを用います。当拠点の各所に現れる朱の注記は、いずれも本委員会の名義によるものです。それらは常に本文を否定し、そして常に無視されます。</p>
+            <dl>
+              <dt>役割</dt><dd>認可・審査・査察。当機構に対する常時の監督。</dd>
+              <dt>当拠点での担当</dt><dd><a href="terms.html">利用規約</a>／二次創作の可否／各ページの朱注／権限レベルの根拠。</dd>
+              <dt>標識色</dt><dd>朱</dd>
+            </dl>
+          </div>
+        </details>
+
+        <details class="ah-org-file">
+          <summary><span class="ah-org-file-k">PACT-02</span><b>Global Narrative Archive</b><em>全次元史実保護機構</em></summary>
+          <div class="ah-org-file-b">
+            <p>全次元にわたる史実を<em>保護</em>する機構。保管ではなく保護であり、その職務には改竄の検出と偽史の排除が含まれます。なお、邦訳の名称は対外的には使用されません。当機構が「全次元史実保護機構」と記すのは、この一文が最後です。</p>
+            <p>本機構の文書には主語がありません。分類記号と数値のみが並び、形容詞と感情語は一語も用いられません。<a href="archive.html">記録の間</a>の索引規約はこの様式に従っています。</p>
+            <dl>
+              <dt>役割</dt><dd>記録の保管・索引・真贋鑑定・散逸記録の回収。</dd>
+              <dt>当拠点での担当</dt><dd><a href="archive.html">記録の間</a>／用語辞典／年表／収容記録の設定基盤。</dd>
+              <dt>標識色</dt><dd>灰白</dd>
+            </dl>
+          </div>
+        </details>
+
+        <details class="ah-org-file">
+          <summary><span class="ah-org-file-k">PACT-03</span><b>VOID Tech Industries</b><em>Deep Void Research ／ 深淵技術工業</em></summary>
+          <div class="ah-org-file-b">
+            <p>虚無と星喰を資源として扱う民間の営利企業。VOID は頭字語ではなく、そのまま虚無を指します。六機関のうち唯一、当機構と資本関係を持たない取引先です。</p>
+            <p>方針として<em>武装部門を持ちません</em>。同社の文書は営業的で明るく、感嘆符を用いる唯一の機関でありながら、免責事項が本文より長いことで知られます。当機構の実験区画の機材は、その全てが同社からの納入品です。障害の記録は<a href="maintenance.html">保守記録</a>にまとめてあります。</p>
+            <dl>
+              <dt>役割</dt><dd>採取・精製・製品化。武装部門は持たない（方針）。</dd>
+              <dt>当拠点での担当</dt><dd><a href="lab/index.html">実験区画</a>の全機材／<a href="maintenance.html">保守記録・障害情報</a>。</dd>
+              <dt>標識色</dt><dd>黒／警告黄</dd>
+            </dl>
+          </div>
+        </details>
+
+        <!-- 唯一、観測網が開放されている機関 -->
+        <details class="ah-org-file" open>
+          <summary><span class="ah-org-file-k">PACT-04</span><b>境界線観測財団</b><em>Boundary Observation Foundation ／ FEED OPEN</em></summary>
+          <div class="ah-org-file-b">
+            <p>物語と現実の境界面そのものを観測対象とする機関。当機構が境界を曖昧にしていく側であるのに対し、財団は境界が今どこにあるのかを測り続ける側にあります。関心の向きは正反対ですが、観測している面は同一です。</p>
+            <p>現在、財団は現実側の観測網の一部を当機構へ開放しています。その閲覧端末が<a href="weather/">観象台（KANSHODAI）</a>です。気象庁をはじめとする各国機関の発表を財団が中継しているに過ぎず、観測値そのものは当機構の生成物ではありません。</p>
+            <p>なお、箱庭次元の<em>内側</em>を観測する設備は<a href="lab/live/index.html">次元観測区画</a>が別途担っています。外を観るのが観象台、内を観るのが観測区画、そのあいだに立つのが財団という配置です。</p>
+            <p>財団の文書には数値と観測時刻しか記されません。断定できることだけが書かれ、末尾には必ず観測点番号と観測員番号が付されます。</p>
+            <dl>
+              <dt>役割</dt><dd>境界の常時観測・警報の発令・観測員の資格認定。</dd>
+              <dt>当拠点での担当</dt><dd><a href="weather/">観象台</a>／定期観測報告の原データ／警報連動。</dd>
+              <dt>標識色</dt><dd>濃紺</dd>
+            </dl>
+            <p class="ah-en">The Foundation observes the boundary itself. Its outward-facing feed is open to us as <b>Kanshodai</b>; the inward-facing one remains the Observation Deck's own.</p>
+          </div>
+        </details>
+
+        <details class="ah-org-file">
+          <summary><span class="ah-org-file-k">PACT-05</span><b>S.H.R.O.S.</b><em>Speculative Hypothesis Research Organization, Strategic Lab</em></summary>
+          <div class="ah-org-file-b">
+            <p>思弁仮説研究機構 戦略研究所。本体は S.H.R.O. の四文字であり、末尾の S は Strategic Lab を指します。当機構が接するのは、この戦略研究所のみです。</p>
+            <p>本研究所は<em>検証手段の有無を問わず仮説を立てます</em>。検証できない仮説を立てないことは、本研究所においては怠慢と見なされます。その文書には数値と興奮が同居しており、末尾には必ず次の実験の提案が付いています。</p>
+            <dl>
+              <dt>役割</dt><dd>仮説構築・実証実験・解剖再現・作戦立案。</dd>
+              <dt>当拠点での担当</dt><dd>攻略・データ資料／確率設計／<a href="lab/game/lottery.html">SECTOR-03</a> の設計。</dd>
+              <dt>標識色</dt><dd>銀鼠</dd>
+            </dl>
+          </div>
+        </details>
+
+        <details class="ah-org-file">
+          <summary><span class="ah-org-file-k">PACT-06</span><b>A.C.A.S.</b><em>Anomalous Contingency &amp; Assault Solutions</em></summary>
+          <div class="ah-org-file-b">
+            <p>異常事態対処・強襲ソリューション。副題は Specialized Tactical Solutions。六機関において<em>唯一の軍事組織</em>です。</p>
+            <p>ただし本社は<em>開発を行いません</em>。用いる機材は全て他機関からの調達品であり、その運用と、運用の結果生じた事態の収拾のみを職掌とします。文書は短く、箇条書きで、時刻は24時間制で秒まで記されます。書かれるのは被害と時刻と地点だけです。</p>
+            <dl>
+              <dt>役割</dt><dd>探査・駆除・護衛・封鎖・事故収拾・実地教育。</dd>
+              <dt>当拠点での担当</dt><dd><a href="lab/hunting/index.html">SECTOR-01 狩猟適性訓練</a>／実地系の資料／装備目録。</dd>
+              <dt>標識色</dt><dd>濃緑／橙</dd>
+            </dl>
+          </div>
+        </details>
+
+      </div>
+
+      <div class="ah-org-chain">
+        <p><b>S.H.R.O.S.（発見）</b> → <b>VOID Tech（実用化）</b> → <b>A.C.A.S.（運用）</b>。回収された異常個体は S.H.R.O.S. へ戻ります。この順序が守られているかぎり、三者の職掌は重なりません。残る三機関──倫理委員会・GNA・境界線観測財団は、この鎖を認可と記録と観測によって外側から抑えています。</p>
       </div>
     </section>
 

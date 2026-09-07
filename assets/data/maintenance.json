@@ -1,0 +1,365 @@
+{
+  "meta": {
+    "document_id": "AH-VTI-001",
+    "version": "1.0.0",
+    "issued_by": "通商部 購買課",
+    "note": "本記録は当機構が調達した機材に生じた事象の記録である。納入元の呼称は納品書の記載に従う。"
+  },
+  "sectors": [
+    {
+      "id": "SECTOR-01",
+      "name": "狩猟適性訓練区画",
+      "en": "FIELD APTITUDE WING",
+      "status": "ACTIVE",
+      "note": "資料庫・試験対策端末ともに常用可。"
+    },
+    {
+      "id": "SECTOR-02",
+      "name": "次元観測区画",
+      "en": "OBSERVATION DECK",
+      "status": "ACTIVE",
+      "note": "観測者一名が常駐。音声系統は納入以来の改修を経て安定。"
+    },
+    {
+      "id": "SECTOR-03",
+      "name": "確率事象制御区画",
+      "en": "PROBABILITY ENGINE",
+      "status": "UNSTABLE",
+      "note": "演算装置の自走が断続的に確認される。実害の報告はない。"
+    },
+    {
+      "id": "SECTOR-04",
+      "name": "事務処理支援区画",
+      "en": "ARCA OFFICE — SERIES",
+      "status": "QUARANTINED",
+      "note": "帳票生成 Tabula と野帳 Venatio のみ運用。残る個体は検疫のため隔離。"
+    },
+    {
+      "id": "GATE 05",
+      "name": "観象台",
+      "en": "KANSHODAI",
+      "status": "ACTIVE",
+      "note": "境界線観測財団の観測網を中継。観測値は当機構の生成物ではない。"
+    },
+    {
+      "id": "記録の間",
+      "name": "大図書館・記憶保管庫",
+      "en": "A.R.C.A. ARCHIVE",
+      "status": "ACTIVE",
+      "note": "全次元史実保護機構の索引規約に準拠。一部項目は権限で遮蔽。"
+    },
+    {
+      "id": "SECTOR-██",
+      "name": "████████",
+      "en": "[ DATA EXPUNGED ]",
+      "status": "SEALED",
+      "note": "倫理委員会の勧告により封印。状態照会に応じない。"
+    }
+  ],
+  "records": [
+    {
+      "date": "2026-09-07",
+      "sector": "全区画",
+      "status": "ACTIVE",
+      "title": "文書番号の付番規則を改訂、全区画の掲示を差し替え",
+      "detail": "文書管理装置が同一の番号を二つの区画へ同時に払い出していた。番号を系列コードで分け、発行部署を掲示に明記する方式へ改めた。旧番号の値は変更していない。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-09-05",
+      "sector": "GATE 05",
+      "status": "ACTIVE",
+      "title": "観象台を開設、境界線観測財団の観測網へ接続",
+      "detail": "財団が現実側の観測網の一部を当機構へ開放したことに伴い、閲覧端末を新設。中継のみを行い、観測値の加工は一切行わない構成とした。",
+      "vendor": "Boundary Observation Foundation"
+    },
+    {
+      "date": "2026-08-31",
+      "sector": "SECTOR-01",
+      "status": "ACTIVE",
+      "title": "運営者情報と保有資格の掲示位置を是正",
+      "detail": "資格情報が資料本文の下層に埋没し、来訪者から到達できない状態にあった。掲示装置の階層設定を初期値のまま運用していたことが原因。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-25",
+      "sector": "本部",
+      "status": "ACTIVE",
+      "title": "本部前面の背景を深宇宙側へ寄せ、紋章画像を改名",
+      "detail": "紋章画像の旧名称が装置内部の予約語と衝突し、複製が更新されない事象が発生。意匠管理部の指示により topImage へ改名した。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-23",
+      "sector": "全区画",
+      "status": "ACTIVE",
+      "title": "表示装置の明度不足を解消、外部導線に属性を付与",
+      "detail": "納入時の初期配色のまま運用していた区画で、文字と地色の明度差が基準を下回っていた。全区画の配色表を見直し、外部へ通じる導線には所定の属性を付した。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-23",
+      "sector": "規程区画",
+      "status": "ACTIVE",
+      "title": "記録パネルが収容枠の外へ逸脱",
+      "detail": "規程区画の記録パネルが主枠の外側に描画され、狭い端末で読めない状態にあった。枠指定の閉じ忘れによるもの。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-22",
+      "sector": "本部",
+      "status": "ACTIVE",
+      "title": "本部各区画の内装を次元断面様式へ全面改修",
+      "detail": "総合案内・機構概要・支給品目録・通信経路・規程・記録の間・異常終了の各面を同一様式へ統一。共通の意匠部品と配色表を導入し、区画ごとに分散していた指定を廃した。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-22",
+      "sector": "SECTOR-03",
+      "status": "UNSTABLE",
+      "title": "確率演算装置の外装を計器盤様式へ換装",
+      "detail": "外装のみの換装で、演算部には触れていない。換装後も自走の兆候は解消していない。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-20",
+      "sector": "全区画",
+      "status": "ACTIVE",
+      "title": "索引装置の登録内容を実態へ整合",
+      "detail": "索引装置が区画の見出しと内容を取り違えて外部へ申告していた。区画一覧を新設し、巡回装置への通知経路を明示。内部の呼び出し先も最終形へ統一した。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-20",
+      "sector": "SECTOR-01",
+      "status": "ACTIVE",
+      "title": "試験対策端末の設問数表示が実数と相違",
+      "detail": "端末が公称値を掲示し続け、実際に格納された 331 問と食い違っていた。被害額の内訳も丸めた値のまま掲示されていたため、内訳を開示する形に改めた。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-19",
+      "sector": "SECTOR-01",
+      "status": "ACTIVE",
+      "title": "猟期残日数の表示形式を是正、区画呼称を変更",
+      "detail": "計数装置が残日数を零詰めで表示し、一桁の日数が二桁に見える状態にあった。あわせて区画の呼称を「狩座ひととせ」へ改め、読みと語義を掲示に添えた。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-19",
+      "sector": "SECTOR-01",
+      "status": "ACTIVE",
+      "title": "区画全体を「墨と信号」様式へ改装",
+      "detail": "実地訓練部の要請により、来訪者が構えずに読める内装へ全面改装。装飾の角と影を廃し、季節に応じて標識色が変わる方式を採った。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-13",
+      "sector": "SECTOR-01",
+      "status": "ACTIVE",
+      "title": "知識試験装置に出題数の選択と全問走査を追加",
+      "detail": "従来は固定数のみで、短時間の反復に耐えなかった。30 問・50 問の選択と、免許種別を問わない全問走査を追加。",
+      "vendor": "Speculative Hypothesis Research Organization, Strategic Lab"
+    },
+    {
+      "date": "2026-08-12",
+      "sector": "記録の間",
+      "status": "ACTIVE",
+      "title": "実用器物3件を収容、件数表示を実データ化",
+      "detail": "件数表示が固定値のまま配信され、収容数と一致していなかった。索引の集計を実データ参照へ切り替え、頁送りも同じ集計を用いる構成とした。",
+      "vendor": "Global Narrative Archive"
+    },
+    {
+      "date": "2026-08-12",
+      "sector": "SECTOR-04",
+      "status": "QUARANTINED",
+      "title": "野帳端末 Venatio を受領、Tabula を更新版へ差し替え",
+      "detail": "端末群のうち二個体のみを検疫解除。残る個体は納入元の説明が得られておらず、隔離を継続する。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-11",
+      "sector": "全区画",
+      "status": "ACTIVE",
+      "title": "区画起動時の緩衝表示を追加",
+      "detail": "区画の切り替えが無音・無表示で行われ、来訪者が到達の成否を判断できなかった。起動時に短い緩衝表示を挟む方式へ変更。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-11",
+      "sector": "SECTOR-01",
+      "status": "UNSTABLE",
+      "title": "統計計数装置が零を配信し続ける事象",
+      "detail": "計数装置が初期値の零を保持したまま外部へ配信していた。集計元の年度切り替えに追随できていなかったことが原因。令和6年度値へ更新のうえ復旧。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-05",
+      "sector": "SECTOR-04",
+      "status": "QUARANTINED",
+      "title": "事務処理支援区画を新設、端末選択機構を設置",
+      "detail": "端末群を一括で開放する構成では検疫が成立しないため、選択機構を挟み個体ごとに開放する方式へ変更。選択枠の開閉時に表示が上下する不具合も同時に是正した。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-08-05",
+      "sector": "SECTOR-██",
+      "status": "SEALED",
+      "title": "封鎖区画の照会応答を改め、その先へ導線を通す",
+      "detail": "特異点検知後、装置が即座に遮断していたため照会の記録が残らなかった。数度の再試行を許し、権限拒否の記録を残したうえで退去させる手順へ改めた。導線の先については記録しない。",
+      "vendor": "─"
+    },
+    {
+      "date": "2026-08-05",
+      "sector": "SECTOR-03",
+      "status": "UNSTABLE",
+      "title": "確率演算装置を区画内の所定位置へ移設",
+      "detail": "装置が区画の外に置かれたまま稼働していた。移設後、旧位置への到達要求は所定の位置へ転送する。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-26",
+      "sector": "SECTOR-02",
+      "status": "ACTIVE",
+      "title": "環境音の再生が特定条件で開始されない事象",
+      "detail": "再生装置が緩衝完了の通知を待ち続け、通知が来ない端末では無音のままとなっていた。通知への依存を断ち、重ね合わせの手順も同時に是正。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-25",
+      "sector": "SECTOR-02",
+      "status": "UNSTABLE",
+      "title": "観測者の口の動きが発話と一致しない事象",
+      "detail": "口の開閉が音声ではなく字幕の文字送りに連動していた。音声波形の駆動へ切り替え、開きの量を再調整。納入元は「仕様の範囲内です！」と回答したが、当課はこれを是としない。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-25",
+      "sector": "SECTOR-02",
+      "status": "ACTIVE",
+      "title": "観測者音声 210 本を受領、台詞表へ紐付け",
+      "detail": "音声素材を区画へ搬入し、台詞表の全 210 項目に対応付けた。合成元の表示義務については音響観測局を通じて確認済み。",
+      "vendor": "─"
+    },
+    {
+      "date": "2026-07-24",
+      "sector": "SECTOR-02",
+      "status": "ACTIVE",
+      "title": "字幕が観測者の背後へ回り込む事象",
+      "detail": "描画順の指定が抜けており、観測者の立ち位置によって字幕が読めなくなっていた。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-24",
+      "sector": "SECTOR-02",
+      "status": "ACTIVE",
+      "title": "公開経路から中間階層を除去",
+      "detail": "納入時の構成が組み立て用の階層をそのまま公開経路に含んでおり、来訪者に内部構造が露出していた。素材と出力を分離し、経路を一段浅くした。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-24",
+      "sector": "本部",
+      "status": "ACTIVE",
+      "title": "意匠・出典の集約面を新設",
+      "detail": "各区画に散在していた出典表示を一面へ集約し、外部部品の使用条件は機械生成の一覧を参照する方式へ改めた。手書きによる転記は以後禁止とする。",
+      "vendor": "─"
+    },
+    {
+      "date": "2026-07-23",
+      "sector": "SECTOR-02",
+      "status": "ACTIVE",
+      "title": "計時装置を公転模型方式へ換装",
+      "detail": "従来の走査線方式は観測者の背後で明滅し、観測の妨げとなっていた。多惑星の公転による表示へ換装し、走査演出を不定期の探信音へ置き換えた。以後、外周帯・中心星の配色を三次にわたり調整。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-22",
+      "sector": "SECTOR-02",
+      "status": "UNSTABLE",
+      "title": "観測者の描画装置が起動直後に停止",
+      "detail": "遮蔽処理の管理部が未定義のまま参照され、装置が停止していた。初期化の順序が納入時の手順書と異なっていたことが直接の原因。納入元は当初「環境依存です！」と回答したが、手順書の誤りであることが後に判明した。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-22",
+      "sector": "SECTOR-02",
+      "status": "ACTIVE",
+      "title": "観測者に自動瞬目と無音時の口の動きを追加",
+      "detail": "静止時の観測者が生体反応を示さず、来訪者から停止と誤認される報告があった。物理演算を有効化し、追従感を区画全体で均一に調整。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-21",
+      "sector": "全区画",
+      "status": "UNSTABLE",
+      "title": "統合作業の残置記号が配信物に混入",
+      "detail": "二系統の記録を統合した際の境界記号が除去されないまま配信されていた。除去のうえ、以後は統合直後の照合を必須とする。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-07-21",
+      "sector": "SECTOR-03",
+      "status": "UNSTABLE",
+      "title": "確率演算装置に支給品告知枠を増設",
+      "detail": "通商部 購買課の要請による増設。枠の高さを 60 ピクセルで揃え、演出面を圧迫しない位置に置いた。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-03-22",
+      "sector": "異常終了",
+      "status": "ACTIVE",
+      "title": "紋章を差し替え、境界外表示の閃光間隔を再調整",
+      "detail": "異常終了面に表示される境界外の警告が、来訪者の知覚可能域を超える頻度で明滅していた。間隔を延ばし、閃光時間を短縮。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2026-03-07",
+      "sector": "全区画",
+      "status": "ACTIVE",
+      "title": "外部計測装置の識別子を更新",
+      "detail": "旧識別子が失効し、計測が停止していた。",
+      "vendor": "─"
+    },
+    {
+      "date": "2026-02-22",
+      "sector": "購買区画",
+      "status": "ACTIVE",
+      "title": "支給品目録を開設",
+      "detail": "管理者の生存維持において有用性が認められた物品の記録を、来訪者にも開放する目的で新設。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2025-11-16",
+      "sector": "SECTOR-03",
+      "status": "UNSTABLE",
+      "title": "点灯演出を増設、三度の再調整",
+      "detail": "点灯順序が抽選結果と無関係に決定される事象があり、三度にわたり調整した。現在も演算部との同期は保証されていない。",
+      "vendor": "VOID Tech Industries"
+    },
+    {
+      "date": "2025-10-21",
+      "sector": "全区画",
+      "status": "ACTIVE",
+      "title": "定期更新",
+      "detail": "記録なし。当時の記録様式は本記録の書式に適合しない。",
+      "vendor": "─"
+    },
+    {
+      "date": "2025-07-19",
+      "sector": "全区画",
+      "status": "ACTIVE",
+      "title": "掲示内容の更新",
+      "detail": "記録なし。当時の記録様式は本記録の書式に適合しない。",
+      "vendor": "─"
+    },
+    {
+      "date": "2025-07-17",
+      "sector": "本部",
+      "status": "ACTIVE",
+      "title": "本部施設の開設",
+      "detail": "当機構の観測拠点をこの次元に設置した。以後の全記録はこの日を起点とする。",
+      "vendor": "─"
+    }
+  ]
+}
