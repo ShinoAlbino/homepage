@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registry | Arca Hortus</title>
+  <meta name="description" content="箱庭次元研究機構 職員登録局。適性検査により配属先・権限区分・職員番号を決定し、職員証を発行する。判定結果はご利用の端末内にのみ保存される。" />
+  <link rel="canonical" href="https://arcahortus.com/registry.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="職員登録局 | Arca Hortus" />
+  <meta property="og:description" content="適性検査により配属先・権限区分・職員番号を決定し、職員証を発行する。" />
+  <meta property="og:url" content="https://arcahortus.com/registry.html" />
+  <link rel="icon" href="images/favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+JP:wght@200;300;500&family=Noto+Sans+JP:wght@200;300;400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" />
+  <link rel="stylesheet" href="assets/ah-tokens.css" />
+  <link rel="stylesheet" href="assets/ah-common.css" />
+
+  <style>
+  /* ── 職員登録局 固有 ──────────────────────────────── */
+
+  .rg-panel{
+    position:relative; border:1px solid var(--line-soft); background:var(--surface);
+    padding:clamp(20px,3.4vw,34px);
+  }
+  .rg-panel + .rg-panel{ margin-top:1px }
+
+  /* 進捗 */
+  .rg-prog{ display:flex; align-items:center; gap:12px; margin-bottom:22px }
+  .rg-prog-bar{ flex:1; height:1px; background:var(--line); position:relative }
+  .rg-prog-bar i{
+    position:absolute; inset:0 auto 0 0; background:var(--ice-dim);
+    transition:width .45s cubic-bezier(.2,.7,.3,1);
+  }
+  .rg-prog-num{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--faint) }
+
+  /* 設問 */
+  .rg-qid{ font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--ice-dim) }
+  .rg-qtext{
+    margin:10px 0 22px; font-family:var(--serif); font-size:clamp(15px,2.2vw,19px);
+    line-height:1.85; color:var(--text); font-weight:300;
+  }
+  .rg-choices{ display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line-soft) }
+  .rg-choice{
+    display:flex; align-items:flex-start; gap:14px; width:100%; text-align:left;
+    padding:18px clamp(14px,2.4vw,22px); background:var(--surface-2);
+    border:0; color:var(--text); font:inherit; font-size:13.5px; line-height:1.7;
+    cursor:pointer; transition:background .3s ease, color .3s ease;
+  }
+  .rg-choice:hover{ background:var(--surface); color:var(--ice) }
+  .rg-choice:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:-1px }
+  .rg-choice-k{
+    flex:none; width:20px; height:20px; margin-top:1px; display:grid; place-items:center;
+    border:1px solid var(--line); font-family:var(--mono); font-size:9px; color:var(--faint);
+    transition:border-color .3s ease, color .3s ease;
+  }
+  .rg-choice:hover .rg-choice-k{ border-color:var(--ice-deep); color:var(--ice-dim) }
+
+  /* 戻る・小さな操作 */
+  .rg-actions{ margin-top:18px; display:flex; gap:16px; flex-wrap:wrap; align-items:center }
+  .rg-mini{
+    background:0; border:0; padding:0; font-family:var(--mono); font-size:9.5px;
+    letter-spacing:.16em; color:var(--faint); cursor:pointer; text-decoration:none;
+    border-bottom:1px solid transparent; transition:color .3s ease, border-color .3s ease;
+  }
+  .rg-mini:hover{ color:var(--ice-dim); border-bottom-color:currentColor }
+  .rg-mini:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:3px }
+  .rg-mini[disabled]{ opacity:.35; cursor:default }
+  .rg-mini[disabled]:hover{ color:var(--faint); border-bottom-color:transparent }
+
+  /* 主ボタン */
+  .rg-btn{
+    display:inline-block; padding:13px 30px; border:1px solid var(--ice-deep);
+    background:0; color:var(--ice); font-family:var(--mono); font-size:11px;
+    letter-spacing:.2em; cursor:pointer; text-decoration:none;
+    transition:background .35s ease, border-color .35s ease;
+  }
+  .rg-btn:hover{ background:var(--surface-2); border-color:var(--ice-dim) }
+  .rg-btn:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:3px }
+
+  /* 配属先の選択 */
+  .rg-picks{
+    display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line-soft);
+    border:1px solid var(--line-soft); margin-top:20px;
+  }
+  @media (max-width:620px){ .rg-picks{ grid-template-columns:1fr } }
+  .rg-pick{
+    display:block; width:100%; text-align:left; padding:clamp(18px,2.6vw,26px);
+    background:var(--surface-2); border:0; color:var(--text); font:inherit; cursor:pointer;
+    transition:background .3s ease;
+  }
+  .rg-pick:hover{ background:var(--surface) }
+  .rg-pick:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:-1px }
+  .rg-pick-head{ display:flex; align-items:center; gap:12px }
+  .rg-pick-sig{
+    flex:none; width:30px; height:30px; display:grid; place-items:center;
+    border:1px solid var(--line); overflow:hidden;
+  }
+  .rg-pick-sig img{ width:19px; height:19px; object-fit:contain }
+  .rg-pick-name{ font-size:13px; letter-spacing:.05em; color:var(--text) }
+  .rg-pick-en{
+    display:block; font-family:var(--mono); font-size:8.5px; letter-spacing:.13em;
+    color:var(--faint); margin-top:4px; overflow-wrap:anywhere;
+  }
+  .rg-pick-fit{
+    margin-left:auto; font-family:var(--mono); font-size:9.5px; letter-spacing:.14em;
+    color:var(--ice-dim); flex:none;
+  }
+  .rg-pick p{ margin:14px 0 0; font-size:12.5px; line-height:1.9; color:var(--muted) }
+  .rg-pick-go{
+    margin-top:16px; font-family:var(--mono); font-size:9.5px; letter-spacing:.18em;
+    color:var(--ice-dim);
+  }
+
+  /* 職員証 */
+  .rg-card-wrap{ margin-top:4px }
+  .rg-card{
+    display:block; width:100%; max-width:560px; height:auto;
+    border:1px solid var(--line); background:#070a10;
+  }
+  .rg-name-row{ margin-top:20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center }
+  .rg-name-row label{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--faint) }
+  .rg-name-row input{
+    flex:1; min-width:180px; max-width:300px; padding:9px 12px; background:var(--surface-2);
+    border:1px solid var(--line); color:var(--text); font:inherit; font-size:13px;
+  }
+  .rg-name-row input:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:1px }
+
+  /* 判定内訳 */
+  .rg-bars{ margin-top:6px; display:grid; gap:9px }
+  .rg-bar{ display:grid; grid-template-columns:42px 1fr 46px; align-items:center; gap:12px }
+  .rg-bar-k{ font-family:var(--mono); font-size:9.5px; letter-spacing:.12em; color:var(--faint) }
+  .rg-bar-t{ height:3px; background:var(--line-soft); position:relative }
+  .rg-bar-t i{ position:absolute; inset:0 auto 0 0; background:var(--ice-deep) }
+  .rg-bar.is-top .rg-bar-t i{ background:var(--ice-dim) }
+  .rg-bar.is-top .rg-bar-k{ color:var(--ice) }
+  .rg-bar-v{ font-family:var(--mono); font-size:9px; color:var(--faint); text-align:right }
+
+  /* 第二部の予告 */
+  .rg-next{
+    border:1px dashed var(--line); padding:clamp(16px,2.6vw,24px); margin-top:1px;
+    background:var(--surface);
+  }
+  .rg-next h3{
+    margin:0 0 10px; font-family:var(--mono); font-size:10px; letter-spacing:.2em;
+    color:var(--brass); font-weight:400;
+  }
+  .rg-next p{ margin:0; font-size:12.5px; line-height:1.95; color:var(--muted) }
+
+  .rg-fine{ margin:18px 0 0; font-size:11.5px; line-height:1.9; color:var(--faint) }
+  .rg-fine b{ font-weight:400; color:var(--muted) }
+  </style>
+</head>
+<body class="ah-body">
+
+  <canvas id="ah-stars" aria-hidden="true"></canvas>
+
+  <header class="ah-site-head">
+    <div class="ah-mark"><a href="index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="about.html">About</a>
+      <a href="recommend.html">TopPicks</a>
+      <a href="nexus.html">Nexus</a>
+      <a href="archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+      <a href="weather/">Kanshodai<span class="ah-tag ah-t-ice">LIVE</span></a>
+    </nav>
+  </header>
+
+  <main class="ah-shell">
+
+    <div class="ah-doc-head">
+      <p class="ah-doc-id">Document ID: AH-REG-001 &nbsp;/&nbsp; Version 1.0.0</p>
+      <h1 class="ah-doc-jp">職員登録局</h1>
+      <p class="ah-doc-en">Bureau of Personnel Registration</p>
+    </div>
+
+    <!-- ══ メタ帯 ══ -->
+    <div class="ah-meta" aria-hidden="true">
+      <div>ITEM #<b>AH-R01</b></div>
+      <div>OBJECT CLASS<b class="ah-v-bad">EUCLID</b></div>
+      <div>DISRUPTION<b class="ah-v-bad">KENEQ</b></div>
+      <div>CLEARANCE<b class="ah-v-ice">LEVEL 1 / 公開可</b></div>
+      <div>ISSUED BY<b>事務局</b></div>
+      <div>SITE<b>登録局</b></div>
+    </div>
+
+    <!-- ══ 導入 ══ -->
+    <section class="rg-panel" id="rg-intro">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <h2 class="ah-h2">適性検査 第一部<em>Aptitude Examination, Part I</em></h2>
+      <div class="ah-body-col">
+        <p>当局は、来訪者の適性を検査し、提携六機関のいずれかへの配属を決定する。あわせて権限区分と職員番号を付与し、職員証を発行する。</p>
+        <p>設問は十六問。各問について、より近いほうを選ばれたい。正解は設定していない。所要は三分程度である。</p>
+      </div>
+      <p class="rg-fine">
+        <b>回答および判定結果は、いまお使いのブラウザの中（localStorage）にのみ保存される。</b>
+        当機構を含め、外部へ送信されることはない。保存を消せば登録も消える。<br>
+        本検査は創作上の設定であり、実在の適性検査・心理検査とは一切関係がない。判定結果を現実の判断に用いないこと。
+      </p>
+      <div class="rg-actions" style="margin-top:24px">
+        <button class="rg-btn" type="button" id="rg-start">検査を開始する</button>
+        <button class="rg-mini" type="button" id="rg-show-card" hidden>◂ 発行済みの職員証を表示する</button>
+      </div>
+    </section>
+
+    <!-- ══ 検査 ══ -->
+    <section class="rg-panel" id="rg-exam" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <div class="rg-prog">
+        <span class="rg-prog-num" id="rg-prog-num">01 / 16</span>
+        <span class="rg-prog-bar"><i id="rg-prog-fill" style="width:0%"></i></span>
+      </div>
+      <div aria-live="polite">
+        <p class="rg-qid" id="rg-qid">Q01</p>
+        <p class="rg-qtext" id="rg-qtext"></p>
+      </div>
+      <div class="rg-choices">
+        <button class="rg-choice" type="button" data-c="a">
+          <span class="rg-choice-k" aria-hidden="true">A</span><span id="rg-ca"></span>
+        </button>
+        <button class="rg-choice" type="button" data-c="b">
+          <span class="rg-choice-k" aria-hidden="true">B</span><span id="rg-cb"></span>
+        </button>
+      </div>
+      <div class="rg-actions">
+        <button class="rg-mini" type="button" id="rg-back" disabled>◂ 前の設問へ戻る</button>
+        <button class="rg-mini" type="button" id="rg-abort">検査を中止する</button>
+      </div>
+    </section>
+
+    <!-- ══ 配属先の選択 ══ -->
+    <section class="rg-panel" id="rg-pick" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <h2 class="ah-h2">配属先の選択<em>Assignment</em></h2>
+      <div class="ah-body-col">
+        <p>検査の結果、適性が認められた機関は二つである。いずれかを選ばれたい。選ばれなかった機関へは、その旨のみが通知される。</p>
+      </div>
+      <div class="rg-picks" id="rg-pick-list"></div>
+    </section>
+
+    <!-- ══ 結果・職員証 ══ -->
+    <section class="rg-panel" id="rg-result" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <h2 class="ah-h2">職員証の発行<em>Identification Issued</em></h2>
+
+      <div class="rg-card-wrap">
+        <canvas class="rg-card" id="rg-canvas" width="1120" height="700"
+                role="img" aria-label="発行された職員証"></canvas>
+      </div>
+
+      <div class="rg-name-row">
+        <label for="rg-name">氏名欄（任意・端末内にのみ保存）</label>
+        <input type="text" id="rg-name" maxlength="16" placeholder="未記入のままでよい" autocomplete="off">
+      </div>
+
+      <div class="rg-actions" style="margin-top:20px">
+        <button class="rg-btn" type="button" id="rg-save">職員証を画像として保存</button>
+        <button class="rg-mini" type="button" id="rg-retake">検査を受け直す</button>
+        <button class="rg-mini" type="button" id="rg-erase">登録を抹消する</button>
+      </div>
+
+      <div class="ah-body-col" style="margin-top:30px">
+        <h3 class="ah-h3" id="rg-org-name"></h3>
+        <p id="rg-org-desc"></p>
+        <p id="rg-org-duty"></p>
+        <p id="rg-lv-note"></p>
+      </div>
+
+      <p class="rg-qid" style="margin-top:28px">適性の内訳</p>
+      <div class="rg-bars" id="rg-bars"></div>
+      <p class="rg-fine">
+        配点は機関ごとに偏りがあるため、各機関の平均と標準偏差で標準化したうえで比較している。
+        図の長さは標準化後の相対値であり、得点そのものではない。
+      </p>
+    </section>
+
+    <!-- ══ 第二部の予告 ══ -->
+    <section class="rg-next" id="rg-next" hidden>
+      <h3>内部資格 ／ 適性検査 第二部</h3>
+      <p>
+        職員登録を終えた者は、詳細適性検査（第二部）をいつでも受けることができる。
+        第二部は性格・気質・思考の傾向をより深く測り、機関内の職掌と、権限区分 LEVEL 5 以上の開放を扱う。
+        現在、設問を作成中である。準備が整い次第、当局より通達する。
+      </p>
+    </section>
+
+  </main>
+
+  <!-- ══ フッター ══ -->
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="terms.html">利用規約</a>
+        <a href="maintenance.html">保守記録</a>
+        <a href="https://x.com/ArcaHortus" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
+
+<script src="assets/ah-site.js"></script>
+<script src="assets/ah-staff.js"></script>
+<script src="assets/rg-exam.js"></script>
+</body>
+</html>
