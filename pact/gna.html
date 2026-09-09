@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Global Narrative Archive｜AH-4188 公開索引</title>
+<meta name="description" content="記録の永久保管・索引編纂・真贋鑑定・散逸記録の回収。Global Narrative Archive / G.N.A Database。第4188分館 公開索引。" />
+<meta name="author" content="ArcaHortus Lab" />
+<meta name="theme-color" content="#DEDEDC" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Global Narrative Archive｜AH-4188 公開索引" />
+<meta property="og:description" content="受理 ／ 不受理 ／ 保留" />
+<meta property="og:image" content="https://arcahortus.com/pact/icons/gna-512.png" />
+<link rel="canonical" href="https://arcahortus.com/pact/gna.html" />
+<meta property="og:url" content="https://arcahortus.com/pact/gna.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Global Narrative Archive｜AH-4188 公開索引" />
+<meta name="twitter:description" content="受理 ／ 不受理 ／ 保留" />
+<meta name="twitter:image" content="https://arcahortus.com/pact/icons/gna-512.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="icons/gna-32.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="icons/gna-512.png" />
+<link rel="apple-touch-icon" href="icons/gna-180.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MRDPGGL9');</script>
+<!-- End Google Tag Manager -->
+<style>
+:root{
+  --bg:#DEDEDC; --card:#F7F7F5; --card2:#ECECE9;
+  --ink:#1B1B19; --ink2:#55554F; --faint:#8E8E87;
+  --rule:#B6B6B0; --rule2:#CDCDC7;
+  --ext:#9E2B23;                    /* 外部から入る唯一の色 */
+  --g:"BIZ UDPGothic","Noto Sans JP",sans-serif;
+  --m:"Roboto Mono","BIZ UDPGothic",monospace;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--g);font-size:14px;line-height:2;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--ink);}
+.w{max-width:1080px;margin:0 auto;padding:0 26px;}
+
+.bar{
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 16px;
+  padding:10px 26px;border-bottom:1px solid var(--rule);
+  font-family:var(--m);font-size:11px;letter-spacing:.14em;color:var(--ink2);
+}
+.bar a{text-decoration:none;color:var(--ink2);}
+.bar a:hover{color:var(--ink);}
+
+/* ── 標題 ── */
+.mast{padding:96px 0 70px;}
+.mast .code{
+  font-family:var(--m);font-weight:500;font-size:clamp(56px,13vw,150px);
+  letter-spacing:.02em;line-height:.9;margin:0;
+}
+.mast .name{
+  font-family:var(--m);font-size:11.5px;letter-spacing:.26em;color:var(--ink2);
+  margin:22px 0 0;text-transform:uppercase;
+}
+.mast .jp{font-size:12px;letter-spacing:.2em;color:var(--faint);margin:4px 0 0;}
+.mast .one{font-size:15px;margin:54px 0 0;letter-spacing:.06em;}
+.mast img{width:38px;height:38px;object-fit:contain;filter:grayscale(1) contrast(1.1) opacity(.55);margin-bottom:26px;display:block;}
+
+section{padding:0 0 78px;}
+h2{font-family:var(--m);font-size:11px;font-weight:500;letter-spacing:.26em;color:var(--faint);margin:0 0 26px;text-transform:uppercase;}
+
+/* ── 照会窓 ── */
+.q{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:26px 0;}
+.qrow{display:flex;gap:0;flex-wrap:wrap;}
+.q input{
+  flex:1 1 260px;border:1px solid var(--rule);border-right:none;background:var(--card);
+  font-family:var(--g);font-size:15px;color:var(--ink);padding:13px 16px;min-width:0;
+}
+.q input:focus{outline:none;border-color:var(--ink);}
+.q button{
+  font-family:var(--m);font-size:12px;letter-spacing:.2em;
+  background:var(--ink);color:var(--card);border:1px solid var(--ink);
+  padding:13px 30px;cursor:pointer;
+}
+.q button:hover{background:var(--card);color:var(--ink);}
+.q button:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+.qout{margin-top:26px;display:grid;grid-template-columns:1fr 200px;gap:20px 26px;align-items:start;}
+.qout .sig{font-family:var(--m);font-size:clamp(18px,3.4vw,30px);letter-spacing:.06em;word-break:break-all;}
+.qout .msg{font-size:13px;color:var(--ink2);margin:8px 0 0;max-width:52ch;}
+.judge{
+  font-family:var(--m);font-size:13px;letter-spacing:.24em;text-align:center;
+  border:1px solid var(--ink);padding:13px 0;
+}
+.judge.no{background:var(--ink);color:var(--card);}
+@media(max-width:700px){.qout{grid-template-columns:1fr;} .q input{border-right:1px solid var(--rule);} }
+
+/* ── カード目録 ── */
+.drawer{overflow-x:auto;padding-bottom:12px;}
+.cards{display:flex;gap:16px;min-width:min-content;}
+.card{
+  flex:0 0 246px;background:var(--card);border:1px solid var(--rule);
+  padding:18px 18px 16px;min-height:214px;display:flex;flex-direction:column;
+  box-shadow:0 1px 0 rgba(0,0,0,.05);
+}
+.card .c{font-family:var(--m);font-size:12px;letter-spacing:.06em;color:var(--ink2);}
+.card .t{font-size:15px;margin:12px 0 auto;line-height:1.8;}
+.blk{display:inline-block;background:var(--ink);color:transparent;user-select:none;height:1.05em;vertical-align:middle;}
+.card .f{border-top:1px solid var(--rule2);margin-top:14px;padding-top:10px;font-family:var(--m);font-size:10.5px;letter-spacing:.1em;color:var(--faint);}
+.card .st{font-family:var(--m);font-size:10.5px;letter-spacing:.16em;}
+.card.hold{background:var(--card2);}
+.card.deny .st{background:var(--ink);color:var(--card);padding:1px 7px;}
+.drawer-note{font-family:var(--m);font-size:10.5px;color:var(--faint);letter-spacing:.1em;margin:10px 0 0;}
+
+/* ── 納本記録 ── */
+table.dep{width:100%;border-collapse:collapse;font-size:13px;}
+table.dep th{
+  font-family:var(--m);font-size:10px;letter-spacing:.16em;font-weight:400;color:var(--faint);
+  text-align:left;padding:0 12px 9px 0;border-bottom:1px solid var(--ink);white-space:nowrap;
+}
+table.dep td{padding:11px 12px 11px 0;border-bottom:1px solid var(--rule2);vertical-align:top;}
+table.dep td.m{font-family:var(--m);white-space:nowrap;}
+table.dep tr.none td{color:var(--faint);}
+table.dep tr.none td.m{color:var(--ink);}
+
+/* ── 三行 ── */
+.three{border-left:1px solid var(--ink);padding-left:24px;}
+.three p{margin:0 0 2px;font-size:clamp(16px,2.6vw,21px);letter-spacing:.06em;}
+
+/* ── 外部注記（唯一の色） ── */
+.ext{border-left:2px solid var(--ext);padding:10px 0 10px 18px;color:var(--ext);font-size:12.5px;max-width:60ch;}
+.ext b{display:block;font-family:var(--m);font-size:9.5px;letter-spacing:.16em;margin-bottom:4px;}
+.pre{font-family:var(--m);font-size:11px;color:var(--faint);letter-spacing:.05em;max-width:60ch;margin:0 0 14px;}
+
+footer.f{border-top:1px solid var(--rule);padding:26px 0 60px;font-family:var(--m);font-size:10.5px;color:var(--faint);letter-spacing:.06em;line-height:2.2;}
+footer.f a{color:var(--ink2);text-decoration:none;}
+::selection{background:#1B1B19;color:#F7F7F5;}
+</style>
+</head>
+
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- ============================================================
+     機構側の管理情報（当機構は独立組織のため本頁では非表示とする）
+     Document ID: AH-PCT-02 / Version 1.0.0 / ITEM # AH-P02
+     OBJECT CLASS SAFE / DISRUPTION VLAM / CLEARANCE LEVEL 1
+     ISSUED BY Global Narrative Archive / SITE 第4188分館
+     ============================================================ -->
+
+<div class="bar">
+  <span><a href="../about.html">◂ 箱庭機構ポータルへ戻る</a></span>
+  <span>AH-4188 ／ 公開索引 ／ 改訂 なし</span>
+</div>
+
+<div class="w">
+
+  <header class="mast">
+    <img src="../images/logo-gna.png" alt="" />
+    <p class="code">AH-4188</p>
+    <p class="name">Global Narrative Archive ／ G.N.A Database</p>
+    <p class="jp">第 4188 分館　公開索引</p>
+    <p class="one">本館の所在は公開されていない。</p>
+  </header>
+
+  <section>
+    <h2>Enquiry</h2>
+    <div class="q">
+      <div class="qrow">
+        <input id="qi" type="text" placeholder="照会する記録の名称、または記号" aria-label="照会する記録の名称、または記号" />
+        <button id="qb" type="button">照 会</button>
+      </div>
+      <div class="qout">
+        <div>
+          <p class="sig" id="sig">AH-4188-————-—</p>
+          <p class="msg" id="msg">照会内容が入力されていない。</p>
+        </div>
+        <div class="judge" id="jd">未 照 会</div>
+      </div>
+    </div>
+    <p class="drawer-note" style="margin-top:14px;">該当の有無に関わらず、分類記号は発行される。記号の発行は、記録の存在を意味しない。</p>
+  </section>
+
+  <section>
+    <h2>Card Index ／ 抄</h2>
+    <div class="drawer">
+      <div class="cards">
+
+        <article class="card">
+          <span class="c">AH-4188-0001-A</span>
+          <p class="t">箱庭観測録<br><span class="c">記録／進行中</span></p>
+          <p class="f">納本 叢書編纂局　<span class="st">受理</span></p>
+        </article>
+
+        <article class="card">
+          <span class="c">AH-4188-0002-A</span>
+          <p class="t">終律の庭<br><span class="c">記録／完結</span></p>
+          <p class="f">納本 叢書編纂局　<span class="st">受理</span></p>
+        </article>
+
+        <article class="card hold">
+          <span class="c">AH-4188-0003-B</span>
+          <p class="t">最後の場所で君を待つ<br><span class="c">記録／未完了</span></p>
+          <p class="f">納本 叢書編纂局　<span class="st">保留</span></p>
+        </article>
+
+        <article class="card">
+          <span class="c">AH-4188-0004-A</span>
+          <p class="t">星喰いと最後の犬<br><span class="c">記録／完結</span></p>
+          <p class="f">納本 叢書編纂局　<span class="st">受理</span></p>
+        </article>
+
+        <article class="card hold">
+          <span class="c">AH-4188-0117-C</span>
+          <p class="t"><span class="blk" style="width:9em"></span><br><span class="c">鑑定中／真贋</span></p>
+          <p class="f">納本 不明　<span class="st">保留</span></p>
+        </article>
+
+        <article class="card deny">
+          <span class="c">AH-4188-0418-D</span>
+          <p class="t">SHR-EXP-0417 第七版<br><span class="c">未承認文書／記録の納本は未定</span></p>
+          <p class="f">納本 なし　<span class="st">不受理</span></p>
+        </article>
+
+        <article class="card deny">
+          <span class="c">AH-4188-████-█</span>
+          <p class="t"><span class="blk" style="width:11em"></span><br><span class="c"><span class="blk" style="width:5em"></span></span></p>
+          <p class="f">納本 なし　<span class="st">不受理</span></p>
+        </article>
+
+      </div>
+    </div>
+    <p class="drawer-note">← 横に送る　／　公開されているのは索引の抄録である。全件は開示されない。</p>
+  </section>
+
+  <section>
+    <h2>Deposit ／ 納本記録</h2>
+    <table class="dep">
+      <tr><th>納本元</th><th>件数</th><th>直近</th><th>状態</th></tr>
+      <tr><td>叢書編纂局（箱庭機構）</td><td class="m">1,204</td><td class="m">2026.09.02</td><td class="m">履行</td></tr>
+      <tr><td>次元観測部（箱庭機構）</td><td class="m">318</td><td class="m">2026.08.30</td><td class="m">履行</td></tr>
+      <tr><td>時間管理局（箱庭機構）</td><td class="m">96</td><td class="m">2026.07.14</td><td class="m">履行</td></tr>
+      <tr><td>境界線観測財団</td><td class="m">4,411</td><td class="m">2026.09.06</td><td class="m">履行</td></tr>
+      <tr class="none"><td>第<span class="blk" style="width:1.05em"></span>研究室（箱庭機構）</td><td class="m">0</td><td class="m">──</td><td class="m">未履行</td></tr>
+    </table>
+    <p class="drawer-note" style="margin-top:16px;">
+      未履行が確認された場合、分館資格の再審査が行われる。再審査の開始日は通知されない。
+    </p>
+  </section>
+
+  <section>
+    <h2>Retrieval ／ 回収部</h2>
+    <div class="three">
+      <p>交渉しない。</p>
+      <p>脅さない。</p>
+      <p>記録だけ持ち帰る。</p>
+    </div>
+    <p class="drawer-note" style="margin-top:20px;">
+      回収官は無記名である。抵抗の事例に関する記録は、当館が保管している。
+    </p>
+  </section>
+
+  <section>
+    <p class="pre">※ 本頁を箱庭次元研究機構ポータル内に掲載するにあたり、同機構の監督機関より下記注記の併載を求められた。当館は見解を有しない。</p>
+    <div class="ext">
+      <b>箱庭世界倫理委員会 朱注 第 191 号</b>
+      索引の抄録のみを公開し、全件を開示しない運用について、閲覧者が全件を見たと誤認する恐れがある。
+      抄録である旨の表示が求められる。──当該表示は既になされているとの回答を受領している。
+    </div>
+  </section>
+
+  <footer class="f">
+    GLOBAL NARRATIVE ARCHIVE ／ G.N.A DATABASE ／ AH-4188<br>
+    収蔵部・索引部・回収部・鑑定部 ／ 取引協定 箱庭次元研究機構 第 PACT-02 号（納本協定）<br>
+    本頁は当館が作成し、<a href="../index.html">箱庭次元研究機構</a>ポータル内に掲載されている。<br>
+    分類記号・件数・納本記録はすべて創作上の設定である。<br>
+    <a href="../about.html">提携・協力機関一覧へ戻る</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var input=document.getElementById('qi'), btn=document.getElementById('qb'),
+      sig=document.getElementById('sig'), msg=document.getElementById('msg'), jd=document.getElementById('jd');
+  var MSG=[
+    "該当する記録は確認されていない。分類記号のみを発行する。",
+    "該当する記録は存在する。閲覧には権限を要する。",
+    "該当が複数ある。特定には追加の記号を要する。",
+    "該当する記録は、当機構の保管対象外である。分類記号のみを発行する。",
+    "鑑定が完了していない。真贋の判定前に開示は行わない。"
+  ];
+  var JD=["受 理","不 受 理","保 留"];
+  function hash(s){
+    var h=2166136261;
+    for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=(h*16777619)>>>0; }
+    return h;
+  }
+  function pad(n,w){ n=n.toString(); while(n.length<w) n="0"+n; return n; }
+  function run(){
+    var v=input.value.trim();
+    if(!v){
+      sig.textContent="AH-4188-————-—";
+      msg.textContent="照会内容が入力されていない。";
+      jd.textContent="未 照 会"; jd.classList.remove('no');
+      return;
+    }
+    var h=hash(v);
+    var a=pad(h%10000,4);
+    var b="ABCDEFGH".charAt(h%8);
+    var j=h%3;
+    sig.textContent="AH-4188-"+a+"-"+b;
+    msg.textContent=MSG[h%MSG.length];
+    jd.textContent=JD[j];
+    jd.classList.toggle('no', j===1);
+  }
+  btn.addEventListener('click',run);
+  input.addEventListener('keydown',function(e){ if(e.key==="Enter") run(); });
+})();
+</script>
+</body>
+</html>

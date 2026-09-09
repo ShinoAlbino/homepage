@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://arcahortus.com/</loc>
-    <lastmod>2026-09-07</lastmod>
+    <lastmod>2026-09-10</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/about.html</loc>
-    <lastmod>2026-09-07</lastmod>
+    <lastmod>2026-09-10</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/archive.html</loc>
@@ -109,5 +109,29 @@
   <url>
     <loc>https://arcahortus.com/lab/hunting/examination/skillexam</loc>
     <lastmod>2026-09-05</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/pact/eth.html</loc>
+    <lastmod>2026-09-10</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/pact/gna.html</loc>
+    <lastmod>2026-09-10</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/pact/vti.html</loc>
+    <lastmod>2026-09-10</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/pact/bof.html</loc>
+    <lastmod>2026-09-10</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/pact/shr.html</loc>
+    <lastmod>2026-09-10</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/pact/aca.html</loc>
+    <lastmod>2026-09-10</lastmod>
   </url>
 </urlset>

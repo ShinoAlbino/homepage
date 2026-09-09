@@ -277,23 +277,34 @@ body.ah-body :where(a){ color:inherit; text-decoration:none }
 .ah-orgs{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft) }
 .ah-org{ display:flex; align-items:center; gap:12px; padding:16px; background:var(--surface); transition:background .4s ease }
 .ah-org:hover{ background:var(--surface-2) }
+.ah-org > span:not(.ah-org-sig){ min-width:0 }
 .ah-org-sig{ flex:none; width:25px; height:25px; display:grid; place-items:center; border:1px solid var(--line); overflow:hidden }
 .ah-org-sig img{ width:16px; height:16px; object-fit:contain }
 .ah-org b{ display:block; font-weight:400; font-size:11.5px; letter-spacing:.05em; color:var(--text) }
-.ah-org-en{ display:block; font-family:var(--mono); font-size:8.5px; letter-spacing:.15em; color:var(--faint); margin-top:3px }
+.ah-org-en{ display:block; font-family:var(--mono); font-size:8.5px; letter-spacing:.15em; color:var(--faint); margin-top:3px; overflow-wrap:anywhere }
 
-/* 観測フィードを開放している機関のみリンクになる（境界線観測財団） */
-a.ah-org{ position:relative; color:inherit; text-decoration:none; padding-right:74px }
+/* 六機関すべてが寄稿文書（pact/）へのリンクになる */
+a.ah-org{ position:relative; color:inherit; text-decoration:none }
 a.ah-org .ah-org-sig{ transition:border-color .4s ease, box-shadow .4s ease }
 a.ah-org:hover .ah-org-sig,
 a.ah-org:focus-visible .ah-org-sig{ border-color:var(--ice-deep); box-shadow:0 0 12px -3px rgba(167,220,236,.5) }
+a.ah-org:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:-1px }
+
+/* 観測フィードを開放している機関のみ、機関頁と観象台の二つの行き先を持つ（境界線観測財団）。
+   入れ子の <a> は不正なため、外枠の升をセルにして観象台へのバッジを併置する。 */
+.ah-org-cell{ position:relative; display:flex; background:var(--surface) }
+.ah-org-cell > .ah-org{ flex:1; min-width:0 }
+a.ah-org.is-feed{ padding-right:84px }  /* バッジの占有幅 74px + 余白 */
 .ah-org-feed{
   position:absolute; top:10px; right:10px; padding:1px 5px; border:1px solid currentColor;
   font-family:var(--mono); font-size:8px; letter-spacing:.16em; color:var(--ice-dim);
-  white-space:nowrap; transition:color .4s ease;
+  white-space:nowrap; text-decoration:none; transition:color .4s ease;
 }
-a.ah-org:hover .ah-org-feed,
-a.ah-org:focus-visible .ah-org-feed{ color:var(--ice) }
+.ah-org-cell:hover .ah-org-feed{ color:var(--ice) }
+a.ah-org-feed:hover,
+a.ah-org-feed:focus-visible{ color:var(--ice); background:var(--surface-2) }
+a.ah-org-feed:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:2px }
+.ah-orgs-note{ margin:10px 0 0; font-size:10.5px; line-height:1.7; letter-spacing:.04em; color:var(--faint) }
 
 /* ── フッター ───────────────────────────────────────── */
 .ah-site-foot{
