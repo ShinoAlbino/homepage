@@ -10,13 +10,17 @@
    z 得点に直してから比較する。総当たり 65,536 通りで検証したところ、
    素点比較では首位の偏りが 8.1 倍あったものが 1.51 倍まで収束した。
 
-   権限区分は「首位と次点の z 差」＝適性の明確さで決まる。
-   閾値は aptitude.json の thresholds に置く。
+   第一部が決めるのは配属先と職員番号のみである。
+   権限区分は登録時に必ず LEVEL 1 から始まる。上位の権限は
+   権限連動（各区画の実際の開放）と第二部の内部資格で開く。
+   上昇の規則は別途定めるため、ここでは判定しない。
 
    判定結果は localStorage のみに保存する。外部へ送信しない。
    ============================================================ */
 (function () {
   'use strict';
+
+  var START_LV = 1;          /* 登録時の権限は必ず LEVEL 1 */
 
   var DATA = null;
   var state = {
@@ -82,11 +86,11 @@
     var order = orgs.slice().sort(function (x, y) {
       return z[y] - z[x] || (x < y ? -1 : 1);
     });
+    /* 首位と次点の差は適性の明確さとして内訳の表示にのみ使う。
+       権限区分はここでは決めない（必ず LEVEL 1 から始まる）。 */
     var gap = z[order[0]] - z[order[1]];
-    var t = DATA.thresholds;
-    var lv = gap >= t['4'] ? 4 : gap >= t['3'] ? 3 : gap >= t['2'] ? 2 : 1;
 
-    return { z: z, order: order, gap: gap, lv: lv };
+    return { z: z, order: order, gap: gap, lv: START_LV };
   }
 
   /* ── 画面の切り替え ───────────────────────────────── */
