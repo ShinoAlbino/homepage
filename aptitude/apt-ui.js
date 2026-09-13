@@ -8,7 +8,8 @@
    - 画面単位の所要秒（§5-5 (7)）
    - 報告書 7 層（§5-8）
    - 履歴・30日規則・前回との差（§4-4）
-   - LV.5 は初回の完了（却下以外）で付与（§0-15, §5-6）
+   - 完了（却下以外）で要件「第二部」を充足。LV の到達は ah-staff.js が
+     §4-6 の累積要件式で決める。ここでは要件を記録するだけ
 
    採点は apt-core.js。ここは表示と状態だけ。
    ============================================================ */
@@ -70,8 +71,9 @@
     var days = last ? Math.floor((now() - last.at) / 86400000) : null;
     var blocked = last && last.status !== 'reject' && days < D.norms.retakeDays;
 
+    var met = window.AHStaff.requirements(rec).filter(function (r) { return r.met; }).map(function (r) { return r.name; });
     $('apt-staff-line').textContent =
-      window.AHStaff.ORG_JP[rec.org] + ' ／ ' + rec.no + ' ／ LV.' + rec.lv;
+      window.AHStaff.ORG_JP[rec.org] + ' ／ ' + rec.no + ' ／ LV.' + rec.lv + ' ／ 充足済：' + met.join('・');
 
     var h = $('apt-history');
     h.textContent = '';
@@ -236,11 +238,10 @@
       };
       Object.keys(R.domains).forEach(function (k) { entry.domains[k] = R.domains[k].z; });
       rec.part2.history.push(entry);
-      /* 受検が要件。結果の質で権限を動かさない。却下のみ付与しない。 */
-      if (R.gate.status !== 'reject' && !rec.part2.lv5At) {
-        rec.part2.lv5At = R.at;
-        if (rec.lv < 5) { rec.lv = 5; rec.label = 'LEVEL 5 ／ 内部資格'; }
-      }
+      /* 受検が要件。結果の質で権限を動かさない。却下のみ充足しない。
+         LV への到達は AHStaff が下位要件の充足を見て決める。 */
+      rec.req = rec.req || {};
+      if (R.gate.status !== 'reject' && !rec.req.part2) rec.req.part2 = R.at;
       rec.part2.latest = (R.gate.status === 'reject') ? rec.part2.latest || null : {
         title: R.type.title, kanji: R.type.kanji, code: R.type.code,
         suffix: R.type.suffixInfo.sym, honesty: R.type.honestyInfo.sym, status: R.gate.status, at: R.at
@@ -284,7 +285,9 @@
       '<span class="apt-band-t"><i style="left:' + b.lo.toFixed(1) + '%;width:' + (b.hi - b.lo).toFixed(1) + '%"></i>' +
       '<b style="left:' + b.pct.toFixed(1) + '%"></b></span>' +
       '<span class="apt-band-hi">' + esc(hiName) + '</span>' +
-      '<span class="apt-band-v">' + Math.round(b.pct) + '<small>／帯 ' + Math.round(b.lo) + '–' + Math.round(b.hi) + '　T ' + Math.round(b.T) + '</small></span>' +
+      '<span class="apt-band-v">' + (b.numeric
+          ? Math.round(b.pct) + '<small>／帯 ' + Math.round(b.lo) + '–' + Math.round(b.hi) + '　T ' + Math.round(b.T) + '</small>'
+          : esc(b.word) + '<small>' + esc(hiName) + '側　z ' + (b.z >= 0 ? '+' : '') + b.z.toFixed(2) + '</small>') + '</span>' +
       '</div>';
   }
 
@@ -327,7 +330,7 @@
       (near[1] ? '次に近いのは <b>' + esc(near[1].title) + '（' + esc(near[1].kanji) + '）</b>、距離差 ' + near[1].gap.toFixed(2) + '。' : '') +
       (near[2] ? '第三は ' + esc(near[2].title) + '（' + esc(near[2].kanji) + '）、距離差 ' + near[2].gap.toFixed(2) + '。' : '') + '</p>' +
       '<p class="apt-lead">' + esc(T.line) + '。</p>' +
-      '<p>' + esc(T.desc) + '</p>' +
+      bodyHTML(T) +
       '<dl class="apt-mods">' +
         '<div><dt>第五軸 ' + esc(T.suffixInfo.sym) + ' ' + esc(T.suffixInfo.name) + '</dt><dd>' + esc(T.suffixInfo.desc) + '</dd></div>' +
         '<div><dt>第六軸 ' + esc(T.honestyInfo.sym) + ' ' + esc(T.honestyInfo.name) + '</dt><dd>' + esc(T.honestyInfo.desc) +
@@ -346,20 +349,25 @@
     if (R.prev && R.prev.domains) {
       var dd = window.AptCore.diff(R.prev.domains, Object.keys(R.domains).reduce(function (o, k) { o[k] = R.domains[k].z; return o; }, {}), D.norms);
       var days = Math.floor((R.at - R.prev.at) / 86400000);
-      var notable = dd.filter(function (d) { return d.notable; });
+      var sig = dd.filter(function (d) { return d.level === 'sig'; });
+      var maybe = dd.filter(function (d) { return d.level === 'maybe'; });
+      var rest = 6 - sig.length - maybe.length;
       var l0 = el('section', 'apt-layer apt-gna');
       l0.innerHTML = '<h3>前回との差</h3><p>前回受検 ' + esc(fmtDate(new Date(R.prev.at))) + '。経過 <b>' + days + '</b> 日。<br>' +
-        (notable.length
-          ? notable.map(function (d) { return axisLabel(d.axis) + 'に ' + (d.delta >= 0 ? '+' : '') + d.delta.toFixed(2) + ' の変動が認められる。'; }).join('') +
-            (notable.length < 6 ? '他の' + ['零', '一', '二', '三', '四', '五'][6 - notable.length] + '軸に有意な変動は認められない。' : '')
-          : '六軸に有意な変動は認められない。') +
+        sig.map(function (d) { return axisLabel(d.axis) + 'に <b>' + (d.delta >= 0 ? '+' : '') + d.delta.toFixed(2) + '</b> の変動が認められる。'; }).join('') +
+        maybe.map(function (d) { return axisLabel(d.axis) + 'に ' + (d.delta >= 0 ? '+' : '') + d.delta.toFixed(2) + ' の変動の可能性がある。次回の受検を待つ。'; }).join('') +
+        (rest === 6 ? '六軸に有意な変動は認められない。' : rest > 0 ? '他の' + ['', '一', '二', '三', '四', '五'][rest] + '軸に有意な変動は認められない。' : '') +
+        '<br><span class="apt-fine">差の標準誤差 ' + dd[0].seDiff.toFixed(2) + '（SEM × √2）。これ未満は誤差の範囲、' + (1.96 * dd[0].seDiff).toFixed(2) + ' 以上を有意とする。</span>' +
         '<br>変動の原因について、当局は見解を有しない。</p>';
       out.appendChild(l0);
     }
 
     /* 層2 六領域 */
     var l2 = el('section', 'apt-layer');
-    l2.innerHTML = '<h3>六領域</h3><p class="apt-fine">点ではなく帯で読む。帯は 95% 信頼区間。数値は' + normFrame() + 'に対するパーセンタイル。</p>';
+    l2.innerHTML = '<h3>六領域</h3><p class="apt-fine">点ではなく帯で読む。帯は 95% 信頼区間。' +
+      (D.norms.stage === 'III'
+        ? '数値は' + normFrame() + 'に対するパーセンタイル。'
+        : '語は' + normFrame() + 'に対する五段階の帯（±0.5 SD を中程度とする）。<b>本判定は規範標本に基づかない暫定判定である。規範の収集後、同じ回答から異なる帯が算出されることがある。</b>') + '</p>';
     D.items.axes.forEach(function (ax) {
       var dm = R.domains[ax.code], b = R.bands.domains[ax.code];
       var row = el('div', 'apt-row' + (dm.spread > 1.5 ? ' is-spread' : ''));
@@ -458,10 +466,11 @@
       $('apt-transfer').addEventListener('click', function () {
         if (!window.confirm('配属を ' + orgN[T.orgs[0]] + ' へ書き換えます。職員番号の機関記号も変わります。よろしいですか。')) return;
         var r2 = window.AHStaff.get();
-        var from = r2.org;
+        var from = r2.org, oldNo = r2.no;
         r2.org = T.orgs[0];
         r2.no = r2.no.replace('-' + from + '-', '-' + r2.org + '-');
-        r2.transfers = (r2.transfers || []).concat([{ from: from, to: r2.org, at: now() }]);
+        /* 旧番号は失効するが抹消しない。裏面に履歴として出す。 */
+        r2.transfers = (r2.transfers || []).concat([{ from: from, to: r2.org, oldNo: oldNo, newNo: r2.no, at: now() }]);
         window.AHStaff.set(r2);
         window.AHStaff.refreshChip();
         report();
@@ -470,6 +479,25 @@
 
     out.appendChild(layer7());
     show('apt-report');
+  }
+
+  /* §6 の記述文を、受検者自身の下位尺度の帯と突き合わせて出す（W2・W4・W5） */
+  function bodyHTML(T) {
+    var t = D.types.types[T.code], b = t.body;
+    if (!b) return '<p>' + esc(t.desc) + '</p>';
+    var marks = t.marks.map(function (c) {
+      var s = R.subscales[c], w = R.bands.subscales[c];
+      var lowSide = t.low.indexOf(c) >= 0;
+      return '<li><span class="apt-dir">' + esc(c) + '</span>' + esc(s.name) + (lowSide ? '（低得点側が特徴）' : '') +
+             '<span class="apt-ans">' + (s.hidden || !w ? '算出できない' : esc(w.word)) + '</span></li>';
+    }).join('');
+    return '<div class="apt-body">' +
+      '<p>' + esc(b.def) + '</p>' +
+      '<p>' + esc(b.who) + '</p>' +
+      '<p><b>代償</b> ── ' + esc(b.cost) + '</p>' +
+      '<p>' + esc(b.vs) + '</p>' +
+      '<p class="apt-fine">この職掌で際立つ下位尺度と、貴殿の帯：</p><ul class="apt-items">' + marks + '</ul>' +
+      '</div>';
   }
 
   function axisLabel(code) {
@@ -509,11 +537,11 @@
 
   /* ── 記録の削除（D4） ────────────────────────────── */
   function erase() {
-    if (!window.confirm('第二部の受検記録をすべて削除します。権限 LV.5 と職掌の記載も失われます。よろしいですか。')) return;
+    if (!window.confirm('第二部の受検記録をすべて削除します。要件「第二部の完了」の充足と職掌の記載も失われます。よろしいですか。')) return;
     var rec = window.AHStaff.get();
     if (rec) {
       delete rec.part2;
-      if (rec.lv >= 5) { rec.lv = 1; rec.label = 'LEVEL 1 ／ 職員'; }
+      if (rec.req) { delete rec.req.part2; delete rec.req.task2; }
       window.AHStaff.set(rec);
       window.AHStaff.refreshChip();
     }

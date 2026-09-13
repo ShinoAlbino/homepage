@@ -119,6 +119,14 @@
     display:block; width:100%; max-width:560px; height:auto;
     border:1px solid var(--line); background:#070a10;
   }
+  /* 職員証 裏面 */
+  .rg-back{ max-width:560px; margin-top:1px; padding:14px 16px; border:1px solid var(--line); background:var(--surface-2) }
+  .rg-back-h{ margin:0 0 8px; font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--faint) }
+  .rg-back-dl{ margin:0; display:grid; gap:6px }
+  .rg-back-dl dt{ font-family:var(--mono); font-size:8.5px; letter-spacing:.16em; color:var(--ice-dim) }
+  .rg-back-dl dd{ margin:2px 0 0; font-size:12px; line-height:1.7; color:var(--muted) }
+  .rg-back-tr{ margin:6px 0 0; font-family:var(--mono); font-size:10.5px; line-height:1.8; color:var(--muted) }
+  .rg-back-tr b{ font-weight:400; color:var(--text) }
   .rg-name-row{ margin-top:20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center }
   .rg-name-row label{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--faint) }
   .rg-name-row input{
@@ -198,7 +206,7 @@
       <h2 class="ah-h2">適性検査 第一部<em>Aptitude Examination, Part I</em></h2>
       <div class="ah-body-col">
         <p>当局は、来訪者の適性を検査し、提携六機関のいずれかへの配属を決定する。あわせて職員番号を付与し、職員証を発行する。</p>
-        <p>権限区分は、登録の時点では例外なく LEVEL 1 である。上位の権限は、各区画における照合と課題の達成、および詳細適性検査（第二部）を経て開放される。検査の成績によって初めから高い権限が与えられることはない。</p>
+        <p>権限区分は、職員証の発行と同時に LEVEL 2（職員証所持者）となる。以後の権限は、課題の達成・照合・詳細適性検査（第二部）といった要件を下から順に満たすことで上がる。要件の充足はいつでも記録されるが、到達は順序に従う。検査の成績によって権限が変わることはない。</p>
         <p>設問は十六問。各問について、より近いほうを選ばれたい。正解は設定していない。所要は三分程度である。</p>
       </div>
       <p class="rg-fine">
@@ -257,6 +265,8 @@
                 role="img" aria-label="発行された職員証"></canvas>
       </div>
 
+      <div class="rg-back" id="rg-back"></div>
+
       <div class="rg-name-row">
         <label for="rg-name">氏名欄（任意・端末内にのみ保存）</label>
         <input type="text" id="rg-name" maxlength="16" placeholder="未記入のままでよい" autocomplete="off">
@@ -289,7 +299,7 @@
       <p id="rg-next-body">
         職員登録を終えた者は、詳細適性検査（第二部）をいつでも受けることができる。
         第二部は六領域・二十四下位尺度・144項目からなり、職掌類型と類型確信度を報告する。
-        受検の完了をもって LEVEL 5（内部資格）を付与する。結果の良否で権限は変わらない。
+        受検の完了は LEVEL 5 の要件を充足する。下位の要件（課題・照合）が未達なら LEVEL 5 には到達せず、充足済の要件として職員証に併記される。結果の良否で権限は変わらない。
       </p>
       <p id="rg-next-done" class="rg-fine" hidden></p>
       <div class="rg-actions" style="margin-top:16px">

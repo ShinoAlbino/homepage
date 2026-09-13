@@ -392,6 +392,18 @@
     };
   }
 
+  /* ── 五段階の帯（§5-4 段階 I・II の表示形式） ─────── */
+  /* ±0.5 SD を中程度とする IPIP 公式の簡便法。 */
+  var WORDS = ['低い', 'やや低い', '中程度', 'やや高い', '高い'];
+  function word(z) {
+    if (z == null) return null;
+    if (z < -1.5) return WORDS[0];
+    if (z < -0.5) return WORDS[1];
+    if (z <= 0.5) return WORDS[2];
+    if (z <= 1.5) return WORDS[3];
+    return WORDS[4];
+  }
+
   /* ── 表示用の帯 ──────────────────────────────────── */
   function bands(items, norms, domains, aspects, subs) {
     var semD = Math.sqrt(1 - norms.alpha.domain);
@@ -402,7 +414,9 @@
       return {
         z: z, T: 50 + 10 * z, pct: Phi(z) * 100,
         lo: Phi(z - 1.96 * sem) * 100, hi: Phi(z + 1.96 * sem) * 100,
-        sem: sem
+        sem: sem, word: word(z),
+        /* 段階 I・II ではパーセンタイルを数値で出さない */
+        numeric: norms.stage === 'III'
       };
     }
     var out = { domains: {}, aspects: {}, subscales: {} };
@@ -420,22 +434,26 @@
   }
 
   /* ── §4-4 前回との差 ─────────────────────────────── */
-  /* 「有意な変動」は 1 SEM（領域 ≈ 0.30）を目安に置く。
-     仕様書の例（0.4 を「認められる」）と整合する暫定基準。 */
+  /* 二時点の差の標準誤差は一時点の SEM の √2 倍（≈ 0.42）。
+     |Δz| < SE_diff は誤差の範囲、SE_diff 〜 1.96×SE_diff は判断保留、
+     それ以上を有意（95%）とする。1 SEM を閾値に置くと測定誤差を変動と誤報する。 */
   function diff(prevDomains, curDomains, norms) {
     var sem = Math.sqrt(1 - norms.alpha.domain);
+    var seDiff = sem * Math.SQRT2;
     var out = [];
     Object.keys(curDomains).forEach(function (k) {
       var a = prevDomains && prevDomains[k], b = curDomains[k];
       if (a == null || b == null) return;
-      var d = b - a;
-      out.push({ axis: k, delta: d, notable: Math.abs(d) >= sem });
+      var d = b - a, ad = Math.abs(d);
+      out.push({ axis: k, delta: d,
+                 level: ad < seDiff ? 'none' : ad < 1.96 * seDiff ? 'maybe' : 'sig',
+                 seDiff: seDiff });
     });
     return out;
   }
 
   return {
-    Phi: Phi, score: score, gates: gates, fit: fit, diff: diff,
+    Phi: Phi, score: score, gates: gates, fit: fit, diff: diff, word: word,
     index: index, CORE_N: CORE_N
   };
 });

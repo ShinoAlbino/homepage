@@ -10,17 +10,15 @@
    z 得点に直してから比較する。総当たり 65,536 通りで検証したところ、
    素点比較では首位の偏りが 8.1 倍あったものが 1.51 倍まで収束した。
 
-   第一部が決めるのは配属先と職員番号のみである。
-   権限区分は登録時に必ず LEVEL 1 から始まる。上位の権限は
-   権限連動（各区画の実際の開放）と第二部の内部資格で開く。
-   上昇の規則は別途定めるため、ここでは判定しない。
+   第一部が決めるのは配属先と職員番号である。
+   権限区分は ah-staff.js が要件の充足から計算する（第二部仕様書 §4-6）。
+   第一部の完了は要件「職員登録」を充足し、職員証の発行と同時に LEVEL 2 になる。
+   ここでは要件を記録するだけで、LV の値を直接書かない。
 
    判定結果は localStorage のみに保存する。外部へ送信しない。
    ============================================================ */
 (function () {
   'use strict';
-
-  var START_LV = 1;          /* 登録時の権限は必ず LEVEL 1 */
 
   var DATA = null;
   var state = {
@@ -86,11 +84,10 @@
     var order = orgs.slice().sort(function (x, y) {
       return z[y] - z[x] || (x < y ? -1 : 1);
     });
-    /* 首位と次点の差は適性の明確さとして内訳の表示にのみ使う。
-       権限区分はここでは決めない（必ず LEVEL 1 から始まる）。 */
+    /* 首位と次点の差は適性の明確さとして内訳の表示にのみ使う。 */
     var gap = z[order[0]] - z[order[1]];
 
-    return { z: z, order: order, gap: gap, lv: START_LV };
+    return { z: z, order: order, gap: gap };
   }
 
   /* ── 画面の切り替え ───────────────────────────────── */
@@ -129,7 +126,6 @@
   function toPick() {
     var r = score();
     state.z = r.z;
-    state.lv = r.lv;
     state.pair = r.order.slice(0, 2);
 
     var list = $('rg-pick-list');
@@ -159,10 +155,9 @@
   /* ── 配属確定・保存 ───────────────────────────────── */
   function assign(code) {
     var rec = {
-      v: 1,
+      v: 2,
       org: code,
-      lv: state.lv,
-      label: DATA.clearance[String(state.lv)].label,
+      req: { reg: Date.now() },   /* 要件「職員登録」。LV は AHStaff が計算する */
       no: staffNo(code, state.ans),
       ans: state.ans.join(''),
       z: state.z,
@@ -172,6 +167,7 @@
       part2: null                 /* 第二部（内部資格）の結果が入る枠 */
     };
     window.AHStaff.set(rec);
+    rec = window.AHStaff.get();   /* LV・label が計算済みの形で読み直す */
     window.AHStaff.refreshChip();
     toResult(rec);
   }
@@ -185,6 +181,7 @@
   function toResult(rec) {
     var o = DATA.orgs[rec.org];
     var cl = DATA.clearance[String(rec.lv)] || { label: rec.label || ('LEVEL ' + rec.lv), note: '' };
+    renderBack(rec);
 
     $('rg-org-name').innerHTML = o.name + '<em>' + o.en + '</em>';
     $('rg-org-desc').textContent = o.desc;
@@ -225,6 +222,37 @@
     drawCard(rec);
     show('rg-result');
     $('rg-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* ── 職員証 裏面：要件の充足と異動履歴（§4-6・§4-3） ── */
+  function renderBack(rec) {
+    var el = $('rg-back');
+    if (!el) return;
+    var reqs = window.AHStaff.requirements(rec);
+    var met = reqs.filter(function (r) { return r.met; });
+    var unmet = reqs.filter(function (r) { return !r.met && r.lv <= 5; });
+    var skipped = met.filter(function (r) { return r.lv > rec.lv; });
+    var html =
+      '<p class="rg-back-h">職員証 裏面 ／ 権限 LV.' + rec.lv + '</p>' +
+      '<dl class="rg-back-dl">' +
+        '<div><dt>充足済の要件</dt><dd>' + (met.map(function (r) {
+            return r.name + (r.lv > rec.lv ? '（LV.' + r.lv + ' の要件）' : '');
+          }).join('、') || '—') + '</dd></div>' +
+        '<div><dt>未充足の要件</dt><dd>' + (unmet.map(function (r) { return r.name + '（LV.' + r.lv + '）'; }).join('、') || '—') + '</dd></div>' +
+      '</dl>';
+    if (skipped.length) {
+      var need = unmet.filter(function (r) { return r.lv < skipped[0].lv; });
+      html += '<p class="rg-fine">' + need.length + ' 件を満たした時点で、LV.' + skipped[0].lv + ' に到達する。要件の充足はいつでも記録し、到達は順序に従う。</p>';
+    }
+    if (rec.transfers && rec.transfers.length) {
+      html += '<p class="rg-back-h" style="margin-top:14px">異動履歴</p>' +
+        rec.transfers.map(function (t) {
+          var d = new Date(t.at), pd = function (n) { return String(n).padStart(2, '0'); };
+          return '<p class="rg-back-tr">異動 ── ' + d.getFullYear() + '.' + pd(d.getMonth() + 1) + '.' + pd(d.getDate()) +
+                 '<br>旧 <b>' + t.oldNo + '</b> ／ 新 <b>' + t.newNo + '</b><br>連番に変更はない。旧番号は失効するが、抹消しない。</p>';
+        }).join('');
+    }
+    el.innerHTML = html;
   }
 
   /* ── 職員証の描画 ─────────────────────────────────── */
@@ -302,6 +330,12 @@
     g.fillStyle = '#c6a662';
     g.font = '500 40px "JetBrains Mono", monospace';
     g.fillText('LV.' + rec.lv, cx, y + 10);
+    /* 充足済の要件（飛んでいる段があることを隠さない） */
+    var metNames = window.AHStaff.requirements(rec).filter(function (r) { return r.met; })
+                     .map(function (r) { return r.name.replace(/（.*?）/, ''); });
+    g.fillStyle = '#3d4a58';
+    g.font = '400 11px "Noto Sans JP", sans-serif';
+    g.fillText('充足 ' + metNames.join('・'), cx + 118, y + 8);
 
     /* 氏名欄 */
     y += 96;

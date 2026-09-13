@@ -86,6 +86,7 @@
   .apt-mods dd{ margin:0; font-size:12.5px; line-height:1.85; color:var(--muted) }
   .apt-conf{ padding:14px 16px; border:1px solid var(--line); background:var(--surface-2) }
   .apt-gna p{ font-family:var(--mono); font-size:12px; letter-spacing:.04em }
+  .apt-body p b{ color:var(--brass) }
 
   .apt-row{ margin-top:18px }
   .apt-row h4{ margin:0 0 8px; font-weight:400; font-size:12.5px; color:var(--text); letter-spacing:.05em }
@@ -190,7 +191,7 @@
       <div class="ah-body-col" id="apt-instr" style="margin-top:12px"></div>
       <div class="ah-body-col">
         <p>回答は六段階で、中間の選択肢はない。一画面に一問ずつ提示する。番号キー 1〜6 でも回答できる。</p>
-        <p>本検査は六領域・十二アスペクト・二十四下位尺度からなり、職掌類型と、その判定が再受検で同一となる確率（類型確信度）を報告する。<b>類型に優劣はない。</b>結果の良否で権限は変わらない。受検の完了をもって LEVEL 5（内部資格）を付与する。</p>
+        <p>本検査は六領域・十二アスペクト・二十四下位尺度からなり、職掌類型と、その判定が再受検で同一となる確率（類型確信度）を報告する。<b>類型に優劣はない。</b>結果の良否で権限は変わらない。受検の完了は LEVEL 5 の要件を充足する。下位の要件（課題・照合）が未達なら LEVEL 5 には到達せず、充足済の要件として職員証に併記される。</p>
       </div>
       <div id="apt-history"></div>
       <div class="apt-form">
@@ -202,7 +203,7 @@
         <label>性別（同上。任意）
           <select id="apt-sex"><option value="">回答しない</option><option value="M">男性</option><option value="F">女性</option></select>
         </label>
-        <label><input type="checkbox" id="apt-nosave"> 結果を職員記録に保存しない（受検のみ。LEVEL 5 は付与されない）</label>
+        <label><input type="checkbox" id="apt-nosave"> 結果を職員記録に保存しない（受検のみ。要件の充足も記録されない）</label>
       </div>
       <p class="apt-fine">
         <b>回答・尺度得点・妥当性指標・受検日時・年代・性別は、いまお使いのブラウザの中（localStorage）にのみ保存される。</b>
