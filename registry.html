@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Registry | Arca Hortus</title>
-  <meta name="description" content="箱庭次元研究機構 職員登録局。適性検査により提携六機関への配属先と職員番号を決定し、職員証を発行する。権限区分は LEVEL 1 から始まる。判定結果はご利用の端末内にのみ保存される。" />
+  <meta name="description" content="箱庭次元研究機構 職員登録局。資質検査により提携六機関への配属先と職員番号を決定し、職員証を発行する。権限区分は職員証の発行と同時に LEVEL 2 となる。判定結果はご利用の端末内にのみ保存される。" />
   <link rel="canonical" href="https://arcahortus.com/registry.html" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="職員登録局 | Arca Hortus" />
-  <meta property="og:description" content="適性検査により配属先と職員番号を決定し、職員証を発行する。" />
+  <meta property="og:description" content="資質検査により配属先と職員番号を決定し、職員証を発行する。" />
   <meta property="og:url" content="https://arcahortus.com/registry.html" />
   <link rel="icon" href="images/favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -145,7 +145,7 @@
   .rg-bar.is-top .rg-bar-k{ color:var(--ice) }
   .rg-bar-v{ font-family:var(--mono); font-size:9px; color:var(--faint); text-align:right }
 
-  /* 第二部の予告 */
+  /* 適性検査（内部資格）への導線 */
   .rg-next{
     border:1px dashed var(--line); padding:clamp(16px,2.6vw,24px); margin-top:1px;
     background:var(--surface);
@@ -203,10 +203,10 @@
     <!-- ══ 導入 ══ -->
     <section class="rg-panel" id="rg-intro">
       <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
-      <h2 class="ah-h2">適性検査 第一部<em>Aptitude Examination, Part I</em></h2>
+      <h2 class="ah-h2">資質検査<em>Disposition Examination</em></h2>
       <div class="ah-body-col">
         <p>当局は、来訪者の適性を検査し、提携六機関のいずれかへの配属を決定する。あわせて職員番号を付与し、職員証を発行する。</p>
-        <p>権限区分は、職員証の発行と同時に LEVEL 2（職員証所持者）となる。以後の権限は、課題の達成・照合・詳細適性検査（第二部）といった要件を下から順に満たすことで上がる。要件の充足はいつでも記録されるが、到達は順序に従う。検査の成績によって権限が変わることはない。</p>
+        <p>権限区分は、職員証の発行と同時に LEVEL 2（職員証所持者）となる。以後の権限は、課題の達成・照合・適性検査といった要件を下から順に満たすことで上がる。要件の充足はいつでも記録されるが、到達は順序に従う。検査の成績によって権限が変わることはない。</p>
         <p>設問は十六問。各問について、より近いほうを選ばれたい。正解は設定していない。所要は三分程度である。</p>
       </div>
       <p class="rg-fine">
@@ -293,17 +293,17 @@
       </p>
     </section>
 
-    <!-- ══ 第二部（内部資格） ══ -->
+    <!-- ══ 適性検査（内部資格） ══ -->
     <section class="rg-next" id="rg-next" hidden>
-      <h3>内部資格 ／ 適性検査 第二部</h3>
+      <h3>内部資格 ／ 適性検査</h3>
       <p id="rg-next-body">
-        職員登録を終えた者は、詳細適性検査（第二部）をいつでも受けることができる。
-        第二部は六領域・二十四下位尺度・144項目からなり、職掌類型と類型確信度を報告する。
+        職員登録を終えた者は、適性検査をいつでも受けることができる。
+        適性検査は六領域・二十四下位尺度・144項目からなり、職掌類型と類型確信度を報告する。
         受検の完了は LEVEL 5 の要件を充足する。下位の要件（課題・照合）が未達なら LEVEL 5 には到達せず、充足済の要件として職員証に併記される。結果の良否で権限は変わらない。
       </p>
       <p id="rg-next-done" class="rg-fine" hidden></p>
       <div class="rg-actions" style="margin-top:16px">
-        <a class="rg-btn" href="aptitude/">第二部を受検する</a>
+        <a class="rg-btn" href="aptitude/">適性検査を受検する</a>
       </div>
     </section>
 

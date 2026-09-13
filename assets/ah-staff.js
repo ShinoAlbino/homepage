@@ -9,9 +9,9 @@
    例外を投げず、未登録として振る舞う。
 
    権限 LV は「達成した最高段」ではなく「下から連続して満たした
-   要件の段数」で決まる（第二部仕様書 §4-6）。要件の充足は rec.req に
+   要件の段数」で決まる（適性検査 仕様書 §4-6）。要件の充足は rec.req に
    時刻で記録し、LV は保存のたびにここで計算し直す。
-   第二部を先に受けた者は LV.5 の要件を充足するが LV は 2 のままになる。
+   適性検査を先に受けた者は LV.5 の要件を充足するが LV は 2 のままになる。
    この状態は隠さず、職員証に「充足済の要件」として併記する。
    ============================================================ */
 (function () {
@@ -32,11 +32,11 @@
 
   /* 要件の段（§4-6）。上から順に、最初に満たさない段の一つ手前が LV。 */
   var REQ = [
-    { lv: 2, key: 'reg',     name: '職員登録',              how: '第一部の完了' },
+    { lv: 2, key: 'reg',     name: '職員登録',              how: '資質検査の完了' },
     { lv: 3, key: 'task',    name: '配属機関の課題',        how: '課題ページの達成記録' },
     { lv: 4, key: 'cipher1', name: '照合1（サイト内の暗号）', how: '照合端末の達成記録' },
-    { lv: 5, key: 'part2',   name: '第二部の完了',          how: '判定が却下でなければ充足' },
-    { lv: 6, key: 'task2',   name: '類型別 専任課題',       how: '第二部の判定後に出題される課題' },
+    { lv: 5, key: 'part2',   name: '適性検査の完了',        how: '判定が却下でなければ充足' },
+    { lv: 6, key: 'task2',   name: '類型別 専任課題',       how: '適性検査の判定後に出題される課題' },
     { lv: 7, key: 'cipher2', name: '照合2（他媒体の符片）',  how: '照合端末の達成記録' }
   ];
   var LABEL = {
@@ -63,7 +63,7 @@
     return lv;
   }
 
-  /* 要件ごとの充足状況。職員証の裏面と第二部の入口に使う。 */
+  /* 要件ごとの充足状況。職員証の裏面と適性検査の入口に使う。 */
   function requirements(rec) {
     return REQ.map(function (r) {
       return { lv: r.lv, key: r.key, name: r.name, how: r.how,
@@ -116,7 +116,7 @@
         '<span class="ah-staff-lv">LV.' + rec.lv + '</span>' +
         '<span class="ah-staff-no">' + rec.no + '</span>';
     } else {
-      a.title = '職員登録局で適性検査を受ける';
+      a.title = '職員登録局で資質検査を受ける';
       a.innerHTML =
         '<span class="ah-staff-k ah-staff-none">未登録</span>' +
         '<span class="ah-staff-no">職員登録局</span>';

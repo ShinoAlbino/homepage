@@ -1,5 +1,5 @@
 /* ============================================================
-   ArcaHortus / 適性検査 第一部  (registry.html 専用)
+   ArcaHortus / 資質検査  (registry.html 専用)
 
    assets/data/aptitude.json を読み、16問の二択を出題する。
 
@@ -10,9 +10,9 @@
    z 得点に直してから比較する。総当たり 65,536 通りで検証したところ、
    素点比較では首位の偏りが 8.1 倍あったものが 1.51 倍まで収束した。
 
-   第一部が決めるのは配属先と職員番号である。
-   権限区分は ah-staff.js が要件の充足から計算する（第二部仕様書 §4-6）。
-   第一部の完了は要件「職員登録」を充足し、職員証の発行と同時に LEVEL 2 になる。
+   資質検査が決めるのは配属先と職員番号である。
+   権限区分は ah-staff.js が要件の充足から計算する（適性検査 仕様書 §4-6）。
+   資質検査の完了は要件「職員登録」を充足し、職員証の発行と同時に LEVEL 2 になる。
    ここでは要件を記録するだけで、LV の値を直接書かない。
 
    判定結果は localStorage のみに保存する。外部へ送信しない。
@@ -164,7 +164,7 @@
       pair: state.pair,
       name: '',
       issued: today(),
-      part2: null                 /* 第二部（内部資格）の結果が入る枠 */
+      part2: null                 /* 適性検査（内部資格）の結果が入る枠 */
     };
     window.AHStaff.set(rec);
     rec = window.AHStaff.get();   /* LV・label が計算済みの形で読み直す */
@@ -207,7 +207,7 @@
       bars.appendChild(row);
     });
 
-    /* 第二部（内部資格）の状態 */
+    /* 適性検査（内部資格）の状態 */
     var done = $('rg-next-done');
     if (done) {
       var p2 = rec.part2 && rec.part2.latest;
@@ -352,7 +352,7 @@
       g.fillRect(M, y - 12, 260, 26);
     }
 
-    /* 協定番号。第二部を終えていれば職掌を刻む。 */
+    /* 協定番号。適性検査を終えていれば職掌を刻む。 */
     var p2 = rec.part2 && rec.part2.latest;
     g.fillStyle = '#3d4a58';
     g.font = '400 12px "JetBrains Mono", monospace';
