@@ -1,0 +1,34 @@
+{
+ "docId": "AH-REG-002",
+ "note": "仕様書 §5-4 の規範。段階 I（仮置き）。規範標本が n ≥ 30 に達したら実測 M/SD に、n ≥ 300 で性×年代のセル別に置き換える。α と SEM も自標本で実測して差し替える。閾値（§5-6）はすべて暫定値。",
+ "stage": "I",
+ "stageLabel": "仮置き",
+ "n": 0,
+ "collected": null,
+ "updated": "2026-09-13",
+ "version": "1.0.0",
+ "provisional": {
+  "M": 3.50,
+  "SD": 0.85
+ },
+ "cells": null,
+ "alpha": {
+  "domain": 0.91,
+  "aspect": 0.85,
+  "subscale": 0.78
+ },
+ "meanProfile": null,
+ "gates": {
+  "MISS":  { "reject": 0.15, "flag": 0.05 },
+  "LS":    { "reject": 15,   "flag": 10 },
+  "TIME":  { "rejectPerItem": 2, "flagPerItem": 4 },
+  "BOGUS": { "reject": 2,    "flag": 1 },
+  "VRIN":  { "reject": 60,   "flag": 45 },
+  "EVENODD": { "reject": 0.78, "flag": 0.70 },
+  "TRIN":  { "reject": 45,   "flag": 30 },
+  "ERS":   { "reject": 0.80, "flag": 0.65 },
+  "IRS":   { "reject": 0.75, "flag": 0.60 },
+  "L":     { "flag": 18 }
+ },
+ "retakeDays": 30
+}

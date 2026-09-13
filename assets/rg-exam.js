@@ -184,7 +184,7 @@
   /* ── 結果 ─────────────────────────────────────────── */
   function toResult(rec) {
     var o = DATA.orgs[rec.org];
-    var cl = DATA.clearance[String(rec.lv)];
+    var cl = DATA.clearance[String(rec.lv)] || { label: rec.label || ('LEVEL ' + rec.lv), note: '' };
 
     $('rg-org-name').innerHTML = o.name + '<em>' + o.en + '</em>';
     $('rg-org-desc').textContent = o.desc;
@@ -209,6 +209,18 @@
         '<span class="rg-bar-v">' + (zs[k] >= 0 ? '+' : '') + zs[k].toFixed(2) + '</span>';
       bars.appendChild(row);
     });
+
+    /* 第二部（内部資格）の状態 */
+    var done = $('rg-next-done');
+    if (done) {
+      var p2 = rec.part2 && rec.part2.latest;
+      done.hidden = !p2;
+      if (p2) {
+        done.innerHTML = '判定済み：<b>' + p2.title + '（' + p2.kanji + '）' + p2.suffix + ' ／ ' + p2.honesty + '</b>' +
+          (p2.status === 'hold' ? '　判定 保留' : p2.status === 'low' ? '　信頼度 低' : '') +
+          '。再受検は前回から 30 日以上を空けること。';
+      }
+    }
 
     drawCard(rec);
     show('rg-result');
@@ -306,13 +318,35 @@
       g.fillRect(M, y - 12, 260, 26);
     }
 
-    /* 協定番号 */
+    /* 協定番号。第二部を終えていれば職掌を刻む。 */
+    var p2 = rec.part2 && rec.part2.latest;
     g.fillStyle = '#3d4a58';
     g.font = '400 12px "JetBrains Mono", monospace';
-    g.fillText('PACT ' + o.pact.replace('PACT-', 'NO. '), cx, y - 26);
-    g.fillStyle = '#4f8ea6';
-    g.font = '400 17px "JetBrains Mono", monospace';
-    g.fillText(o.trait, cx, y + 6);
+    g.fillText(p2 ? 'POST / ' + 'PACT ' + o.pact.replace('PACT-', 'NO. ') : 'PACT ' + o.pact.replace('PACT-', 'NO. '), cx, y - 26);
+    if (p2) {
+      g.fillStyle = '#c7d2dd';
+      g.font = '400 22px "Noto Sans JP", sans-serif';
+      g.fillText(p2.title + '  ' + p2.kanji + ' ' + p2.suffix + ' / ' + p2.honesty, cx, y + 8);
+      if (p2.status === 'hold' || p2.status === 'low') {
+        /* 判定 保留／信頼度 低 の刻印（§5-6 三段の処遇） */
+        var stamp = p2.status === 'hold' ? '判定 保留' : '信頼度 低';
+        g.save();
+        g.translate(W - M - 46, H - M - 118);
+        g.rotate(-0.12);
+        g.strokeStyle = '#9E2B23'; g.lineWidth = 2;
+        g.strokeRect(-54, -16, 108, 32);
+        g.fillStyle = '#9E2B23';
+        g.font = '500 15px "Noto Sans JP", sans-serif';
+        g.textAlign = 'center';
+        g.fillText(stamp, 0, 6);
+        g.restore();
+        g.textAlign = 'left';
+      }
+    } else {
+      g.fillStyle = '#4f8ea6';
+      g.font = '400 17px "JetBrains Mono", monospace';
+      g.fillText(o.trait, cx, y + 6);
+    }
 
     /* 脚部 */
     g.strokeStyle = '#121a26';

@@ -154,7 +154,13 @@
 </head>
 <body class="ah-body">
 
-  <canvas id="ah-stars" aria-hidden="true"></canvas>
+<!-- ══ 背景（4層） ══ -->
+<div class="ah-bg" aria-hidden="true">
+  <canvas id="ah-stars"></canvas>
+  <div class="ah-bg-tick"></div>
+  <div class="ah-bg-section"></div>
+  <div class="ah-bg-veil"></div>
+</div>
 
   <header class="ah-site-head">
     <div class="ah-mark"><a href="index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
@@ -277,15 +283,18 @@
       </p>
     </section>
 
-    <!-- ══ 第二部の予告 ══ -->
+    <!-- ══ 第二部（内部資格） ══ -->
     <section class="rg-next" id="rg-next" hidden>
       <h3>内部資格 ／ 適性検査 第二部</h3>
-      <p>
+      <p id="rg-next-body">
         職員登録を終えた者は、詳細適性検査（第二部）をいつでも受けることができる。
-        第二部は性格・気質・思考の傾向をより深く測り、機関内の職掌を定める。
-        権限区分の上昇については、各区画の開放と併せて別途定める。
-        現在、設問を作成中である。準備が整い次第、当局より通達する。
+        第二部は六領域・二十四下位尺度・144項目からなり、職掌類型と類型確信度を報告する。
+        受検の完了をもって LEVEL 5（内部資格）を付与する。結果の良否で権限は変わらない。
       </p>
+      <p id="rg-next-done" class="rg-fine" hidden></p>
+      <div class="rg-actions" style="margin-top:16px">
+        <a class="rg-btn" href="aptitude/">第二部を受検する</a>
+      </div>
     </section>
 
   </main>

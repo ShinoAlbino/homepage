@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aptitude II | Arca Hortus</title>
+  <meta name="description" content="箱庭次元研究機構 職員登録局 適性検査 第二部（詳細検査）。六領域・十二アスペクト・二十四下位尺度・144項目。職掌類型と類型確信度を報告する内部資格。回答は端末内にのみ保存される。" />
+  <link rel="canonical" href="https://arcahortus.com/aptitude/" />
+  <link rel="icon" href="../images/favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+JP:wght@200;300;500&family=Noto+Sans+JP:wght@200;300;400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" />
+  <link rel="stylesheet" href="../assets/ah-tokens.css" />
+  <link rel="stylesheet" href="../assets/ah-common.css" />
+
+  <style>
+  /* ── 第二部 固有 ──────────────────────────────────── */
+  .apt-panel{ position:relative; border:1px solid var(--line-soft); background:var(--surface); padding:clamp(20px,3.4vw,34px) }
+  .apt-panel + .apt-panel{ margin-top:1px }
+  .apt-fine{ margin:14px 0 0; font-size:11.5px; line-height:1.9; color:var(--faint) }
+  .apt-fine b{ font-weight:400; color:var(--muted) }
+  .apt-warn{ margin:14px 0 0; padding:10px 14px; border-left:2px solid var(--brass); font-size:12.5px; line-height:1.8; color:var(--muted) }
+
+  .apt-btn{ display:inline-block; padding:13px 30px; border:1px solid var(--ice-deep); background:0; color:var(--ice);
+            font-family:var(--mono); font-size:11px; letter-spacing:.2em; cursor:pointer; text-decoration:none;
+            transition:background .35s ease, border-color .35s ease }
+  .apt-btn:hover{ background:var(--surface-2); border-color:var(--ice-dim) }
+  .apt-btn:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:3px }
+  .apt-btn[disabled]{ opacity:.35; cursor:default }
+  .apt-mini{ background:0; border:0; padding:0; font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--faint);
+             cursor:pointer; border-bottom:1px solid transparent; transition:color .3s ease, border-color .3s ease }
+  .apt-mini:hover{ color:var(--ice-dim); border-bottom-color:currentColor }
+  .apt-mini:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:3px }
+  .apt-mini[disabled]{ opacity:.35; cursor:default }
+  .apt-actions{ margin-top:18px; display:flex; gap:18px; flex-wrap:wrap; align-items:center }
+
+  /* 入口の様式 */
+  .apt-form{ display:grid; gap:12px; margin-top:18px; max-width:520px }
+  .apt-form label{ display:flex; align-items:center; gap:10px; font-size:12.5px; color:var(--muted) }
+  .apt-form select{ padding:7px 10px; background:var(--surface-2); border:1px solid var(--line); color:var(--text); font:inherit; font-size:12.5px }
+  .apt-form input[type=checkbox]{ width:14px; height:14px; accent-color:var(--ice-dim) }
+  .apt-form select:focus-visible, .apt-form input:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:2px }
+
+  /* 出題 */
+  .apt-prog{ display:flex; align-items:center; gap:12px; margin-bottom:26px }
+  .apt-prog-bar{ flex:1; height:1px; background:var(--line); position:relative }
+  .apt-prog-bar i{ position:absolute; inset:0 auto 0 0; background:var(--ice-dim); transition:width .3s ease }
+  .apt-counter{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--faint); white-space:nowrap }
+  .apt-qid{ font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--faint) }
+  .apt-qtext{ margin:8px 0 26px; font-family:var(--serif); font-size:clamp(17px,2.6vw,22px); line-height:1.8; color:var(--text); font-weight:300 }
+
+  /* 6段階・縦・ノッチ */
+  .apt-scale{ position:relative; display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line-soft); max-width:560px }
+  .apt-opt{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; padding:13px 16px;
+            background:var(--surface-2); border:0; color:var(--muted); font:inherit; font-size:13px; cursor:pointer;
+            transition:background .25s ease, color .25s ease }
+  .apt-opt:hover{ background:var(--surface); color:var(--text) }
+  .apt-opt:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:-1px }
+  .apt-opt-n{ flex:none; width:22px; height:22px; display:grid; place-items:center; border:1px solid var(--line); border-radius:50%;
+              font-family:var(--mono); font-size:9px; color:var(--faint); transition:all .25s ease }
+  .apt-opt.is-on{ background:var(--surface); color:var(--ice) }
+  .apt-opt.is-on .apt-opt-n{ background:var(--ice-dim); border-color:var(--ice-dim); color:#0b1019 }
+  .apt-opt:nth-child(3) { border-bottom:1px solid var(--line) }   /* 中点の切れ目 */
+
+  /* 期の切れ目 */
+  .apt-break h2{ margin:0 0 10px }
+
+  /* 報告書 */
+  .apt-status{ display:inline-block; margin-bottom:18px; padding:4px 10px; border:1px solid currentColor;
+               font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; color:var(--ice-dim) }
+  .apt-status.is-hold{ color:var(--brass) }
+  .apt-status.is-low{ color:var(--brass) }
+  .apt-status.is-reject{ color:var(--danger, #c86a5a) }
+  .apt-layer{ border-top:1px solid var(--line-soft); padding:26px 0 }
+  .apt-layer:first-child{ border-top:0; padding-top:0 }
+  .apt-layer h3{ margin:0 0 12px; font-family:var(--mono); font-size:10px; letter-spacing:.22em; color:var(--ice-dim); font-weight:400 }
+  .apt-layer p{ margin:0 0 10px; font-size:13px; line-height:1.95; color:var(--muted) }
+  .apt-layer p b{ font-weight:400; color:var(--text) }
+  .apt-kicker{ font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--faint) }
+  .apt-type{ margin:6px 0 16px; font-family:var(--serif); font-weight:300; font-size:clamp(26px,4vw,38px); color:var(--text); letter-spacing:.06em }
+  .apt-type em{ display:block; font-style:normal; font-family:var(--mono); font-size:10px; letter-spacing:.22em; color:var(--ice-dim); margin-top:8px }
+  .apt-lead{ font-size:14px !important; color:var(--text) !important }
+  .apt-mods{ margin:16px 0; display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line-soft) }
+  .apt-mods > div{ padding:14px 16px; background:var(--surface-2) }
+  .apt-mods dt{ font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; color:var(--ice-dim); margin-bottom:6px }
+  .apt-mods dd{ margin:0; font-size:12.5px; line-height:1.85; color:var(--muted) }
+  .apt-conf{ padding:14px 16px; border:1px solid var(--line); background:var(--surface-2) }
+  .apt-gna p{ font-family:var(--mono); font-size:12px; letter-spacing:.04em }
+
+  .apt-row{ margin-top:18px }
+  .apt-row h4{ margin:0 0 8px; font-weight:400; font-size:12.5px; color:var(--text); letter-spacing:.05em }
+  .apt-row h4 small{ margin-left:10px; font-family:var(--mono); font-size:8.5px; letter-spacing:.14em; color:var(--faint) }
+  .apt-band{ display:grid; grid-template-columns:56px 1fr 56px; align-items:center; gap:10px; position:relative }
+  .apt-band-lo, .apt-band-hi{ font-size:10.5px; color:var(--faint); letter-spacing:.06em }
+  .apt-band-hi{ text-align:right }
+  .apt-band-t{ position:relative; height:10px; background:var(--line-soft); overflow:visible }
+  .apt-band-t::before{ content:""; position:absolute; left:50%; top:-3px; bottom:-3px; width:1px; background:var(--line) }
+  .apt-band-t i{ position:absolute; top:0; bottom:0; background:var(--ice-deep); opacity:.9 }
+  .apt-band-t b{ position:absolute; top:-2px; width:2px; height:14px; margin-left:-1px; background:var(--ice) }
+  .apt-band-t em{ font-style:normal; font-family:var(--mono); font-size:8.5px; color:var(--faint); position:absolute; left:50%; transform:translateX(-50%); top:-4px; white-space:nowrap }
+  .apt-band-v{ grid-column:1 / -1; font-family:var(--mono); font-size:11px; color:var(--ice-dim); margin-top:2px }
+  .apt-band-v small{ margin-left:8px; font-size:8.5px; color:var(--faint) }
+  .apt-band.is-na .apt-band-t{ background:transparent; border:1px dashed var(--line) }
+  .is-spread h4{ color:var(--muted) }
+  .apt-fold{ padding:0 }
+  .apt-fold > summary{ list-style:none; cursor:pointer; padding:18px 0; font-family:var(--mono); font-size:10px; letter-spacing:.22em; color:var(--ice-dim) }
+  .apt-fold > summary::before{ content:"▸ "; }
+  .apt-fold[open] > summary::before{ content:"▾ "; }
+  .apt-fold > summary:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:2px }
+  .apt-fold > summary::-webkit-details-marker{ display:none }
+  .apt-fold > .apt-row:last-child, .apt-fold > .apt-table, .apt-fold > .apt-list, .apt-fold > p:last-child{ margin-bottom:22px }
+  .apt-sub{ padding-bottom:12px; border-bottom:1px dashed var(--line-soft) }
+  .apt-items{ list-style:none; margin:10px 0 0; padding:0; display:grid; gap:4px }
+  .apt-items li{ display:flex; gap:10px; align-items:baseline; font-size:12px; line-height:1.7; color:var(--muted) }
+  .apt-dir{ flex:none; font-family:var(--mono); font-size:8.5px; color:var(--faint); border:1px solid var(--line); padding:0 4px }
+  .apt-ans{ margin-left:auto; flex:none; font-family:var(--mono); font-size:9px; letter-spacing:.06em; color:var(--ice-dim); white-space:nowrap }
+  .apt-table{ width:100%; border-collapse:collapse; font-size:12px }
+  .apt-table th, .apt-table td{ text-align:left; padding:8px 10px; border-bottom:1px solid var(--line-soft); color:var(--muted); vertical-align:top }
+  .apt-table th{ font-family:var(--mono); font-size:9px; letter-spacing:.16em; color:var(--faint); font-weight:400 }
+  .apt-table td:nth-child(2){ font-family:var(--mono); color:var(--text); white-space:nowrap }
+  .apt-table td:nth-child(3){ font-family:var(--mono); font-size:10px; color:var(--faint) }
+  .apt-list{ margin:12px 0 0; padding-left:18px; font-size:12.5px; line-height:1.9; color:var(--muted) }
+  .apt-shuchu{ border-left:2px solid #9E2B23; padding:12px 16px; margin-bottom:14px }
+  .apt-shuchu p{ color:#b8564d; font-size:12px }
+  .apt-shuchu-h{ font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; margin-bottom:8px !important }
+  @media (max-width:640px){
+    .apt-band{ grid-template-columns:44px 1fr 44px }
+    .apt-table td:nth-child(3){ display:none }
+    .apt-table th:nth-child(3){ display:none }
+    .apt-items li{ flex-wrap:wrap }
+    .apt-ans{ margin-left:32px }
+  }
+  </style>
+</head>
+<body class="ah-body">
+
+<!-- ══ 背景（4層） ══ -->
+<div class="ah-bg" aria-hidden="true">
+  <canvas id="ah-stars"></canvas>
+  <div class="ah-bg-tick"></div>
+  <div class="ah-bg-section"></div>
+  <div class="ah-bg-veil"></div>
+</div>
+
+  <header class="ah-site-head" data-root="../">
+    <div class="ah-mark"><a href="../index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="../about.html">About</a>
+      <a href="../recommend.html">TopPicks</a>
+      <a href="../nexus.html">Nexus</a>
+      <a href="../archive.html">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="../lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+      <a href="../weather/">Kanshodai<span class="ah-tag ah-t-ice">LIVE</span></a>
+    </nav>
+  </header>
+
+  <main class="ah-shell">
+
+    <div class="ah-doc-head">
+      <p class="ah-doc-id">Document ID: AH-REG-002 &nbsp;/&nbsp; Version 1.0.0</p>
+      <h1 class="ah-doc-jp">適性検査 第二部（詳細検査）</h1>
+      <p class="ah-doc-en">Aptitude Examination, Part II ／ Internal Qualification</p>
+    </div>
+
+    <!-- ══ メタ帯 ══ -->
+    <div class="ah-meta" aria-hidden="true">
+      <div>ITEM #<b>AH-R02</b></div>
+      <div>OBJECT CLASS<b class="ah-v-bad">EUCLID</b></div>
+      <div>DISRUPTION<b class="ah-v-bad">KENEQ</b></div>
+      <div>CLEARANCE<b class="ah-v-ice">LEVEL 1 / 要職員証</b></div>
+      <div>ISSUED BY<b>事務局</b></div>
+      <div>SITE<b>登録局</b></div>
+    </div>
+
+    <!-- ══ 入口不可 ══ -->
+    <section class="apt-panel" id="apt-gate" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <h2 class="ah-h2">内部資格<em>Internal Qualification</em></h2>
+      <div class="ah-body-col">
+        <p id="apt-gate-body">本検査は内部資格である。<b>受検には職員証を要する。</b>職員登録局にて登録を行うこと。</p>
+      </div>
+      <div class="apt-actions"><a class="apt-btn" href="../registry.html">職員登録局へ</a></div>
+    </section>
+
+    <!-- ══ 導入 ══ -->
+    <section class="apt-panel" id="apt-intro" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <h2 class="ah-h2">教示<em>Instructions</em></h2>
+      <p class="apt-kicker" id="apt-staff-line"></p>
+      <div class="ah-body-col" id="apt-instr" style="margin-top:12px"></div>
+      <div class="ah-body-col">
+        <p>回答は六段階で、中間の選択肢はない。一画面に一問ずつ提示する。番号キー 1〜6 でも回答できる。</p>
+        <p>本検査は六領域・十二アスペクト・二十四下位尺度からなり、職掌類型と、その判定が再受検で同一となる確率（類型確信度）を報告する。<b>類型に優劣はない。</b>結果の良否で権限は変わらない。受検の完了をもって LEVEL 5（内部資格）を付与する。</p>
+      </div>
+      <div id="apt-history"></div>
+      <div class="apt-form">
+        <label><input type="checkbox" id="apt-age"> 私は 16 歳以上である（16 歳未満は受検できない）</label>
+        <p class="apt-warn" id="apt-age-warn" hidden>年齢の確認が必要である。</p>
+        <label>年代（規範の比較群に用いる。任意）
+          <select id="apt-agegrp"><option value="">回答しない</option><option value="20">20代</option><option value="30">30代</option><option value="40">40代</option><option value="50">50代</option><option value="60">60代以上</option></select>
+        </label>
+        <label>性別（同上。任意）
+          <select id="apt-sex"><option value="">回答しない</option><option value="M">男性</option><option value="F">女性</option></select>
+        </label>
+        <label><input type="checkbox" id="apt-nosave"> 結果を職員記録に保存しない（受検のみ。LEVEL 5 は付与されない）</label>
+      </div>
+      <p class="apt-fine">
+        <b>回答・尺度得点・妥当性指標・受検日時・年代・性別は、いまお使いのブラウザの中（localStorage）にのみ保存される。</b>
+        氏名・連絡先は取得しない。外部へ送信されることはない。規範標本の収集は未開始であり、収集を始める際は改めて通知し、拒否できるようにする。<br>
+        本検査は創作上の設定を表現層に用いた自己記述式の検査である。臨床的な診断ではなく、採用・選抜・配置の根拠に用いてはならない。判定結果を現実の判断に用いないこと。
+      </p>
+      <div class="apt-actions" style="margin-top:22px">
+        <button class="apt-btn" type="button" id="apt-start">検査を開始する</button>
+        <button class="apt-mini" type="button" id="apt-resume" hidden>続きから受ける</button>
+        <button class="apt-mini" type="button" id="apt-view-last" hidden>前回の報告書を表示する</button>
+      </div>
+    </section>
+
+    <!-- ══ 出題 ══ -->
+    <section class="apt-panel" id="apt-exam" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <div class="apt-prog">
+        <span class="apt-counter" id="apt-counter"></span>
+        <span class="apt-prog-bar"><i id="apt-fill" style="width:0%"></i></span>
+      </div>
+      <div aria-live="polite">
+        <p class="apt-qid" id="apt-qid"></p>
+        <p class="apt-qtext" id="apt-qtext"></p>
+      </div>
+      <div class="apt-scale" id="apt-scale" role="radiogroup" aria-label="あてはまる程度"></div>
+      <div class="apt-actions">
+        <button class="apt-mini" type="button" id="apt-back" disabled>◂ 前へ</button>
+        <button class="apt-mini" type="button" id="apt-skip">未回答のまま次へ</button>
+        <button class="apt-mini" type="button" id="apt-suspend">中断する（保存）</button>
+        <button class="apt-mini" type="button" id="apt-abort">中止する（破棄）</button>
+      </div>
+    </section>
+
+    <!-- ══ 期の切れ目 ══ -->
+    <section class="apt-panel apt-break" id="apt-break" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <h2 class="ah-h2" id="apt-break-title"></h2>
+      <div class="ah-body-col"><p id="apt-break-body"></p></div>
+      <div class="apt-actions">
+        <button class="apt-btn" type="button" id="apt-break-go">次の期へ進む</button>
+        <button class="apt-mini" type="button" id="apt-break-stop">ここで中断する</button>
+      </div>
+    </section>
+
+    <!-- ══ 報告書 ══ -->
+    <section class="apt-panel" id="apt-report" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <div class="apt-status" id="apt-status"></div>
+      <div id="apt-report-body"></div>
+      <div class="apt-actions" style="margin-top:26px">
+        <button class="apt-btn" type="button" id="apt-report-back">◂ 登録局へ戻る</button>
+        <a class="apt-mini" href="../registry.html">職員証を確認する</a>
+        <button class="apt-mini" type="button" id="apt-erase">第二部の記録を削除する</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ フッター ══ -->
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="../index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="../privacy.html">プライバシーポリシー</a>
+        <a href="../terms.html">利用規約</a>
+        <a href="../maintenance.html">保守記録</a>
+        <a href="https://x.com/ArcaHortus" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
+
+<script src="../assets/ah-site.js"></script>
+<script src="../assets/ah-staff.js"></script>
+<script src="apt-core.js"></script>
+<script src="apt-ui.js"></script>
+</body>
+</html>
