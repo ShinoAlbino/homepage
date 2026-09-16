@@ -305,7 +305,7 @@
 
     if (G.status === 'reject') {
       var rj = el('section', 'apt-layer');
-      rj.innerHTML = '<h3>却下の理由</h3>' +
+      rj.innerHTML = '<h3>却下の理由</h3><p>' + esc(D.prose.validity.reject) + '</p>' +
         '<ul class="apt-list">' + G.notes.filter(function (n) { return n.level === 'reject'; })
           .map(function (n) { return '<li>' + esc(n.msg) + '</li>'; }).join('') + '</ul>' +
         '<p>結果は表示しない。再受検を促す。この場合、' + D.norms.retakeDays + ' 日の間隔規則は適用しない。</p>';
@@ -331,6 +331,7 @@
       (near[2] ? '第三は ' + esc(near[2].title) + '（' + esc(near[2].kanji) + '）、距離差 ' + near[2].gap.toFixed(2) + '。' : '') + '</p>' +
       '<p class="apt-lead">' + esc(T.line) + '。</p>' +
       bodyHTML(T) +
+      evidenceHTML(T) +
       '<dl class="apt-mods">' +
         '<div><dt>第五軸 ' + esc(T.suffixInfo.sym) + ' ' + esc(T.suffixInfo.name) + '</dt><dd>' + esc(T.suffixInfo.desc) + '</dd></div>' +
         '<div><dt>第六軸 ' + esc(T.honestyInfo.sym) + ' ' + esc(T.honestyInfo.name) + '</dt><dd>' + esc(T.honestyInfo.desc) +
@@ -380,11 +381,16 @@
         spreadNote = '<p class="apt-fine">領域内の散らばりが大きい（SD ' + dm.spread.toFixed(2) + '）。全体の位置より下位尺度を主に読む：' +
           esc(zs[0].n) + 'が高く、' + esc(zs[zs.length - 1].n) + 'が低い。</p>';
       }
+      var axProse = (spreadNote || dm.hidden || !b) ? '' : proseFor(D.prose.axes[ax.code], b.word);
       row.innerHTML = '<h4>第' + ['一', '二', '三', '四', '五', '六'][ax.no - 1] + '軸　' + esc(ax.name) +
-        '<small>' + esc(ax.en) + '</small></h4>' + bandHTML(b, ax.hi, ax.lo, dm.hidden) + spreadNote;
+        '<small>' + esc(ax.en) + '</small></h4>' + bandHTML(b, ax.hi, ax.lo, dm.hidden) + spreadNote +
+        (axProse ? '<p class="apt-prose">' + esc(axProse) + '</p>' : '');
       l2.appendChild(row);
     });
     out.appendChild(l2);
+
+    /* 作業4：際立つ下位尺度（|z| 上位5、中程度は文なし） */
+    out.appendChild(salientHTML());
 
     /* 層3 十二アスペクト（折りたたみ） */
     var l3 = el('details', 'apt-layer apt-fold');
@@ -439,6 +445,9 @@
       ['稀有な美徳 L', String(V.L) + (V.Lmissing ? '（未回答 ' + V.Lmissing + '）' : ''), 'フラグ ≥' + Gt.L.flag],
       ['黙従指数 ACQ', R.acq == null ? '—' : R.acq.toFixed(3) + '（中点 3.5 からの偏り ' + (R.acqBias >= 0 ? '+' : '') + R.acqBias.toFixed(3) + '）', '']
     ];
+    var lv = el('section', 'apt-layer apt-validity');
+    lv.innerHTML = '<h3>妥当性</h3><p>' + validityText(G, V) + '</p>';
+    out.appendChild(lv);
     l5.innerHTML = '<summary>受検記録（妥当性指標）</summary>' +
       '<table class="apt-table"><thead><tr><th>指標</th><th>値</th><th>閾値（暫定）</th></tr></thead><tbody>' +
       rows.map(function (r) { return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td><td>' + r[2] + '</td></tr>'; }).join('') +
@@ -498,6 +507,83 @@
       '<p>' + esc(b.vs) + '</p>' +
       '<p class="apt-fine">この職掌で際立つ下位尺度と、貴殿の帯：</p><ul class="apt-items">' + marks + '</ul>' +
       '</div>';
+  }
+
+  /* 帯の語 → prose.json のキー。閾値は持たず、word() の結果だけを見る。 */
+  function proseFor(table, word) {
+    if (!table || !word) return '';
+    var key = D.prose.bandKey[word];
+    return (key && table[key]) || '';
+  }
+
+  /* 作業3：判定を支えた回答。際立つ下位尺度のうち |z| 上位3尺度から、
+     z の向きに最も強く回答された項目を一件ずつ。逆転項目は原文・原回答のまま。 */
+  function evidenceHTML(T) {
+    var t = D.types.types[T.code];
+    if (!t || !t.marks) return '';
+    var byId = window.AptCore.index(D.items).byId;
+    var subs = t.marks.map(function (c) { return { c: c, z: R.subscales[c].z }; })
+      .filter(function (s) { return s.z != null; })
+      .sort(function (a, b) { return Math.abs(b.z) - Math.abs(a.z); })
+      .slice(0, 3);
+    var rows = subs.map(function (s) {
+      var best = null;
+      D.items.subscales[s.c].items.forEach(function (id) {
+        var x = R.answers[id];
+        if (x == null) return;
+        var it = byId[id];
+        var keyed = it.dir === '+' ? x : 7 - x;          /* 反転後の値 */
+        var pull = s.z >= 0 ? keyed : 7 - keyed;          /* z の向きへの強さ */
+        /* 同点なら正項目を優先する（受検者が自分の回答として読みやすい） */
+        if (!best || pull > best.pull || (pull === best.pull && it.dir === '+' && best.it.dir !== '+')) best = { it: it, x: x, pull: pull };
+      });
+      return best;
+    }).filter(Boolean);
+    if (!rows.length) return '';
+    return '<div class="apt-evidence"><p>' + esc(D.prose.evidence.lead) + '</p><ul>' +
+      rows.map(function (r) {
+        return '<li>「' + esc(r.it.text) + '」── ' + esc(D.items.scale[r.x - 1]) +
+               (r.it.dir === '-' ? '<small>逆転項目</small>' : '') + '</li>';
+      }).join('') + '</ul><p class="apt-fine">' + esc(D.prose.evidence.note) + '</p></div>';
+  }
+
+  /* 作業4：|z| 上位5の下位尺度。高・低の側にある尺度だけ解釈文を付す。 */
+  function salientHTML() {
+    var sec = el('section', 'apt-layer');
+    var top = Object.keys(R.subscales).map(function (c) { return { c: c, z: R.subscales[c].z }; })
+      .filter(function (s) { return s.z != null; })
+      .sort(function (a, b) { return Math.abs(b.z) - Math.abs(a.z); })
+      .slice(0, 5);
+    sec.innerHTML = '<h3>' + esc(D.prose.salient.h) + '</h3><p class="apt-fine">' + esc(D.prose.salient.lead) + '</p>';
+    top.forEach(function (s) {
+      var meta = D.items.subscales[s.c], b = R.bands.subscales[s.c], pr = D.prose.subscales[s.c] || {};
+      var txt = s.z > 0.5 ? pr.high : s.z < -0.5 ? pr.low : '';
+      var row = el('div', 'apt-row');
+      row.innerHTML = '<h4>' + esc(s.c) + '　' + esc(meta.name) + '<small>' + esc(meta.def) + '</small></h4>' +
+        bandHTML(b, meta.hi, meta.lo, false) +
+        (txt ? '<p class="apt-prose">' + esc(txt) + '</p>' : '');
+      sec.appendChild(row);
+    });
+    return sec;
+  }
+
+  /* 作業2：妥当性の一文。status と該当指標から組む。 */
+  function validityText(G, V) {
+    var P = D.prose.validity;
+    var flags = G.notes.filter(function (n) { return n.level === 'flag' && n.index !== 'L'; });
+    var rejects = G.notes.filter(function (n) { return n.level === 'reject'; });
+    var names = function (ns) {
+      var seen = {};
+      return ns.map(function (n) { return P.names[n.index] || n.index; })
+               .filter(function (x) { if (seen[x]) return false; seen[x] = true; return true; }).join('、');
+    };
+    var s;
+    if (G.status === 'hold')      s = P.hold.replace('{list}', names(rejects.concat(flags)));
+    else if (G.status === 'low')  s = P.low.replace('{list}', names(rejects.concat(flags)));
+    else if (!flags.length)       s = P.valid;
+    else if (flags.length === 1 && flags[0].index === 'BOGUS' && V.BOGUS === 1) s = P.bogus1;
+    else                          s = P.flagged.replace('{list}', names(flags));
+    return esc(s) + (G.virtueHigh ? '<br>' + esc(P.virtue) : '');
   }
 
   function axisLabel(code) {
@@ -589,9 +675,9 @@
     });
   }
 
-  Promise.all([load('data/items.json'), load('data/types.json'), load('data/norms.json')])
+  Promise.all([load('data/items.json'), load('data/types.json'), load('data/norms.json'), load('data/prose.json')])
     .then(function (a) {
-      D.items = a[0]; D.types = a[1]; D.norms = a[2];
+      D.items = a[0]; D.types = a[1]; D.norms = a[2]; D.prose = a[3];
       FLAT = flatItems();
       $('apt-instr').innerHTML = D.items.instructions.map(function (s) { return '<p>' + esc(s) + '</p>'; }).join('');
       bind();
