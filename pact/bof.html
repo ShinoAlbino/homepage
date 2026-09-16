@@ -3,343 +3,792 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>境界線観測財団｜観測野帳</title>
-<meta name="description" content="物語と現実の境界面そのものを観測対象とする機関。観測網・警報・観測員資格認定。Boundary Observation Foundation。観測は解釈に先立つ。" />
+<title>境界線観測財団 ／ 観測情報</title>
+<meta name="description" content="境界線観測財団 公式サイト。境界面の常時観測、観測値の無償公開、警報の発令、観測員の養成と資格認定。観測は解釈に先立つ。" />
 <meta name="author" content="ArcaHortus Lab" />
-<meta name="theme-color" content="#FCFDFD" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="境界線観測財団｜観測野帳" />
-<meta property="og:description" content="観測は解釈に先立つ。" />
-<meta property="og:image" content="https://arcahortus.com/pact/icons/bof-512.png" />
-<link rel="canonical" href="https://arcahortus.com/pact/bof.html" />
-<meta property="og:url" content="https://arcahortus.com/pact/bof.html" />
+<meta name="theme-color" content="#0A1017" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="境界線観測財団" />
+<meta property="og:title" content="境界線観測財団 ／ BOUNDARY OBSERVATION FOUNDATION" />
+<meta property="og:description" content="観測は解釈に先立つ。境界安定度 0.68／1.00　観測点 B-17。" />
+<meta property="og:image" content="https://www.arcahortus.com/pact/icons/bof-512.png" />
+<meta property="og:url" content="https://www.arcahortus.com/pact/bof.html" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="境界線観測財団｜観測野帳" />
+<meta name="twitter:title" content="境界線観測財団" />
 <meta name="twitter:description" content="観測は解釈に先立つ。" />
-<meta name="twitter:image" content="https://arcahortus.com/pact/icons/bof-512.png" />
+<meta name="twitter:image" content="https://www.arcahortus.com/pact/icons/bof-512.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="icons/bof-32.png" />
 <link rel="icon" type="image/png" sizes="512x512" href="icons/bof-512.png" />
 <link rel="apple-touch-icon" href="icons/bof-180.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MRDPGGL9');</script>
-<!-- End Google Tag Manager -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet" />
+<!-- ============================================================
+     機構側の管理情報（当財団は独立した協定機関のため本頁では非表示とする）
+     Document ID: AH-PCT-05-T / Version 1.0.0 / ITEM # AH-P05
+     OBJECT CLASS SAFE / DISRUPTION VLAM / CLEARANCE LEVEL 1
+     ISSUED BY 境界線観測財団 資料公開課 / SITE 観測点 D-01
+     ============================================================ -->
 <style>
 :root{
-  --sheet:#FCFDFD;
-  --grid1:rgba(23,50,79,.085);
-  --grid2:rgba(23,50,79,.038);
-  --navy:#16324F; --navy2:#3E5D7C; --navy3:#7B93A9;
-  --rule:#B9C8D3; --rule2:#8FA6B7;
-  --warn:#B3261E;
-  --s:"IBM Plex Sans JP",system-ui,sans-serif;
-  --m:"IBM Plex Mono","IBM Plex Sans JP",monospace;
+  --bg:#080D13; --pn:#101822; --pn2:#0C131B; --pn3:#16202C;
+  --line:#22303F; --line2:#1A2531;
+  --ink:#DDE5ED; --sub:#8798A9; --faint:#5A6877;
+  --cy:#6FC3E8; --cy2:#3E8FB0; --am:#E8B558; --rd:#CE4F42; --gn:#5FAE7E;
+  --mono:"IBM Plex Mono","SFMono-Regular","Consolas",monospace;
+  --sans:"IBM Plex Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans CJK JP",sans-serif;
 }
-*{box-sizing:border-box;}
-body{
-  margin:0;color:var(--navy);font-family:var(--s);font-size:14.5px;line-height:1.95;
-  background-color:var(--sheet);
-  background-image:
-    linear-gradient(var(--grid1) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid1) 1px, transparent 1px),
-    linear-gradient(var(--grid2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid2) 1px, transparent 1px);
-  background-size:100px 100px,100px 100px,20px 20px,20px 20px;
-  -webkit-font-smoothing:antialiased;
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:13px;line-height:1.8;letter-spacing:.015em}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(0deg,rgba(111,195,232,.022) 0 1px,transparent 1px 3px)}
+img{max-width:100%;display:block}
+a{color:var(--cy);text-decoration:none;text-underline-offset:.18em}
+a:hover{color:#fff;text-decoration:underline}
+.wrap{max-width:1160px;margin:0 auto;padding:0 16px;position:relative;z-index:1}
+.skip{position:absolute;left:-9999px;background:#fff;color:#000;padding:8px 14px;z-index:99}
+.skip:focus{left:0}
+.mono{font-family:var(--mono)}
+
+/* ---- live strip ---- */
+.live{background:#05090D;border-bottom:1px solid var(--line);font-family:var(--mono);
+  font-size:11px;letter-spacing:.06em;color:var(--sub)}
+.live .wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;min-height:32px;padding-top:5px;padding-bottom:5px}
+.live .sp{flex:1}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gn);
+  margin-right:6px;vertical-align:0;animation:bk 2s infinite}
+@keyframes bk{0%,60%{opacity:1}80%{opacity:.25}100%{opacity:1}}
+.live b{color:var(--ink);font-weight:500}
+
+/* ---- header ---- */
+header.site{background:linear-gradient(180deg,#0C1420 0%,#0A111A 100%);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:18px;padding:18px 0 16px;flex-wrap:wrap}
+.hd .mk{width:58px;height:58px;flex:none;border:1px solid var(--line);background:#000}
+.hd .nm{flex:1;min-width:220px}
+.hd .nm .ja{font-size:23px;font-weight:600;letter-spacing:.16em;line-height:1.35;color:#EEF3F8}
+.hd .nm .en{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--cy2);margin-top:3px}
+.hd .cred{flex:none;text-align:right;border-left:1px solid var(--line);padding-left:18px}
+.hd .cred .m{font-size:14px;letter-spacing:.2em;color:var(--cy)}
+.hd .cred .s{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--faint);margin-top:3px}
+
+/* ---- nav ---- */
+nav.gn{background:#05090D;border-bottom:1px solid var(--line)}
+nav.gn ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap}
+nav.gn a{display:block;color:var(--sub);font-size:12px;letter-spacing:.1em;padding:10px 17px;
+  border-right:1px solid var(--line2);text-decoration:none}
+nav.gn li:first-child a{border-left:1px solid var(--line2)}
+nav.gn a:hover,nav.gn a.cur{background:var(--pn3);color:var(--cy);text-decoration:none}
+
+/* ---- alert bar ---- */
+.alert{background:var(--pn);border:1px solid var(--line);border-left:4px solid var(--am);margin:16px 0 0;
+  display:flex;flex-wrap:wrap;align-items:stretch}
+.alert .lv{display:flex;flex:none;border-right:1px solid var(--line)}
+.alert .lv > div{padding:11px 14px;text-align:center;border-right:1px solid var(--line2);min-width:78px}
+.alert .lv > div:last-child{border-right:0}
+.alert .lv .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--faint)}
+.alert .lv .v{font-family:var(--mono);font-size:17px;line-height:1.3;color:var(--faint)}
+.alert .lv .v.on{color:var(--am)}
+.alert .msg{flex:1 1 260px;padding:11px 16px;min-width:0}
+.alert .msg .t{color:var(--am);font-weight:500;letter-spacing:.06em}
+.alert .msg .d{font-size:11.5px;color:var(--sub);font-family:var(--mono);letter-spacing:.03em;margin-top:2px}
+
+/* ---- tiles ---- */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0 0}
+.tile{background:var(--pn);border:1px solid var(--line);padding:14px 15px 13px}
+.tile .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--faint)}
+.tile .v{font-family:var(--mono);font-size:38px;line-height:1.15;color:var(--cy);margin-top:4px;letter-spacing:.01em}
+.tile .v small{font-size:14px;color:var(--faint);letter-spacing:.06em}
+.tile .v.warn{color:var(--am)}
+.tile .v.bad{color:var(--rd)}
+.tile .m{font-family:var(--mono);font-size:10px;color:var(--sub);letter-spacing:.06em;margin-top:5px}
+.gauge{height:4px;background:#1B2836;margin-top:9px;position:relative;overflow:hidden}
+.gauge i{position:absolute;left:0;top:0;bottom:0;background:var(--am)}
+.gauge b{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--cy2)}
+
+/* ---- panels ---- */
+.pnl{background:var(--pn);border:1px solid var(--line);margin:16px 0 0}
+.pnl > h2{margin:0;background:var(--pn3);border-bottom:1px solid var(--line);
+  padding:9px 15px;display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.pnl > h2 .n{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--cy2)}
+.pnl > h2 .t{font-size:13.5px;font-weight:500;letter-spacing:.14em;color:#EEF3F8;flex:1}
+.pnl > h2 .r{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--faint)}
+.pnl .in{padding:15px}
+.pnl p{margin:0 0 .85em}
+.pnl p:last-child{margin-bottom:0}
+.tiny{font-size:11.5px;color:var(--sub);line-height:1.9}
+.tiny b{color:var(--ink);font-weight:500}
+
+/* ---- tables ---- */
+table.d{width:100%;border-collapse:collapse;font-size:12px}
+table.d th{background:var(--pn2);border-bottom:1px solid var(--line);color:var(--faint);
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;font-weight:400;text-align:left;padding:7px 12px;white-space:nowrap}
+table.d td{border-bottom:1px solid var(--line2);padding:8px 12px;vertical-align:middle}
+table.d tr:last-child td{border-bottom:0}
+table.d tr:hover td{background:#131D28}
+td.num{font-family:var(--mono);text-align:right;white-space:nowrap;color:var(--ink)}
+td.num.cy{color:var(--cy)}
+td.num.am{color:var(--am)}
+td.tm{font-family:var(--mono);color:var(--sub);white-space:nowrap}
+.st{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;padding:1px 8px;border:1px solid}
+.st.ok{border-color:#2F5C46;color:var(--gn)}
+.st.re{border-color:#6B5423;color:var(--am)}
+.st.ng{border-color:#5E2A24;color:var(--rd)}
+.redact{background:var(--ink);color:var(--ink);border-radius:1px;padding:0 2px;user-select:none}
+.tsc{overflow-x:auto}
+.tsc table{min-width:520px}
+
+/* ---- chart ---- */
+.chart{background:var(--pn2);border:1px solid var(--line2);padding:12px 8px 6px;margin:0}
+.chart svg{width:100%;height:132px;display:block}
+.chlg{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.1em;color:var(--faint);padding:6px 8px 0}
+.chlg i{display:inline-block;width:14px;height:2px;vertical-align:3px;margin-right:5px}
+
+/* ---- converter ---- */
+.conv{display:grid;grid-template-columns:1fr auto 1fr;gap:0;border-top:1px solid var(--line2)}
+.conv .hd2{background:var(--pn2);padding:7px 14px;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.14em;color:var(--faint);border-bottom:1px solid var(--line)}
+.conv .hd2.r{color:var(--rd)}
+.conv .cell{padding:9px 14px;border-bottom:1px solid var(--line2);font-size:12px}
+.conv .cell.n{font-family:var(--mono);text-align:right}
+.conv .mid{padding:9px 8px;border-bottom:1px solid var(--line2);color:var(--faint);
+  font-family:var(--mono);font-size:11px;text-align:center}
+.conv .cell.out{color:var(--rd);font-family:var(--mono);text-align:right}
+.conv .cell small{display:block;font-family:var(--sans);font-size:10px;color:var(--faint);letter-spacing:.04em}
+.calc{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;
+  background:var(--pn2);border:1px solid var(--line2);padding:12px 14px}
+.calc label{font-size:11.5px;color:var(--sub)}
+.calc input{width:96px;background:#060A0F;border:1px solid var(--line);color:var(--cy);
+  font-family:var(--mono);font-size:14px;padding:5px 9px;border-radius:0;outline:none}
+.calc input:focus{border-color:var(--cy2)}
+.calc .eq{font-family:var(--mono);color:var(--faint)}
+.calc .out{font-family:var(--mono);font-size:20px;color:var(--rd)}
+.calc .warn{flex:1 1 100%;font-size:11px;color:var(--rd);letter-spacing:.04em}
+
+/* ---- dispatch ---- */
+.dsp{border-bottom:1px solid var(--line2);padding:13px 15px;display:flex;gap:14px;flex-wrap:wrap}
+.dsp:last-child{border-bottom:0}
+.dsp .to{flex:none;width:172px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--cy)}
+.dsp .bd{flex:1 1 260px;min-width:0}
+.dsp .bd p{margin:0;font-size:12.5px}
+.dsp .bd .ref{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.06em;margin-top:5px}
+
+/* ---- principles ---- */
+ol.pri{margin:0;padding:0;list-style:none;counter-reset:p}
+ol.pri li{counter-increment:p;border-bottom:1px solid var(--line2);padding:11px 15px 11px 52px;position:relative;font-size:12.5px}
+ol.pri li:last-child{border-bottom:0}
+ol.pri li::before{content:counter(p,decimal-leading-zero);position:absolute;left:15px;top:11px;
+  font-family:var(--mono);font-size:11px;color:var(--cy2);letter-spacing:.08em}
+
+/* ---- CTA ---- */
+.cta{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:linear-gradient(90deg,#0E1A26,#101822);
+  border:1px solid var(--cy2);padding:16px 18px;margin:16px 0 0}
+.cta .ic{flex:none;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--cy2);
+  border:1px solid var(--cy2);padding:3px 10px}
+.cta .tx{flex:1 1 260px;min-width:0}
+.cta .tx b{display:block;font-size:15px;letter-spacing:.12em;color:#EEF3F8;font-weight:500}
+.cta .tx span{font-size:11.5px;color:var(--sub)}
+.cta a.go{flex:none;background:var(--cy2);color:#05090D;font-family:var(--mono);font-size:12px;
+  letter-spacing:.16em;padding:9px 22px;text-decoration:none}
+.cta a.go:hover{background:var(--cy);text-decoration:none}
+
+/* ---- shu ---- */
+.shu{border:1px solid #6E2B25;background:#160E0D;margin:16px 0 0}
+.shu h2{margin:0;background:#8A2A22;color:#fff;font-size:11.5px;font-weight:500;
+  letter-spacing:.18em;padding:7px 15px}
+.shu .in{padding:14px 15px}
+.shu p{margin:0 0 .7em;font-size:11.5px;color:#D8A9A3;line-height:1.9}
+.shu p:last-child{margin-bottom:0}
+.shu .k{color:var(--faint);border-top:1px solid #3A201D;padding-top:9px;margin-top:10px;font-size:11px}
+
+/* ---- footer ---- */
+footer.site{background:#05090D;border-top:1px solid var(--line);margin-top:22px;color:var(--sub)}
+footer.site .fm{display:flex;gap:26px;flex-wrap:wrap;padding:22px 0 18px;border-bottom:1px solid var(--line2)}
+footer.site .fn{flex:1 1 320px}
+footer.site .fn .ja{font-size:16px;letter-spacing:.16em;color:#EEF3F8}
+footer.site .fn .en{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:var(--cy2);margin-top:3px}
+footer.site .fn .dl{font-family:var(--mono);font-size:10.5px;line-height:2;margin-top:12px;color:var(--faint)}
+footer.site .fn .dl b{color:var(--sub);font-weight:400}
+footer.site .fl{flex:1 1 230px;font-size:11.5px}
+footer.site .fl ul{list-style:none;margin:0;padding:0;columns:2;column-gap:16px}
+footer.site .fl li{padding:2px 0;break-inside:avoid}
+footer.site .fl a{color:var(--sub)}
+.fb{padding:12px 0 24px;font-size:10.5px;line-height:1.95;color:var(--faint)}
+.fb .no{color:var(--am);letter-spacing:.06em}
+.fb .cr{margin-top:9px;font-family:var(--mono);letter-spacing:.08em;color:#3F4B58}
+
+
+/* ---- scope ---- */
+.scopewrap{display:grid;grid-template-columns:1fr 236px;gap:0}
+.scopebox{background:#050C12;border-right:1px solid var(--line);padding:18px;display:flex;justify-content:center;align-items:center}
+.scopebox svg{width:100%;max-width:530px;height:auto}
+.tel{padding:14px 15px;display:flex;flex-direction:column}
+.telrow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  border-bottom:1px solid var(--line2);padding:7px 0}
+.telrow .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--faint)}
+.telrow .v{font-family:var(--mono);font-size:15px;color:var(--cy)}
+.telrow .v small{font-size:10px;color:var(--faint)}
+.telrow .v.bad{color:var(--rd)}
+.tlog{margin-top:11px;background:#050C12;border:1px solid var(--line2);padding:8px 10px;
+  font-family:var(--mono);font-size:9.5px;line-height:1.85;color:var(--faint);
+  height:118px;overflow:hidden;letter-spacing:.02em}
+.tlog div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tlog .hit{color:#4D7D95}
+.tlog .los{color:var(--rd)}
+.telnote{margin-top:11px;font-size:10.5px;color:var(--sub);line-height:1.85}
+.telnote b{color:var(--am);font-weight:500}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+
+/* ---- responsive ---- */
+@media (max-width:900px){
+  .scopewrap{grid-template-columns:1fr}
+  .scopebox{border-right:0;border-bottom:1px solid var(--line)}
+  .tiles{grid-template-columns:1fr 1fr}
+  .hd .cred{border-left:0;padding-left:0;text-align:left;flex:1 1 100%;border-top:1px solid var(--line2);padding-top:10px}
 }
-a{color:var(--navy);}
-.sheet{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
-.mono{font-family:var(--m);font-variant-numeric:tabular-nums;}
-
-/* 上部識別帯 */
-.idbar{
-  border-bottom:1px solid var(--rule2);background:rgba(252,253,253,.86);
-  display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 18px;
-  padding:10px 24px;font-family:var(--m);font-size:11px;letter-spacing:.08em;color:var(--navy2);
+@media (max-width:620px){
+  .tiles{grid-template-columns:1fr}
+  .conv{grid-template-columns:1fr}
+  .conv .mid{display:none}
+  .conv .hd2:nth-of-type(2){display:none}
+  .dsp .to{width:auto;flex:1 1 100%}
+  nav.gn a{padding:9px 12px;font-size:11.5px}
+  .hd .nm .ja{font-size:19px}
+  .pnl > h2 .t{white-space:nowrap}
+  .pnl > h2 .r{flex:1 1 100%}
+  footer.site .fl ul{columns:1}
+  .alert .lv{flex:1 1 100%;border-right:0;border-bottom:1px solid var(--line)}
+  .alert .lv > div{flex:1}
 }
-.idbar a{text-decoration:none;color:var(--navy2);}
-.idbar a:hover{color:var(--navy);}
-
-/* 見出し */
-.masthead{padding:52px 0 34px;border-bottom:2px solid var(--navy);}
-.masthead .row{display:flex;align-items:flex-start;gap:22px;flex-wrap:wrap;}
-.masthead img{width:56px;height:56px;object-fit:contain;opacity:.9;}
-.masthead h1{font-size:clamp(22px,3.4vw,30px);font-weight:600;letter-spacing:.14em;margin:0;line-height:1.4;}
-.masthead .en{font-family:var(--m);font-size:11.5px;letter-spacing:.2em;color:var(--navy3);margin:6px 0 0;}
-.creed{font-size:clamp(20px,3.6vw,30px);font-weight:400;letter-spacing:.26em;margin:38px 0 0;}
-.creed small{display:block;font-family:var(--m);font-size:11px;letter-spacing:.18em;color:var(--navy3);margin-top:10px;}
-
-h2{font-size:15px;font-weight:600;letter-spacing:.16em;margin:0 0 3px;}
-.secno{font-family:var(--m);font-size:10.5px;letter-spacing:.2em;color:var(--navy3);display:block;margin-bottom:20px;}
-section{padding:56px 0 0;}
-p{max-width:62ch;}
-.note{font-family:var(--m);font-size:11px;color:var(--navy3);letter-spacing:.04em;line-height:1.95;}
-
-/* 観測値の柱 */
-.readings{border-top:1px solid var(--navy);}
-.reading{
-  display:grid;grid-template-columns:150px 1fr 150px;gap:0 22px;align-items:baseline;
-  padding:16px 0;border-bottom:1px solid var(--rule);
-}
-.reading .lbl{font-size:12.5px;color:var(--navy2);letter-spacing:.08em;}
-.reading .val{font-family:var(--m);font-size:clamp(26px,4.6vw,40px);line-height:1;letter-spacing:-.01em;}
-.reading .val u{text-decoration:none;font-size:14px;color:var(--navy2);margin-left:6px;letter-spacing:.06em;}
-.reading .src{font-family:var(--m);font-size:10.5px;color:var(--navy3);text-align:right;letter-spacing:.06em;line-height:1.8;}
-.reading.alarm .val{color:var(--warn);}
-.reading.alarm .lbl{color:var(--warn);}
-@media(max-width:720px){.reading{grid-template-columns:1fr;gap:4px;} .reading .src{text-align:left;}}
-
-/* 観測網 */
-table.net{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
-table.net th{
-  font-family:var(--m);font-size:10.5px;letter-spacing:.14em;font-weight:400;color:var(--navy3);
-  text-align:left;padding:0 10px 8px 0;border-bottom:1px solid var(--navy);white-space:nowrap;
-}
-table.net td{padding:9px 10px 9px 0;border-bottom:1px solid var(--rule);vertical-align:top;}
-table.net td.m{font-family:var(--m);white-space:nowrap;}
-.blk{display:inline-block;background:#10202f;color:transparent;user-select:none;height:1.05em;vertical-align:middle;}
-.state{font-family:var(--m);font-size:11px;letter-spacing:.08em;}
-.state.ok{color:var(--navy2);}
-.state.no{color:var(--warn);}
-
-/* 変換器 */
-.conv{border:1px solid var(--navy);background:rgba(252,253,253,.72);margin-top:8px;}
-.conv-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:1px;background:var(--rule);border-bottom:1px solid var(--navy);}
-.conv-in label{background:var(--sheet);padding:12px 14px;display:block;}
-.conv-in span{display:block;font-family:var(--m);font-size:10px;letter-spacing:.12em;color:var(--navy3);margin-bottom:5px;}
-.conv-in input{
-  width:100%;border:none;border-bottom:1px solid var(--rule2);background:transparent;
-  font-family:var(--m);font-size:19px;color:var(--navy);padding:2px 0;
-}
-.conv-in input:focus{outline:none;border-bottom:2px solid var(--warn);}
-.conv-out{padding:8px 18px 18px;}
-.crow{display:grid;grid-template-columns:1fr 92px 130px;gap:0 16px;align-items:baseline;padding:11px 0;border-bottom:1px dotted var(--rule2);}
-.crow:last-child{border-bottom:none;}
-.crow .k{font-size:13px;}
-.crow .raw{font-family:var(--m);font-size:12px;color:var(--navy3);text-align:right;}
-.crow .out{font-family:var(--m);font-size:20px;text-align:right;}
-.conv-note{border-top:1px solid var(--navy);padding:14px 18px 18px;font-family:var(--m);font-size:11px;color:var(--warn);line-height:1.95;letter-spacing:.03em;}
-@media(max-width:640px){.crow{grid-template-columns:1fr 1fr;} .crow .k{grid-column:1/-1;}}
-
-/* 発報 */
-.disp{border-top:1px solid var(--navy);margin-top:6px;}
-.disp .d{display:grid;grid-template-columns:118px 1fr;gap:0 20px;padding:15px 0;border-bottom:1px solid var(--rule);}
-.disp .to{font-family:var(--m);font-size:11px;letter-spacing:.1em;color:var(--navy3);}
-.disp p{margin:0;font-size:13.5px;}
-.disp .sig{font-family:var(--m);font-size:10.5px;color:var(--navy3);margin-top:6px;}
-@media(max-width:640px){.disp .d{grid-template-columns:1fr;gap:4px;}}
-
-.redpen{border-left:2px solid var(--warn);padding:10px 0 10px 16px;color:var(--warn);font-size:12.5px;max-width:62ch;margin-top:10px;}
-.redpen b{display:block;font-family:var(--m);font-size:10px;letter-spacing:.14em;margin-bottom:4px;}
-
-footer.f{margin-top:70px;border-top:2px solid var(--navy);padding-top:20px;}
-footer.f p{font-family:var(--m);font-size:11px;color:var(--navy3);letter-spacing:.05em;line-height:2.1;max-width:none;}
-::selection{background:#16324F;color:#FCFDFD;}
 </style>
 </head>
-
 <body>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<a class="skip" href="#main">本文へ</a>
 
-<!-- ============================================================
-     機構側の管理情報（当財団は独立法人のため本頁では非表示とする）
-     Document ID: AH-PCT-04 / Version 1.0.0 / ITEM # AH-P04
-     OBJECT CLASS SAFE / DISRUPTION VLAM / CLEARANCE LEVEL 1
-     ISSUED BY 境界線観測財団 / SITE 観象台
-     ============================================================ -->
-
-<div class="idbar">
-  <span><a href="../about.html">&#9666; 箱庭機構ポータルへ戻る</a></span>
-  <span>BOF-FLD-2026-0907 ／ 観測野帳 ／ 公開</span>
+<div class="live">
+  <div class="wrap">
+    <span><span class="dot"></span>観 測 中</span>
+    <span>最終更新 <b id="clk">07:00:00</b></span>
+    <span>次回更新まで <b id="cd">60</b>s</span>
+    <span class="sp"></span>
+    <span>観測網 <b>41</b>/44</span>
+    <span>BOF-FLD-2026-0907</span>
+  </div>
 </div>
 
-<div class="sheet">
+<header class="site">
+  <div class="wrap hd">
+    <img class="mk" src="icons/bof-512.png" width="58" height="58" alt="境界線観測財団 章" />
+    <div class="nm">
+      <div class="ja">境 界 線 観 測 財 団</div>
+      <div class="en">BOUNDARY OBSERVATION FOUNDATION</div>
+    </div>
+    <div class="cred">
+      <div class="m">観測は解釈に先立つ。</div>
+      <div class="s">OBSERVATION PRECEDES INTERPRETATION</div>
+    </div>
+  </div>
+  <nav class="gn" aria-label="グローバルナビゲーション">
+    <div class="wrap" style="padding:0">
+      <ul>
+        <li><a href="#main" class="cur">現在の観測</a></li>
+        <li><a href="#scope">監視盤</a></li>
+        <li><a href="#net">観測網</a></li>
+        <li><a href="#conv">指標変換</a></li>
+        <li><a href="#dispatch">発報記録</a></li>
+        <li><a href="#data">データ提供</a></li>
+        <li><a href="#staff">観測員</a></li>
+        <li><a href="#footer">財団について</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
-  <header class="masthead">
-    <div class="row">
-      <img src="../images/logo-bo.png" alt="境界線観測財団 標章" />
-      <div>
-        <h1>境 界 線 観 測 財 団</h1>
-        <p class="en">BOUNDARY OBSERVATION FOUNDATION</p>
+<div class="wrap" id="main">
+
+  <!-- 警報ステータス -->
+  <div class="alert">
+    <div class="lv">
+      <div><div class="k">特別警報</div><div class="v">0</div></div>
+      <div><div class="k">警報</div><div class="v">0</div></div>
+      <div><div class="k">注意報</div><div class="v on">1</div></div>
+    </div>
+    <div class="msg">
+      <div class="t">観測注意報　第 4,412 号 ── 観測点 B-17 の値が固着している。</div>
+      <div class="d">04:19:00 発表 ／ 警報課 ／ 解除の見込みは示されていない</div>
+    </div>
+  </div>
+
+  <!-- 現況タイル -->
+  <div class="tiles">
+    <div class="tile">
+      <div class="k">境 界 安 定 度</div>
+      <div class="v warn">0.68<small> /1.00</small></div>
+      <div class="gauge"><i style="width:68%"></i><b style="left:99%"></b></div>
+      <div class="m">B-17 ／ 07:00:00</div>
+    </div>
+    <div class="tile">
+      <div class="k">基 準 値 と の 差</div>
+      <div class="v warn">-0.31</div>
+      <div class="m">04:19:00 より変動なし</div>
+    </div>
+    <div class="tile">
+      <div class="k">観 測 点 稼 働 数</div>
+      <div class="v">41<small> /44</small></div>
+      <div class="m">全観測網 ／ 07:00:00</div>
+    </div>
+    <div class="tile">
+      <div class="k">直 近 の 警 報 発 令</div>
+      <div class="v">3<small> 日前</small></div>
+      <div class="m">警報課 ／ 2026.09.04</div>
+    </div>
+  </div>
+
+  <!-- 境界面監視盤 -->
+  <section class="pnl" id="scope">
+    <h2><span class="n">01</span><span class="t">境界面監視盤</span><span class="r">走査周期 12.0s ／ 対象 境界面 r=96</span></h2>
+    <div class="scopewrap">
+      <div class="scopebox">
+        <svg id="scopesvg" viewBox="0 0 420 420" role="img" aria-label="境界面の走査表示。観測点の反射と走査体の軌道を示す。">
+          <defs>
+            <radialGradient id="vig" cx="50%" cy="50%" r="50%">
+              <stop offset="60%" stop-color="#0B1F2B" stop-opacity="0" />
+              <stop offset="100%" stop-color="#000" stop-opacity=".55" />
+            </radialGradient>
+            <linearGradient id="swp" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#6FC3E8" stop-opacity="0" />
+              <stop offset="100%" stop-color="#6FC3E8" stop-opacity=".22" />
+            </linearGradient>
+          </defs>
+
+          <circle cx="210" cy="210" r="196" fill="#07131B" stroke="#1B2C3A" />
+          <circle cx="210" cy="210" r="186" fill="none" stroke="#22343F" />
+          <circle cx="210" cy="210" r="144" fill="none" stroke="#1B2C3A" />
+          <circle cx="210" cy="210" r="96"  fill="none" stroke="#3E8FB0" stroke-width="1.4" stroke-dasharray="2 4" />
+          <circle cx="210" cy="210" r="48"  fill="none" stroke="#1B2C3A" />
+          <line x1="14" y1="210" x2="406" y2="210" stroke="#16252F" />
+          <line x1="210" y1="14" x2="210" y2="406" stroke="#16252F" />
+
+          <g fill="#3E5C6E" font-family="monospace" font-size="8.5" text-anchor="middle">
+            <text x="210" y="212" dy="-52" fill="#2F4A5A">内</text>
+            <text x="210" y="212" dy="-100" fill="#3E8FB0">境 界 面</text>
+            <text x="210" y="212" dy="-148" fill="#2F4A5A">外</text>
+          </g>
+
+          <!-- 方位目盛 -->
+          <g stroke="#263A47">
+            <line x1="210" y1="24" x2="210" y2="34" /><line x1="303" y1="49" x2="298" y2="58" />
+            <line x1="371" y1="117" x2="362" y2="122" /><line x1="396" y1="210" x2="386" y2="210" />
+            <line x1="371" y1="303" x2="362" y2="298" /><line x1="303" y1="371" x2="298" y2="362" />
+            <line x1="210" y1="396" x2="210" y2="386" /><line x1="117" y1="371" x2="122" y2="362" />
+            <line x1="49" y1="303" x2="58" y2="298" /><line x1="24" y1="210" x2="34" y2="210" />
+            <line x1="49" y1="117" x2="58" y2="122" /><line x1="117" y1="49" x2="122" y2="58" />
+          </g>
+          <g fill="#33505F" font-family="monospace" font-size="8" text-anchor="middle">
+            <text x="210" y="14">000</text><text x="396" y="200">090</text>
+            <text x="210" y="414">180</text><text x="24" y="200">270</text>
+          </g>
+
+          <!-- 走査体の軌道 -->
+          <g transform="rotate(-18 210 210)">
+            <path id="orb" d="M32,210 a178,112 0 1,0 356,0 a178,112 0 1,0 -356,0"
+                  fill="none" stroke="#20404F" stroke-width="1" stroke-dasharray="3 6" />
+            <g>
+              <polygon points="0,-5.5 4.2,4.5 -4.2,4.5" fill="#6FC3E8" opacity=".9" />
+              <circle r="9" fill="none" stroke="#6FC3E8" stroke-width=".6" opacity=".35" />
+              <animateMotion dur="26s" repeatCount="indefinite" rotate="auto">
+                <mpath href="#orb" xlink:href="#orb" />
+              </animateMotion>
+            </g>
+          </g>
+
+          <!-- 走査スイープ -->
+          <g>
+            <path d="M210,210 L90.4,67.5 A186,186 0 0,1 210,24 Z" fill="url(#swp)" />
+            <line x1="210" y1="210" x2="210" y2="24" stroke="#6FC3E8" stroke-width="1.2" opacity=".85" />
+            <animateTransform attributeName="transform" type="rotate"
+              from="0 210 210" to="360 210 210" dur="12s" repeatCount="indefinite" />
+          </g>
+
+          <!-- 観測点 -->
+          <g font-family="monospace" font-size="9">
+            <!-- B-17 -->
+            <g>
+              <circle cx="303.6" cy="90.2" r="14" fill="none" stroke="#E8B558" stroke-width=".8" opacity=".45" />
+              <circle cx="303.6" cy="90.2" r="3.6" fill="#E8B558" opacity=".4">
+                <animate attributeName="opacity" values=".35;1;1;.35" keyTimes="0;.02;.18;1" dur="12s" begin="1.27s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="303.6" cy="90.2" r="4" fill="none" stroke="#E8B558" opacity="0">
+                <animate attributeName="r" values="4;20" dur="12s" keyTimes="0;.2" begin="1.27s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values=".8;0;0" keyTimes="0;.2;1" dur="12s" begin="1.27s" repeatCount="indefinite" />
+              </circle>
+              <text x="312" y="86" fill="#E8B558">B-17</text>
+              <text x="312" y="97" fill="#6B5A34" font-size="7.5">FIXED</text>
+            </g>
+            <!-- B-18 -->
+            <g>
+              <circle cx="299" cy="246" r="3.2" fill="#6FC3E8" opacity=".4">
+                <animate attributeName="opacity" values=".35;1;1;.35" keyTimes="0;.02;.18;1" dur="12s" begin="3.73s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="299" cy="246" r="4" fill="none" stroke="#6FC3E8" opacity="0">
+                <animate attributeName="r" values="4;18" dur="12s" keyTimes="0;.2" begin="3.73s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values=".7;0;0" keyTimes="0;.2;1" dur="12s" begin="3.73s" repeatCount="indefinite" />
+              </circle>
+              <text x="307" y="249" fill="#4D7D95">B-18</text>
+            </g>
+            <!-- C-03 -->
+            <g>
+              <circle cx="156.8" cy="324.2" r="3.2" fill="#6FC3E8" opacity=".4">
+                <animate attributeName="opacity" values=".35;1;1;.35" keyTimes="0;.02;.18;1" dur="12s" begin="6.83s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="156.8" cy="324.2" r="4" fill="none" stroke="#6FC3E8" opacity="0">
+                <animate attributeName="r" values="4;18" dur="12s" keyTimes="0;.2" begin="6.83s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values=".7;0;0" keyTimes="0;.2;1" dur="12s" begin="6.83s" repeatCount="indefinite" />
+              </circle>
+              <text x="164" y="327" fill="#4D7D95">C-03</text>
+            </g>
+            <!-- C-09 反射なし -->
+            <g>
+              <line x1="34" y1="209.9" x2="46" y2="221.9" stroke="#CE4F42" stroke-width="1.2" />
+              <line x1="46" y1="209.9" x2="34" y2="221.9" stroke="#CE4F42" stroke-width="1.2" />
+              <circle cx="40.1" cy="215.9" r="4" fill="none" stroke="#CE4F42" opacity="0">
+                <animate attributeName="r" values="4;22" dur="12s" keyTimes="0;.22" begin="8.93s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values=".9;0;0" keyTimes="0;.22;1" dur="12s" begin="8.93s" repeatCount="indefinite" />
+              </circle>
+              <text x="52" y="212" fill="#CE4F42">C-09</text>
+              <text x="52" y="223" fill="#7D3831" font-size="7.5">NO RETURN</text>
+            </g>
+            <!-- D-01 -->
+            <g>
+              <circle cx="175" cy="149.4" r="3.2" fill="#5FAE7E" opacity=".4">
+                <animate attributeName="opacity" values=".35;1;1;.35" keyTimes="0;.02;.18;1" dur="12s" begin="11s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="175" cy="149.4" r="4" fill="none" stroke="#5FAE7E" opacity="0">
+                <animate attributeName="r" values="4;18" dur="12s" keyTimes="0;.2" begin="11s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values=".7;0;0" keyTimes="0;.2;1" dur="12s" begin="11s" repeatCount="indefinite" />
+              </circle>
+              <text x="126" y="146" fill="#4E8D6C">D-01</text>
+            </g>
+          </g>
+
+          <circle cx="210" cy="210" r="2" fill="#6FC3E8" />
+          <circle cx="210" cy="210" r="196" fill="url(#vig)" pointer-events="none" />
+        </svg>
+      </div>
+
+      <div class="tel">
+        <div class="telrow"><span class="k">走 査 方 位</span><span class="v" id="az">000.0°</span></div>
+        <div class="telrow"><span class="k">走 査 周 期</span><span class="v">12.0 s</span></div>
+        <div class="telrow"><span class="k">捕 捉</span><span class="v">4 <small>/ 5</small></span></div>
+        <div class="telrow"><span class="k">反 射 な し</span><span class="v bad">C-09</span></div>
+        <div class="telrow"><span class="k">走 査 体</span><span class="v">S-01</span></div>
+        <div class="telrow"><span class="k">周 回 周 期</span><span class="v">26.0 s</span></div>
+        <div class="tlog" id="tlog" aria-live="off"></div>
+        <div class="telnote">本図は観測点の反射の有無を示すものであり、位置関係を正確に表すものではない。<b>走査は継続している。</b></div>
       </div>
     </div>
-    <p class="creed">観測は解釈に先立つ。
-      <small>OBSERVATION PRECEDES INTERPRETATION</small>
-    </p>
-  </header>
+  </section>
 
-  <section>
-    <h2>本日の観測</h2>
-    <span class="secno">01 ／ FIELD READINGS</span>
-    <div class="readings">
-      <div class="reading">
-        <span class="lbl">境界安定度</span>
-        <span class="val">0.68<u>／1.00</u></span>
-        <span class="src">観測点 B-17<br>07:00:00</span>
-      </div>
-      <div class="reading alarm">
-        <span class="lbl">基準値との差</span>
-        <span class="val">-0.31</span>
-        <span class="src">観測点 B-17<br>04:19:00</span>
-      </div>
-      <div class="reading">
-        <span class="lbl">観測点 稼働数</span>
-        <span class="val">41<u>／44</u></span>
-        <span class="src">全観測網<br>07:00:00</span>
-      </div>
-      <div class="reading">
-        <span class="lbl">直近の警報発令</span>
-        <span class="val">3<u>日前</u></span>
-        <span class="src">警報課<br>2026.09.04</span>
+  <!-- 時系列 -->
+  <section class="pnl" id="series">
+    <h2><span class="n">02</span><span class="t">直近の観測値 ／ 観測点 B-17</span><span class="r">6時間 ／ 07:00:00 現在</span></h2>
+    <div class="in" style="padding-bottom:0">
+      <div class="chart">
+        <svg viewBox="0 0 760 132" role="img" aria-label="観測点B-17の境界安定度の推移">
+          <line x1="40" y1="16.5" x2="740" y2="16.5" stroke="#3E8FB0" stroke-width="1" stroke-dasharray="4 4" />
+          <text x="44" y="12" fill="#3E8FB0" font-family="monospace" font-size="9">基準値 0.99</text>
+          <line x1="40" y1="120" x2="740" y2="120" stroke="#22303F" stroke-width="1" />
+          <line x1="430" y1="8" x2="430" y2="120" stroke="#CE4F42" stroke-width="1" stroke-dasharray="3 3" />
+          <text x="436" y="36" fill="#CE4F42" font-family="monospace" font-size="9">04:19 低下を確認</text>
+          <polyline fill="none" stroke="#E8B558" stroke-width="1.8"
+            points="50,31.2 145,33.6 240,33.6 335,36.1 430,92.4 525,92.4 620,92.4 715,92.4" />
+          <g fill="#E8B558">
+            <circle cx="50" cy="31.2" r="2.6" /><circle cx="145" cy="33.6" r="2.6" />
+            <circle cx="240" cy="33.6" r="2.6" /><circle cx="335" cy="36.1" r="2.6" />
+            <circle cx="430" cy="92.4" r="3.4" /><circle cx="525" cy="92.4" r="2.6" />
+            <circle cx="620" cy="92.4" r="2.6" /><circle cx="715" cy="92.4" r="2.6" />
+          </g>
+          <g fill="#5A6877" font-family="monospace" font-size="9" text-anchor="middle">
+            <text x="50" y="131">01:00</text><text x="145" y="131">02:00</text>
+            <text x="240" y="131">03:00</text><text x="335" y="131">04:00</text>
+            <text x="430" y="131">04:19</text><text x="525" y="131">05:00</text>
+            <text x="620" y="131">06:00</text><text x="715" y="131">07:00</text>
+          </g>
+        </svg>
+        <div class="chlg"><span><i style="background:#E8B558"></i>境界安定度</span><span><i style="background:#3E8FB0"></i>基準値</span><span><i style="background:#CE4F42"></i>低下確認時刻</span></div>
       </div>
     </div>
-    <p class="note" style="margin-top:16px;">
-      観測値は当財団が各国機関の発表を中継したものである。当財団の生成物ではない。<br>
-      内と外を別つのは観測の有無であり、その狭間に位置するのが当財団である。
-    </p>
+    <div class="tsc">
+      <table class="d">
+        <thead><tr><th>観測時刻</th><th style="text-align:right">境界安定度</th><th style="text-align:right">基準値との差</th><th style="text-align:right">気圧 hPa</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="tm">07:00:00</td><td class="num am">0.68</td><td class="num am">-0.31</td><td class="num">1021</td><td><span class="st re">要 再 測 定</span></td></tr>
+          <tr><td class="tm">06:00:00</td><td class="num am">0.68</td><td class="num am">-0.31</td><td class="num">1021</td><td><span class="st re">要 再 測 定</span></td></tr>
+          <tr><td class="tm">05:00:00</td><td class="num am">0.68</td><td class="num am">-0.31</td><td class="num">1021</td><td><span class="st re">要 再 測 定</span></td></tr>
+          <tr><td class="tm">04:19:00</td><td class="num am">0.68</td><td class="num am">-0.31</td><td class="num">1021</td><td><span class="st ng">低下を確認</span></td></tr>
+          <tr><td class="tm">04:00:00</td><td class="num cy">0.91</td><td class="num">-0.08</td><td class="num">1035</td><td><span class="st ok">平 常</span></td></tr>
+          <tr><td class="tm">03:00:00</td><td class="num cy">0.92</td><td class="num">-0.07</td><td class="num">1035</td><td><span class="st ok">平 常</span></td></tr>
+          <tr><td class="tm">02:00:00</td><td class="num cy">0.92</td><td class="num">-0.07</td><td class="num">1035</td><td><span class="st ok">平 常</span></td></tr>
+          <tr><td class="tm">01:00:00</td><td class="num cy">0.93</td><td class="num">-0.06</td><td class="num">1036</td><td><span class="st ok">平 常</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="in">
+      <p class="tiny"><b>04:19:00 以降、B-17 の値は変動していない。</b>機材の異常であるか、観測対象の停止であるかは判定していない。判定の材料がないためである。再測定を要請した。</p>
+      <p class="tiny">観測値は当財団が各国機関の発表を中継したものである。当財団の生成物ではない。</p>
+    </div>
   </section>
 
-  <section>
-    <h2>観測網</h2>
-    <span class="secno">02 ／ NETWORK</span>
-    <p>各境界点に観測員を一名ずつ、単独で常駐させる。異常を認めた場合、上位の承認なく警報を発令する権限を持つ。</p>
-    <table class="net">
-      <tr><th>観測点</th><th>所在</th><th>常駐観測員</th><th>状態</th></tr>
-      <tr><td class="m">B-17</td><td>採取地 外縁</td><td class="m">№ 0442</td><td><span class="state no">要 再測定</span></td></tr>
-      <tr><td class="m">B-18</td><td>境界点 狭間</td><td class="m">№ 0517</td><td><span class="state ok">稼働</span></td></tr>
-      <tr><td class="m">C-03</td><td>書架 外周</td><td class="m">№ 0298</td><td><span class="state ok">稼働</span></td></tr>
-      <tr><td class="m">C-09</td><td><span class="blk" style="width:7em"></span></td><td class="m"><span class="blk" style="width:4.4em"></span></td><td><span class="state no">応答なし</span></td></tr>
-      <tr><td class="m">D-01</td><td>観象台 直下</td><td class="m">№ 0004</td><td><span class="state ok">稼働</span></td></tr>
-    </table>
-    <p class="note" style="margin-top:14px;">
-      一覧は抄録である。全観測点は公開しない。<br>
-      観測員は番号でのみ記録する。氏名は記録しない。交代の記録も残さない。<br>
-      C-09 は 61 日間 応答がない。当該観測員の欄は、規定により伏せる。
-    </p>
+  <!-- 観測網 -->
+  <section class="pnl" id="net">
+    <h2><span class="n">03</span><span class="t">観測網</span><span class="r">抄録 ／ 全観測点は公開しない</span></h2>
+    <div class="in" style="padding-bottom:0">
+      <p class="tiny">各境界点に観測員を一名ずつ、単独で常駐させる。異常を認めた場合、上位の承認なく警報を発令する権限を持つ。<b>内と外を別つのは観測の有無であり、その狭間に位置するのが当財団である。</b></p>
+    </div>
+    <div class="tsc">
+      <table class="d">
+        <thead><tr><th>観測点</th><th>所在</th><th>常駐観測員</th><th style="text-align:right">最終受信</th><th>状態</th></tr></thead>
+        <tbody>
+          <tr><td class="tm">B-17</td><td>採取地 外縁</td><td class="tm">№ 0442</td><td class="num">07:00:00</td><td><span class="st re">要 再 測 定</span></td></tr>
+          <tr><td class="tm">B-18</td><td>境界点 狭間</td><td class="tm">№ 0517</td><td class="num">07:00:00</td><td><span class="st ok">稼 働</span></td></tr>
+          <tr><td class="tm">C-03</td><td>書架 外周</td><td class="tm">№ 0298</td><td class="num">07:00:00</td><td><span class="st ok">稼 働</span></td></tr>
+          <tr><td class="tm">C-09</td><td><span class="redact">██████</span></td><td class="tm"><span class="redact">██████</span></td><td class="num">61 日前</td><td><span class="st ng">応答なし</span></td></tr>
+          <tr><td class="tm">D-01</td><td>観象台 直下</td><td class="tm">№ 0004</td><td class="num">07:00:00</td><td><span class="st ok">稼 働</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="in">
+      <p class="tiny">観測員は番号でのみ記録する。氏名は記録しない。交代の記録も残さない。</p>
+      <p class="tiny"><b>C-09 は 61 日間 応答がない。</b>当該観測員の欄は、規定により伏せる。</p>
+    </div>
   </section>
 
-  <section>
-    <h2>指標変換器</h2>
-    <span class="secno">03 ／ CONVERTER</span>
-    <p>箱庭次元研究機構が当財団の提供値を「機構指標」へ変換して公表している。変換式は下記のとおりであり、当財団はこれを検証のために掲示する。</p>
+  <!-- 指標変換 -->
+  <section class="pnl" id="conv">
+    <h2><span class="n">04</span><span class="t">指標変換器</span><span class="r">検証のための掲示</span></h2>
+    <div class="in" style="padding-bottom:12px">
+      <p class="tiny">箱庭次元研究機構が当財団の提供値を「機構指標」へ変換して公表している。変換式は下記のとおりであり、当財団はこれを検証のために掲示する。</p>
+    </div>
     <div class="conv">
-      <div class="conv-in">
-        <label>気圧<span>hPa</span><input id="i0" type="number" value="1021" step="1" /></label>
-        <label>Kp 指数<span>0 – 9</span><input id="i1" type="number" value="3" step="1" min="0" max="9" /></label>
-        <label>湿度<span>%</span><input id="i2" type="number" value="62" step="1" min="0" max="100" /></label>
-        <label>有感地震<span>回 ／ 24h</span><input id="i3" type="number" value="2" step="1" min="0" /></label>
-        <label>日照時間<span>h</span><input id="i4" type="number" value="7.5" step="0.5" min="0" /></label>
-      </div>
-      <div class="conv-out">
-        <div class="crow"><span class="k">境界安定度　<span class="note">＝（気圧−980）÷ 60</span></span><span class="raw" id="r0">1021 hPa</span><span class="out" id="o0">0.68</span></div>
-        <div class="crow"><span class="k">星喰活性度　<span class="note">＝ Kp ÷ 9</span></span><span class="raw" id="r1">Kp 3</span><span class="out" id="o1">0.33</span></div>
-        <div class="crow"><span class="k">記録濃度　<span class="note">＝ 湿度</span></span><span class="raw" id="r2">62 %</span><span class="out" id="o2">0.62</span></div>
-        <div class="crow"><span class="k">次元干渉度　<span class="note">＝ 有感地震 ÷ 20</span></span><span class="raw" id="r3">2 回</span><span class="out" id="o3">0.10</span></div>
-        <div class="crow"><span class="k">書架照度　<span class="note">＝ 日照 ÷ 12</span></span><span class="raw" id="r4">7.5 h</span><span class="out" id="o4">0.63</span></div>
-      </div>
-      <p class="conv-note" id="cnote">
-        当財団は、この変換に同意していない。<br>
-        左列が観測値である。右列は観測値ではない。
-      </p>
-    </div>
-    <p class="note" style="margin-top:14px;">
-      原値の併記を条件に、当該公表を黙認している。黙認であって承認ではない。
-    </p>
-  </section>
+      <div class="hd2">観測値 ／ 実測</div><div class="hd2" style="text-align:center">変換式</div><div class="hd2 r">機構指標 ／ 観測値ではない</div>
 
-  <section>
-    <h2>発報記録</h2>
-    <span class="secno">04 ／ DISPATCHES</span>
-    <div class="disp">
-      <div class="d">
-        <span class="to">→ VOID TECH<br>INDUSTRIES</span>
-        <div>
-          <p>貴社の採取実施日と、境界安定度の低下日は一致している。因果は主張しない。一致のみを報告する。</p>
-          <p class="sig">観測第 4,411 報 ／ 観測点 B-17 ／ 観測員 № 0442</p>
-        </div>
-      </div>
-      <div class="d">
-        <span class="to">→ A.C.A.S.</span>
-        <div>
-          <p>04:19 時点、当該地点の境界安定度は基準値を 0.31 下回っていた。参考まで。</p>
-          <p class="sig">観測第 4,412 報 ／ 警報課</p>
-        </div>
-      </div>
-      <div class="d">
-        <span class="to">→ 箱庭次元<br>研究機構</span>
-        <div>
-          <p>貴機構の公表する「境界安定度」は、当財団の提供値に係数を乗じたものである。当財団の観測値と混同されぬよう、出典と原値を併記されたい。前回および前々回と同一の申し入れである。</p>
-          <p class="sig">観測第 4,413 報 ／ 資料公開課</p>
-        </div>
-      </div>
-      <div class="d">
-        <span class="to">→ 観測点 C-09</span>
-        <div>
-          <p>応答を求める。61 日 経過。</p>
-          <p class="sig">観測第 4,414 報 ／ 観測網管理部　※ 返信なし</p>
-        </div>
+      <div class="cell n">1021 <small>気圧 hPa</small></div><div class="mid">（x−980）÷60</div><div class="cell out">0.68 <small>境界安定度</small></div>
+      <div class="cell n">Kp 3 <small>Kp 指数 0–9</small></div><div class="mid">x÷9</div><div class="cell out">0.33 <small>星喰活性度</small></div>
+      <div class="cell n">62 <small>湿度 %</small></div><div class="mid">x÷100</div><div class="cell out">0.62 <small>記録濃度</small></div>
+      <div class="cell n">2 <small>有感地震 回/24h</small></div><div class="mid">x÷20</div><div class="cell out">0.10 <small>次元干渉度</small></div>
+      <div class="cell n">7.5 <small>日照時間 h</small></div><div class="mid">x÷12</div><div class="cell out">0.63 <small>書架照度</small></div>
+    </div>
+    <div class="in">
+      <div class="calc">
+        <label for="hpa">気圧を入力して変換を確認する</label>
+        <input type="text" id="hpa" value="1021" inputmode="decimal" />
+        <span class="eq">hPa　→　（x−980）÷60　＝</span>
+        <span class="out" id="conved">0.68</span>
+        <div class="warn">当財団は、この変換に同意していない。左が観測値である。右は観測値ではない。原値の併記を条件に、当該公表を黙認している。黙認であって承認ではない。</div>
       </div>
     </div>
   </section>
 
-  <section>
-    <p class="note">※ 本頁を箱庭次元研究機構ポータル内に掲載するにあたり、同機構の監督機関より下記注記の併載を求められた。当財団の見解ではない。</p>
-    <div class="redpen">
-      <b>箱庭世界倫理委員会 朱注 第 176 号</b>
-      当財団が提供する観測値と、機構が公表する変換値との差異について、閲覧者が両者を混同する恐れがある。
-      掲示にあたっては、いずれが観測値であるかを明示されたい。──なお本件は当財団側より先に指摘されている。
+  <!-- 発報記録 -->
+  <section class="pnl" id="dispatch">
+    <h2><span class="n">05</span><span class="t">発報記録</span><span class="r">抄 ／ 第 4,205 – 4,414 報</span></h2>
+    <div class="dsp">
+      <div class="to">→ 観測点 C-09</div>
+      <div class="bd"><p>応答を求める。7 日 経過。</p>
+        <div class="ref">観測第 4,205 報 ／ 観測網管理部　※ 返信なし</div></div>
+    </div>
+    <div class="dsp">
+      <div class="to">→ VOID TECH INDUSTRIES</div>
+      <div class="bd"><p>貴社の採取実施日と、境界安定度の低下日は一致している。因果は主張しない。一致のみを報告する。</p>
+        <div class="ref">観測第 4,411 報 ／ 観測点 B-17 ／ 観測員 № 0442</div></div>
+    </div>
+    <div class="dsp">
+      <div class="to">→ A.C.A.S.</div>
+      <div class="bd"><p>04:19 時点、当該地点の境界安定度は基準値を 0.31 下回っていた。参考まで。</p>
+        <div class="ref">観測第 4,412 報 ／ 警報課</div></div>
+    </div>
+    <div class="dsp">
+      <div class="to">→ 箱庭次元研究機構</div>
+      <div class="bd"><p>貴機構の公表する「境界安定度」は、当財団の提供値に係数を乗じたものである。当財団の観測値と混同されぬよう、出典と原値を併記されたい。前回および前々回と同一の申し入れである。</p>
+        <div class="ref">観測第 4,413 報 ／ 資料公開課</div></div>
+    </div>
+    <div class="dsp">
+      <div class="to">→ 観測点 C-09</div>
+      <div class="bd"><p>応答を求める。61 日 経過。</p>
+        <div class="ref">観測第 4,414 報 ／ 観測網管理部　※ 返信なし</div></div>
     </div>
   </section>
 
-  <footer class="f">
-    <p>
-      境界線観測財団 ／ BOUNDARY OBSERVATION FOUNDATION<br>
-      BOF-FLD-2026-0907 ／ 観測網管理部・警報課・機材整備課・観測員養成所・資料公開課<br>
-      取引協定 箱庭次元研究機構 第 PACT-04 号 ／ 観測網の一部開放（観象台）<br><br>
-      本頁は当財団が作成し、<a href="../index.html">箱庭次元研究機構</a>ポータル内に掲載しているものである。同機構の見解を示すものではない。<br>
-      観測値・観測点・観測員番号はすべて創作上の設定である。実在の観測網・気象情報とは関係がない。<br>
-      防災上の判断には用いないこと。<br>
-      <a href="../about.html">提携・協力機関一覧へ戻る</a> ／ <a href="../weather/">観象台（KANSHODAI）</a>
-    </p>
-  </footer>
+  <!-- 観象台 CTA -->
+  <div class="cta">
+    <span class="ic">FEED OPEN</span>
+    <div class="tx">
+      <b>観象台 ／ KANSHODAI</b>
+      <span>観測網の一部を箱庭次元研究機構へ開放している。その閲覧端末が観象台である。実測値は当財団の中継による。</span>
+    </div>
+    <a class="go" href="../weather/">観 測 網 を 見 る ▸</a>
+  </div>
+
+  <!-- データ提供 -->
+  <section class="pnl" id="data">
+    <h2><span class="n">06</span><span class="t">データ提供 ／ 利用の条件</span><span class="r">無償公開</span></h2>
+    <div class="in" style="padding-bottom:6px">
+      <p class="tiny">当財団は観測データを無償で公開する。利用にあたり、下記の各項を満たすこと。<b>いずれも観測値の保護を目的とするものであり、利用を制限する目的のものではない。</b></p>
+    </div>
+    <ol class="pri">
+      <li>出典を明示すること。当財団の観測値は、各国機関の発表を中継したものである。当財団の生成物ではない。</li>
+      <li>指標へ変換して用いる場合、変換値の傍らに原値を併記すること。原値のない変換値は観測値ではない。</li>
+      <li>非公式の中継である旨を表示すること。当財団は公的機関ではない。</li>
+      <li>被害の生じている事象を、演出の素材として用いないこと。<b>この一項に例外を認めない。</b></li>
+      <li>警報の発令中は、演出上の表示を停止すること。停止は自動で行われるよう実装すること。</li>
+    </ol>
+    <div class="in">
+      <p class="tiny">第四項および第五項については、箱庭世界倫理委員会へ同旨の申し入れを行っている。当財団の申し入れが先である。</p>
+    </div>
+  </section>
+
+  <!-- 観測員 -->
+  <section class="pnl" id="staff">
+    <h2><span class="n">07</span><span class="t">観測員 ／ 養成と資格認定</span><span class="r">観測員養成所</span></h2>
+    <div class="tsc">
+      <table class="d">
+        <thead><tr><th>項目</th><th style="text-align:right">当期</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td>資格認定者数</td><td class="num cy">1,208</td><td class="tiny" style="padding:8px 12px">累計。失効者を含まない</td></tr>
+          <tr><td>常駐配置数</td><td class="num">44</td><td class="tiny" style="padding:8px 12px">一観測点につき一名</td></tr>
+          <tr><td>当期離職者数</td><td class="num am">37</td><td class="tiny" style="padding:8px 12px">理由は記録しない</td></tr>
+          <tr><td>応答が途絶えた者</td><td class="num" style="color:var(--rd)">1</td><td class="tiny" style="padding:8px 12px">C-09 ／ 61 日</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="in">
+      <p class="tiny">養成課程は、観測値に自分の感想を付さない訓練から始まる。報告書に形容詞を書いた者は、その回の記録を破棄して書き直す。<b>断定できることしか書かない。</b></p>
+      <p class="tiny">離職率は高い。理由は記録しない。記録する手続を定めていないためである。</p>
+    </div>
+  </section>
+
+  <!-- 朱注 -->
+  <div class="shu">
+    <h2>箱庭世界倫理委員会　朱注 第 176 号</h2>
+    <div class="in">
+      <p>当財団が提供する観測値と、機構が公表する変換値との差異について、閲覧者が両者を混同する恐れがある。掲示にあたっては、いずれが観測値であるかを明示されたい。──なお本件は当財団側より先に指摘されている。</p>
+      <p class="k">※ 本頁の掲載にあたり、上記注記の併載を求められた。当財団の見解ではない。</p>
+    </div>
+  </div>
+
 </div>
+
+<footer class="site" id="footer">
+  <div class="wrap">
+    <div class="fm">
+      <div class="fn">
+        <div class="ja">境界線観測財団</div>
+        <div class="en">BOUNDARY OBSERVATION FOUNDATION</div>
+        <div class="dl">
+          <b>部門</b>　観測網管理部・警報課・機材整備課・観測員養成所・資料公開課<br />
+          <b>協定</b>　箱庭次元研究機構 第 PACT-04 号 ／ 観測網の一部開放（観象台）<br />
+          <b>発令</b>　警報の発令に上位の承認を要しない<br />
+          <b>文書</b>　数値と観測時刻のみ。形容詞を用いない
+        </div>
+      </div>
+      <div class="fl">
+        <ul>
+          <li><a href="#scope">境界面監視盤</a></li>
+          <li><a href="#series">現在の観測</a></li>
+          <li><a href="#net">観測網</a></li>
+          <li><a href="#conv">指標変換</a></li>
+          <li><a href="#dispatch">発報記録</a></li>
+          <li><a href="#data">データ提供</a></li>
+          <li><a href="#staff">観測員</a></li>
+          <li><a href="../weather/">観象台</a></li>
+          <li><a href="gna.html">納本先（G.N.A.）</a></li>
+          <li><a href="eth.html">朱注の発行元</a></li>
+          <li><a href="#">観測値の利用条件</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fb">
+      観測値・観測点・観測員番号はすべて創作上の設定であり、実在の観測網・気象情報とは関係がありません。<br />
+      <span class="no">防災上の判断には用いないこと。</span>
+      <div class="cr">© BOUNDARY OBSERVATION FOUNDATION ／ BOF-FLD-2026-0907　　<a href="../about.html">協定機関一覧</a>　／　<a href="../weather/">観象台（KANSHODAI）</a></div>
+    </div>
+  </div>
+</footer>
 
 <script>
 (function(){
-  var ids=[0,1,2,3,4];
-  var el={};
-  ids.forEach(function(i){
-    el['i'+i]=document.getElementById('i'+i);
-    el['r'+i]=document.getElementById('r'+i);
-    el['o'+i]=document.getElementById('o'+i);
-  });
-  var note=document.getElementById('cnote');
-  function cl(v){ return Math.max(0,Math.min(1,v)); }
-  function f(v){ return v.toFixed(2); }
-  function num(x,d){ var v=parseFloat(x); return isNaN(v)?d:v; }
-  function build(){
-    var hpa=num(el.i0.value,1021), kp=num(el.i1.value,3), hum=num(el.i2.value,62),
-        eq =num(el.i3.value,2),   sun=num(el.i4.value,7.5);
-    el.r0.textContent=hpa+" hPa";  el.o0.textContent=f(cl((hpa-980)/60));
-    el.r1.textContent="Kp "+kp;    el.o1.textContent=f(cl(kp/9));
-    el.r2.textContent=hum+" %";    el.o2.textContent=f(cl(hum/100));
-    el.r3.textContent=eq+" 回";    el.o3.textContent=f(cl(eq/20));
-    el.r4.textContent=sun+" h";    el.o4.textContent=f(cl(sun/12));
+  // 疑似ライブ表示
+  var clk = document.getElementById('clk');
+  var cd = document.getElementById('cd');
+  var base = 7 * 3600;
+  var n = 60;
+  setInterval(function(){
+    n--;
+    if(n < 0){ n = 60; }
+    cd.textContent = n;
+    if(n === 60){
+      base += 60;
+      var h = Math.floor(base/3600) % 24, m = Math.floor(base/60) % 60;
+      clk.textContent = ('0'+h).slice(-2) + ':' + ('0'+m).slice(-2) + ':00';
+    }
+  }, 1000);
 
-    var msg="当財団は、この変換に同意していない。<br>左列が観測値である。右列は観測値ではない。";
-    if(cl((hpa-980)/60)<0.25) msg="当財団は、この変換に同意していない。<br>左列が観測値である。右列は観測値ではない。<br>なお本条件下では、機構の公表値は「境界不安定」と表示される。観測値は低気圧を示しているにすぎない。";
-    if(kp>=7) msg="当財団は、この変換に同意していない。<br>左列が観測値である。右列は観測値ではない。<br>Kp 7 以上は、機構の公表値では「星喰 活性」と表示される。当財団はそのような現象を観測していない。";
-    if(eq>=10) msg="当財団は、この変換に同意していない。<br>左列が観測値である。右列は観測値ではない。<br>地震回数を演出に用いてはならない。被害の生じている事象を素材として扱うことは、当財団の綱領に反する。";
-    note.innerHTML=msg;
+  // 変換器
+  var hpa = document.getElementById('hpa');
+  var out = document.getElementById('conved');
+  function calc(){
+    var v = parseFloat(hpa.value);
+    if(isNaN(v)){ out.textContent = '——'; return; }
+    var r = (v - 980) / 60;
+    out.textContent = (r < 0 ? '' : '') + r.toFixed(2);
   }
-  ids.forEach(function(i){ el['i'+i].addEventListener('input',build); });
-  build();
+  hpa.addEventListener('input', calc);
+  calc();
+
+  // 監視盤テレメトリ
+  var az = document.getElementById('az');
+  var tlog = document.getElementById('tlog');
+  var svg = document.getElementById('scopesvg');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce && svg && svg.pauseAnimations){ svg.pauseAnimations(); }
+  var PTS = [[38,'B-17','固着値を受信 0.68','hit'],[112,'B-18','反射あり','hit'],
+             [205,'C-03','反射あり','hit'],[268,'C-09','反射なし','los'],[330,'D-01','反射あり','hit']];
+  var t0 = Date.now();
+  var lastIdx = -1;
+  var lines = 0;
+  function push(html, cls){
+    var d = document.createElement('div');
+    d.className = cls || '';
+    d.innerHTML = html;
+    tlog.appendChild(d);
+    lines++;
+    while(tlog.childNodes.length > 9){ tlog.removeChild(tlog.firstChild); }
+  }
+  function hhmmss(){
+    var t = 7*3600 + Math.floor((Date.now() - t0)/1000);
+    var h = Math.floor(t/3600) % 24, m = Math.floor(t/60) % 60, sc = t % 60;
+    return ('0'+h).slice(-2)+':'+('0'+m).slice(-2)+':'+('0'+sc).slice(-2);
+  }
+  push('走査を開始した。');
+  function tick(){
+    var el = ((Date.now() - t0) / 12000) % 1;
+    var deg = el * 360;
+    if(az) az.textContent = deg.toFixed(1).replace(/^(\d)(\.)/,'00$1$2').replace(/^(\d\d)(\.)/,'0$1$2') + '\u00B0';
+    if(!reduce){
+      for(var i=0;i<PTS.length;i++){
+        var a = PTS[i][0];
+        if(lastIdx !== i && deg >= a && deg < a + 12){
+          lastIdx = i;
+          push('<span>' + hhmmss() + '</span>　' + PTS[i][1] + '　' + PTS[i][2], PTS[i][3]);
+        }
+      }
+      if(deg < 6){ lastIdx = -1; }
+    }
+    requestAnimationFrame(tick);
+  }
+  if(az){ tick(); }
 })();
 </script>
 </body>

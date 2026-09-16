@@ -3,353 +3,607 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>S.H.R.O.S.｜実験計画申請書 第七版</title>
-<meta name="description" content="Speculative Hypothesis Research Organization, Strategic Lab／思弁仮説研究機構 戦略研究所。仮説構築・実証実験・解剖再現・作戦立案。" />
+<title>S.H.R.O.S. 思弁仮説研究機構 戦略研究所</title>
+<meta name="description" content="思弁仮説研究機構 戦略研究所。検証手段の有無を問わず仮説を立てる。仮説構築・実証実験・解剖再現・戦略立案・確率演算・記録発行。研究員を募集しています。" />
 <meta name="author" content="ArcaHortus Lab" />
-<meta name="theme-color" content="#0E2C47" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="S.H.R.O.S.｜実験計画申請書 第七版" />
+<meta name="theme-color" content="#00A48D" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="S.H.R.O.S." />
+<meta property="og:title" content="S.H.R.O.S. ／ 思弁仮説研究機構 戦略研究所" />
 <meta property="og:description" content="証明は仮説を殺す。世界は問われることで形を得る。" />
-<meta property="og:image" content="https://arcahortus.com/pact/icons/shr-512.png" />
-<link rel="canonical" href="https://arcahortus.com/pact/shr.html" />
-<meta property="og:url" content="https://arcahortus.com/pact/shr.html" />
+<meta property="og:image" content="https://www.arcahortus.com/pact/icons/shr-512.png" />
+<meta property="og:url" content="https://www.arcahortus.com/pact/shr.html" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="S.H.R.O.S.｜実験計画申請書 第七版" />
-<meta name="twitter:description" content="証明は仮説を殺す。世界は問われることで形を得る。" />
-<meta name="twitter:image" content="https://arcahortus.com/pact/icons/shr-512.png" />
+<meta name="twitter:title" content="S.H.R.O.S." />
+<meta name="twitter:description" content="証明は仮説を殺す。" />
+<meta name="twitter:image" content="https://www.arcahortus.com/pact/icons/shr-512.png" />
 <link rel="icon" type="image/png" sizes="32x32" href="icons/shr-32.png" />
 <link rel="icon" type="image/png" sizes="512x512" href="icons/shr-512.png" />
 <link rel="apple-touch-icon" href="icons/shr-180.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@400;500;700&family=Klee+One:wght@400;600&display=swap" rel="stylesheet" />
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MRDPGGL9');</script>
-<!-- End Google Tag Manager -->
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<!-- ============================================================
+     機構側の管理情報（当研究所は独立した協定機関のため本頁では非表示とする）
+     Document ID: AH-PCT-06-T / Version 1.0.0 / ITEM # AH-P06
+     OBJECT CLASS KETER / DISRUPTION EKHI / CLEARANCE LEVEL 2
+     ISSUED BY S.H.R.O.S. 倫理対応課 / SITE 第三実証場
+     ============================================================ -->
 <style>
 :root{
-  --bg:#0D2A44; --panel:#11334F;
-  --ink:#E9F2F9; --dim:#9CBAD1; --faint:#6E90A9;
-  --line:rgba(233,242,249,.26); --line2:rgba(233,242,249,.13);
-  --red:#FF6F5E; --amber:#FFCF5C;
-  --c:"M PLUS 1 Code","Noto Sans JP",monospace;
-  --h:"Klee One","Noto Serif JP",serif;
+  --tl:#00A48D; --tl2:#007A69; --tl3:#E4F3EF; --tl4:#F2F9F7;
+  --ink:#15211F; --ink2:#33413E; --sub:#5E6C69; --faint:#93A09C;
+  --bg:#F3F6F5; --pap:#FFFFFF; --sil:#C7D1CE; --line:#E0E6E4; --line2:#EDF1F0;
+  --wr:#C2542C;
+  --dsp:"Space Grotesk","Helvetica Neue",Arial,sans-serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans CJK JP",sans-serif;
 }
-*{box-sizing:border-box;}
-body{
-  margin:0;color:var(--ink);font-family:var(--c);font-size:13.5px;line-height:1.85;
-  background-color:var(--bg);
-  background-image:
-    linear-gradient(var(--line2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line2) 1px, transparent 1px);
-  background-size:26px 26px,26px 26px;
-  -webkit-font-smoothing:antialiased;
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:14px;line-height:1.95;letter-spacing:.02em}
+img{max-width:100%;display:block}
+a{color:var(--tl2);text-underline-offset:.2em}
+a:hover{color:var(--ink)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.skip{position:absolute;left:-9999px;background:var(--ink);color:#fff;padding:8px 14px;z-index:99}
+.skip:focus{left:0}
+.dsp{font-family:var(--dsp)}
+
+/* ---- top ---- */
+.top{background:var(--ink);color:#B6C2BF;font-size:11.5px;letter-spacing:.06em}
+.top .wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap;min-height:34px;padding-top:5px;padding-bottom:5px}
+.top .sp{flex:1}
+.top a{color:#B6C2BF;text-decoration:none}
+.top a:hover{color:#fff}
+.top .tag{font-family:var(--dsp);letter-spacing:.18em;color:var(--tl)}
+
+/* ---- header ---- */
+header.site{background:var(--pap);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.hd{display:flex;align-items:center;gap:16px;padding:14px 0;flex-wrap:wrap}
+.hd .mk{width:46px;height:46px;flex:none;border-radius:3px}
+.hd .nm{flex:1;min-width:200px}
+.hd .nm .ab{font-family:var(--dsp);font-size:21px;font-weight:700;letter-spacing:.14em;line-height:1.2;color:var(--ink)}
+.hd .nm .ja{font-size:11.5px;letter-spacing:.18em;color:var(--sub);margin-top:1px}
+.hd .cta{flex:none;display:flex;gap:9px;flex-wrap:wrap}
+.btn{display:inline-block;font-size:12.5px;letter-spacing:.1em;padding:9px 20px;
+  text-decoration:none;border:1px solid var(--tl);color:var(--tl2);border-radius:2px;background:#fff}
+.btn:hover{background:var(--tl3);color:var(--tl2)}
+.btn.fill{background:var(--tl);color:#fff;border-color:var(--tl)}
+.btn.fill:hover{background:var(--tl2);color:#fff}
+
+/* ---- nav ---- */
+nav.gn{background:var(--pap);border-bottom:1px solid var(--line)}
+nav.gn ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:2px}
+nav.gn a{display:block;color:var(--ink2);font-size:13px;letter-spacing:.09em;padding:11px 18px;
+  text-decoration:none;border-bottom:2px solid transparent}
+nav.gn a:hover,nav.gn a.cur{color:var(--tl2);border-bottom-color:var(--tl)}
+
+/* ---- hero ---- */
+.hero{background:
+   radial-gradient(1100px 420px at 78% -10%, rgba(0,164,141,.16), transparent 62%),
+   linear-gradient(180deg,#E9F4F1 0%, #FFFFFF 72%);
+  border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+   repeating-linear-gradient(0deg,rgba(0,164,141,.05) 0 1px,transparent 1px 46px),
+   repeating-linear-gradient(90deg,rgba(0,164,141,.05) 0 1px,transparent 1px 46px);
+  mask-image:radial-gradient(700px 340px at 70% 30%,#000,transparent 78%);
+  -webkit-mask-image:radial-gradient(700px 340px at 70% 30%,#000,transparent 78%)}
+.hero .wrap{position:relative;z-index:1;padding-top:66px;padding-bottom:62px}
+.hero .eye{font-family:var(--dsp);font-size:11px;letter-spacing:.34em;color:var(--tl2)}
+.hero h1{margin:16px 0 0;font-size:44px;line-height:1.5;letter-spacing:.05em;font-weight:700;color:var(--ink)}
+.hero h1 > span{display:block}
+.hero h1 .u{display:inline;font-style:normal}
+.hero h1 .u{background:linear-gradient(transparent 74%,rgba(0,164,141,.28) 74%)}
+.hero .lead{margin:22px 0 0;max-width:640px;font-size:15px;color:var(--ink2);line-height:2.1}
+.hero .lead b{color:var(--tl2);font-weight:500}
+.hero .acts{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.hero .sig{position:absolute;right:24px;bottom:20px;font-family:var(--dsp);font-size:10px;
+  letter-spacing:.24em;color:var(--faint);z-index:1;text-align:right;line-height:2}
+
+/* ---- section ---- */
+section.sec{padding:58px 0}
+section.sec.alt{background:var(--pap);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.shd{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+.shd h2{margin:0;font-size:25px;letter-spacing:.1em;font-weight:700}
+.shd .en{font-family:var(--dsp);font-size:10.5px;letter-spacing:.26em;color:var(--tl2)}
+.shd .more{margin-left:auto;font-size:12.5px}
+
+/* ---- stats ---- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.stats > div{background:var(--pap);padding:22px 20px}
+.stats .k{font-size:11.5px;letter-spacing:.12em;color:var(--sub)}
+.stats .v{font-family:var(--dsp);font-size:40px;line-height:1.15;color:var(--tl2);margin-top:2px;font-weight:500}
+.stats .v.zero{color:var(--wr)}
+.stats .n{font-size:11px;color:var(--faint);line-height:1.8;margin-top:4px}
+.stats .v small{font-size:14px;color:var(--faint);letter-spacing:.06em;margin-left:4px}
+
+/* ---- areas ---- */
+.areas{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.area{background:var(--pap);border:1px solid var(--line);padding:24px 22px;border-radius:2px;
+  transition:border-color .15s, transform .15s}
+.area:hover{border-color:var(--tl);transform:translateY(-2px)}
+.area .no{font-family:var(--dsp);font-size:10.5px;letter-spacing:.22em;color:var(--tl)}
+.area h3{margin:8px 0 10px;font-size:18px;letter-spacing:.08em;font-weight:700}
+.area p{margin:0;font-size:13px;color:var(--sub);line-height:1.95}
+.area .dept{margin-top:14px;padding-top:11px;border-top:1px solid var(--line2);
+  font-size:11.5px;color:var(--faint);letter-spacing:.06em}
+
+/* ---- news ---- */
+.newsgrid{display:grid;grid-template-columns:1fr 380px;gap:34px;align-items:start}
+ul.news{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+ul.news li{border-bottom:1px solid var(--line);padding:15px 2px;display:flex;gap:14px;flex-wrap:wrap;align-items:baseline}
+ul.news .dt{font-family:var(--dsp);font-size:12px;color:var(--faint);flex:none;letter-spacing:.04em}
+ul.news .cat{flex:none;font-size:10.5px;letter-spacing:.1em;padding:1px 10px;border-radius:20px;
+  background:var(--tl3);color:var(--tl2)}
+ul.news .cat.w{background:#FBEDE7;color:var(--wr)}
+ul.news .tx{flex:1 1 240px;min-width:0;font-size:13.5px}
+
+/* ---- papers ---- */
+.paper{background:var(--pap);border:1px solid var(--line);padding:16px 18px;margin-bottom:12px;border-radius:2px}
+.paper .id{font-family:var(--dsp);font-size:10.5px;letter-spacing:.14em;color:var(--tl2)}
+.paper .ti{font-size:13.5px;margin-top:3px;line-height:1.75}
+.paper .mt{font-size:11px;color:var(--faint);margin-top:6px;letter-spacing:.04em}
+
+/* ---- featured ---- */
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--pap);border:1px solid var(--line)}
+.feat .fl{padding:34px 32px;border-right:1px solid var(--line)}
+.feat .fr{padding:34px 32px;background:var(--tl4)}
+.feat .tag{display:inline-block;font-family:var(--dsp);font-size:10px;letter-spacing:.2em;
+  background:var(--wr);color:#fff;padding:2px 11px;border-radius:2px}
+.feat h3{margin:14px 0 4px;font-size:24px;letter-spacing:.07em;font-weight:700;line-height:1.55}
+.feat .sub{font-family:var(--dsp);font-size:11px;letter-spacing:.16em;color:var(--faint)}
+.feat p{font-size:13.5px;color:var(--ink2);line-height:2.05;margin:16px 0 0}
+.feat .q{margin:18px 0 0;padding:14px 18px;border-left:3px solid var(--tl);background:#fff;
+  font-size:14.5px;line-height:2;letter-spacing:.05em}
+.feat dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:0 18px;font-size:13px}
+.feat dt{color:var(--sub);padding:7px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.feat dd{margin:0;padding:7px 0;border-bottom:1px solid var(--line);text-align:right;font-family:var(--dsp);letter-spacing:.04em}
+.feat dd.w{color:var(--wr)}
+.feat dl > *:nth-last-child(-n+2){border-bottom:0}
+.feat .acts{margin-top:18px}
+
+/* ---- generator ---- */
+.gen{background:var(--ink);color:#DCE5E3;border-radius:2px;padding:32px;display:grid;
+  grid-template-columns:1fr 300px;gap:30px;align-items:center}
+.gen h3{margin:0 0 8px;font-size:19px;letter-spacing:.1em;color:#fff}
+.gen p{margin:0;font-size:12.5px;color:#93A09C;line-height:1.95}
+.gen .out{background:#0D1614;border:1px solid #2A3835;border-radius:2px;padding:20px 22px;min-height:126px}
+.gen .out .id{font-family:var(--dsp);font-size:11px;letter-spacing:.18em;color:var(--tl)}
+.gen .out .tx{font-size:15px;line-height:1.9;margin-top:8px;color:#EAF1EF;letter-spacing:.04em}
+.gen .ct{font-family:var(--dsp);font-size:11px;letter-spacing:.14em;color:#6E7C79;margin-top:14px}
+.gen button{width:100%;font-family:var(--sans);font-size:14px;letter-spacing:.2em;background:var(--tl);
+  color:#04120F;border:0;padding:14px;cursor:pointer;border-radius:2px;font-weight:700}
+.gen button:hover{background:#22C4AC}
+.gen .note{font-size:11px;color:#6E7C79;margin-top:10px;line-height:1.85}
+
+/* ---- careers ---- */
+.job{background:var(--pap);border:1px solid var(--line);border-top:3px solid var(--tl)}
+.job .jh{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:baseline;flex-wrap:wrap}
+.job .jh h3{margin:0;font-size:21px;letter-spacing:.08em;font-weight:700}
+.job .jh .st{font-size:11.5px;letter-spacing:.12em;background:var(--tl3);color:var(--tl2);padding:2px 12px;border-radius:20px}
+.job .jh .dl{margin-left:auto;font-size:12px;color:var(--sub)}
+table.job{width:100%;border-collapse:collapse;font-size:13px}
+table.job th,table.job td{border-bottom:1px solid var(--line2);padding:13px 26px;text-align:left;vertical-align:top}
+table.job th{width:180px;color:var(--sub);font-weight:400;letter-spacing:.08em;background:var(--tl4);white-space:nowrap}
+table.job tr:last-child th,table.job tr:last-child td{border-bottom:0}
+table.job ul{margin:0;padding-left:1.2em}
+table.job li{margin-bottom:4px}
+table.job li:last-child{margin-bottom:0}
+table.job b{color:var(--wr);font-weight:500}
+
+/* ---- facilities ---- */
+.facs{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.fac2{background:var(--pap);border:1px solid var(--line);padding:20px}
+.fac2 .en{font-family:var(--dsp);font-size:10px;letter-spacing:.2em;color:var(--tl)}
+.fac2 h3{margin:6px 0 8px;font-size:16px;letter-spacing:.08em}
+.fac2 p{margin:0;font-size:12.5px;color:var(--sub);line-height:1.9}
+.fac2 .st{margin-top:12px;padding-top:10px;border-top:1px solid var(--line2);font-family:var(--dsp);
+  font-size:11px;letter-spacing:.1em;color:var(--faint)}
+.fac2 .st.w{color:var(--wr)}
+
+/* ---- shu ---- */
+.shu{border:1px solid #C29A94;background:#FCF4F2;border-radius:2px}
+.shu h2{margin:0;background:#9E2B23;color:#fff;font-size:12.5px;font-weight:500;
+  letter-spacing:.16em;padding:9px 20px}
+.shu .in{padding:18px 20px}
+.shu p{margin:0 0 .7em;font-size:12.5px;color:#6E1F19;line-height:2}
+.shu p:last-child{margin-bottom:0}
+.shu .k{color:var(--sub);border-top:1px solid #E4C9C6;padding-top:11px;margin-top:12px;font-size:11.5px}
+
+/* ---- footer ---- */
+footer.site{background:var(--ink);color:#9FADAA;padding-top:44px}
+footer.site .fm{display:flex;gap:40px;flex-wrap:wrap;padding-bottom:32px;border-bottom:1px solid #2A3835}
+footer.site .fn{flex:1 1 330px}
+footer.site .fn .ab{font-family:var(--dsp);font-size:20px;letter-spacing:.14em;color:#fff;font-weight:700}
+footer.site .fn .ja{font-size:11.5px;letter-spacing:.16em;color:#7C8A87;margin-top:2px}
+footer.site .fn .cr2{font-size:15px;color:var(--tl);letter-spacing:.08em;margin-top:18px;line-height:1.9}
+footer.site .fn .dl{font-size:11.5px;line-height:2;margin-top:14px;color:#7C8A87}
+footer.site .fn .dl b{color:#B6C2BF;font-weight:400}
+footer.site .fl{flex:1 1 200px;font-size:12px}
+footer.site .fl h4{margin:0 0 10px;font-family:var(--dsp);font-size:10px;letter-spacing:.2em;color:var(--tl)}
+footer.site .fl ul{list-style:none;margin:0;padding:0}
+footer.site .fl li{padding:3px 0}
+footer.site .fl a{color:#9FADAA;text-decoration:none}
+footer.site .fl a:hover{color:#fff;text-decoration:underline}
+.fb{padding:16px 0 30px;font-size:11px;line-height:1.95;color:#6E7C79}
+.fb .cr{margin-top:10px;font-family:var(--dsp);letter-spacing:.1em;color:#4E5B58}
+.fb a{color:#9FADAA}
+
+/* ---- responsive ---- */
+@media (max-width:1040px){
+  .areas{grid-template-columns:1fr 1fr}
+  .facs{grid-template-columns:1fr 1fr}
+  .newsgrid{grid-template-columns:1fr;gap:34px}
+  .hero h1{font-size:36px}
 }
-a{color:var(--amber);}
-
-.tape{
-  display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 16px;
-  padding:9px 22px;border-bottom:1px solid var(--line);
-  font-size:11px;letter-spacing:.1em;color:var(--dim);background:rgba(0,0,0,.22);
+@media (max-width:860px){
+  .stats{grid-template-columns:1fr 1fr}
+  .feat{grid-template-columns:1fr}
+  .feat .fl{border-right:0;border-bottom:1px solid var(--line)}
+  .gen{grid-template-columns:1fr;gap:20px}
+  header.site{position:static}
 }
-.tape a{color:var(--dim);text-decoration:none;}
-.tape a:hover{color:var(--amber);}
-
-.plan{max-width:1120px;margin:26px auto 70px;padding:0 18px;}
-
-/* 図面枠 */
-.frame{border:2px solid var(--line);padding:10px;position:relative;}
-.frame-in{border:1px solid var(--line2);padding:26px 26px 0;}
-
-/* 表題 */
-.head{display:grid;grid-template-columns:1fr 300px;gap:28px;border-bottom:1px solid var(--line);padding-bottom:20px;}
-.head h1{font-family:var(--c);font-weight:700;font-size:clamp(21px,3.2vw,30px);letter-spacing:.04em;margin:0 0 6px;line-height:1.3;}
-.head .org{font-size:11px;letter-spacing:.18em;color:var(--dim);margin:0 0 14px;}
-.head .creed{font-family:var(--h);font-size:clamp(17px,2.6vw,22px);color:var(--amber);margin:12px 0 0;line-height:1.7;}
-.head .crest{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
-.head .crest img{width:44px;height:44px;object-fit:contain;filter:brightness(0) invert(1);opacity:.85;}
-.tb{border:1px solid var(--line);align-self:start;}
-.tb div{display:grid;grid-template-columns:88px 1fr;border-bottom:1px solid var(--line2);}
-.tb div:last-child{border-bottom:none;}
-.tb dt{padding:6px 9px;font-size:10px;letter-spacing:.1em;color:var(--faint);border-right:1px solid var(--line2);margin:0;}
-.tb dd{padding:6px 9px;margin:0;font-size:12px;}
-.tb dd.no{color:var(--red);}
-.tb dd.blank{color:var(--faint);}
-@media(max-width:860px){.head{grid-template-columns:1fr;gap:16px;}}
-
-section{padding:30px 0;border-bottom:1px solid var(--line2);}
-h2{font-size:13px;font-weight:700;letter-spacing:.22em;margin:0 0 3px;}
-h2 .n{color:var(--amber);margin-right:10px;}
-.sub{font-size:10.5px;letter-spacing:.18em;color:var(--faint);margin:0 0 18px;}
-p{margin:0 0 1em;max-width:74ch;}
-.dim{color:var(--dim);}
-
-/* 仮説本文 */
-.axiom{
-  font-family:var(--h);font-size:clamp(15px,2.2vw,19px);color:var(--amber);
-  letter-spacing:.16em;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);
-  padding:12px 0;margin:0 0 22px;max-width:none;
+@media (max-width:620px){
+  .wrap{padding:0 16px}
+  .areas{grid-template-columns:1fr}
+  .facs{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .hero h1{font-size:27px}
+  .hero .wrap{padding-top:44px;padding-bottom:44px}
+  .hero .sig{display:none}
+  section.sec{padding:40px 0}
+  .shd h2{font-size:21px}
+  .feat .fl,.feat .fr{padding:24px 20px}
+  table.job th,table.job td{display:block;width:100%;padding:11px 18px}
+  table.job th{border-bottom:0;padding-bottom:0;background:transparent}
+  .gen{padding:22px}
+  nav.gn a{padding:10px 12px;font-size:12px}
 }
-.hypo{border-left:3px solid var(--amber);padding:4px 0 4px 20px;margin-bottom:20px;}
-.hypo .q{font-family:var(--h);font-size:clamp(19px,3vw,25px);line-height:1.75;margin:0 0 10px;}
-.hypo .q em{font-style:normal;color:var(--amber);}
-.blk{display:inline-block;background:#04121e;color:transparent;user-select:none;height:1.05em;vertical-align:middle;border:1px solid rgba(255,255,255,.12);}
-
-/* 差戻履歴 */
-.rev{border-top:1px solid var(--line);}
-.rev .r{display:grid;grid-template-columns:74px 1fr 1fr;gap:0 20px;padding:12px 0;border-bottom:1px solid var(--line2);}
-.rev .v{font-size:12px;color:var(--amber);letter-spacing:.08em;}
-.rev .why{font-size:12.5px;color:var(--dim);}
-.rev .fix{font-family:var(--h);font-size:13px;color:var(--red);}
-.rev .fix::before{content:"→ ";opacity:.7;}
-@media(max-width:760px){.rev .r{grid-template-columns:1fr;gap:3px;}}
-
-/* 設計 */
-.two{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;}
-@media(max-width:860px){.two{grid-template-columns:1fr;gap:0;}}
-ol.steps{margin:0;padding-left:1.5em;font-size:13px;line-height:2;}
-ol.steps li{margin-bottom:4px;}
-ol.steps li::marker{color:var(--amber);}
-table.mat{width:100%;border-collapse:collapse;font-size:12.5px;}
-table.mat th{text-align:left;font-size:10px;letter-spacing:.12em;color:var(--faint);font-weight:400;padding:0 8px 7px 0;border-bottom:1px solid var(--line);}
-table.mat td{padding:8px 8px 8px 0;border-bottom:1px solid var(--line2);}
-table.mat td.n{text-align:right;white-space:nowrap;}
-.hand{
-  font-family:var(--h);color:var(--red);font-size:13.5px;line-height:1.8;
-  transform:rotate(-.6deg);display:inline-block;margin-top:10px;
-}
-.hand.amber{color:var(--amber);transform:rotate(.5deg);}
-.strike{text-decoration:line-through;opacity:.55;}
-
-/* 生成器 */
-.gen{border:1px solid var(--line);}
-.gen-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.16);}
-.gen-bar button{
-  font-family:var(--c);font-weight:700;font-size:12.5px;letter-spacing:.14em;
-  background:var(--amber);color:#0D2A44;border:none;padding:10px 22px;cursor:pointer;
-}
-.gen-bar button:hover{background:#fff;}
-.gen-bar button:focus-visible{outline:2px solid #fff;outline-offset:2px;}
-.gen-bar .cnt{font-size:11px;color:var(--faint);letter-spacing:.1em;}
-.gen-out{padding:20px 22px;min-height:190px;}
-.gen-out .no{font-size:10.5px;letter-spacing:.18em;color:var(--faint);margin-bottom:10px;}
-.gen-out .t{font-family:var(--h);font-size:clamp(16px,2.4vw,20px);line-height:1.8;margin:0 0 14px;}
-.gen-out ul{margin:0;padding-left:1.3em;font-size:12.5px;color:var(--dim);line-height:2;}
-.gen-out .end{font-family:var(--h);color:var(--amber);font-size:16px;margin-top:14px;}
-
-/* 受信 */
-.msgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;}
-.msg{border-top:2px solid var(--mc,var(--line));padding-top:12px;}
-.msg .from{font-size:10.5px;letter-spacing:.12em;color:var(--mc,var(--dim));margin-bottom:7px;}
-.msg p{margin:0 0 6px;font-size:12.5px;}
-.msg .re{font-family:var(--h);color:var(--red);font-size:13px;}
-
-.redpen{border-left:2px solid var(--red);padding:9px 0 9px 16px;color:var(--red);font-size:12px;max-width:64ch;}
-.redpen b{display:block;font-size:9.5px;letter-spacing:.16em;margin-bottom:4px;opacity:.9;}
-
-footer.f{padding:24px 0 6px;font-size:10.5px;color:var(--faint);letter-spacing:.05em;line-height:2.1;}
-footer.f a{color:var(--dim);text-decoration:none;}
-::selection{background:var(--amber);color:#0D2A44;}
 </style>
 </head>
-
 <body>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRDPGGL9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<a class="skip" href="#main">本文へ</a>
 
-<!-- ============================================================
-     機構側の管理情報（当研究所は独立機関のため本頁では非表示とする）
-     Document ID: AH-PCT-05 / Version 1.0.0 / ITEM # AH-P05
-     OBJECT CLASS EUCLID / DISRUPTION KENEQ / CLEARANCE LEVEL 1
-     ISSUED BY S.H.R.O.S. / SITE 実証場（第三次）
-     ============================================================ -->
-
-<div class="tape">
-  <span><a href="../about.html">◂ 箱庭機構ポータルへ戻る</a></span>
-  <span>SHR-EXP-0417 ／ 第七版 ／ 審査 未了</span>
+<div class="top">
+  <div class="wrap">
+    <span class="tag">S.H.R.O.S.</span>
+    <span>思弁仮説研究機構 戦略研究所</span>
+    <span class="sp"></span>
+    <a href="#papers">刊行物</a>
+    <a href="#careers">研究員募集</a>
+    <a href="#footer">お問い合わせ</a>
+  </div>
 </div>
 
-<div class="plan">
-<div class="frame"><div class="frame-in">
+<header class="site">
+  <div class="wrap hd">
+    <img class="mk" src="icons/shr-512.png" width="46" height="46" alt="S.H.R.O.S. 章" />
+    <div class="nm">
+      <div class="ab">S.H.R.O.S.</div>
+      <div class="ja">思弁仮説研究機構　戦略研究所</div>
+    </div>
+    <div class="cta">
+      <a class="btn" href="#areas">研究領域</a>
+      <a class="btn fill" href="#careers">研究員募集</a>
+    </div>
+  </div>
+  <nav class="gn" aria-label="グローバルナビゲーション">
+    <div class="wrap" style="padding-left:24px;padding-right:24px">
+      <ul>
+        <li><a href="#main" class="cur">ホーム</a></li>
+        <li><a href="#areas">研究領域</a></li>
+        <li><a href="#news">お知らせ</a></li>
+        <li><a href="#papers">刊行物</a></li>
+        <li><a href="#featured">注目の研究</a></li>
+        <li><a href="#gen">仮説生成装置</a></li>
+        <li><a href="#careers">採用</a></li>
+        <li><a href="#facilities">施設</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
-  <div class="head">
-    <div>
-      <div class="crest">
-        <img src="../images/logo-shro.png" alt="S.H.R.O.S. 標章" />
-        <div>
-          <h1>実験計画申請書　第七版</h1>
-          <p class="org">S.H.R.O.S. ／ SPECULATIVE HYPOTHESIS RESEARCH ORGANIZATION, STRATEGIC LAB ／ 思弁仮説研究機構 戦略研究所</p>
+<div class="hero" id="main">
+  <div class="wrap">
+    <div class="eye">SPECULATIVE HYPOTHESIS RESEARCH ORGANIZATION, STRATEGIC LAB</div>
+    <h1><span><em class="u">証明は仮説を殺す。</em></span><span>世界は問われることで形を得る。</span></h1>
+    <p class="lead">
+      Speculative ── <b>検証手段の有無を問わずに仮説を立てる</b>という意味である。この一語が当研究所のすべてを説明している。
+      証明できるかどうかは、<b>仮説を検証しない理由にはならない。</b><br />
+      当研究所は、次元と境界に関する仮説を構築し、設計し、実施する。<b>問いは観測に等しい。</b>
+    </p>
+    <div class="acts">
+      <a class="btn fill" href="#featured">注目の研究を見る</a>
+      <a class="btn" href="#gen">仮説を立てる</a>
+    </div>
+  </div>
+  <div class="sig">PACT-05<br />EST. 機構暦 ██</div>
+</div>
+
+<!-- 数字 -->
+<section class="sec alt" id="figures">
+  <div class="wrap">
+    <div class="shd"><h2>数字で見る当研究所</h2><span class="en">FACTS &amp; FIGURES</span><span class="more">機構暦 二二〇年 第三十六観測週 現在</span></div>
+    <div class="stats">
+      <div><div class="k">本日の実験計画 立案数</div><div class="v">17</div><div class="n">仮説部。前日 17 件、前々日 17 件</div></div>
+      <div><div class="k">中止された実験</div><div class="v zero">0</div><div class="n">開所以来。差し戻しは中止ではない</div></div>
+      <div><div class="k">発行した実験記録</div><div class="v">4,417</div><div class="n">結果に関わらず発行する</div></div>
+      <div><div class="k">実証場の移転回数</div><div class="v">3<small>回</small></div><div class="n">いずれも事故による。実験の継続は妨げられていない</div></div>
+      <div><div class="k">演算場 稼働率</div><div class="v">100<small>%</small></div><div class="n">常時稼働・常時発熱。停止の手順は定めていない</div></div>
+      <div><div class="k">審査 差戻 累計</div><div class="v"><span style="background:#15211F;color:#15211F;border-radius:2px;letter-spacing:.02em">██</span></div><div class="n">倫理対応課が全件を書き直して再提出する</div></div>
+      <div><div class="k">実験に起因する区画の消滅</div><div class="v zero">2<small>区画</small></div><div class="n">いずれも仮説の裏付けとなった</div></div>
+      <div><div class="k">所在を確認できない職員</div><div class="v zero"><span style="background:#15211F;color:#15211F;border-radius:2px;letter-spacing:.02em">██</span><small>名</small></div><div class="n">捜索は行わない。捜索には観測を要するため</div></div>
+      <div><div class="k">発行前に回収された記録</div><div class="v">1<small>件</small></div><div class="n">第 4,416 号。発行はまだである</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 研究領域 -->
+<section class="sec" id="areas">
+  <div class="wrap">
+    <div class="shd"><h2>研究領域</h2><span class="en">RESEARCH AREAS</span></div>
+    <div class="areas">
+      <div class="area"><div class="no">AREA 01</div><h3>仮説の構築</h3>
+        <p>次元および境界に関する仮説を立案する。検証手段の有無は立案の要件としない。採否も問わない。<b>検証することが目的である。</b></p>
+        <div class="dept">仮説部</div></div>
+      <div class="area"><div class="no">AREA 02</div><h3>実証実験の設計と実施</h3>
+        <p>立案された仮説のうち、実施可能なものを設計し、実施する。危険であることは実施を妨げる理由に当たらない。</p>
+        <div class="dept">実証場（第三実証場）</div></div>
+      <div class="area"><div class="no">AREA 03</div><h3>解剖と再現</h3>
+        <p>異常個体および回収物を解剖し、その構造を再現する。回収個体は A.C.A.S. より引き取る。引き取りの記録は残す。</p>
+        <div class="dept">解剖研究室</div></div>
+      <div class="area"><div class="no">AREA 04</div><h3>戦略立案と作戦設計</h3>
+        <p>A.C.A.S. の作戦は原則として当研究所が引く。報告書には推奨されない選択肢も同じ熱量で記載する。</p>
+        <div class="dept">仮説部・演算場</div></div>
+      <div class="area"><div class="no">AREA 05</div><h3>確率事象の解析と装置設計</h3>
+        <p>確率演算装置 SECTOR-03 は当研究所の設計である。製造は VOID Tech Industries が請けた。設計に関する責任は当研究所が負う。</p>
+        <div class="dept">演算場</div></div>
+      <div class="area"><div class="no">AREA 06</div><h3>論文および実験記録の発行</h3>
+        <p>結果に関わらず記録を発行する。査読は行わない。査読は仮説を殺しうるためである。</p>
+        <div class="dept">倫理対応課</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- お知らせ・刊行物 -->
+<section class="sec alt" id="news">
+  <div class="wrap">
+    <div class="newsgrid">
+      <div>
+        <div class="shd"><h2>お知らせ</h2><span class="en">NEWS</span></div>
+        <ul class="news">
+          <li><span class="dt">220.36w</span><span class="cat">申請</span><span class="tx"><a href="../archive/shr-doc-01.html">実験計画 SHR-EXP-0417 第七版を提出しました</a>（審査 未了）</span></li>
+          <li><span class="dt">220.36w</span><span class="cat w">実施</span><span class="tx">実験 SHR-EXP-0402 の実施中、第二実証場の一区画が消滅しました。区画の消滅は仮説の裏付けとなります。実験は継続します</span></li>
+          <li><span class="dt">220.35w</span><span class="cat w">施設</span><span class="tx">第三実証場への移転が完了しました。第二実証場は現在、地図上に存在しません</span></li>
+          <li><span class="dt">220.35w</span><span class="cat w">演算</span><span class="tx">演算場において、入力より先に出力が得られる事象を確認しました。原因は調査していません。調査は演算を止めるためです</span></li>
+          <li><span class="dt">220.34w</span><span class="cat">刊行</span><span class="tx">実験記録 第 4,417 号を発行しました</span></li>
+          <li><span class="dt">220.34w</span><span class="cat w">回収</span><span class="tx">実験記録 第 4,416 号を回収しました。本記録は未発行です</span></li>
+          <li><span class="dt">220.33w</span><span class="cat">採用</span><span class="tx">研究員（仮説部・倫理対応課）を募集しています</span></li>
+          <li><span class="dt">220.32w</span><span class="cat w">人事</span><span class="tx">職員 <span style="background:#15211F;color:#15211F;border-radius:1px">██</span> 名の所在が確認できなくなりました。捜索は行いません。捜索には観測を要するためです</span></li>
+          <li><span class="dt">220.31w</span><span class="cat">設備</span><span class="tx">演算場の冷却設備を増強しました。稼働は停止していません</span></li>
+          <li><span class="dt">220.28w</span><span class="cat w">受領</span><span class="tx">箱庭世界倫理委員会 通牒 第百九号を受領しました。回答を送付済みです</span></li>
+        </ul>
+      </div>
+      <div id="papers">
+        <div class="shd"><h2>刊行物</h2><span class="en">PUBLICATIONS</span></div>
+        <div class="paper"><div class="id">SHR-PAP-0919</div>
+          <div class="ti">入力に先行して出力された演算結果について ── 速報</div>
+          <div class="mt">演算場 ／ 査読 なし ／ 発行日は演算日より前である</div></div>
+        <div class="paper"><div class="id">SHR-PAP-0912</div>
+          <div class="ti">観測されていない命題の、規則における地位について</div>
+          <div class="mt">仮説部 ／ 査読 なし ／ 掲載 自誌</div></div>
+        <div class="paper"><div class="id">SHR-PAP-0908</div>
+          <div class="ti">境界安定剤 STB-12 の過剰投与における再現性 ── 第三報</div>
+          <div class="mt">実証場 ／ 査読 なし ／ 掲載 自誌</div></div>
+        <div class="paper"><div class="id">SHR-PAP-0903</div>
+          <div class="ti">回収個体 <span style="background:#15211F;color:#15211F;border-radius:1px">██████</span> の解剖所見</div>
+          <div class="mt">解剖研究室 ／ 査読 なし ／ 図版の一部を伏せる</div></div>
+        <div class="paper"><div class="id">SHR-PAP-0891</div>
+          <div class="ti">成功確率 0.34 の作戦を、実行に値するとみなす根拠</div>
+          <div class="mt">演算場 ／ 査読 なし ／ 掲載 自誌</div></div>
+        <div class="paper"><div class="id">SHR-PAP-0877</div>
+          <div class="ti">差し戻しは中止ではない ── 手続に関する考察</div>
+          <div class="mt">倫理対応課 ／ 査読 なし ／ 掲載 自誌</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 注目の研究 -->
+<section class="sec" id="featured">
+  <div class="wrap">
+    <div class="shd"><h2>注目の研究</h2><span class="en">FEATURED RESEARCH</span></div>
+    <div class="feat">
+      <div class="fl">
+        <span class="tag">審査 未了</span>
+        <h3>観測を停止した世界は、<br />本当に消滅しているのか。</h3>
+        <div class="sub">SHR-EXP-0417 ／ 第七版 ／ 起案 仮説部</div>
+        <div class="q">消滅を観測した者は、ひとりもいない。</div>
+        <p>観測を停止すれば世界は自然に消滅する、というのが現行の理解である。当研究所はこれを否定しない。ただし、この理解は<b>観測されていない</b>。</p>
+        <p>消滅を確かめるには観測を要する。観測すれば消滅しない。したがって現行の理解は原理的に検証されえない。検証されえない命題が、規則の根拠として用いられている。</p>
+        <div class="acts"><a class="btn fill" href="../archive/shr-doc-01.html">実験計画申請書 第七版を読む</a></div>
+      </div>
+      <div class="fr">
+        <dl>
+          <dt>図面番号</dt><dd>SHR-EXP-0417</dd>
+          <dt>版</dt><dd>第七版</dd>
+          <dt>危険等級</dt><dd class="w">未評価</dd>
+          <dt>審査</dt><dd class="w">差戻 ×6</dd>
+          <dt>承認</dt><dd>（空欄）</dd>
+          <dt>対象世界の住人</dt><dd class="w">未確認</dd>
+          <dt>待機時間</dt><dd>30 h</dd>
+          <dt>記録の納本</dt><dd>しない</dd>
+        </dl>
+        <p style="font-size:12.5px;color:var(--sub);margin:16px 0 0;line-height:1.95">
+          本申請は六度差し戻されている。本版は七度目の提出である。内容の本質は第一版から変更していない。変更したのは、数値と語順である。</p>
+        <p style="font-size:12.5px;color:var(--wr);margin:10px 0 0;line-height:1.95">
+          差し戻しは中止ではない。中止された実験は、これまでに一件もない。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 仮説生成装置 -->
+<section class="sec alt" id="gen">
+  <div class="wrap">
+    <div class="shd"><h2>仮説生成装置</h2><span class="en">HYPOTHESIS GENERATOR ／ 試作</span></div>
+    <div class="gen">
+      <div>
+        <h3>押すたびに一件、立案されます。</h3>
+        <p>仮説部が用いている立案補助装置の公開版です。採否は問いません。検証することが目的です。生成された仮説は当研究所に送信され、その日の立案件数に加算されます。</p>
+        <div class="out">
+          <div class="id" id="gid">SHR-EXP-____</div>
+          <div class="tx" id="gtx">押してください。</div>
+        </div>
+        <div class="ct">本日 立案 <span id="gc">17</span> 件 ／ 中止 0 件</div>
+      </div>
+      <div>
+        <button type="button" id="gbtn">仮 説 を 立 て る</button>
+        <div class="note">生成された仮説の実施可能性については判定を行いません。判定は仮説を殺しうるためです。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 採用 -->
+<section class="sec" id="careers">
+  <div class="wrap">
+    <div class="shd"><h2>研究員募集</h2><span class="en">CAREERS</span><span class="more">公募 第 ██ 号</span></div>
+    <div class="job">
+      <div class="jh">
+        <h3>研究員（仮説部 ／ 倫理対応課）</h3>
+        <span class="st">募集中</span>
+        <span class="dl">応募期限：定めない</span>
+      </div>
+      <table class="job">
+        <tbody>
+          <tr><th>職種</th><td>研究員。配属は仮説部または倫理対応課。適性により実証場・解剖研究室・演算場へ異動する場合があります。</td></tr>
+          <tr><th>人員</th><td>若干名。上限は定めていません。</td></tr>
+          <tr><th>応募資格</th><td>
+            <ul>
+              <li>検証手段の有無にかかわらず、仮説を立てられること。</li>
+              <li><b>「危険であるため実施しない」という判断を行わないこと。</b>危険であることは、当研究所において実験の価値を上げる要素として扱われます。</li>
+              <li>差し戻された申請書を、内容の本質を変えずに書き直せること（倫理対応課）。</li>
+              <li>報告書に、推奨されない選択肢を同じ熱量で記載できること。</li>
+            </ul></td></tr>
+          <tr><th>提出書類</th><td>研究計画書 一通。<b>実施可能性の記載は不要です。</b>実施可能な計画のみを提出された場合、選考の対象外となることがあります。</td></tr>
+          <tr><th>選考</th><td>面接 一回。その場で仮説をひとつ立てていただきます。内容は問いません。</td></tr>
+          <tr><th>任期</th><td>定めていません。実証場の移転に伴う異動があります（過去三回、いずれも事故による）。</td></tr>
+          <tr><th>待遇</th><td>規定によります。危険等級に応じた加算があります。危険等級が未評価の案件については、評価後に遡って支給します。</td></tr>
+          <tr><th>安全</th><td>実証場における事故は、過去三回いずれも実験の継続を妨げていません。<b>所在が確認できなくなった職員については、捜索を行いません。</b>捜索には観測を要し、観測は結果に影響するためです。この方針は応募前に必ずご確認ください。</td></tr>
+          <tr><th>備考</th><td>過去三年の離職理由は記録していません。記録する手続を定めていないためです。<b>当研究所において、倫理を欠くのは計算の結果ではなく、性向によります。</b>この点に同意できる方の応募をお待ちしています。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 施設 -->
+<section class="sec alt" id="facilities">
+  <div class="wrap">
+    <div class="shd"><h2>施設</h2><span class="en">FACILITIES</span></div>
+    <div class="facs">
+      <div class="fac2"><div class="en">FAC 01</div><h3>仮説部</h3>
+        <p>立案を行う。一日に十七件の実験計画を出す。件数は三年間変動していない。</p>
+        <div class="st">稼働中</div></div>
+      <div class="fac2"><div class="en">FAC 02</div><h3>第三実証場</h3>
+        <p>実施を行う。三度移転している。移転の理由はいずれも事故による。第一実証場は立入を禁止する。第二実証場は、現在、地図上に存在しない。</p>
+        <div class="st w">立入制限あり ／ 所在 未確定</div></div>
+      <div class="fac2"><div class="en">FAC 03</div><h3>解剖研究室</h3>
+        <p>A.C.A.S. の回収個体を引き取り、解剖し、再現する。再現に成功した事例の一覧は公開しない。再現体の所在は個別に管理している。</p>
+        <div class="st">稼働中</div></div>
+      <div class="fac2"><div class="en">FAC 04</div><h3>演算場</h3>
+        <p>確率事象を解析する。常時稼働し、常時発熱している。冷却設備は増強済み。停止したことはない。停止の手順は定めていない。</p>
+        <div class="st">稼働率 100%</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 朱注 -->
+<section class="sec">
+  <div class="wrap">
+    <div class="shu">
+      <h2>箱庭世界倫理委員会　朱注 第 233 号</h2>
+      <div class="in">
+        <p>未承認の実験計画が公開されている点が指摘される。公開は実施ではないと理解されるが、公開により第三者が同種の実験を実施する恐れは払拭されていない。掲載の取り下げが勧告される。</p>
+        <p>──なお本勧告に対し、貴研究所より「取り下げは第八版として提出する」との回答を受領している。</p>
+        <p class="k">※ 本頁の掲載にあたり、上記注記の併載を求められた。当研究所の見解ではない。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site" id="footer">
+  <div class="wrap">
+    <div class="fm">
+      <div class="fn">
+        <div class="ab">S.H.R.O.S.</div>
+        <div class="ja">SPECULATIVE HYPOTHESIS RESEARCH ORGANIZATION, STRATEGIC LAB</div>
+        <div class="cr2">証明は仮説を殺す。<br />世界は問われることで形を得る。</div>
+        <div class="dl">
+          <b>組織</b>　仮説部・実証場・解剖研究室・演算場・倫理対応課<br />
+          <b>協定</b>　箱庭次元研究機構 第 PACT-05 号<br />
+          <b>所在</b>　第三実証場に併設（旧所在は立入を禁止する）<br />
+          <b>末尾の S</b>　Strategic Lab を指す。本体は S.H.R.O. の四文字である
         </div>
       </div>
-      <p class="dim">本申請は六度差し戻されている。本版は七度目の提出である。内容の本質は第一版から変更していない。変更したのは、数値と語順である。</p>
-      <p class="creed">証明は仮説を殺す。<br>世界は問われることで形を得る。</p>
+      <div class="fl">
+        <h4>RESEARCH</h4>
+        <ul>
+          <li><a href="#areas">研究領域</a></li>
+          <li><a href="#featured">注目の研究</a></li>
+          <li><a href="#papers">刊行物</a></li>
+          <li><a href="#gen">仮説生成装置</a></li>
+          <li><a href="#facilities">施設</a></li>
+        </ul>
+      </div>
+      <div class="fl">
+        <h4>RELATED</h4>
+        <ul>
+          <li><a href="../index.html">箱庭次元研究機構</a></li>
+          <li><a href="eth.html">箱庭世界倫理委員会</a></li>
+          <li><a href="gna.html">Global Narrative Archive</a></li>
+          <li><a href="aca.html">A.C.A.S.</a></li>
+          <li><a href="vti.html">VOID Tech Industries</a></li>
+          <li><a href="bof.html">境界線観測財団</a></li>
+        </ul>
+      </div>
     </div>
-
-    <dl class="tb">
-      <div><dt>図面番号</dt><dd>SHR-EXP-0417</dd></div>
-      <div><dt>版</dt><dd class="no">第七版</dd></div>
-      <div><dt>起案</dt><dd>仮説部</dd></div>
-      <div><dt>危険等級</dt><dd class="no">未評価</dd></div>
-      <div><dt>審査</dt><dd class="no">差戻 ×6</dd></div>
-      <div><dt>承認</dt><dd class="blank">（空欄）</dd></div>
-    </dl>
+    <div class="fb">
+      実験計画・資材・審査記録・刊行物はすべて創作上の設定であり、実在の研究機関・制度とは関係がありません。<br />
+      本頁に掲載する実験計画は未承認です。実施を推奨するものではありません。
+      <div class="cr">© S.H.R.O.S. ／ SPECULATIVE HYPOTHESIS RESEARCH ORGANIZATION, STRATEGIC LAB　　<a href="../about.html">協定機関一覧</a></div>
+    </div>
   </div>
-
-  <section>
-    <h2><span class="n">01</span>仮説</h2>
-    <p class="sub">HYPOTHESIS</p>
-    <p class="axiom">問いは観測に等しい。</p>
-    <div class="hypo">
-      <p class="q">観測を停止した世界は、<em>本当に消滅しているのか。</em></p>
-      <p class="q" style="font-size:16px;">消滅を観測した者は、<em>ひとりもいない。</em></p>
-    </div>
-    <div class="two">
-      <div>
-        <p>観測を停止すれば世界は自然に消滅する、というのが現行の理解である。当研究所はこれを否定しない。ただし、この理解は<strong>観測されていない</strong>。</p>
-        <p class="dim">消滅を確かめるには観測を要する。観測すれば消滅しない。したがって、現行の理解は原理的に検証されえない。検証されえない命題が、規則の根拠として用いられている。</p>
-      </div>
-      <div>
-        <p>本実験は、観測を停止した世界に対し、<b>停止後に一度だけ観測を再開する</b>ことによって、当該命題を検証するものである。</p>
-        <p class="dim">対象は <span class="blk" style="width:8.5em"></span>。住人の有無は確認されていない。確認には観測を要するため、確認しないまま停止する。</p>
-        <span class="hand">住人がいた場合どうなるかは、実験の結果として得られる。</span>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2><span class="n">02</span>差戻の履歴</h2>
-    <p class="sub">REVISION HISTORY ／ 倫理委員会</p>
-    <div class="rev">
-      <div class="r"><span class="v">第一版</span><span class="why">申請の趣旨が明確でない。明確にされたい。</span><span class="fix">明確にした。</span></div>
-      <div class="r"><span class="v">第二版</span><span class="why">趣旨は明確である。しかしその明確さが、解釈の幅を狭めている。再考されたい。</span><span class="fix">語順を変えた。</span></div>
-      <div class="r"><span class="v">第三版</span><span class="why">本件は前例がない。前例が形成されるまで判断を保留する。</span><span class="fix">前例を作るための実験である旨を追記した。</span></div>
-      <div class="r"><span class="v">第四版</span><span class="why">住人の有無が確認されていない。確認されたい。</span><span class="fix">確認には観測を要する旨を追記した。</span></div>
-      <div class="r"><span class="v">第五版</span><span class="why">第二原則に抵触する恐れがある。</span><span class="fix">抵触の有無もまた、実験の結果として得られる旨を追記した。</span></div>
-      <div class="r"><span class="v">第六版</span><span class="why">危険等級が未評価である。評価されたい。</span><span class="fix">評価には実施を要する旨を追記した。</span></div>
-      <div class="r"><span class="v">第七版</span><span class="why">審査中。</span><span class="fix">提出済。</span></div>
-    </div>
-    <span class="hand amber">差し戻しは中止ではない。中止された実験は、これまでに一件もない。</span>
-  </section>
-
-  <section>
-    <h2><span class="n">03</span>実験設計</h2>
-    <p class="sub">PROCEDURE &amp; MATERIALS</p>
-    <div class="two">
-      <div>
-        <ol class="steps">
-          <li>対象世界の観測点を特定する。</li>
-          <li>観測機材を全数撤去する。撤去は A.C.A.S. へ委託する。</li>
-          <li><span class="strike">七十二時間</span> <span class="hand">→ 三十時間</span> 待機する。</li>
-          <li>観測を再開する。再開は一度限りとする。</li>
-          <li>観測されたものを記録する。記録は G.N.A. へ納本しない。</li>
-          <li>結果に関わらず、実験記録を発行する。</li>
-        </ol>
-        <span class="hand">五を書き換えたのは第四版のとき。理由は記載していない。</span>
-      </div>
-      <div>
-        <table class="mat">
-          <tr><th>資材</th><th>調達先</th><th class="n">数量</th></tr>
-          <tr><td>境界安定剤 STB-12</td><td>VOID Tech</td><td class="n">24 缶</td></tr>
-          <tr><td>観測機材 一式</td><td>境界線観測財団（貸与）</td><td class="n">1 式</td></tr>
-          <tr><td>撤去・警備</td><td>A.C.A.S.</td><td class="n">1 個 小隊</td></tr>
-          <tr><td>記録媒体</td><td>自製</td><td class="n">──</td></tr>
-        </table>
-        <p class="dim" style="margin-top:14px;font-size:12px;">
-          財団への貸与依頼は、用途を「常時観測」と記載して提出した。実際の用途は撤去である。
-        </p>
-        <span class="hand">用途は虚偽ではない。撤去するまでは常時観測している。</span>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2><span class="n">04</span>仮説生成装置</h2>
-    <p class="sub">HYPOTHESIS GENERATOR ／ 試作</p>
-    <p class="dim">仮説部が用いている立案補助装置である。押すたびに一件立案される。採否は問わない。立てることが目的である。</p>
-    <div class="gen">
-      <div class="gen-bar">
-        <button type="button" id="gen">仮 説 を 立 て る</button>
-        <span class="cnt" id="cnt">本日 立案 0 件 ／ 中止 0 件</span>
-      </div>
-      <div class="gen-out" id="out" aria-live="polite">
-        <p class="no">SHR-EXP-____</p>
-        <p class="t">押してください。</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2><span class="n">05</span>受信</h2>
-    <p class="sub">CORRESPONDENCE</p>
-    <div class="msgs">
-      <div class="msg" style="--mc:#C4776F;">
-        <div class="from">箱庭世界倫理委員会 ／ 第一審査部</div>
-        <p>本件について、当委員会は六度にわたり差し戻している。差し戻しの意義について、貴研究所の見解を求める。</p>
-        <p class="re">回答: 数値を改めて再提出する。</p>
-      </div>
-      <div class="msg" style="--mc:#C9743C;">
-        <div class="from">A.C.A.S. ／ 第1即応大隊</div>
-        <p>撤去の委託は受ける。ただし、手順書に「待機」とのみ書かれている時間帯に、現場が何をすればよいのか記載されたい。</p>
-        <p class="re">回答: 待機である。</p>
-      </div>
-      <div class="msg" style="--mc:#8E97A4;">
-        <div class="from">Global Narrative Archive ／ 索引部</div>
-        <p>本実験の記録は納本されるか。受理 ／ 不受理 ／ 保留 の判定に要する。</p>
-        <p class="re">回答: 未定。</p>
-      </div>
-    </div>
-  </section>
-
-  <section style="border-bottom:none;">
-    <p class="sub" style="margin-bottom:10px;">※ 本頁を箱庭次元研究機構ポータル内に掲載するにあたり、同機構の監督機関より下記注記の併載を求められた。当研究所の見解ではない。</p>
-    <div class="redpen">
-      <b>箱庭世界倫理委員会 朱注 第 233 号</b>
-      未承認の実験計画が公開されている点が指摘される。公開は実施ではないと理解されるが、
-      公開により第三者が同種の実験を実施する恐れは払拭されていない。掲載の取り下げが勧告される。
-      ──なお本勧告に対し、貴研究所より「取り下げは第八版として提出する」との回答を受領している。
-    </div>
-  </section>
-
-  <footer class="f">
-    S.H.R.O.S. ／ SPECULATIVE HYPOTHESIS RESEARCH ORGANIZATION, STRATEGIC LAB<br>
-    SHR-EXP-0417 第七版 ／ 仮説部・実証場・解剖研究室・演算場・倫理対応課<br>
-    取引協定 箱庭次元研究機構 第 PACT-05 号<br><br>
-    本頁は当研究所が作成し、<a href="../index.html">箱庭次元研究機構</a>ポータル内に掲載しているものである。同機構の見解を示すものではない。<br>
-    実験計画・資材・審査記録はすべて創作上の設定である。<br>
-    <a href="../about.html">提携・協力機関一覧へ戻る</a>
-  </footer>
-
-</div></div>
-</div>
+</footer>
 
 <script>
 (function(){
-  var A=["観測を停止した世界","閉じたはずの書架","記録されなかった住人","星喰の通過した跡地",
-         "同一人物が二体観測された区画","誰も申請していない次元","返却されなかった写本","停止しない確率演算装置"];
-  var B=["観測を再開する","観測者を二名に増やす","記録を一度だけ削除する","時刻を逆順に記録する",
-         "境界安定剤を規定量の三倍投入する","観測機材を全数撤去したまま放置する","別の世界の記録を上書きする"];
-  var C=["何が観測されるかを記録する","観測者の証言の一致率を測る","記録の重複数を数える",
-         "消滅の有無を判定する","住人の反応を待つ","三十時間後に再確認する"];
-  var D=["先行研究は存在しない。","類似の申請は六度差し戻されている。","本案は前例を形成することを目的に含む。",
-         "倫理委員会の承認は、実施の要件に含めていない。","危険等級の評価には、実施を要する。"];
-  var n=0, id=417;
-  var out=document.getElementById('out'), cnt=document.getElementById('cnt');
-  function p(a){ return a[Math.floor(Math.random()*a.length)]; }
-  document.getElementById('gen').addEventListener('click',function(){
-    n++; id++;
-    var a=p(A), b=p(B), c=p(C), d=p(D);
-    out.innerHTML =
-      '<p class="no">SHR-EXP-0'+id+' ／ 第一版 ／ 危険等級 未評価</p>'+
-      '<p class="t">'+a+'に対して'+b+'。そのうえで、'+c+'。</p>'+
-      '<ul><li>'+d+'</li>'+
-      '<li>所要 三十時間。延長の可能性がある。</li>'+
-      '<li>撤去および警備は A.C.A.S. へ委託する。</li>'+
-      '<li>記録の納本可否は未定とする。</li></ul>'+
-      '<p class="end">実行可能である。</p>';
-    cnt.textContent='本日 立案 '+n+' 件 ／ 中止 0 件';
+  var A = ['観測を停止した世界は','境界面の内側にある記録は','消滅を確認できない事象は','記録されなかった住人は',
+           '停止後に再開された観測は','虚無から採取された素材は','前例のない申請は','数えられていない差し戻しは',
+           '応答のない観測点は','確率 0.34 の作戦は','審査中の実験計画は','伏せられた図版の対象は'];
+  var B = ['本当に消滅しているのか','ひとつの世界として数えてよいのか','観測の対象たりうるのか','誰の記録に属するのか',
+           '同一の世界と見なせるのか','元の場所へ戻せるのか','前例として扱えるのか','検証を要するのか',
+           '停止しているのか、応答していないだけなのか','実行に値するのか','公開してよいのか','再現しうるのか'];
+  var C = ['確かめる手段は、実施のほかにない。','検証は一度きりとする。','結果に関わらず記録を発行する。',
+           '危険等級は実施後に評価する。','納本の可否は未定とする。','推奨されない。ただし実行に値する。',
+           '本案は前例を作るためのものである。','差し戻された場合、語順を変えて再提出する。'];
+  var btn = document.getElementById('gbtn');
+  var gid = document.getElementById('gid');
+  var gtx = document.getElementById('gtx');
+  var gc  = document.getElementById('gc');
+  var n = 17;
+  var seq = 417;
+  btn.addEventListener('click', function(){
+    seq++;
+    n++;
+    gid.textContent = 'SHR-EXP-' + ('0000' + seq).slice(-4);
+    gtx.innerHTML = A[Math.floor(Math.random()*A.length)] + '、' +
+                    B[Math.floor(Math.random()*B.length)] + '。<br />' +
+                    C[Math.floor(Math.random()*C.length)];
+    gc.textContent = n;
   });
 })();
 </script>

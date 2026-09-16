@@ -418,7 +418,8 @@ function capitalizeCategory(category) {
     'protocol': 'Protocols & Systems',
     'anomaly': 'Anomalies',
     'character': 'Chronicles & Entities',
-    'tool': 'Instruments & Tools'
+    'tool': 'Instruments & Tools',
+    'pact': 'Affiliated Organizations'
   };
   return categoryMap[category] || category;
 }
@@ -431,7 +432,13 @@ function getAuthorByDocId(docId) {
     'CHR-001': 'Archive System',
     'TOL-001': 'ArcaHortus',
     'TOL-002': 'ArcaHortus',
-    'TOL-003': 'ArcaHortus'
+    'TOL-003': 'ArcaHortus',
+    'PCT-01': '箱庭世界倫理委員会',
+    'PCT-02': 'Global Narrative Archive',
+    'PCT-03': 'VOID Tech Industries',
+    'PCT-04': '境界線観測財団',
+    'PCT-05': 'S.H.R.O.S.',
+    'PCT-06': 'A.C.A.S.'
   };
   return authorMap[docId] || 'Unknown Author';
 }
@@ -444,7 +451,13 @@ function getCreatedDateByDocId(docId) {
     'CHR-001': '2026.03.20 08:15:00',
     'TOL-001': '2026.08.11 00:00:00',
     'TOL-002': '2026.08.11 00:00:00',
-    'TOL-003': '2026.08.11 00:00:00'
+    'TOL-003': '2026.08.11 00:00:00',
+    'PCT-01': '2026.09.16 00:00:00',
+    'PCT-02': '2026.09.16 00:00:00',
+    'PCT-03': '2026.09.16 00:00:00',
+    'PCT-04': '2026.09.16 00:00:00',
+    'PCT-05': '2026.09.16 00:00:00',
+    'PCT-06': '2026.09.16 00:00:00'
   };
   return dateMap[docId] || '2026.06.15 10:00:00';
 }
@@ -457,7 +470,13 @@ function getModifiedDateByDocId(docId) {
     'CHR-001': '2026.06.01 12:20:15',
     'TOL-001': '2026.08.11 00:00:00',
     'TOL-002': '2026.08.11 00:00:00',
-    'TOL-003': '2026.08.11 00:00:00'
+    'TOL-003': '2026.08.11 00:00:00',
+    'PCT-01': '2026.09.16 00:00:00',
+    'PCT-02': '2026.09.16 00:00:00',
+    'PCT-03': '2026.09.16 00:00:00',
+    'PCT-04': '2026.09.16 00:00:00',
+    'PCT-05': '2026.09.16 00:00:00',
+    'PCT-06': '2026.09.16 00:00:00'
   };
   return dateMap[docId] || '2026.06.15 10:00:00';
 }
@@ -471,7 +490,13 @@ function getVersionByDocId(docId) {
     'CHR-001': '1.0',
     'TOL-001': '1.0（2026年8月）',
     'TOL-002': '1.0（2026年8月）',
-    'TOL-003': '1.0（2026年8月）'
+    'TOL-003': '1.0（2026年8月）',
+    'PCT-01': '1.0（PACT-01）',
+    'PCT-02': '1.0（PACT-02）',
+    'PCT-03': '1.0（PACT-03）',
+    'PCT-04': '1.0（PACT-04）',
+    'PCT-05': '1.0（PACT-05）',
+    'PCT-06': '1.0（PACT-06）'
   };
   return versionMap[docId] || '1.0';
 }
@@ -484,7 +509,13 @@ function getRelatedDocuments(docId) {
     'CHR-001': ['ANM-044'],
     'TOL-001': ['TOL-002', 'TOL-003'],
     'TOL-002': ['TOL-001'],
-    'TOL-003': ['TOL-001']
+    'TOL-003': ['TOL-001'],
+    'PCT-01': ['PCT-02', 'PCT-03', 'PCT-04', 'PCT-05', 'PCT-06'],
+    'PCT-02': ['PCT-01', 'PCT-03', 'PCT-04', 'PCT-05', 'PCT-06'],
+    'PCT-03': ['PCT-01', 'PCT-02', 'PCT-04', 'PCT-05', 'PCT-06'],
+    'PCT-04': ['PCT-01', 'PCT-02', 'PCT-03', 'PCT-05', 'PCT-06'],
+    'PCT-05': ['PCT-01', 'PCT-02', 'PCT-03', 'PCT-04', 'PCT-06'],
+    'PCT-06': ['PCT-01', 'PCT-02', 'PCT-03', 'PCT-04', 'PCT-05']
   };
   return relatedMap[docId] || [];
 }

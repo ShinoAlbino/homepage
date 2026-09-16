@@ -1212,3 +1212,7 @@
     font-size: 16px;
   }
 }
+
+/* 提携機関カード：来訪者の配属機関と課題の状態（archive.html 末尾の script が付ける） */
+.archive-tag.ah-mine{ color:#a7dcec; border-color:#4f8ea6 }
+.archive-tag.ah-mine.is-done{ color:#c6a662; border-color:#c6a662 }

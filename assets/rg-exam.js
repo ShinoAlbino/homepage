@@ -238,7 +238,7 @@
         '<div><dt>充足済の要件</dt><dd>' + (met.map(function (r) {
             return r.name + (r.lv > rec.lv ? '（LV.' + r.lv + ' の要件）' : '');
           }).join('、') || '—') + '</dd></div>' +
-        '<div><dt>未充足の要件</dt><dd>' + (unmet.map(function (r) { return r.name + '（LV.' + r.lv + '）'; }).join('、') || '—') + '</dd></div>' +
+        '<div><dt>未充足の要件</dt><dd>' + (unmet.map(function (r) { return r.name + '（LV.' + r.lv + ' ── ' + r.how + '）'; }).join('<br>') || '—') + '</dd></div>' +
       '</dl>';
     if (skipped.length) {
       var need = unmet.filter(function (r) { return r.lv < skipped[0].lv; });

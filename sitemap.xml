@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://arcahortus.com/archive.html</loc>
-    <lastmod>2026-09-07</lastmod>
+    <lastmod>2026-09-16</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/recommend.html</loc>
@@ -112,27 +112,27 @@
   </url>
   <url>
     <loc>https://arcahortus.com/pact/eth.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>2026-09-16</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/pact/gna.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>2026-09-16</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/pact/vti.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>2026-09-16</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/pact/bof.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>2026-09-16</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/pact/shr.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>2026-09-16</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/pact/aca.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>2026-09-16</lastmod>
   </url>
   <url>
     <loc>https://arcahortus.com/registry.html</loc>
@@ -141,5 +141,29 @@
   <url>
     <loc>https://arcahortus.com/aptitude/</loc>
     <lastmod>2026-09-13</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/archive/eth-doc-01.html</loc>
+    <lastmod>2026-09-16</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/archive/gna-doc-01.html</loc>
+    <lastmod>2026-09-16</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/archive/vti-doc-01.html</loc>
+    <lastmod>2026-09-16</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/archive/bof-doc-01.html</loc>
+    <lastmod>2026-09-16</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/archive/shr-doc-01.html</loc>
+    <lastmod>2026-09-16</lastmod>
+  </url>
+  <url>
+    <loc>https://arcahortus.com/archive/aca-doc-01.html</loc>
+    <lastmod>2026-09-16</lastmod>
   </url>
 </urlset>
