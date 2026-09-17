@@ -18,6 +18,10 @@
 
   var PKEY = 'ah.apt.progress.v1';
   var $ = function (id) { return document.getElementById(id); };
+  /* データの置き場。別頁から読むときは <script data-base="aptitude/"> で与える。 */
+  var BASE = (document.currentScript && document.currentScript.getAttribute('data-base')) || '';
+  /* 受検の画面が無い頁（registry.html）では報告書の再表示だけを担う。 */
+  var EMBED = !document.getElementById('apt-start');
   var D = { items: null, types: null, norms: null };
   var S = null;        // 進捗（受検中）
   var R = null;        // 採点結果（報告書表示中）
@@ -39,9 +43,10 @@
   function now() { return Date.now(); }
   function show(which) {
     ['apt-gate', 'apt-intro', 'apt-exam', 'apt-break', 'apt-report'].forEach(function (id) {
-      $(id).hidden = (id !== which);
+      var e = $(id);
+      if (e) e.hidden = (id !== which);
     });
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    if (!EMBED) window.scrollTo({ top: 0, behavior: 'auto' });
   }
   function readP() {
     try { var r = localStorage.getItem(PKEY); return r ? JSON.parse(r) : null; } catch (e) { return null; }
@@ -482,6 +487,7 @@
         r2.transfers = (r2.transfers || []).concat([{ from: from, to: r2.org, oldNo: oldNo, newNo: r2.no, at: now() }]);
         window.AHStaff.set(r2);
         window.AHStaff.refreshChip();
+        document.dispatchEvent(new CustomEvent('ah:staff-changed', { detail: { source: 'apt' } }));
         report();
       });
     }
@@ -630,10 +636,41 @@
       if (rec.req) { delete rec.req.part2; delete rec.req.task2; }
       window.AHStaff.set(rec);
       window.AHStaff.refreshChip();
+      document.dispatchEvent(new CustomEvent('ah:staff-changed', { detail: { source: 'apt' } }));
     }
     clearP();
     R = null;
-    gate();
+    if (EMBED) embedRefresh(); else gate();
+  }
+
+  /* ── 埋め込み（registry.html）────────────────────────
+     職員証の頁で、資質検査の結果と適性検査の報告書を並べて出す。
+     #apt-embed-line に状態、#apt-report に最新の報告書。 */
+  function embedRefresh() {
+    var rec = window.AHStaff.get();
+    var h = rec && rec.part2 && rec.part2.history;
+    var last = h && h.length ? h[h.length - 1] : null;
+    var line = $('apt-embed-line'), go = $('apt-embed-go'), ers = $('apt-erase'), rp = $('apt-report');
+    if (ers) ers.hidden = !last;
+    if (!rec) {
+      if (line) line.textContent = '職員登録を終えた後に受検できる。';
+      if (rp) rp.hidden = true;
+      return;
+    }
+    if (!last) {
+      if (line) line.textContent = '未受検。所要はおよそ三十分。三期に分けて受けることができる。';
+      if (go) go.textContent = '適性検査を受検する';
+      if (rp) rp.hidden = true;
+      return;
+    }
+    var days = Math.floor((now() - last.at) / 86400000);
+    var blocked = last.status !== 'reject' && days < D.norms.retakeDays;
+    var t = last.type;
+    if (line) line.innerHTML = '受検日 ' + esc(fmtDate(new Date(last.at))) + '。経過 <b>' + days + '</b> 日。' +
+      (t ? '判定 <b>' + esc(t.title) + '（' + esc(t.kanji) + '）</b>。' : '判定 却下。') +
+      (blocked ? '再受検は前回から ' + D.norms.retakeDays + ' 日以上を空けること。あと <b>' + (D.norms.retakeDays - days) + '</b> 日。' : '再受検できる。');
+    if (go) go.textContent = '再受検する';
+    viewLast();
   }
 
   /* ── 結線 ─────────────────────────────────────────── */
@@ -669,7 +706,7 @@
   }
 
   function load(path) {
-    return fetch(path, { cache: 'no-cache' }).then(function (r) {
+    return fetch(BASE + path, { cache: 'no-cache' }).then(function (r) {
       if (!r.ok) throw new Error(path + ' HTTP ' + r.status);
       return r.json();
     });
@@ -679,11 +716,18 @@
     .then(function (a) {
       D.items = a[0]; D.types = a[1]; D.norms = a[2]; D.prose = a[3];
       FLAT = flatItems();
+      if (EMBED) {
+        if ($('apt-erase')) $('apt-erase').addEventListener('click', erase);
+        document.addEventListener('ah:staff-changed', function (e) { if (!e.detail || e.detail.source !== 'apt') embedRefresh(); });
+        embedRefresh();
+        return;
+      }
       $('apt-instr').innerHTML = D.items.instructions.map(function (s) { return '<p>' + esc(s) + '</p>'; }).join('');
       bind();
       gate();
     })
     .catch(function (e) {
+      if (EMBED) { if ($('apt-embed-line')) $('apt-embed-line').textContent = '検査票を読み込めなかった。（' + e.message + '）'; return; }
       $('apt-gate').hidden = false;
       $('apt-gate-body').textContent = '検査票を読み込めなかった。時間をおいて再度お試しいただきたい。（' + e.message + '）';
     });

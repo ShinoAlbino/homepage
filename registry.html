@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Noto+Serif+JP:wght@200;300;500&family=Noto+Sans+JP:wght@200;300;400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" />
   <link rel="stylesheet" href="assets/ah-tokens.css" />
   <link rel="stylesheet" href="assets/ah-common.css" />
+  <link rel="stylesheet" href="aptitude/apt.css" />
 
   <style>
   /* ── 職員登録局 固有 ──────────────────────────────── */
@@ -145,16 +146,9 @@
   .rg-bar.is-top .rg-bar-k{ color:var(--ice) }
   .rg-bar-v{ font-family:var(--mono); font-size:9px; color:var(--faint); text-align:right }
 
-  /* 適性検査（内部資格）への導線 */
-  .rg-next{
-    border:1px dashed var(--line); padding:clamp(16px,2.6vw,24px); margin-top:1px;
-    background:var(--surface);
-  }
-  .rg-next h3{
-    margin:0 0 10px; font-family:var(--mono); font-size:10px; letter-spacing:.2em;
-    color:var(--brass); font-weight:400;
-  }
-  .rg-next p{ margin:0; font-size:12.5px; line-height:1.95; color:var(--muted) }
+  /* 適性検査の報告書（aptitude/apt.css の意匠をそのまま使う） */
+  .rg-apt-report{ margin-top:30px; padding-top:6px; border-top:1px solid var(--line-soft) }
+  .rg-apt-report > .rg-qid{ margin:22px 0 14px }
 
   .rg-fine{ margin:18px 0 0; font-size:11.5px; line-height:1.9; color:var(--faint) }
   .rg-fine b{ font-weight:400; color:var(--muted) }
@@ -216,7 +210,6 @@
       </p>
       <div class="rg-actions" style="margin-top:24px">
         <button class="rg-btn" type="button" id="rg-start">検査を開始する</button>
-        <button class="rg-mini" type="button" id="rg-show-card" hidden>◂ 発行済みの職員証を表示する</button>
       </div>
     </section>
 
@@ -293,17 +286,23 @@
       </p>
     </section>
 
-    <!-- ══ 適性検査（内部資格） ══ -->
-    <section class="rg-next" id="rg-next" hidden>
-      <h3>内部資格 ／ 適性検査</h3>
-      <p id="rg-next-body">
-        職員登録を終えた者は、適性検査をいつでも受けることができる。
-        適性検査は六領域・二十四下位尺度・144項目からなり、職掌類型と類型確信度を報告する。
-        受検の完了は LEVEL 5 の要件を充足する。下位の要件（課題・照合）が未達なら LEVEL 5 には到達せず、充足済の要件として職員証に併記される。結果の良否で権限は変わらない。
-      </p>
-      <p id="rg-next-done" class="rg-fine" hidden></p>
+    <!-- ══ 適性検査（内部資格）── 報告書を職員証と並べて出す ══ -->
+    <section class="rg-panel" id="rg-next" hidden>
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <h2 class="ah-h2">適性検査<em>Aptitude Examination ／ Internal Qualification</em></h2>
+      <div class="ah-body-col">
+        <p>資質検査が配属先と職員番号を決めるのに対し、適性検査は職掌を決める。六領域・二十四下位尺度・144項目からなり、職掌類型と類型確信度を報告する。</p>
+        <p>受検の完了は LEVEL 5 の要件を充足する。下位の要件（課題・照合）が未達なら LEVEL 5 には到達せず、充足済の要件として職員証に併記される。結果の良否で権限は変わらない。</p>
+      </div>
+      <p class="rg-fine" id="apt-embed-line"></p>
       <div class="rg-actions" style="margin-top:16px">
-        <a class="rg-btn" href="aptitude/">適性検査を受検する</a>
+        <a class="rg-btn" href="aptitude/" id="apt-embed-go">適性検査を受検する</a>
+        <button class="rg-mini" type="button" id="apt-erase" hidden>適性検査の記録を削除する</button>
+      </div>
+      <div id="apt-report" class="rg-apt-report" hidden>
+        <p class="rg-qid">報告書</p>
+        <div class="apt-status" id="apt-status"></div>
+        <div id="apt-report-body"></div>
       </div>
     </section>
 
@@ -334,5 +333,7 @@
 <script src="assets/ah-site.js"></script>
 <script src="assets/ah-staff.js"></script>
 <script src="assets/rg-exam.js"></script>
+<script src="aptitude/apt-core.js"></script>
+<script src="aptitude/apt-ui.js" data-base="aptitude/"></script>
 </body>
 </html>

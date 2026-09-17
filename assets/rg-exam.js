@@ -169,6 +169,7 @@
     window.AHStaff.set(rec);
     rec = window.AHStaff.get();   /* LV・label が計算済みの形で読み直す */
     window.AHStaff.refreshChip();
+    document.dispatchEvent(new CustomEvent('ah:staff-changed', { detail: { source: 'rg' } }));
     toResult(rec);
   }
 
@@ -178,7 +179,7 @@
   }
 
   /* ── 結果 ─────────────────────────────────────────── */
-  function toResult(rec) {
+  function toResult(rec, quiet) {
     var o = DATA.orgs[rec.org];
     var cl = DATA.clearance[String(rec.lv)] || { label: rec.label || ('LEVEL ' + rec.lv), note: '' };
     renderBack(rec);
@@ -207,21 +208,9 @@
       bars.appendChild(row);
     });
 
-    /* 適性検査（内部資格）の状態 */
-    var done = $('rg-next-done');
-    if (done) {
-      var p2 = rec.part2 && rec.part2.latest;
-      done.hidden = !p2;
-      if (p2) {
-        done.innerHTML = '判定済み：<b>' + p2.title + '（' + p2.kanji + '）' + p2.suffix + ' ／ ' + p2.honesty + '</b>' +
-          (p2.status === 'hold' ? '　判定 保留' : p2.status === 'low' ? '　信頼度 低' : '') +
-          '。再受検は前回から 30 日以上を空けること。';
-      }
-    }
-
     drawCard(rec);
     show('rg-result');
-    $('rg-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!quiet) $('rg-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   /* ── 職員証 裏面：要件の充足と異動履歴（§4-6・§4-3） ── */
@@ -442,11 +431,6 @@
       if (state.i > 0) { state.i--; render(); }
     });
 
-    $('rg-show-card').addEventListener('click', function () {
-      var rec = window.AHStaff.get();
-      if (rec) toResult(rec);
-    });
-
     $('rg-save').addEventListener('click', saveCard);
 
     $('rg-name').addEventListener('input', function () {
@@ -461,17 +445,21 @@
       if (!window.confirm('登録を抹消します。職員番号と権限は失われ、同じ回答をしない限り元には戻りません。よろしいですか。')) return;
       window.AHStaff.clear();
       window.AHStaff.refreshChip();
-      $('rg-show-card').hidden = true;
+      document.dispatchEvent(new CustomEvent('ah:staff-changed', { detail: { source: 'rg' } }));
       show('rg-intro');
     });
   }
 
-  /* 既に登録済みなら、その職員証を出せるようにする */
+  /* 既に登録済みなら、導入を飛ばして職員証をそのまま出す。
+     適性検査側（異動・記録の削除）で記録が変われば描き直す。 */
   function restore() {
     var rec = window.AHStaff.get();
-    if (!rec || !rec.z) return;
-    $('rg-show-card').hidden = false;
-    $('rg-start').textContent = '検査を受け直す';
+    if (rec && rec.z) toResult(rec, true);
+    document.addEventListener('ah:staff-changed', function (e) {
+      if (e.detail && e.detail.source === 'rg') return;
+      var r = window.AHStaff.get();
+      if (r && r.z) toResult(r, true);
+    });
   }
 
   fetch('assets/data/aptitude.json', { cache: 'no-cache' })
