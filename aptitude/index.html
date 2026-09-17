@@ -99,18 +99,34 @@
       </div>
     </section>
 
-    <!-- ══ 出題 ══ -->
-    <section class="apt-panel" id="apt-exam" hidden>
+    <!-- ══ 出題 ══
+         走査線と環は装飾（aria-hidden）。進捗の文言 #apt-counter だけが読み上げの対象。 -->
+    <section class="apt-panel apt-stage" id="apt-exam" hidden>
       <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
-      <div class="apt-prog">
+      <div class="apt-scan" aria-hidden="true"></div>
+      <svg class="apt-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <circle cx="50" cy="50" r="46" class="apt-ring-faint"/>
+        <g class="apt-ring-spin">
+          <circle cx="50" cy="50" r="38" class="apt-ring-dash"/>
+          <circle cx="50" cy="50" r="38" class="apt-ring-arc"/>
+        </g>
+        <g class="apt-ring-spin-rev">
+          <circle cx="50" cy="50" r="28" class="apt-ring-thin"/>
+          <rect x="48.5" y="20.5" width="3" height="3" class="apt-ring-node"/>
+        </g>
+      </svg>
+      <div class="apt-tele">
         <span class="apt-counter" id="apt-counter"></span>
-        <span class="apt-prog-bar"><i id="apt-fill" style="width:0%"></i></span>
+        <span aria-hidden="true" id="apt-tele-time">ELAPSED 00:00<i class="apt-cur"></i></span>
+        <span aria-hidden="true">KEY 1 – 6</span>
       </div>
-      <div aria-live="polite">
-        <p class="apt-qid" id="apt-qid"></p>
-        <p class="apt-qtext" id="apt-qtext"></p>
+      <div class="apt-gauge" id="apt-gauge" aria-hidden="true"></div>
+      <div class="apt-q" id="apt-q">
+        <p class="apt-qid" id="apt-qid" aria-hidden="true"></p>
+        <p class="apt-qtext" id="apt-qtext" aria-live="polite"></p>
       </div>
       <div class="apt-scale" id="apt-scale" role="radiogroup" aria-label="あてはまる程度"></div>
+      <p class="apt-stamp" id="apt-stamp" aria-live="polite"></p>
       <div class="apt-actions">
         <button class="apt-mini" type="button" id="apt-back" disabled>◂ 前へ</button>
         <button class="apt-mini" type="button" id="apt-skip">未回答のまま次へ</button>
@@ -120,8 +136,14 @@
     </section>
 
     <!-- ══ 期の切れ目 ══ -->
-    <section class="apt-panel apt-break" id="apt-break" hidden>
+    <section class="apt-panel apt-break apt-stage" id="apt-break" hidden>
       <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <div class="apt-scan" aria-hidden="true"></div>
+      <div class="apt-seal" id="apt-seal" aria-hidden="true">
+        <span class="apt-seal-line"></span>
+        <span class="apt-seal-stamp" id="apt-seal-stamp"></span>
+      </div>
+      <p class="apt-seal-text" id="apt-seal-text"></p>
       <h2 class="ah-h2" id="apt-break-title"></h2>
       <div class="ah-body-col"><p id="apt-break-body"></p></div>
       <div class="apt-actions">

@@ -26,6 +26,15 @@
   var S = null;        // 進捗（受検中）
   var R = null;        // 採点結果（報告書表示中）
 
+  /* ── 画面の動き ─────────────────────────────────────
+     動きは見せるだけで、状態は常にタイマーで進める。
+     prefers-reduced-motion のときは待ち時間も詰める。 */
+  var MOTION = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var adv = null;      // 回答後に次へ進むタイマー
+  var clock = null;    // 経過時間の更新
+  var typer = null;    // 項目番号の打ち出し
+  var SEG = {};        // 画面番号 → 計器の目盛
+
   /* ── 便利 ─────────────────────────────────────────── */
   function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -47,6 +56,93 @@
       if (e) e.hidden = (id !== which);
     });
     if (!EMBED) window.scrollTo({ top: 0, behavior: 'auto' });
+    /* 出題画面を離れたら、進行待ちのタイマーと時計を止める */
+    if (which === 'apt-exam') startClock();
+    else { stopClock(); cancelAdvance(); }
+  }
+
+  function cancelAdvance() { if (adv) { clearTimeout(adv); adv = null; } }
+
+  /* 一度付けた class を外して付け直し、動きを最初から走らせる */
+  function replay(e, cls) {
+    if (!e) return;
+    e.classList.remove(cls);
+    void e.offsetWidth;
+    e.classList.add(cls);
+  }
+
+  /* 経過時間：画面ごとの所要秒の合計＋いまの画面の滞在。妥当性指標と同じ物差し */
+  function mmss(sec) {
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return (m < 100 ? pad(m) : String(m)) + ':' + pad(s);
+  }
+  function elapsedSec() {
+    if (!S) return 0;
+    var t = 0;
+    Object.keys(S.timing).forEach(function (k) { t += S.timing[k]; });
+    if (S.screenEnter) t += (now() - S.screenEnter) / 1000;
+    return Math.max(0, Math.floor(t));
+  }
+  function tickClock() {
+    var e = $('apt-tele-time');
+    if (!e || !S) return;
+    e.firstChild.nodeValue = 'ELAPSED ' + mmss(elapsedSec());
+  }
+  function startClock() {
+    stopClock();
+    if (!$('apt-tele-time')) return;
+    tickClock();
+    clock = setInterval(tickClock, 1000);
+  }
+  function stopClock() { if (clock) { clearInterval(clock); clock = null; } }
+
+  /* 項目番号を一字ずつ打ち出す。読み上げ対象ではない（aria-hidden） */
+  function typeId(text) {
+    var e = $('apt-qid');
+    if (typer) { clearInterval(typer); typer = null; }
+    e.classList.remove('is-typing');
+    if (!MOTION) { e.textContent = text; return; }
+    var i = 0;
+    e.textContent = '';
+    e.classList.add('is-typing');
+    typer = setInterval(function () {
+      i++;
+      e.textContent = text.slice(0, i);
+      if (i >= text.length) { clearInterval(typer); typer = null; e.classList.remove('is-typing'); }
+    }, 28);
+  }
+
+  /* 計器：13 画面を期ごとに束ねた目盛。塗りは画面内の回答率 */
+  function buildGauge() {
+    var g = $('apt-gauge');
+    if (!g) return;
+    g.textContent = '';
+    var groups = {}, n = {};
+    D.items.screens.forEach(function (sc) {
+      var grp = groups[sc.period];
+      if (!grp) {
+        grp = groups[sc.period] = el('span', 'apt-gauge-g', '<em>' + ['I', 'II', 'III'][sc.period - 1] + '</em>');
+        n[sc.period] = 0;
+        g.appendChild(grp);
+      }
+      var seg = el('i', 'apt-seg', '<b></b>');
+      grp.appendChild(seg);
+      grp.style.setProperty('--n', ++n[sc.period]);   /* 画面数に応じて幅を配る */
+      SEG[sc.no] = { i: seg, b: seg.firstChild, g: grp };
+    });
+  }
+  function updateGauge() {
+    if (!SEG[1]) return;
+    var cnt = {};
+    FLAT.forEach(function (f) { if (S.answers[f.it.id] != null) cnt[f.screen] = (cnt[f.screen] || 0) + 1; });
+    var cur = FLAT[S.pos];
+    D.items.screens.forEach(function (sc) {
+      var seg = SEG[sc.no];
+      seg.b.style.transform = 'scaleX(' + ((cnt[sc.no] || 0) / sc.items.length).toFixed(3) + ')';
+      seg.i.classList.toggle('is-cur', sc.no === cur.screen);
+      seg.i.classList.toggle('is-done', sc.no < cur.screen);
+      seg.g.classList.toggle('is-on', sc.period <= cur.period);
+    });
   }
   function readP() {
     try { var r = localStorage.getItem(PKEY); return r ? JSON.parse(r) : null; } catch (e) { return null; }
@@ -138,17 +234,23 @@
 
   /* ── 出題 ─────────────────────────────────────────── */
   function render() {
+    cancelAdvance();
     var f = FLAT[S.pos], it = f.it;
     var total = FLAT.length;
     $('apt-counter').textContent =
       '第' + ['一', '二', '三'][f.period - 1] + '期 ／ 画面 ' + pad(f.screen) + ' ／ ' +
       String(S.pos + 1).padStart(3, '0') + ' / ' + total;
-    $('apt-fill').style.width = (S.pos / total * 100) + '%';
+    updateGauge();
+    tickClock();
     $('apt-qtext').textContent = it.text;
-    $('apt-qid').textContent = it.id;
+    typeId(it.id);
+    replay($('apt-q'), 'is-in');
+    $('apt-stamp').classList.remove('is-on');
 
+    /* 選択肢を作り直す。矢印キーで選択肢に居た場合は同じ位置へ焦点を戻す */
     var cur = S.answers[it.id];
     var wrap = $('apt-scale');
+    var focusAt = Array.prototype.indexOf.call(wrap.children, document.activeElement);
     wrap.textContent = '';
     D.items.scale.forEach(function (label, i) {
       var v = i + 1;
@@ -158,25 +260,34 @@
       b.setAttribute('role', 'radio');
       b.setAttribute('aria-checked', cur === v ? 'true' : 'false');
       b.dataset.v = v;
+      b.style.setProperty('--i', i);
       b.addEventListener('click', function () { answer(v); });
       wrap.appendChild(b);
     });
+    replay(wrap, 'is-in');
+    if (focusAt >= 0 && wrap.children[focusAt]) {
+      try { wrap.children[focusAt].focus({ preventScroll: true }); } catch (e) { wrap.children[focusAt].focus(); }
+    }
     $('apt-back').disabled = (S.pos === 0);
     $('apt-skip').textContent = cur ? '次へ' : '未回答のまま次へ';
   }
 
   function answer(v) {
-    if (!S) return;
+    if (!S || adv) return;                /* 進行待ちの間の二度押しは受けない */
     var it = FLAT[S.pos].it;
     S.answers[it.id] = v;
     writeP(S);
-    /* 選んだことが見えてから進む */
+    /* 選んだことが見えてから進む：帯が一度走り、記録印が出る */
     Array.prototype.forEach.call($('apt-scale').children, function (b) {
       var on = Number(b.dataset.v) === v;
       b.classList.toggle('is-on', on);
+      b.classList.toggle('is-hit', on);
       b.setAttribute('aria-checked', on ? 'true' : 'false');
     });
-    setTimeout(next, 220);
+    var st = $('apt-stamp');
+    st.textContent = 'RECORDED ' + String(S.pos + 1).padStart(3, '0') + ' ／ ' + FLAT.length;
+    st.classList.add('is-on');
+    adv = setTimeout(function () { adv = null; next(); }, MOTION ? 300 : 220);
   }
 
   function next() {
@@ -202,7 +313,18 @@
   }
 
   function breakScreen(donePeriod) {
-    $('apt-break-title').textContent = '第' + ['一', '二', '三'][donePeriod - 1] + '期 終了';
+    var jp = ['一', '二', '三'][donePeriod - 1];
+    /* 期を封じる：線が引かれ、封が捺される。数は当該期の記録済み項目 */
+    var n = 0, m = 0;
+    FLAT.forEach(function (f) {
+      if (f.period !== donePeriod) return;
+      m++;
+      if (S.answers[f.it.id] != null) n++;
+    });
+    $('apt-seal-stamp').textContent = 'SEALED ／ PERIOD ' + ['I', 'II', 'III'][donePeriod - 1];
+    $('apt-seal-text').textContent = '第' + jp + '期 了 ／ 記録 ' + n + ' ／ ' + m + ' 項目 ／ ELAPSED ' + mmss(elapsedSec());
+    replay($('apt-seal'), 'is-in');
+    $('apt-break-title').textContent = '第' + jp + '期 終了';
     $('apt-break-body').textContent =
       '回答は保存された。ここで中断し、あとから続きを受けることができる。続ける場合は、そのまま次の期へ進む。';
     show('apt-break');
@@ -723,6 +845,7 @@
         return;
       }
       $('apt-instr').innerHTML = D.items.instructions.map(function (s) { return '<p>' + esc(s) + '</p>'; }).join('');
+      buildGauge();
       bind();
       gate();
     })

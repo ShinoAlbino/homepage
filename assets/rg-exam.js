@@ -30,6 +30,71 @@
 
   var $ = function (id) { return document.getElementById(id); };
 
+  /* ── 画面の動き ─────────────────────────────────────
+     動きは見せるだけで、状態は常にタイマーで進める。
+     prefers-reduced-motion のときは待ち時間も詰める。 */
+  var MOTION = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var adv = null;        // 回答後に次へ進むタイマー
+  var issuing = null;    // 配属確定から発行までのタイマー
+  var clock = null;      // 経過時間の更新
+  var typer = null;      // 設問番号の打ち出し
+  var startedAt = 0;
+
+  function cancelAdvance() { if (adv) { clearTimeout(adv); adv = null; } }
+
+  /* 一度付けた class を外して付け直し、動きを最初から走らせる */
+  function replay(e, cls) {
+    if (!e) return;
+    e.classList.remove(cls);
+    void e.offsetWidth;
+    e.classList.add(cls);
+  }
+
+  function mmss(sec) {
+    var m = Math.floor(sec / 60), s = sec % 60, p = function (n) { return String(n).padStart(2, '0'); };
+    return p(m) + ':' + p(s);
+  }
+  function tickClock() {
+    var e = $('rg-tele-time');
+    if (!e) return;
+    e.firstChild.nodeValue = 'ELAPSED ' + mmss(Math.max(0, Math.floor((Date.now() - startedAt) / 1000)));
+  }
+  function startClock() {
+    stopClock();
+    tickClock();
+    clock = setInterval(tickClock, 1000);
+  }
+  function stopClock() { if (clock) { clearInterval(clock); clock = null; } }
+
+  /* 設問番号を一字ずつ打ち出す。読み上げ対象ではない（aria-hidden） */
+  function typeId(text) {
+    var e = $('rg-qid');
+    if (typer) { clearInterval(typer); typer = null; }
+    e.classList.remove('is-typing');
+    if (!MOTION) { e.textContent = text; return; }
+    var i = 0;
+    e.textContent = '';
+    e.classList.add('is-typing');
+    typer = setInterval(function () {
+      i++;
+      e.textContent = text.slice(0, i);
+      if (i >= text.length) { clearInterval(typer); typer = null; e.classList.remove('is-typing'); }
+    }, 34);
+  }
+
+  /* 進捗の目盛（十六）。一度だけ作る */
+  function buildTicks() {
+    var t = $('rg-ticks');
+    if (!t || t.children.length) return;
+    DATA.questions.forEach(function () { t.appendChild(document.createElement('i')); });
+  }
+  function updateTicks() {
+    Array.prototype.forEach.call($('rg-ticks').children, function (i, k) {
+      i.classList.toggle('is-done', k < state.i);
+      i.classList.toggle('is-cur', k === state.i);
+    });
+  }
+
   /* ── 統計量：設問表から解析的に求める ─────────────── */
   /* 各設問は独立に a / b のどちらかが選ばれる。
      機関 o の得点の平均は Σ(a+b)/2、分散は Σ((a-b)/2)^2。 */
@@ -96,30 +161,51 @@
       $(id).hidden = (id !== which);
     });
     $('rg-next').hidden = (which !== 'rg-result');
+    /* 検査画面を離れたら、進行待ちのタイマーと時計を止める */
+    if (which !== 'rg-exam') { stopClock(); cancelAdvance(); }
+    if (which !== 'rg-pick' && issuing) { clearTimeout(issuing); issuing = null; }
   }
 
   /* ── 出題 ─────────────────────────────────────────── */
   function render() {
+    cancelAdvance();
     var q = DATA.questions[state.i];
     var n = DATA.questions.length;
-    $('rg-qid').textContent = q.id;
+    typeId(q.id);
     $('rg-qtext').textContent = q.text;
     $('rg-ca').textContent = q.a.text;
     $('rg-cb').textContent = q.b.text;
     $('rg-prog-num').textContent =
-      String(state.i + 1).padStart(2, '0') + ' / ' + String(n).padStart(2, '0');
-    $('rg-prog-fill').style.width = (state.i / n * 100) + '%';
-    $('rg-back').disabled = (state.i === 0);
+      'Q ' + String(state.i + 1).padStart(2, '0') + ' ／ ' + String(n).padStart(2, '0');
+    updateTicks();
+    tickClock();
+    /* 設問は左から拭き出し、二択は段違いに現れる。前の回答の印は消す */
+    replay($('rg-q'), 'is-in');
+    replay($('rg-choices'), 'is-in');
+    Array.prototype.forEach.call($('rg-choices').children, function (b) { b.classList.remove('is-hit'); });
+    $('rg-stamp').classList.remove('is-on');
+    $('rg-prev').disabled = (state.i === 0);
   }
 
   function answer(c) {
+    if (adv) return;                      /* 進行待ちの間の二度押しは受けない */
     state.ans[state.i] = c;
-    if (state.i < DATA.questions.length - 1) {
-      state.i++;
-      render();
-    } else {
-      toPick();
-    }
+    /* 選んだことが見えてから進む：帯が一度走り、記録印が出る */
+    Array.prototype.forEach.call($('rg-choices').children, function (b) {
+      b.classList.toggle('is-hit', b.dataset.c === c);
+    });
+    var st = $('rg-stamp');
+    st.textContent = 'RECORDED ' + String(state.i + 1).padStart(2, '0') + ' ／ ' + DATA.questions.length;
+    st.classList.add('is-on');
+    adv = setTimeout(function () {
+      adv = null;
+      if (state.i < DATA.questions.length - 1) {
+        state.i++;
+        render();
+      } else {
+        toPick();
+      }
+    }, MOTION ? 320 : 120);
   }
 
   /* ── 配属先の提示（上位2機関から選ばせる） ─────────── */
@@ -130,11 +216,15 @@
 
     var list = $('rg-pick-list');
     list.textContent = '';
+    list.classList.remove('is-issuing');
+    $('rg-issue').hidden = true;
+    $('rg-issue').classList.remove('is-on');
     state.pair.forEach(function (code, idx) {
       var o = DATA.orgs[code];
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'rg-pick';
+      b.style.setProperty('--i', idx);
       b.innerHTML =
         '<span class="rg-pick-head">' +
           '<span class="rg-pick-sig"><img src="' + o.logo + '" alt="" width="19" height="19"></span>' +
@@ -144,12 +234,30 @@
         '</span>' +
         '<p>' + o.desc + '</p>' +
         '<p class="rg-pick-go">この機関に配属される →</p>';
-      b.addEventListener('click', function () { assign(code); });
+      b.addEventListener('click', function () { issue(code, b); });
       list.appendChild(b);
     });
+    replay(list, 'is-in');
 
     show('rg-pick');
     $('rg-pick').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* 配属を確定し、職員番号の生成が見えてから発行へ移る。
+     assign() は変えない。ここは間をとるだけ。 */
+  function issue(code, btn) {
+    if (issuing) return;
+    var list = $('rg-pick-list');
+    list.classList.add('is-issuing');
+    btn.classList.add('is-chosen');
+    Array.prototype.forEach.call(list.children, function (b) { b.disabled = true; });
+    $('rg-issue-text').textContent = '配属 確定 ── ' + DATA.orgs[code].name + ' ／ 職員番号を生成している';
+    $('rg-issue').hidden = false;
+    replay($('rg-issue'), 'is-on');
+    issuing = setTimeout(function () {
+      issuing = null;
+      assign(code);
+    }, MOTION ? 900 : 0);
   }
 
   /* ── 配属確定・保存 ───────────────────────────────── */
@@ -413,8 +521,11 @@
   function begin() {
     state.i = 0;
     state.ans = [];
-    render();
+    startedAt = Date.now();
+    buildTicks();
     show('rg-exam');
+    startClock();
+    render();
     $('rg-exam').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -427,8 +538,17 @@
       b.addEventListener('click', function () { answer(b.dataset.c); });
     });
 
-    $('rg-back').addEventListener('click', function () {
+    $('rg-prev').addEventListener('click', function () {
       if (state.i > 0) { state.i--; render(); }
+    });
+
+    /* A / B（または 1 / 2）キーでも回答できる */
+    document.addEventListener('keydown', function (e) {
+      if ($('rg-exam').hidden || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.target && /input|select|textarea/i.test(e.target.tagName)) return;
+      var k = e.key.toLowerCase();
+      var c = (k === 'a' || k === '1') ? 'a' : (k === 'b' || k === '2') ? 'b' : null;
+      if (c) answer(c);
     });
 
     $('rg-save').addEventListener('click', saveCard);

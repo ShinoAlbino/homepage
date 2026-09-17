@@ -27,36 +27,53 @@
   }
   .rg-panel + .rg-panel{ margin-top:1px }
 
-  /* 進捗 */
-  .rg-prog{ display:flex; align-items:center; gap:12px; margin-bottom:22px }
-  .rg-prog-bar{ flex:1; height:1px; background:var(--line); position:relative }
-  .rg-prog-bar i{
-    position:absolute; inset:0 auto 0 0; background:var(--ice-dim);
-    transition:width .45s cubic-bezier(.2,.7,.3,1);
-  }
-  .rg-prog-num{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--faint) }
+  /* 検査の舞台：走査線・環・計器行・記録印・設問の拭き出しは
+     aptitude/apt.css の .apt-stage / .apt-scan / .apt-ring / .apt-tele /
+     .apt-stamp / .apt-q / .apt-qid をそのまま使う。ここは登録局だけの部品。 */
+
+  /* 進捗：十六の目盛。済は氷色、現在は脈打つ */
+  .rg-ticks{ display:flex; gap:4px; margin:0 0 24px }
+  .rg-ticks i{ position:relative; flex:1; height:3px; background:var(--line-soft); overflow:hidden; transition:background .35s ease }
+  .rg-ticks i.is-done{ background:var(--ice-dim) }
+  .rg-ticks i.is-cur{ background:var(--ice-deep) }
+  .rg-ticks i.is-cur::after{ content:""; position:absolute; inset:0; background:var(--ice); opacity:0; animation:apt-seg-pulse 2.2s ease-in-out infinite }
 
   /* 設問 */
   .rg-qid{ font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--ice-dim) }
   .rg-qtext{
-    margin:10px 0 22px; font-family:var(--serif); font-size:clamp(15px,2.2vw,19px);
+    margin:10px 0 22px; max-width:40em; font-family:var(--serif-jp); font-size:clamp(15px,2.2vw,19px);
     line-height:1.85; color:var(--text); font-weight:300;
   }
   .rg-choices{ display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line-soft) }
+  .rg-choices.is-in .rg-choice{ animation:apt-opt-in .34s cubic-bezier(.16,1,.3,1) both; animation-delay:calc(var(--i,0) * 70ms) }
   .rg-choice{
+    position:relative; overflow:hidden;
     display:flex; align-items:flex-start; gap:14px; width:100%; text-align:left;
     padding:18px clamp(14px,2.4vw,22px); background:var(--surface-2);
     border:0; color:var(--text); font:inherit; font-size:13.5px; line-height:1.7;
-    cursor:pointer; transition:background .3s ease, color .3s ease;
+    cursor:pointer; transition:background .3s ease, color .3s ease, transform .12s ease;
+  }
+  .rg-choice::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--ice-dim);
+    transform:scaleY(0); transform-origin:50% 0; transition:transform .25s ease;
+  }
+  .rg-choice::after{
+    content:""; position:absolute; top:0; bottom:0; left:0; width:40%; pointer-events:none;
+    background:linear-gradient(90deg, transparent, rgba(167,220,236,.18), transparent); transform:translateX(-120%);
   }
   .rg-choice:hover{ background:var(--surface); color:var(--ice) }
+  .rg-choice:hover::before, .rg-choice:focus-visible::before, .rg-choice.is-hit::before{ transform:scaleY(1) }
+  .rg-choice:active{ transform:translateX(2px) }
   .rg-choice:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:-1px }
   .rg-choice-k{
     flex:none; width:20px; height:20px; margin-top:1px; display:grid; place-items:center;
     border:1px solid var(--line); font-family:var(--mono); font-size:9px; color:var(--faint);
-    transition:border-color .3s ease, color .3s ease;
+    transition:border-color .3s ease, color .3s ease, background .3s ease, box-shadow .3s ease;
   }
   .rg-choice:hover .rg-choice-k{ border-color:var(--ice-deep); color:var(--ice-dim) }
+  .rg-choice.is-hit{ background:var(--surface); color:var(--ice) }
+  .rg-choice.is-hit::after{ animation:apt-sweep .38s ease-out both }
+  .rg-choice.is-hit .rg-choice-k{ background:var(--ice-dim); border-color:var(--ice-dim); color:#0b1019; box-shadow:0 0 10px rgba(167,220,236,.55) }
 
   /* 戻る・小さな操作 */
   .rg-actions{ margin-top:18px; display:flex; gap:16px; flex-wrap:wrap; align-items:center }
@@ -69,6 +86,9 @@
   .rg-mini:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:3px }
   .rg-mini[disabled]{ opacity:.35; cursor:default }
   .rg-mini[disabled]:hover{ color:var(--faint); border-bottom-color:transparent }
+  /* 当たり判定を 40px まで広げる（見た目は変えない） */
+  .rg-mini{ position:relative }
+  .rg-mini::after{ content:""; position:absolute; left:-6px; right:-6px; top:-13px; bottom:-13px }
 
   /* 主ボタン */
   .rg-btn{
@@ -86,17 +106,28 @@
     border:1px solid var(--line-soft); margin-top:20px;
   }
   @media (max-width:620px){ .rg-picks{ grid-template-columns:1fr } }
+  /* 二機関は順に現れる。選ぶと他方が退き、職員番号の生成が走ってから発行へ移る */
+  .rg-picks.is-in .rg-pick{ animation:rg-pick-in .55s cubic-bezier(.16,1,.3,1) both; animation-delay:calc(var(--i,0) * 340ms) }
+  @keyframes rg-pick-in{ from{ opacity:0; clip-path:inset(0 100% 0 0) } to{ opacity:1; clip-path:inset(0 0 0 0) } }
   .rg-pick{
     display:block; width:100%; text-align:left; padding:clamp(18px,2.6vw,26px);
     background:var(--surface-2); border:0; color:var(--text); font:inherit; cursor:pointer;
-    transition:background .3s ease;
+    transition:background .3s ease, opacity .4s ease, box-shadow .3s ease;
   }
   .rg-pick:hover{ background:var(--surface) }
   .rg-pick:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:-1px }
+  .rg-pick:hover .rg-pick-sig{ border-color:var(--ice-deep); box-shadow:0 0 12px -3px rgba(167,220,236,.5) }
+  .rg-picks.is-issuing .rg-pick{ pointer-events:none }
+  .rg-picks.is-issuing .rg-pick:not(.is-chosen){ opacity:.3 }
+  .rg-pick.is-chosen{ background:var(--surface); box-shadow:inset 0 0 0 1px var(--ice-deep) }
+  .rg-issue{ margin:18px 0 0; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--ice-dim) }
+  .rg-issue-bar{ display:block; margin-top:10px; height:1px; background:var(--line-soft); position:relative; overflow:hidden }
+  .rg-issue-bar i{ position:absolute; inset:0; background:var(--ice); transform-origin:0 50% }
+  .rg-issue.is-on .rg-issue-bar i{ animation:apt-draw .8s cubic-bezier(.2,.7,.3,1) both }
   .rg-pick-head{ display:flex; align-items:center; gap:12px }
   .rg-pick-sig{
     flex:none; width:30px; height:30px; display:grid; place-items:center;
-    border:1px solid var(--line); overflow:hidden;
+    border:1px solid var(--line); overflow:hidden; transition:border-color .3s ease, box-shadow .3s ease;
   }
   .rg-pick-sig img{ width:19px; height:19px; object-fit:contain }
   .rg-pick-name{ font-size:13px; letter-spacing:.05em; color:var(--text) }
@@ -213,39 +244,60 @@
       </div>
     </section>
 
-    <!-- ══ 検査 ══ -->
-    <section class="rg-panel" id="rg-exam" hidden>
+    <!-- ══ 検査 ══
+         走査線と環は装飾（aria-hidden）。進捗の文言 #rg-prog-num だけが読み上げの対象。 -->
+    <section class="rg-panel apt-stage" id="rg-exam" hidden>
       <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
-      <div class="rg-prog">
-        <span class="rg-prog-num" id="rg-prog-num">01 / 16</span>
-        <span class="rg-prog-bar"><i id="rg-prog-fill" style="width:0%"></i></span>
+      <div class="apt-scan" aria-hidden="true"></div>
+      <svg class="apt-ring" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <circle cx="50" cy="50" r="46" class="apt-ring-faint"/>
+        <g class="apt-ring-spin">
+          <circle cx="50" cy="50" r="38" class="apt-ring-dash"/>
+          <circle cx="50" cy="50" r="38" class="apt-ring-arc"/>
+        </g>
+        <g class="apt-ring-spin-rev">
+          <circle cx="50" cy="50" r="28" class="apt-ring-thin"/>
+          <rect x="48.5" y="20.5" width="3" height="3" class="apt-ring-node"/>
+        </g>
+      </svg>
+      <div class="apt-tele">
+        <span id="rg-prog-num">Q 01 ／ 16</span>
+        <span aria-hidden="true" id="rg-tele-time">ELAPSED 00:00<i class="apt-cur"></i></span>
+        <span aria-hidden="true">KEY A ／ B</span>
       </div>
-      <div aria-live="polite">
-        <p class="rg-qid" id="rg-qid">Q01</p>
-        <p class="rg-qtext" id="rg-qtext"></p>
+      <div class="rg-ticks" id="rg-ticks" aria-hidden="true"></div>
+      <div class="apt-q" id="rg-q">
+        <p class="rg-qid apt-qid" id="rg-qid" aria-hidden="true">Q01</p>
+        <p class="rg-qtext" id="rg-qtext" aria-live="polite"></p>
       </div>
-      <div class="rg-choices">
-        <button class="rg-choice" type="button" data-c="a">
+      <div class="rg-choices" id="rg-choices">
+        <button class="rg-choice" type="button" data-c="a" style="--i:0">
           <span class="rg-choice-k" aria-hidden="true">A</span><span id="rg-ca"></span>
         </button>
-        <button class="rg-choice" type="button" data-c="b">
+        <button class="rg-choice" type="button" data-c="b" style="--i:1">
           <span class="rg-choice-k" aria-hidden="true">B</span><span id="rg-cb"></span>
         </button>
       </div>
+      <p class="apt-stamp" id="rg-stamp" aria-live="polite"></p>
       <div class="rg-actions">
-        <button class="rg-mini" type="button" id="rg-back" disabled>◂ 前の設問へ戻る</button>
+        <button class="rg-mini" type="button" id="rg-prev" disabled>◂ 前の設問へ戻る</button>
         <button class="rg-mini" type="button" id="rg-abort">検査を中止する</button>
       </div>
     </section>
 
     <!-- ══ 配属先の選択 ══ -->
-    <section class="rg-panel" id="rg-pick" hidden>
+    <section class="rg-panel apt-stage" id="rg-pick" hidden>
       <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i>
+      <div class="apt-scan" aria-hidden="true"></div>
       <h2 class="ah-h2">配属先の選択<em>Assignment</em></h2>
       <div class="ah-body-col">
         <p>検査の結果、適性が認められた機関は二つである。いずれかを選ばれたい。選ばれなかった機関へは、その旨のみが通知される。</p>
       </div>
       <div class="rg-picks" id="rg-pick-list"></div>
+      <p class="rg-issue" id="rg-issue" aria-live="polite" hidden>
+        <span id="rg-issue-text"></span>
+        <span class="rg-issue-bar" aria-hidden="true"><i></i></span>
+      </p>
     </section>
 
     <!-- ══ 結果・職員証 ══ -->

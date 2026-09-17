@@ -29,29 +29,121 @@
 .apt-form input[type=checkbox]{ width:14px; height:14px; accent-color:var(--ice-dim) }
 .apt-form select:focus-visible, .apt-form input:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:2px }
 
-/* 出題 */
-.apt-prog{ display:flex; align-items:center; gap:12px; margin-bottom:26px }
-.apt-prog-bar{ flex:1; height:1px; background:var(--line); position:relative }
-.apt-prog-bar i{ position:absolute; inset:0 auto 0 0; background:var(--ice-dim); transition:width .3s ease }
-.apt-counter{ font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--faint); white-space:nowrap }
-.apt-qid{ font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--faint) }
-.apt-qtext{ margin:8px 0 26px; font-family:var(--serif); font-size:clamp(17px,2.6vw,22px); line-height:1.8; color:var(--text); font-weight:300 }
+/* ── 出題の舞台 ──────────────────────────────────────
+   走査線・環・計器行・記録印・共通の動きは、registry.html の資質検査も
+   そのまま使う（.apt-stage / .apt-scan / .apt-ring / .apt-tele / .apt-stamp）。
+   動きはすべて transform / opacity / clip-path のみ。状態の前進は JS の
+   タイマーが行い、アニメーションの終了には依存しない。
+   prefers-reduced-motion では ah-common.css が動きを止めるため、
+   初期状態は必ず「見える」状態にし、消えた状態は @keyframes の from にだけ書く。 */
+.apt-stage{ overflow:hidden }
+.apt-stage > :where(:not(.ah-corner):not(.apt-scan):not(.apt-ring)){ position:relative; z-index:1 }
 
-/* 6段階・縦・ノッチ */
+/* 走査線：淡い帯が上から下へ流れる */
+.apt-scan{ position:absolute; inset:0; z-index:0; pointer-events:none }
+.apt-scan::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:100%;
+  background:linear-gradient(to bottom, transparent, rgba(167,220,236,.05) 50%, transparent) top / 100% 90px no-repeat;
+  transform:translateY(-90px); animation:apt-scan 9s linear infinite;
+}
+@keyframes apt-scan{ to{ transform:translateY(100%) } }
+
+/* 環：右上でゆっくり回る計器 */
+.apt-ring{ position:absolute; top:12px; right:12px; z-index:0; width:118px; height:118px; opacity:.6; pointer-events:none; overflow:visible }
+.apt-ring circle, .apt-ring rect{ fill:none; stroke-width:1 }
+.apt-ring-faint{ stroke:var(--line-soft) }
+.apt-ring-dash{ stroke:var(--ice-deep); stroke-dasharray:1.5 4 }
+.apt-ring-arc{ stroke:var(--ice-dim); stroke-width:1.5; stroke-dasharray:44 240; stroke-linecap:round }
+.apt-ring-thin{ stroke:var(--line) }
+.apt-ring-node{ fill:var(--ice-dim); stroke:none }
+.apt-ring-spin, .apt-ring-spin-rev{ transform-box:view-box; transform-origin:50% 50% }
+.apt-ring-spin{ animation:apt-spin 46s linear infinite }
+.apt-ring-spin-rev{ animation:apt-spin 70s linear infinite reverse }
+@keyframes apt-spin{ to{ transform:rotate(360deg) } }
+
+/* 計器行：進捗（読める）＋経過時間（装飾） */
+.apt-tele{
+  display:flex; flex-wrap:wrap; gap:4px 18px; margin:0 0 14px; padding-right:130px;
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.16em; color:var(--ice-dim);
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.apt-tele > span{ display:inline-flex; align-items:center }
+.apt-cur{ display:inline-block; width:5px; height:10px; margin-left:6px; background:var(--ice-dim); animation:apt-blink 1.1s steps(1) infinite }
+@keyframes apt-blink{ 50%{ opacity:0 } }
+
+/* 計器：13 画面を三期に分けた目盛。塗りは画面内の回答率 */
+.apt-gauge{ display:flex; align-items:center; gap:14px; margin:0 0 26px }
+.apt-gauge-g{ display:flex; align-items:center; gap:3px; flex:var(--n,4) 1 0; min-width:0 }
+.apt-gauge-g em{ flex:none; margin-right:5px; font-style:normal; font-family:var(--mono); font-size:8.5px; letter-spacing:.14em; color:var(--faint); transition:color .4s ease }
+.apt-gauge-g.is-on em{ color:var(--ice-dim) }
+.apt-seg{ position:relative; flex:1; height:3px; background:var(--line-soft); overflow:hidden; transition:background .4s ease }
+.apt-seg b{ position:absolute; inset:0; background:var(--ice-deep); transform:scaleX(0); transform-origin:0 50%; transition:transform .45s cubic-bezier(.2,.7,.3,1) }
+.apt-seg.is-done b{ background:var(--ice-dim) }
+.apt-seg.is-cur{ background:var(--ice-deep) }
+.apt-seg.is-cur::after{ content:""; position:absolute; inset:0; background:var(--ice); opacity:0; animation:apt-seg-pulse 2.2s ease-in-out infinite }
+@keyframes apt-seg-pulse{ 50%{ opacity:.4 } }
+
+/* 設問：項目番号は一字ずつ打ち出し、本文は左から拭き出す */
+.apt-qid{ font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--ice-dim); min-height:1.6em }
+.apt-qid.is-typing::after{ content:""; display:inline-block; width:5px; height:9px; margin-left:4px; vertical-align:-1px; background:var(--ice-dim); animation:apt-blink .5s steps(1) infinite }
+.apt-qtext{ margin:8px 0 26px; max-width:40em; font-family:var(--serif-jp); font-size:clamp(17px,2.6vw,22px); line-height:1.8; color:var(--text); font-weight:300 }
+.apt-q.is-in{ animation:apt-in .38s cubic-bezier(.16,1,.3,1) both }
+@keyframes apt-in{
+  from{ opacity:0; transform:translateY(8px); clip-path:inset(0 100% 0 0) }
+  to  { opacity:1; transform:none;            clip-path:inset(0 0 0 0) }
+}
+
+/* 6段階・縦・ノッチ。選択肢は段違いに現れ、押すと帯が一度走る */
 .apt-scale{ position:relative; display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line-soft); max-width:560px }
-.apt-opt{ display:flex; align-items:center; gap:14px; width:100%; text-align:left; padding:13px 16px;
+.apt-scale.is-in .apt-opt{ animation:apt-opt-in .32s cubic-bezier(.16,1,.3,1) both; animation-delay:calc(var(--i,0) * 38ms) }
+@keyframes apt-opt-in{ from{ opacity:0; transform:translateX(-10px) } }
+.apt-opt{ position:relative; overflow:hidden; display:flex; align-items:center; gap:14px; width:100%; min-height:44px; text-align:left; padding:13px 16px;
           background:var(--surface-2); border:0; color:var(--muted); font:inherit; font-size:13px; cursor:pointer;
-          transition:background .25s ease, color .25s ease }
+          transition:background .25s ease, color .25s ease, transform .12s ease }
+.apt-opt::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--ice-dim); transform:scaleY(0); transform-origin:50% 0; transition:transform .25s ease }
+.apt-opt::after{ content:""; position:absolute; top:0; bottom:0; left:0; width:40%; pointer-events:none;
+                 background:linear-gradient(90deg, transparent, rgba(167,220,236,.18), transparent); transform:translateX(-120%) }
 .apt-opt:hover{ background:var(--surface); color:var(--text) }
+.apt-opt:hover::before, .apt-opt:focus-visible::before, .apt-opt.is-on::before{ transform:scaleY(1) }
+.apt-opt:active{ transform:translateX(2px) }
 .apt-opt:focus-visible{ outline:1px solid var(--ice-dim); outline-offset:-1px }
 .apt-opt-n{ flex:none; width:22px; height:22px; display:grid; place-items:center; border:1px solid var(--line); border-radius:50%;
-            font-family:var(--mono); font-size:9px; color:var(--faint); transition:all .25s ease }
+            font-family:var(--mono); font-size:9px; color:var(--faint); transition:background .25s ease, border-color .25s ease, color .25s ease, box-shadow .25s ease }
+.apt-opt:hover .apt-opt-n{ border-color:var(--ice-deep); color:var(--ice-dim) }
 .apt-opt.is-on{ background:var(--surface); color:var(--ice) }
 .apt-opt.is-on .apt-opt-n{ background:var(--ice-dim); border-color:var(--ice-dim); color:#0b1019 }
+.apt-opt.is-hit::after{ animation:apt-sweep .38s ease-out both }
+.apt-opt.is-hit .apt-opt-n{ box-shadow:0 0 10px rgba(167,220,236,.55) }
+@keyframes apt-sweep{ to{ transform:translateX(300%) } }
 .apt-opt:nth-child(3) { border-bottom:1px solid var(--line) }   /* 中点の切れ目 */
 
-/* 期の切れ目 */
+/* 記録印：回答直後に一瞬だけ出る */
+.apt-stamp{ margin:12px 0 0; min-height:15px; font-family:var(--mono); font-size:9.5px; letter-spacing:.22em; color:var(--ice);
+            opacity:0; transform:translateY(3px); transition:opacity .25s ease, transform .25s ease }
+.apt-stamp.is-on{ opacity:1; transform:none }
+
+/* 小さな操作の当たり判定を 40px まで広げる（見た目は変えない） */
+.apt-mini{ position:relative }
+.apt-mini::after{ content:""; position:absolute; left:-6px; right:-6px; top:-13px; bottom:-13px }
+
+/* 期の切れ目：線が引かれ、封が捺される */
 .apt-break h2{ margin:0 0 10px }
+.apt-seal{ display:flex; align-items:center; gap:16px; margin:0 0 18px }
+.apt-seal-line{ flex:1; height:1px; background:var(--ice-dim); transform-origin:0 50% }
+.apt-seal.is-in .apt-seal-line{ animation:apt-draw .7s cubic-bezier(.2,.7,.3,1) both }
+@keyframes apt-draw{ from{ transform:scaleX(0) } }
+.apt-seal-stamp{ flex:none; padding:5px 12px; border:1px solid var(--brass); color:var(--brass);
+                 font-family:var(--mono); font-size:9.5px; letter-spacing:.24em; transform:rotate(-3deg) }
+.apt-seal.is-in .apt-seal-stamp{ animation:apt-stamp-in .45s cubic-bezier(.16,1,.3,1) .55s both }
+@keyframes apt-stamp-in{ from{ opacity:0; transform:rotate(-3deg) scale(1.5) } to{ opacity:1; transform:rotate(-3deg) scale(1) } }
+.apt-seal-text{ margin:0 0 14px; font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:var(--ice-dim) }
+
+@media (max-width:640px){
+  .apt-ring{ width:76px; height:76px; opacity:.4 }
+  .apt-tele{ padding-right:0 }
+  .apt-gauge{ gap:10px }
+  .apt-gauge-g em{ margin-right:3px }
+}
 
 /* 報告書 */
 .apt-status{ display:inline-block; margin-bottom:18px; padding:4px 10px; border:1px solid currentColor;
