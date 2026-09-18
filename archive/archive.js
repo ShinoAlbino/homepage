@@ -119,6 +119,9 @@ function openModal(cardElement) {
     });
   }
 
+  /* 権限連動（archive/archive-access.js）：必要権限の表記と、封じた本文の開封 */
+  if (window.ArchiveAccess) window.ArchiveAccess.onOpen(cardElement);
+
   modal.classList.add('is-active');
   document.body.style.overflow = 'hidden';
 }
