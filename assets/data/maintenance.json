@@ -22,17 +22,17 @@
     },
     {
       "id": "SECTOR-03",
-      "name": "確率事象制御区画",
-      "en": "PROBABILITY ENGINE",
+      "name": "遊戯福利区画",
+      "en": "RECREATION & WELFARE",
       "status": "UNSTABLE",
-      "note": "演算装置の自走が断続的に確認される。実害の報告はない。"
+      "note": "抽選装置 Lottery と時間停止観測装置 Chrono Impedimentum が稼働。抽選装置の自走が断続的に確認される。実害の報告はない。"
     },
     {
       "id": "SECTOR-04",
       "name": "事務処理支援区画",
       "en": "ARCA OFFICE — SERIES",
       "status": "QUARANTINED",
-      "note": "帳票生成 Tabula と野帳 Venatio のみ運用。残る個体は検疫のため隔離。"
+      "note": "帳票生成 Tabula と給与計算 Merces を運用。残る個体は検疫のため隔離。"
     },
     {
       "id": "GATE 05",

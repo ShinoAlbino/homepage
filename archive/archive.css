@@ -1258,3 +1258,12 @@
 .vault-note a { color: var(--primary-color); }
 .vault-busy { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; }
 
+
+/* 権限付与規程（CLR-001）── 伏せた区分 */
+.findings-list li.is-sealed { opacity: .72; border-left-color: rgba(119, 221, 255, .25); }
+.clr-redact { background: var(--text-secondary, #a0a0b0); color: transparent; border-radius: 1px; padding: 0 2px; user-select: none; }
+.content-section a { color: var(--primary-color); }
+
+/* 書誌の関連文書リンク（モーダル内） */
+.doc-link { color: var(--primary-color); text-decoration: none; border-bottom: 1px dotted currentColor; }
+.doc-link:hover { color: #fff; }

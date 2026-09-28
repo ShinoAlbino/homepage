@@ -528,11 +528,11 @@
   }
 
   /* ==========================================================
-     事務処理支援区画：端末選択ダイアログ
+     端末選択ダイアログ（事務処理支援区画・遊戯福利区画で共用）
+     区画カード（role=button）を押すと、配下の端末一覧を開く。
      ========================================================== */
-  const officeCard = document.getElementById('office-card');
-  const appModal = document.getElementById('app-modal');
-  if (officeCard && appModal) {
+  const setupDirectory = (officeCard, appModal, openMsg) => {
+    if (!officeCard || !appModal) return;
     const panel = appModal.querySelector('.modal-panel');
     const items = appModal.querySelectorAll('.app-item');
     const CLOSE_MS = 300; // modalOut と揃える
@@ -571,7 +571,7 @@
       // 閉じるボタンより先に、先頭の端末へフォーカスを置く
       const first = appModal.querySelector('a.app-item') || focusables()[0];
       if (first) first.focus({ preventScroll: true });
-      pushLog('', 'ARCA OFFICE SERIES：端末ディレクトリを展開しました。');
+      pushLog('', openMsg);
     };
 
     const close = () => {
@@ -633,7 +633,12 @@
         first.focus();
       }
     });
-  }
+  };
+
+  setupDirectory(document.getElementById('office-card'), document.getElementById('app-modal'),
+    'ARCA OFFICE SERIES：端末ディレクトリを展開しました。');
+  setupDirectory(document.getElementById('game-card'), document.getElementById('game-modal'),
+    'RECREATION SERIES：端末ディレクトリを展開しました。');
 })();
 
 /* ============================================================
@@ -672,13 +677,24 @@
     },
     '03': {
       id:'SECTOR-03', state:'UNSTABLE', glyph:'率',
-      name:'PROBABILITY ENGINE', jp:'確率事象制御区画',
+      name:'RECREATION — LOTTERY', jp:'遊戯福利区画',
       hue:'#a56bff', unstable:true,
       log:[
         'LINKING TO SECTOR-03 ................. <b>OK</b>',
         'ENTROPY POOL        [<b>████████░░</b>] 87%',
         'CAUSALITY LOCK      <b>RELEASED</b>',
         'WARNING: 観測結果は既に確定している'
+      ]
+    },
+    '03-2': {
+      id:'SECTOR-03', state:'ACTIVE', glyph:'時',
+      name:'RECREATION — CHRONO', jp:'遊戯福利区画',
+      hue:'#46e6d0',
+      log:[
+        'LINKING TO SECTOR-03 ................. <b>OK</b>',
+        'UNIT 02 <b>CHRONO IMPEDIMENTUM</b> .. <b>ONLINE</b>',
+        'TIME AXIS           <b>CALIBRATED</b>',
+        'NOTICE: 判定は常に本当の経過時間で行う'
       ]
     },
     '04': {
@@ -688,8 +704,19 @@
       log:[
         'LINKING TO SECTOR-04 ................. <b>OK</b>',
         'UNIT 01 <b>TABULA</b>       ......... <b>ONLINE</b>',
-        'UNIT 02 LIBRA        ......... QUARANTINED',
-        'UNIT 03 HOROLOGIUM   ......... QUARANTINED'
+        'UNIT 02 MERCES       ......... ONLINE',
+        'UNIT 03 LIBRA        ......... QUARANTINED'
+      ]
+    },
+    '04-2': {
+      id:'SECTOR-04', state:'ACTIVE', glyph:'給',
+      name:'ARCA OFFICE — MERCES', jp:'事務処理支援区画',
+      hue:'#8fc9a8',
+      log:[
+        'LINKING TO SECTOR-04 ................. <b>OK</b>',
+        'UNIT 02 <b>MERCES</b>       ......... <b>ONLINE</b>',
+        'LEDGER SEAL         <b>VERIFIED</b>  [ 労基法108条 ]',
+        'PAYROLL TABLE       <b>令和8年分</b>  LOADED'
       ]
     }
   };

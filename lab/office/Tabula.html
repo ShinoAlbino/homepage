@@ -728,8 +728,8 @@ dialog.wide{max-width:680px}
               <option>御中</option><option>様</option><option>殿</option><option value="">（なし）</option>
             </select>
           </div>
-          <div class="field"><label>郵便番号</label><input data-path="client.postal" placeholder="100-0001"></div>
-          <div class="field full"><label>住所</label><input data-path="client.address1" placeholder="東京都千代田区千代田1-1-1"></div>
+          <div class="field"><label>郵便番号</label><input data-path="client.postal" placeholder="000-0001"></div>
+          <div class="field full"><label>住所</label><input data-path="client.address1" placeholder="箱庭県境界市狭間町1-1-1"></div>
           <div class="field full"><label>建物名など</label><input data-path="client.address2" placeholder="サンプルビル 10F"></div>
           <div class="field"><label>部署名</label><input data-path="client.dept" placeholder="総務部 購買課"></div>
           <div class="field"><label>ご担当者名</label><input data-path="client.person" placeholder="山田 太郎"></div>
@@ -746,11 +746,11 @@ dialog.wide{max-width:680px}
       <div class="body">
         <div class="grid g2">
           <div class="field full"><label>会社名</label><input data-path="issuer.name" placeholder="株式会社アルカホルタス"></div>
-          <div class="field"><label>郵便番号</label><input data-path="issuer.postal" placeholder="150-0001"></div>
-          <div class="field"><label>登録番号（インボイス）</label><input data-path="issuer.regNo" placeholder="T1234567890123"></div>
-          <div class="field full"><label>住所</label><input data-path="issuer.address1" placeholder="東京都渋谷区神宮前1-1-1"></div>
+          <div class="field"><label>郵便番号</label><input data-path="issuer.postal" placeholder="000-0000"></div>
+          <div class="field"><label>登録番号（インボイス）</label><input data-path="issuer.regNo" placeholder="T0000000000000"></div>
+          <div class="field full"><label>住所</label><input data-path="issuer.address1" placeholder="箱庭県観測市記録町1-1-1"></div>
           <div class="field full"><label>建物名など</label><input data-path="issuer.address2"></div>
-          <div class="field"><label>TEL</label><input data-path="issuer.tel" placeholder="03-1234-5678"></div>
+          <div class="field"><label>TEL</label><input data-path="issuer.tel" placeholder="00-0000-0000"></div>
           <div class="field"><label>FAX</label><input data-path="issuer.fax"></div>
           <div class="field"><label>E-mail</label><input data-path="issuer.email"></div>
           <div class="field"><label>部署 / 担当者</label><input data-path="issuer.person" placeholder="営業部 佐藤 花子"></div>
@@ -1216,6 +1216,7 @@ function stampDutyFor(netAmount, payMethod){
 const RATE_LABEL = { "10":"10%", "8":"8%", "0":"非課税" };
 const STORE_KEY = "arcaoffice.tabula.v1";
 const STORE_KEY_OLD = "arcahortus.office.v1";   // 旧名称のデータを引き継ぐため
+const HELP_KEY = "arcaoffice.tabula.helpSeen";   // 初回ヘルプを表示済みか
 
 /* ============================================================
    2. State
@@ -2625,15 +2626,15 @@ function syncAll(){
    sampleDoc() は書類だけ、sampleMasters() はマスタだけを入れる（復元時に使い分ける） */
 function sampleDoc(){
   state.issuer = Object.assign(state.issuer, {
-    name:"株式会社アルカホルタス", postal:"150-0001",
-    address1:"東京都渋谷区神宮前1-1-1", address2:"",
-    tel:"03-1234-5678", fax:"", email:"",
-    person:"営業部　佐藤 花子", regNo:"T1234567890123",
-    bank:"みずほ銀行 渋谷支店（普）1234567\nカ）アルカホルタス"
+    name:"株式会社アルカホルタス", postal:"000-0000",
+    address1:"箱庭県観測市記録町1-1-1", address2:"",
+    tel:"00-0000-0000", fax:"", email:"",
+    person:"営業部　佐藤 花子", regNo:"T0000000000000",
+    bank:"箱庭銀行 記録町支店（普）0000000\nカ）アルカホルタス"
   });
   state.client = Object.assign(state.client, {
-    name:"株式会社サンプル商事", honorific:"御中", postal:"100-0005",
-    address1:"東京都千代田区丸の内2-4-1", address2:"",
+    name:"株式会社サンプル商事", honorific:"御中", postal:"000-0001",
+    address1:"箱庭県境界市狭間町2-4-1", address2:"",
     dept:"", person:"山田 太郎", personHonorific:"様", refNo:""
   });
   state.meta = Object.assign(state.meta, {
@@ -2701,6 +2702,10 @@ document.getElementById("btnNewDoc").onclick = ()=>{
   // 明朝体のロード完了で行の高さが変わるため、確定後に測り直す
   try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=> renderPreview()); }catch(e){}
   window.addEventListener("load", ()=> renderPreview());
+  // 初回のみヘルプを開く（端末ごとに一度。保存できない環境では開かない）
+  try{
+    if(!localStorage.getItem(HELP_KEY)){ localStorage.setItem(HELP_KEY, "1"); dlgHelp.showModal(); }
+  }catch(e){}
   // 印刷ショートカット
   document.addEventListener("keydown", e=>{
     if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==="s"){ e.preventDefault(); document.getElementById("btnSaveDoc").click(); }

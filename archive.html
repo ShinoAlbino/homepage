@@ -64,7 +64,7 @@
           <li class="tree-item active" data-category="all">
             <span class="tree-toggle">▸</span>
             <span class="tree-label">All Records</span>
-            <span class="count" data-count-for="all">(13)</span>
+            <span class="count" data-count-for="all">(16)</span>
           </li>
           <li class="tree-item" data-category="boundary">
             <span class="tree-toggle">▸</span>
@@ -74,7 +74,7 @@
           <li class="tree-item" data-category="protocol">
             <span class="tree-toggle">▸</span>
             <span class="tree-label">Protocols & Systems</span>
-            <span class="count" data-count-for="protocol">(1)</span>
+            <span class="count" data-count-for="protocol">(2)</span>
           </li>
           <li class="tree-item" data-category="anomaly">
             <span class="tree-toggle">▸</span>
@@ -89,7 +89,7 @@
           <li class="tree-item" data-category="tool">
             <span class="tree-toggle">▸</span>
             <span class="tree-label">Instruments &amp; Tools</span>
-            <span class="count" data-count-for="tool">(3)</span>
+            <span class="count" data-count-for="tool">(5)</span>
           </li>
           <li class="tree-item" data-category="pact">
             <span class="tree-toggle">▸</span>
@@ -127,11 +127,11 @@
       <div class="sidebar-stats">
         <div class="stat-item">
           <span class="stat-label">Total Documents</span>
-          <span class="stat-value" id="total-documents">13</span>
+          <span class="stat-value" id="total-documents">16</span>
         </div>
         <div class="stat-item">
           <span class="stat-label">Last Updated</span>
-          <span class="stat-value">2026.09.18</span>
+          <span class="stat-value">2026.09.28</span>
         </div>
       </div>
     </aside>
@@ -157,6 +157,87 @@
       <!-- Archive Grid -->
       <div class="archive-grid">
         
+        <!-- CARD 00: Protocol ── 権限付与規程。LV.6・7 は伏せる。それより上の区分はどこにも書かない -->
+        <article class="archive-card" data-doc-id="CLR-001" data-category="protocol" data-security="public" data-lv="1">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge public">PUBLIC</div>
+            <span class="doc-id">CLR-001</span>
+            <span class="doc-date">2026.09.26</span>
+          </div>
+          <h2 class="archive-title">権限付与規程 ── 権限区分と文書区分</h2>
+          <p class="archive-excerpt">職員の権限区分（CLEARANCE）の付与要件と、所蔵文書に付す文書区分・オブジェクトクラスの読み方。職員登録局 発行。</p>
+
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 1 / PUBLIC</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Issued By:</span>
+                <span class="meta-value">職員登録局 (AH-REG)</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Version:</span>
+                <span class="meta-value">1.0</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Status:</span>
+                <span class="meta-value">ACTIVE</span>
+              </div>
+            </div>
+
+            <div class="content-section">
+              <h3>一　権限区分（CLEARANCE）</h3>
+              <p>権限区分は、所蔵文書の開示範囲を定める。区分は職員証に記載され、全頁の見出しに表示される。</p>
+              <p>区分は、到達した最高の段ではなく、<b>下から連続して満たした要件の段数</b>で決まる。要件の充足はいつでも記録されるが、到達は順序に従う。</p>
+              <ul class="findings-list">
+                <li><b>LEVEL 1 ／ 登録のみ</b> — 付与要件なし。職員登録の有無を問わず、この区分として扱う。PUBLIC の文書を閲覧できる。</li>
+                <li><b>LEVEL 2 ／ 職員証所持者</b> — <a href="registry.html">職員登録局</a>で資質検査を受け、職員証の発行を受ける。配属機関はこの時点で定まる。</li>
+                <li><b>LEVEL 3 ／ 課題達成者</b> — 本館に収める配属機関の所蔵文書を、末尾まで読む。対象は配属機関の文書に限る（Affiliated Organizations）。</li>
+                <li><b>LEVEL 4 ／ 暗号解読者</b> — 次の二つの要件のうち、いずれか一方を満たす。<br>
+                  ・照合 ── <a href="collation/">照合端末（AH-REG-003）</a>において、自機関の記録に認められた疵を照合する。奏上するのは、疵が認められた文書の文書番号である。<br>
+                  ・適性検査 ── <a href="aptitude/">適性検査</a>を完了する。判定が却下でなければ充足とする。結果の良否によって区分は変えない。</li>
+                <li><b>LEVEL 5 ／ 内部資格</b> — 前項の二つの要件を、両方とも満たす。</li>
+                <li class="is-sealed"><b>LEVEL 6 ／ <span class="clr-redact">██████████</span></b> — 付与要件は、当該区分の保持者にのみ開示される。</li>
+                <li class="is-sealed"><b>LEVEL 7 ／ <span class="clr-redact">██████████</span></b> — 付与要件は、当該区分の保持者にのみ開示される。</li>
+              </ul>
+              <p>照合・適性検査は LEVEL 3 に達する前でも受けられる。その場合、要件は充足として記録され、LEVEL 3 の要件を満たした時点で、充足した数に応じた区分に到達する。</p>
+              <p>職員証の区分表示のみを書き換えても、封じた本文は開かない。開示は区分の表示ではなく、付与の記録によって行われる。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>二　文書区分（SECURITY）</h3>
+              <p>各文書の左上に付す。文書に必要な区分は、カードに LV として示す。区分が足りない文書は、概要と書誌のみを示し、本文を封じる。</p>
+              <ul class="findings-list">
+                <li><b>PUBLIC</b> — 無条件公開。LEVEL 1 から閲覧できる。</li>
+                <li><b>RESTRICTED</b> — 職員向け。所定の区分（LEVEL 3 以上）で本文を開示する。</li>
+                <li><b>CLASSIFIED</b> — 機密。LEVEL 4 以上、かつ照合の記録がある者に本文を開示する。適性検査によって LEVEL 4 に達した者には開示しない。</li>
+              </ul>
+            </div>
+
+            <div class="content-section">
+              <h3>三　オブジェクトクラス（OBJECT CLASS）</h3>
+              <p>機構の文書・区画の見出しに付す分類。対象の性質を示すものであり、閲覧の可否を示すものではない。</p>
+              <ul class="findings-list">
+                <li><b>SAFE</b> — 静的で、挙動が安定しているもの。</li>
+                <li><b>EUCLID</b> — 閲覧者の状態や区分によって、表示が変わるもの。本館はこれにあたる。</li>
+                <li><b>THAUMIEL</b> — 機構の中枢に関わるもの。戦略上重要。</li>
+                <li><b>KETER</b> — 封印区画。未開放。</li>
+                <li><b>NEUTRALIZED</b> — 廃止され、到達できないもの。</li>
+              </ul>
+              <p class="signature">職員登録局 ／ AH-REG</p>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Protocol</span>
+            <span class="archive-tag">#Clearance</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
         <!-- CARD 01: Boundary Phenomena -->
         <article class="archive-card" data-doc-id="REG-001" data-vault="1" data-category="boundary" data-security="classified" data-lv="4">
           <div class="card-glow"></div>
@@ -538,7 +619,7 @@
               </div>
               <div class="meta-item">
                 <span class="meta-label">Series:</span>
-                <span class="meta-value">SECTOR-03 確率事象制御区画</span>
+                <span class="meta-value">SECTOR-03 遊戯福利区画</span>
               </div>
               <div class="meta-item">
                 <span class="meta-label">Format:</span>
@@ -591,6 +672,154 @@
             <span class="read-more">ACCESS ✦</span>
     
       </div>
+        </article>
+
+
+        <!-- CARD 08: Instruments & Tools -->
+        <article class="archive-card" data-doc-id="TOL-004" data-category="tool" data-security="public" data-lv="1">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge public">PUBLIC</div>
+            <span class="doc-id">TOL-004</span>
+            <span class="doc-date">2026.09.27</span>
+          </div>
+          <h2 class="archive-title">ArcaOffice Merces ── 勤怠・給与計算端末</h2>
+          <p class="archive-excerpt">出勤簿・給与明細・賞与明細・賃金台帳・年次有給休暇管理簿・労働者名簿を作成する単一ファイルのツール。入力データは端末内で完結し、外部へ送信されない。</p>
+
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 1 / PUBLIC</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Series:</span>
+                <span class="meta-value">ArcaOffice</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Version:</span>
+                <span class="meta-value">1.0（2026年9月）</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Format:</span>
+                <span class="meta-value">単一HTMLファイル</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">External Access:</span>
+                <span class="meta-value">NONE（外部通信なし）</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Status:</span>
+                <span class="meta-value">ACTIVE</span>
+              </div>
+            </div>
+
+            <div class="content-section">
+              <h3>何ができるか</h3>
+              <p>出退勤の記録から、給与・賞与の計算、法定帳簿の作成までを1つの画面で行います。ブラウザだけで動き、インストールは不要です。</p>
+              <ul class="findings-list">
+                <li><b>出勤簿・シフト表</b> — 時間外（1日8時間・週40時間超）・深夜・休日労働を自動集計。1か月単位の変形労働時間制・フレックス・管理監督者にも対応します</li>
+                <li><b>給与明細・賞与明細</b> — 月給・日給・時給。社会保険料（令和8年度料率・子ども・子育て支援金を含む）と源泉所得税（令和8年分）を自動計算します</li>
+                <li><b>法定帳簿</b> — 賃金台帳、労働者名簿、年次有給休暇管理簿（5日取得義務の判定つき）、36協定の時間外・休日労働 実績管理表</li>
+                <li><b>臨時雇用・外注</b> — 臨時アルバイト（丙欄）や、個人への業務委託の報酬と源泉徴収・支払通知書も扱えます</li>
+                <li><b>書き出し</b> — Excel(.xlsx) と CSV。すべての帳票を手書き用の白紙様式でも印刷できます</li>
+              </ul>
+            </div>
+
+            <div class="content-section">
+              <h3>データの扱い</h3>
+              <p>入力した内容は、<b>いま開いているブラウザの中</b>（IndexedDB）にのみ保存されます。外部に送信されることは一切ありません。TOL-001 と同じく、外部通信を禁止する宣言（Content-Security-Policy の <code>connect-src 'none'</code>）をファイルの先頭に書いてあるため、仕組みとして送信できません。</p>
+              <p>ブラウザやPCを変えるとデータは引き継がれません。ツール内の「書き出し」→「全データを書き出し（JSON）」で定期的にバックアップしてください。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>ご利用条件</h3>
+              <p>無償でご利用いただけます。個人・法人を問わず、業務でお使いいただけます。<b>本ファイルの再配布・転載・販売はご遠慮ください。</b></p>
+              <p>計算結果および作成された帳票の内容について、著作者は責任を負いません。最終的な給与計算・届出は社会保険労務士・税理士等の確認のもとで行ってください。</p>
+            </div>
+
+            <div class="tool-actions">
+              <a class="tool-btn primary" href="/lab/office/Merces.html">→ ブラウザで開く</a>
+              <a class="tool-btn" href="/lab/office/Merces.html" download="ArcaOffice_Merces.html">⇩ オフライン版をダウンロード</a>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Tool</span>
+            <span class="archive-tag">#Office</span>
+            <span class="archive-tag">#Payroll</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
+        </article>
+
+
+        <!-- CARD 09: Instruments & Tools -->
+        <article class="archive-card" data-doc-id="TOL-005" data-category="tool" data-security="public" data-lv="1">
+          <div class="card-glow"></div>
+          <div class="card-header">
+            <div class="security-badge public">PUBLIC</div>
+            <span class="doc-id">TOL-005</span>
+            <span class="doc-date">2026.09.28</span>
+          </div>
+          <h2 class="archive-title">Chrono Impedimentum ── 時間停止観測装置</h2>
+          <p class="archive-excerpt">スタートとストップだけで遊ぶストップウォッチゲーム。ジャスト・ゾロ目・チキンレース・反射神経・定例実験の5モードと、参加者による対戦に対応。</p>
+
+          <div class="archive-full-content" style="display: none;">
+            <div class="metadata-grid">
+              <div class="meta-item">
+                <span class="meta-label">Classification:</span>
+                <span class="meta-value">Level 1 / PUBLIC</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Series:</span>
+                <span class="meta-value">SECTOR-03 遊戯福利区画</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Format:</span>
+                <span class="meta-value">単一HTMLファイル</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">External Access:</span>
+                <span class="meta-value">書体の読み込みのみ（記録の送信なし）</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Status:</span>
+                <span class="meta-value">ACTIVE</span>
+              </div>
+            </div>
+
+            <div class="content-section">
+              <h3>何ができるか</h3>
+              <p>操作はスタートとストップだけ。何を狙うかをモードで、どこまで危険を取るかを RISK で選びます。宴会の余興や休憩時間の対戦に使えます。</p>
+              <ul class="findings-list">
+                <li><b>5つのモード</b> — 目標タイムぴったりで止める「ジャスト」、7.77 などの並びを狙う「ゾロ目」、爆発直前で止める「チキンレース」、光った瞬間に止める「反射神経」、日替わりの「定例実験」</li>
+                <li><b>RISK とギミック</b> — 数字が消える・進みが狂う・鏡像になるなどの妨害を賭けるほど倍率が上がります。判定は常に本当の経過時間です</li>
+                <li><b>対戦</b> — 参加者を登録すると交代制に。3ROUND MATCH で合計点を競えます</li>
+                <li><b>記録</b> — ランキング・計測ログ・観測称号。結果はコピーや X で共有できます</li>
+              </ul>
+            </div>
+
+            <div class="content-section">
+              <h3>データの扱い</h3>
+              <p>記録と設定は、<b>いま開いているブラウザの中（localStorage）にのみ保存</b>されます。外部へ送信されることはありません。表示用の書体を Google Fonts から読み込むため、初回はインターネット接続が必要です。</p>
+            </div>
+
+            <div class="content-section">
+              <h3>ご利用条件</h3>
+              <p>無償でご利用いただけます。<b>本ファイルの再配布・転載・販売はご遠慮ください。</b></p>
+            </div>
+
+            <div class="tool-actions">
+              <a class="tool-btn primary" href="/lab/game/stopwatch.html">→ ブラウザで開く</a>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <span class="archive-tag">#Tool</span>
+            <span class="archive-tag">#Party</span>
+            <span class="archive-tag">#Game</span>
+            <span class="read-more">ACCESS ✦</span>
+          </div>
         </article>
 
 
