@@ -112,10 +112,19 @@
      暗い宇宙に白い正方形が浮いてしまう。紋章は円の中に収まっているため
      円形に切り抜いて、縁を淡く発光させて背景になじませる。 */
   .ah-emblem{
-    position:relative; width:44%; height:auto;
+    display:block; width:100%; height:auto;
     border-radius:50%;
     box-shadow:0 0 0 1px rgba(167,220,236,.28), 0 0 34px rgba(122,196,222,.34);
+    transition:box-shadow .5s, filter .5s;
   }
+  /* 紋章は照合端末（collation/）への入口を兼ねる。文字では示さない */
+  .ah-emblem-link{ position:relative; display:block; width:44%; border-radius:50% }
+  .ah-emblem-link:hover .ah-emblem,
+  .ah-emblem-link:focus-visible .ah-emblem{
+    box-shadow:0 0 0 1px rgba(242,215,158,.55), 0 0 46px rgba(242,215,158,.42);
+    filter:brightness(1.06);
+  }
+  .ah-emblem-link:focus-visible{ outline:1px solid var(--ice); outline-offset:6px }
 
   /* A.R.C.A. TERMINAL（起動シーケンス） */
   .ah-term{
@@ -361,7 +370,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </g>
           <path d="M6 100h188" stroke="rgba(167,220,236,.12)" stroke-width=".5" stroke-dasharray="2 6"/>
         </svg>
-        <img class="ah-emblem" src="images/topImage1.png" alt="Arca Hortus 紋章" width="479" height="472" fetchpriority="high">
+        <a class="ah-emblem-link" href="collation/" title="照合端末" aria-label="照合端末（AH-REG-003）">
+          <img class="ah-emblem" src="images/topImage1.png" alt="Arca Hortus 紋章" width="479" height="472" fetchpriority="high">
+        </a>
       </div>
     </section>
 

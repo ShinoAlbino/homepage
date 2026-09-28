@@ -100,6 +100,10 @@ body.ah-body :where(a){ color:inherit; text-decoration:none }
   background:linear-gradient(to bottom, rgba(5,7,12,.94), rgba(5,7,12,.6));
   backdrop-filter:blur(9px); -webkit-backdrop-filter:blur(9px);
 }
+/* リンクの基本色。個別の指定が無いリンクがブラウザ既定の青・紫に落ちないようにする。
+   要素セレクタなので、各所の個別指定（.ah-mark a 等）が常に優先される */
+a{ color:var(--ice) }
+.ah-foot-mark a{ color:inherit; text-decoration:none }
 .ah-mark a{ color:inherit; text-decoration:none }
 .ah-mark b{ font-family:var(--serif-en); font-weight:500; font-size:22px; letter-spacing:.05em; color:var(--text-strong) }
 .ah-mark span{ margin-left:10px; font-family:var(--mono); font-size:9px; letter-spacing:.3em; color:var(--faint) }
