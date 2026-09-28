@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>照合端末 | Arca Hortus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Roboto+Mono:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#03060a;
+  --deep:#060d14;
+  --line:#152530;
+  --line-hot:#27505e;
+  --cyan:#7fe3dc;
+  --pale:#cfdee1;
+  --dim:#57696f;
+  --violet:#9b93ee;   /* 神議り */
+  --gold:#f2d79e;     /* 順 ── 徴が立つ */
+  --vermil:#e0705a;   /* 逆 ── 徴が曇る */
+
+  --kushi:#cfe6ee;    /* 奇魂 銀白 */
+  --nigi:#8fd6ae;     /* 和魂 翠 */
+  --ara:#e08472;      /* 荒魂 朱 */
+
+  --mincho:"Shippori Mincho",'Hiragino Mincho ProN','Yu Mincho',serif;
+  --mono:"Roboto Mono",'BIZ UDGothic','Yu Gothic',monospace;
+
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;background:var(--void);color:var(--pale);
+  font-family:var(--mono);font-size:14px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+
+/* ══ 宙 ══════════════════════════════════════ */
+.sky{position:fixed;inset:0;pointer-events:none;z-index:0}
+.sky i{position:absolute;inset:-20%;
+  background-image:
+    radial-gradient(1.4px 1.4px at 12% 18%,rgba(207,222,225,.7),transparent),
+    radial-gradient(1px 1px at 78% 9%,rgba(127,227,220,.6),transparent),
+    radial-gradient(1px 1px at 34% 72%,rgba(207,222,225,.45),transparent),
+    radial-gradient(1.6px 1.6px at 63% 44%,rgba(155,147,238,.6),transparent),
+    radial-gradient(1px 1px at 91% 66%,rgba(207,222,225,.4),transparent),
+    radial-gradient(1px 1px at 48% 91%,rgba(127,227,220,.45),transparent),
+    radial-gradient(1px 1px at 7% 55%,rgba(207,222,225,.45),transparent),
+    radial-gradient(1.4px 1.4px at 86% 31%,rgba(207,222,225,.35),transparent),
+    radial-gradient(1px 1px at 22% 38%,rgba(127,227,220,.3),transparent),
+    radial-gradient(1px 1px at 57% 14%,rgba(207,222,225,.35),transparent),
+    radial-gradient(1px 1px at 70% 82%,rgba(155,147,238,.35),transparent),
+    radial-gradient(1px 1px at 40% 28%,rgba(207,222,225,.3),transparent);
+  animation:drift 190s linear infinite;
+}
+@keyframes drift{to{transform:translate3d(-6%,4%,0) scale(1.06)}}
+.sky::after{content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 34%,rgba(127,227,220,.06),transparent 72%),
+    radial-gradient(ellipse 50% 40% at 18% 78%,rgba(155,147,238,.05),transparent 70%),
+    radial-gradient(ellipse 140% 100% at 50% 106%,rgba(3,6,10,.92),transparent 62%);
+}
+
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 clamp(14px,3vw,34px) 72px}
+
+/* ══ ヘッダ ═══════════════════════════════════ */
+.top{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;
+  padding:24px 0 15px;border-bottom:1px solid var(--line)}
+.brand{font-family:var(--mincho);font-weight:800;font-size:20px;letter-spacing:.2em;color:var(--pale)}
+.brand small{display:block;font-family:var(--mincho);font-style:italic;font-weight:400;
+  font-size:10px;letter-spacing:.12em;color:var(--dim);margin-top:5px}
+.docid{font-size:10px;letter-spacing:.26em;color:var(--dim)}
+.link{margin-left:auto;display:flex;gap:7px;align-items:center;font-size:10px;letter-spacing:.2em;color:var(--dim)}
+.pip{width:5px;height:5px;background:var(--cyan);border-radius:50%;
+  box-shadow:0 0 10px var(--cyan);animation:pulse 3.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));
+  border:1px solid var(--line);border-bottom:none;margin:20px 0 0}
+.meta div{padding:9px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.meta div:last-child{border-right:none}
+.meta dt{font-size:8.5px;letter-spacing:.24em;color:var(--dim);margin:0 0 3px}
+.meta dd{margin:0;font-size:12px;letter-spacing:.09em;color:var(--pale)}
+
+.provenance{border:1px solid var(--line);border-bottom:none;
+  padding:9px 14px;display:flex;gap:22px;flex-wrap:wrap;
+  font-size:9.5px;letter-spacing:.14em;color:#3f5158;background:rgba(6,13,20,.4)}
+
+/* ══ 審議台 ═══════════════════════════════════ */
+.stage{position:relative;border:1px solid var(--line);border-top:none;overflow:hidden;
+  padding:clamp(24px,4vw,44px) clamp(14px,3vw,30px) clamp(26px,4vw,40px);
+  background:
+    linear-gradient(180deg,rgba(6,13,20,.75),rgba(3,6,10,.2) 60%),
+    repeating-linear-gradient(0deg,rgba(127,227,220,.028) 0 1px,transparent 1px 3px);
+}
+.stage::before,.stage::after{content:"";position:absolute;width:26px;height:26px;
+  border:1px solid var(--line-hot);pointer-events:none}
+.stage::before{top:12px;left:12px;border-right:none;border-bottom:none}
+.stage::after{bottom:12px;right:12px;border-left:none;border-top:none}
+
+.stagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+  position:relative;z-index:6}
+.bigword{font-family:var(--mincho);font-weight:800;font-size:clamp(34px,6vw,58px);
+  letter-spacing:.24em;line-height:1;color:var(--pale);
+  text-shadow:0 0 36px rgba(127,227,220,.18)}
+.bigword em{display:block;font-family:var(--mincho);font-style:italic;font-weight:400;
+  font-size:10.5px;letter-spacing:.1em;color:var(--dim);margin-top:11px}
+.bigword .charge{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+  color:var(--dim);margin-top:17px;padding-left:11px;border-left:1px solid var(--line-hot)}
+.stagehead .right{text-align:right}
+.verdict{font-family:var(--mincho);font-weight:800;font-size:clamp(34px,5.6vw,58px);
+  letter-spacing:.2em;line-height:1;color:#31424a;transition:color .6s,text-shadow .6s}
+.verdict.is-run{color:var(--violet);text-shadow:0 0 34px rgba(155,147,238,.55)}
+.verdict.is-pass{color:var(--gold);text-shadow:0 0 48px rgba(242,215,158,.62)}
+.verdict.is-fail{color:var(--vermil);text-shadow:0 0 34px rgba(224,112,90,.45)}
+.vsub{font-family:var(--mincho);font-style:italic;font-size:10px;letter-spacing:.1em;
+  color:var(--dim);margin-top:9px}
+.consensus{font-size:9.5px;letter-spacing:.26em;color:var(--dim);margin-top:5px}
+
+/* ── 三足の審議場 ── */
+.triad{position:relative;width:100%;max-width:660px;margin:clamp(6px,1.5vw,14px) auto 0;
+  aspect-ratio:1/.82}
+
+.orbit{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);
+  width:74%;aspect-ratio:1;pointer-events:none}
+.orbit .r{position:absolute;inset:0;border-radius:50%}
+.r1{border:1px solid rgba(127,227,220,.20);animation:spin 72s linear infinite;z-index:1}
+.r1::after{content:"";position:absolute;top:-5px;left:50%;width:9px;height:9px;margin-left:-4.5px;
+  border-radius:50%;background:var(--gold);box-shadow:0 0 18px var(--gold),0 0 34px rgba(242,215,158,.5)}
+.r2{inset:9%;border:1px dashed rgba(155,147,238,.26);animation:spin 118s linear reverse infinite;z-index:5}
+.r3{inset:21%;border:1px solid rgba(127,227,220,.12);z-index:1}
+.r4{inset:-7%;border:1px solid rgba(39,80,94,.5);z-index:5}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.sweep{position:absolute;inset:0;border-radius:50%;z-index:1;opacity:0;transition:opacity .6s;
+  background:conic-gradient(from 0deg,rgba(155,147,238,.30),transparent 26%);
+  animation:spin 3.4s linear infinite}
+.triad.is-busy .sweep{opacity:1}
+
+.tickring{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);
+  width:82%;aspect-ratio:1;z-index:5;pointer-events:none;opacity:.5}
+.web{position:absolute;inset:0;z-index:2;pointer-events:none}
+
+/* 直霊の座 ── 空位 */
+.seat{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);z-index:3;
+  text-align:center;pointer-events:none;width:28%}
+.seatlabel{font-family:var(--mincho);font-size:10px;letter-spacing:.34em;
+  color:#3d525b;text-indent:.34em;transition:color .6s}
+.seatval{font-size:11px;letter-spacing:.12em;color:#4a6470;margin-top:5px;
+  transition:color .6s,text-shadow .6s;word-break:break-all}
+.seatorg{font-size:9px;letter-spacing:.06em;color:#3d525b;margin-top:4px;
+  line-height:1.5;transition:color .6s}
+.seatorg::before{content:"";display:block;width:26px;height:1px;margin:0 auto 6px;
+  background:var(--line-hot)}
+.triad.is-seated .seatlabel{color:var(--dim)}
+.triad.is-seated .seatval{color:var(--gold);text-shadow:0 0 16px rgba(242,215,158,.45)}
+.triad.is-seated .seatorg{color:var(--dim)}
+
+/* ── 基 ── */
+.node{position:absolute;width:35%;aspect-ratio:1/1.07;z-index:4;
+  filter:drop-shadow(0 0 0 rgba(0,0,0,0));transition:filter .6s}
+.node[data-node="ocu"]{left:50%;top:0;transform:translateX(-50%)}
+.node[data-node="lor"]{left:1%;bottom:0}
+.node[data-node="spa"]{right:1%;bottom:0}
+.node.is-run{filter:drop-shadow(0 0 26px rgba(155,147,238,.45))}
+.node.is-pass{filter:drop-shadow(0 0 34px rgba(242,215,158,.42))}
+.node.is-fail{filter:drop-shadow(0 0 26px rgba(224,112,90,.38))}
+
+.hex,.hexin,.hexedge{position:absolute;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%)}
+.hex{inset:0;background:var(--line-hot);transition:background .5s}
+.hexin{inset:1.6px;background:linear-gradient(170deg,#08141b,#040a0f 70%);
+  overflow:hidden;transition:background .5s}
+.hexedge{inset:11px;background:rgba(127,227,220,.13);z-index:1}
+.hexedge::after{content:"";position:absolute;inset:1px;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  background:linear-gradient(170deg,#08141b,#040a0f 70%)}
+
+.node.is-run .hex{background:var(--violet)}
+.node.is-pass .hex{background:var(--gold)}
+.node.is-fail .hex{background:var(--vermil)}
+.node.is-run .hexin{background:linear-gradient(170deg,#0d0c22,#05060f 70%)}
+.node.is-pass .hexin{background:linear-gradient(170deg,#1d1808,#0a0803 70%)}
+.node.is-fail .hexin{background:linear-gradient(170deg,#1f0e0a,#0b0503 70%)}
+
+.scan{position:absolute;left:0;right:0;height:38%;z-index:2;opacity:0;
+  background:linear-gradient(180deg,transparent,rgba(155,147,238,.4),transparent)}
+.node.is-run .scan{opacity:1;animation:scanmove 1.1s linear infinite}
+@keyframes scanmove{from{transform:translateY(-120%)}to{transform:translateY(300%)}}
+
+.face{position:absolute;inset:0;z-index:3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center}
+.tama{font-family:var(--mincho);font-size:11.5px;letter-spacing:.4em;text-indent:.4em}
+.node[data-node="ocu"] .tama{color:var(--kushi)}
+.node[data-node="lor"] .tama{color:var(--nigi)}
+.node[data-node="spa"] .tama{color:var(--ara)}
+.nstate{font-family:var(--mincho);font-weight:800;font-size:clamp(32px,5.2vw,50px);
+  letter-spacing:.16em;line-height:1;color:#3b4b52;text-indent:.16em;transition:color .5s}
+.node.is-run .nstate{color:var(--violet)}
+.node.is-pass .nstate{color:var(--gold)}
+.node.is-fail .nstate{color:var(--vermil)}
+.unit{font-size:10px;letter-spacing:.3em;color:var(--pale);text-indent:.3em}
+.regalia{font-family:var(--mincho);font-size:9.5px;letter-spacing:.2em;color:var(--dim)}
+.sigla{position:absolute;top:13%;left:50%;transform:translateX(-50%);z-index:3;
+  font-size:9px;letter-spacing:.2em;color:#2e4048}
+
+/* ── 計器 ── */
+.clockbar{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;
+  position:relative;z-index:6;margin-top:clamp(16px,4vw,40px);padding-top:16px;border-top:1px solid var(--line)}
+.clabel{font-size:9px;letter-spacing:.26em;color:var(--dim)}
+.clock{font-size:clamp(26px,3.8vw,38px);font-weight:200;letter-spacing:.05em;color:var(--pale);line-height:1.1}
+.clock span{font-size:10px;letter-spacing:.24em;color:var(--dim);margin-left:8px}
+.ticks{display:flex;gap:4px;margin-top:10px}
+.ticks i{width:15px;height:3px;background:#1b3038;transition:background .3s,box-shadow .3s}
+.ticks i.on{background:var(--gold);box-shadow:0 0 9px rgba(242,215,158,.55)}
+.gauges{font-size:10px;letter-spacing:.16em;color:var(--dim);text-align:right;line-height:2}
+.gauges b{font-weight:400;color:#3f5158}
+
+/* ══ 三基の徴（三行固定） ══════════════════ */
+.replies{border:1px solid var(--line);border-top:none;background:rgba(6,13,20,.5)}
+.reply{display:grid;grid-template-columns:104px 1fr;gap:14px;align-items:baseline;
+  padding:12px 16px;border-bottom:1px solid var(--line);position:relative}
+.reply:last-child{border-bottom:none}
+.reply::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:transparent;transition:background .4s}
+.reply.is-run::before{background:var(--violet)}
+.reply.is-pass::before{background:var(--gold)}
+.reply.is-fail::before{background:var(--vermil)}
+.rkey{font-family:var(--mincho);font-size:12px;letter-spacing:.24em;color:var(--dim);text-indent:.24em}
+.rtext{font-size:12.5px;letter-spacing:.04em;color:#43555b;min-height:1.7em;transition:color .4s}
+.reply.is-run .rtext{color:var(--violet)}
+.reply.is-pass .rtext{color:var(--pale)}
+.reply.is-fail .rtext{color:var(--vermil)}
+.reply.is-run .rkey,.reply.is-pass .rkey,.reply.is-fail .rkey{color:var(--pale)}
+
+/* ══ 照合記録 ══════════════════════════════ */
+.logwrap{border:1px solid var(--line);border-top:none;background:rgba(4,9,14,.7)}
+.loghead{display:flex;justify-content:space-between;padding:8px 16px;border-bottom:1px solid var(--line);
+  font-size:9px;letter-spacing:.26em;color:var(--dim)}
+.log{height:170px;overflow-y:auto;padding:13px 16px;font-size:12.5px;line-height:1.95;
+  scrollbar-width:thin;scrollbar-color:var(--line-hot) transparent}
+.log::-webkit-scrollbar{width:6px}
+.log::-webkit-scrollbar-thumb{background:var(--line-hot)}
+.ln{white-space:pre-wrap;word-break:break-word;color:var(--dim)}
+.ln b{font-weight:400;color:#3f5158}
+.ln.me{color:var(--pale)}
+.ln.me b{color:var(--cyan)}
+.ln.ok{color:var(--gold)}
+.ln.ng{color:var(--vermil)}
+
+/* ══ 祝詞 ══════════════════════════════════ */
+.entry{display:flex;align-items:stretch;border:1px solid var(--line);border-top:none;background:rgba(6,13,20,.6)}
+.enlabel{display:flex;align-items:center;padding:0 15px;border-right:1px solid var(--line);
+  font-family:var(--mincho);font-size:12px;letter-spacing:.3em;color:var(--dim);text-indent:.3em}
+.entry input{flex:1;min-width:0;background:transparent;border:none;outline:none;
+  color:var(--pale);font-family:var(--mono);font-size:15px;letter-spacing:.16em;padding:18px 17px}
+.entry input::placeholder{color:#31434a;letter-spacing:.1em}
+.entry input:focus-visible{background:rgba(127,227,220,.045)}
+.go{border:none;border-left:1px solid var(--line);background:transparent;cursor:pointer;
+  font-family:var(--mincho);font-weight:600;font-size:15px;letter-spacing:.28em;text-indent:.28em;
+  color:var(--gold);padding:0 clamp(20px,3.4vw,38px);transition:background .25s,color .25s}
+.go:hover:not(:disabled){background:rgba(242,215,158,.09)}
+.go:focus-visible{outline:1px solid var(--gold);outline-offset:-4px}
+.go:disabled{color:#3b4b52;cursor:not-allowed}
+
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:17px;font-size:9.5px;letter-spacing:.16em;color:#36464c}
+.foot a{color:var(--dim);text-decoration:none;border-bottom:1px solid var(--line-hot)}
+.foot a:hover{color:var(--cyan)}
+
+/* ══ 顕 ── 照合成功の告知 ══════════════════ */
+.seal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+  padding:16px;background:rgba(3,6,10,.82);backdrop-filter:blur(3px);
+  opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}
+.seal.is-open{opacity:1;visibility:visible}
+.sealbox{position:relative;width:min(460px,100%);padding:34px clamp(20px,5vw,34px) 26px;
+  border:1px solid var(--gold);background:linear-gradient(170deg,#141008,#05060a 72%);
+  box-shadow:0 0 60px rgba(242,215,158,.18);text-align:center;
+  transform:translateY(10px);transition:transform .5s}
+.seal.is-open .sealbox{transform:none}
+.sealbox::before,.sealbox::after{content:"";position:absolute;width:18px;height:18px;border:1px solid var(--gold)}
+.sealbox::before{top:7px;left:7px;border-right:none;border-bottom:none}
+.sealbox::after{bottom:7px;right:7px;border-left:none;border-top:none}
+.sealk{font-size:9px;letter-spacing:.3em;color:var(--dim)}
+.sealw{font-family:var(--mincho);font-weight:800;font-size:64px;line-height:1;letter-spacing:.1em;
+  color:var(--gold);text-shadow:0 0 44px rgba(242,215,158,.6);margin:18px 0 16px;text-indent:.1em}
+.sealt{font-family:var(--mincho);font-size:14px;letter-spacing:.08em;color:var(--pale);line-height:1.9;margin:0}
+.sealt b{font-weight:600;color:var(--gold)}
+.sealf{font-size:10.5px;letter-spacing:.06em;color:var(--dim);line-height:1.8;margin:14px 0 0}
+.sealno{font-size:11px;letter-spacing:.16em;color:var(--gold);margin-top:16px}
+.sealact{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.sealact a,.sealact button{font-family:var(--mincho);font-size:13px;letter-spacing:.2em;
+  padding:9px 18px;border:1px solid var(--line-hot);background:transparent;color:var(--pale);
+  cursor:pointer;text-decoration:none}
+.sealact a{border-color:var(--gold);color:var(--gold)}
+.sealact a:hover,.sealact button:hover{background:rgba(242,215,158,.08)}
+.sealact :focus-visible{outline:1px solid var(--gold);outline-offset:2px}
+
+@media (max-width:760px){
+  .triad{aspect-ratio:auto;display:flex;flex-direction:column;align-items:center;gap:14px;padding:10px 0}
+  .node,.node[data-node]{position:static;transform:none;width:min(74vw,250px)}
+  .orbit,.web,.tickring{display:none}
+  .seat,.seat[class]{position:static;transform:none;width:100%;order:1;
+    padding:14px 0 4px;border-top:1px solid var(--line)}
+  .entry{flex-wrap:wrap}
+  .enlabel{border-right:none;border-bottom:1px solid var(--line);width:100%;padding:11px 15px}
+  .go{border-left:none;border-top:1px solid var(--line);width:100%;padding:16px 0}
+  .reply{grid-template-columns:1fr;gap:5px;padding:11px 16px}
+  .rkey{font-size:11.5px}
+  .stagehead{flex-direction:column;gap:14px}
+  .stagehead .right{text-align:left}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="sky"><i></i></div>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">神議系 照合端末<small>Terminal of Collation — Council of the Three</small></div>
+    <div class="docid">AH-REG-003 / VERSION 0.1.0</div>
+    <div class="link"><span class="pip"></span><span>神籬 接続</span></div>
+  </header>
+
+  <dl class="meta">
+    <div><dt>ITEM #</dt><dd>AH-R03</dd></div>
+    <div><dt>OBJECT CLASS</dt><dd>THAUMIEL</dd></div>
+    <div><dt>DISRUPTION</dt><dd>KENEQ</dd></div>
+    <div><dt>CLEARANCE</dt><dd>LEVEL 2 / 要職員証</dd></div>
+    <div><dt>ISSUED BY</dt><dd>事務局</dd></div>
+    <div><dt>SITE</dt><dd>登録局</dd></div>
+  </dl>
+
+  <div class="provenance">
+    <span>本系は当機構の製作物ではない</span>
+    <span>所在不明の本体より勧請したものである</span>
+    <span>本端末は形代（複製）である</span>
+  </div>
+
+  <section class="stage">
+
+    <div class="stagehead">
+      <div class="bigword">神議<em>Deliberation of the Three</em>
+        <span class="charge">付託事項 ── 記録照合 一件のみ</span>
+      </div>
+      <div class="right">
+        <div class="verdict" id="verdict">未</div>
+        <div class="vsub" id="vsub">Awaiting the Norito</div>
+        <div class="consensus">徴 <span id="consensus">0 / 3</span></div>
+      </div>
+    </div>
+
+    <div class="triad" id="triad">
+
+      <div class="orbit">
+        <div class="r r3"></div>
+        <div class="r sweep"></div>
+        <div class="r r1"></div>
+        <div class="r r2"></div>
+        <div class="r r4"></div>
+      </div>
+
+      <svg class="tickring" viewBox="0 0 200 200" aria-hidden="true">
+        <g id="tickG" stroke="rgba(127,227,220,.34)" stroke-width="0.7"></g>
+      </svg>
+
+      <!-- 三足 ── 中心から三基へ伸びる脚と、三基を結ぶ辺 -->
+      <svg class="web" viewBox="0 0 100 82" preserveAspectRatio="none" aria-hidden="true">
+        <g stroke="rgba(39,80,94,.7)" stroke-width="0.22" fill="none">
+          <line x1="50"   y1="38"   x2="50"   y2="18.7"/>
+          <line x1="36.9" y1="53.2" x2="18.5" y2="63.3"/>
+          <line x1="63.1" y1="53.2" x2="81.5" y2="63.3"/>
+        </g>
+        <polygon points="50,18.7 18.5,63.3 81.5,63.3" fill="none"
+                 stroke="rgba(39,80,94,.75)" stroke-width="0.25"/>
+        <polygon points="50,18.7 18.5,63.3 81.5,63.3" fill="none" id="webPulse"
+                 stroke="rgba(242,215,158,.9)" stroke-width="0.42"
+                 stroke-dasharray="14 159" opacity="0"/>
+      </svg>
+
+      <div class="seat">
+        <div class="seatlabel">直霊</div>
+        <div class="seatval" id="seatVal">空位</div>
+        <div class="seatorg" id="seatOrg">未配属</div>
+      </div>
+
+      <div class="node" data-node="ocu">
+        <div class="hex"></div><div class="hexin"><div class="scan"></div></div><div class="hexedge"></div>
+        <div class="sigla">O</div>
+        <div class="face">
+          <div class="tama">奇魂</div>
+          <div class="nstate">鎮</div>
+          <div class="unit">OCULUS</div>
+          <div class="regalia">鏡 ／ 観測</div>
+        </div>
+      </div>
+
+      <div class="node" data-node="lor">
+        <div class="hex"></div><div class="hexin"><div class="scan"></div></div><div class="hexedge"></div>
+        <div class="sigla">L</div>
+        <div class="face">
+          <div class="tama">和魂</div>
+          <div class="nstate">鎮</div>
+          <div class="unit">LORICA</div>
+          <div class="regalia">勾玉 ／ 調停</div>
+        </div>
+      </div>
+
+      <div class="node" data-node="spa">
+        <div class="hex"></div><div class="hexin"><div class="scan"></div></div><div class="hexedge"></div>
+        <div class="sigla">S</div>
+        <div class="face">
+          <div class="tama">荒魂</div>
+          <div class="nstate">鎮</div>
+          <div class="unit">SPATHA</div>
+          <div class="regalia">叢雲 ／ 実行</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="clockbar">
+      <div>
+        <div class="clabel">神議 経過</div>
+        <div class="clock" id="clock">00.00<span>SEC</span></div>
+        <div class="ticks" id="ticks"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="gauges">
+        <div><b>四魂</b> 三基 稼働 ／ 幸魂 欠位</div>
+        <div><b>本日の奏上</b> <span id="quota">0 / 10</span> 度</div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="replies">
+    <div class="reply" data-reply="ocu"><div class="rkey">奇魂 ／ 鏡</div><div class="rtext" id="r-ocu">徴 未だ立たず</div></div>
+    <div class="reply" data-reply="lor"><div class="rkey">和魂 ／ 勾玉</div><div class="rtext" id="r-lor">徴 未だ立たず</div></div>
+    <div class="reply" data-reply="spa"><div class="rkey">荒魂 ／ 叢雲</div><div class="rtext" id="r-spa">徴 未だ立たず</div></div>
+  </div>
+
+  <div class="logwrap">
+    <div class="loghead"><span>照合記録</span><span id="who">未登録</span></div>
+    <div class="log" id="log" role="log" aria-live="polite"></div>
+  </div>
+
+  <div class="entry">
+    <div class="enlabel">祝詞</div>
+    <input id="field" type="text" autocomplete="off" spellcheck="false"
+           placeholder="照合する文書IDを入力" aria-label="照合する文書ID">
+    <button class="go" id="go">奏上</button>
+  </div>
+
+  <div class="foot">
+    <span>徴を読むのは審神者の職である。本端末は読まない。</span>
+    <span>事務局 照合窓口 ／ <a href="../registry.html">職員登録局</a></span>
+  </div>
+
+</div>
+
+<div class="seal" id="seal" role="dialog" aria-modal="true" aria-labelledby="sealTitle" aria-hidden="true">
+  <div class="sealbox">
+    <div class="sealk">照合 記録 ／ AH-REG-003</div>
+    <div class="sealw" id="sealTitle">顕</div>
+    <p class="sealt" id="sealText"></p>
+    <p class="sealf" id="sealFine"></p>
+    <div class="sealno" id="sealNo"></div>
+    <div class="sealact">
+      <a href="../registry.html">職員証を確認する</a>
+      <button type="button" id="sealClose">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/ah-staff.js"></script>
+<script src="collate-core.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════
+   判定
+   このファイルは正解を一切持たない。平文もハッシュも置かない。
+   正解は所蔵庫（archive/vault.json）の gate に、機関ごとの封として在る。
+   奏上された文書番号から鍵を導き、封が開けば荒魂の徴が立つ。
+   開いた中身（主鍵 K4）は職員証に預け、大図書館の LV.4 以上の本文を開く。
+
+     奇魂／鏡   書架（collate-core.js の SHELF）に在る番号か
+     和魂／勾玉 職員証があり、その番号が自機関の管轄か
+     荒魂／叢雲 その番号で封が開くか（AES-GCM の認証タグが通るか）
+   ══════════════════════════════════════════════════════════ */
+const Core = window.AHCollate;
+const VAULT_URL = '../archive/vault.json';
+
+const MSG = {
+  ocu: { ok:'鏡は名を映した。その名の文書は在る。', ng:'鏡は曇り、その名を映さなかった。' },
+  lor: { ok:'結界は開いている。その記録は汝の結界の内にある。', rank:'結界は開いている。汝の位は足りる。',
+         shut:'結界は閉じている。汝の位は定まっていない。', out:'その記録は汝の結界の外にある。' },
+  spa: { blind:'映らぬものに、剣は振るえぬ。', barred:'結界の外へ、剣は出向かぬ。' }
+};
+/* 荒魂の実査は、機関ごとに見るものが違う */
+const SPA = {
+  BOF:{ ok:'剣は疵に届いた。写の値が、野帳と合っていない。',     ng:'剣は空を切った。野帳と集計値は合っている。剣の届く疵ではない。' },
+  GNA:{ ok:'剣は疵に届いた。一つの文書に、請求記号が二つある。', ng:'剣は空を切った。請求記号と配架は一致している。' },
+  VTI:{ ok:'剣は疵に届いた。番号の下四桁が、実績と揃っていない。', ng:'剣は空を切った。番号と実績は揃っている。' },
+  SHR:{ ok:'剣は疵に届いた。書き換えが、履歴に残されていない。', ng:'剣は空を切った。版と履歴は合っている。' },
+  ACA:{ ok:'剣は疵に届いた。時刻の間に、記載のない行がある。',   ng:'剣は空を切った。時刻は途切れず続いている。' },
+  ETH:{ ok:'剣は疵に届いた。発出された通牒が、書架に無い。',     ng:'剣は空を切った。発出と所蔵は揃っている。' }
+};
+const NOTE = {
+  pass:'三基の徴が揃った。直霊の座にある貴殿が、これを可と読んだ。',
+  ocu:'徴は立たなかった。名を改めて奏上されたい。',
+  shut:'徴は立たなかった。職員証を携えて奏上されたい。',
+  out:'徴は立たなかった。自機関の記録を奏上されたい。',
+  spa:'文書は在る。疵の在処を改められたい。'
+};
+
+const te = new TextEncoder();
+const b64u8 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const u8b64 = u => btoa(String.fromCharCode.apply(null, u));
+let gateP = null;
+function gate(){
+  if(!gateP) gateP = fetch(VAULT_URL, { cache:'no-cache' })
+    .then(r => { if(!r.ok) throw new Error('vault ' + r.status); return r.json(); })
+    .then(v => { if(!v.gate) throw new Error('no-gate'); return v.gate; })
+    .catch(e => { gateP = null; throw e; });
+  return gateP;
+}
+
+/* 封を開く。開けば主鍵（base64）、開かなければ null */
+async function unseal(value, org){
+  const g = await gate();
+  const o = g.orgs[org];
+  if(!o) return null;
+  const base = await crypto.subtle.importKey('raw', te.encode(Core.norm(value)), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey(
+    { name:'PBKDF2', hash:g.kdf.hash, salt:te.encode(org + '/' + o.salt), iterations:g.kdf.iterations },
+    base, { name:'AES-GCM', length:256 }, false, ['decrypt']);
+  for(const s of o.seals){
+    try{
+      const pt = await crypto.subtle.decrypt(
+        { name:'AES-GCM', iv:b64u8(s.iv), additionalData:te.encode(g.id + '/' + org) }, key, b64u8(s.ct));
+      return u8b64(new Uint8Array(pt));
+    }catch(e){ /* 認証タグが通らない ── この封ではない */ }
+  }
+  return null;
+}
+
+const Verifier = {
+  async submit(value, ctx){
+    await gate();                                   /* 本体に届かなければここで絶 */
+    const id = Core.norm(value);
+    const juris = Core.SHELF[id];
+    const ocu = !!juris;
+    const lor = ctx.registered && (!ocu || juris.indexOf(ctx.org) >= 0);
+    const k4 = ocu && lor ? await unseal(value, ctx.org) : null;
+    const spa = !!k4;
+    const S = SPA[ctx.org] || { ok:'', ng:'' };
+
+    const nodes = {
+      ocu:{ ok:ocu, msg: ocu ? MSG.ocu.ok : MSG.ocu.ng },
+      lor:{ ok:lor, msg: !ctx.registered ? MSG.lor.shut : !ocu ? MSG.lor.rank : lor ? MSG.lor.ok : MSG.lor.out },
+      spa:{ ok:spa, msg: !ocu ? MSG.spa.blind : !lor ? MSG.spa.barred : spa ? S.ok : S.ng }
+    };
+    const verdict = ocu && lor && spa ? 'pass' : 'fail';
+    const note = verdict === 'pass' ? NOTE.pass : !ocu ? NOTE.ocu : !ctx.registered ? NOTE.shut : !lor ? NOTE.out : NOTE.spa;
+    return { nodes, verdict, note, k4 };
+  }
+};
+
+/* ══════════════════════════════════════════════════════════ */
+
+const $ = s => document.querySelector(s);
+const NODES = ['ocu','lor','spa'];
+const Staff = window.AHStaff || null;
+const ORG_NAME = (Staff && Staff.ORG_JP) || {};
+
+/* 奏上の上限（1日10度）。端末内の数え。日付が変われば戻る */
+const QUOTA_KEY = 'ah.collate.v1', QUOTA_MAX = 10;
+function today(){ const d = new Date(); return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
+function readQuota(){
+  try{
+    const q = JSON.parse(localStorage.getItem(QUOTA_KEY) || 'null');
+    return q && q.day === today() ? q.n : 0;
+  }catch(e){ return 0; }
+}
+function writeQuota(n){
+  try{ localStorage.setItem(QUOTA_KEY, JSON.stringify({ day: today(), n })); }catch(e){}
+}
+
+/* 職員証は ah-staff.js が正。ここは読むだけで、書くのは照合成功時の要件記録のみ */
+const rec = Staff ? Staff.get() : null;
+const ctx = { staffNo: rec ? rec.no : 'AH-████-████', org: rec ? rec.org : null,
+              quota: readQuota(), registered: !!rec };
+
+$('#who').textContent = ctx.staffNo;
+$('#quota').textContent = ctx.quota + ' / ' + QUOTA_MAX;
+
+/* 直霊の座 ── 職員証があれば、奏上前から座は埋まっている（点るのは奏上時） */
+$('#seatVal').textContent = ctx.registered ? ctx.staffNo : '空位';
+$('#seatOrg').textContent = ORG_NAME[ctx.org] || '未配属';
+
+/* 目盛環 */
+(() => {
+  const g = document.getElementById('tickG');
+  if(!g) return;
+  for(let d = 0; d < 360; d += 5){
+    const long = d % 30 === 0;
+    const a = (d - 90) * Math.PI / 180;
+    const r1 = 99, r2 = long ? 91 : 95.5;
+    const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1', 100 + r1 * Math.cos(a)); l.setAttribute('y1', 100 + r1 * Math.sin(a));
+    l.setAttribute('x2', 100 + r2 * Math.cos(a)); l.setAttribute('y2', 100 + r2 * Math.sin(a));
+    if(long) l.setAttribute('stroke-width','1.1');
+    g.appendChild(l);
+  }
+})();
+
+let busy = false;
+
+function log(text, cls, who){
+  const el = document.createElement('div');
+  el.className = 'ln ' + (cls || '');
+  const b = document.createElement('b');
+  b.textContent = (who || 'SYSTEM') + '＞ ';
+  el.appendChild(b);
+  el.appendChild(document.createTextNode(text));
+  $('#log').appendChild(el);
+  $('#log').scrollTop = $('#log').scrollHeight;
+}
+
+function setNode(key, state, word){
+  const n = document.querySelector(`.node[data-node="${key}"]`);
+  n.classList.remove('is-run','is-pass','is-fail');
+  if(state) n.classList.add('is-' + state);
+  n.querySelector('.nstate').textContent = word;
+}
+function setReply(key, state, text){
+  const r = document.querySelector(`.reply[data-reply="${key}"]`);
+  r.classList.remove('is-run','is-pass','is-fail');
+  if(state) r.classList.add('is-' + state);
+  $('#r-' + key).textContent = text;
+}
+function setVerdict(state, word, sub){
+  const v = $('#verdict');
+  v.className = 'verdict' + (state ? ' is-' + state : '');
+  v.textContent = word;
+  $('#vsub').textContent = sub;
+}
+function resetBoard(){
+  NODES.forEach(k => { setNode(k,null,'鎮'); setReply(k,null,'徴 未だ立たず'); });
+  setVerdict(null,'未','Awaiting the Norito');
+  $('#consensus').textContent = '0 / 3';
+  $('#ticks').querySelectorAll('i').forEach(i => i.classList.remove('on'));
+}
+
+let timer = null, t0 = 0;
+function startClock(){
+  t0 = performance.now();
+  timer = setInterval(() => {
+    const s = (performance.now() - t0) / 1000;
+    $('#clock').innerHTML = s.toFixed(2) + '<span>SEC</span>';
+  }, 50);
+}
+function stopClock(){ clearInterval(timer); timer = null; }
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+/* 三基を結ぶ辺を光が一周する */
+let webAnim = null;
+function pulseWeb(on){
+  const p = document.getElementById('webPulse');
+  if(!p) return;
+  if(!on){ p.style.opacity = 0; if(webAnim){ webAnim.cancel(); webAnim = null; } return; }
+  p.style.opacity = 1;
+  webAnim = p.animate(
+    [{ strokeDashoffset: 173 }, { strokeDashoffset: 0 }],
+    { duration: 2400, iterations: Infinity, easing: 'linear' }
+  );
+}
+
+/* 神議の後、入力を戻す。上限に達していれば閉じたままにする */
+function setIdle(focus){
+  busy = false;
+  const spent = ctx.quota >= QUOTA_MAX;
+  $('#go').disabled = spent;
+  $('#field').disabled = spent;
+  if(spent){ $('#field').placeholder = '本日の奏上は尽きた'; return; }
+  if(focus) $('#field').focus();
+}
+
+/* ── 顕 ── 照合成功を職員証へ記録し、告知する ── */
+function recordPass(k4){
+  if(!Staff) return null;
+  const r = Staff.get();
+  if(!r) return null;
+  const before = r.lv;
+  r.req = r.req || {};
+  const first = !r.req.cipher1;
+  if(first) r.req.cipher1 = Date.now();
+  r.seal = Object.assign({}, r.seal, { c1: k4 });   /* 大図書館の LV.4 以上を開く主鍵 */
+  Staff.set(r);
+  return { first, before, after: Staff.get() };
+}
+function openSeal(res){
+  const reqName = '照合1（サイト内の暗号）';
+  let text, fine = '';
+  if(!res){
+    text = '徴は顕れたが、職員証が無い。記録は残らない。';
+  }else{
+    const a = res.after, label = Staff.LABEL[a.lv] || 'LEVEL ' + a.lv;
+    text = res.first ? '要件「' + reqName + '」の充足を記録した。' : '要件「' + reqName + '」は既に記録されている。';
+    if(a.lv >= 4 && a.lv > res.before){
+      text += '<br>権限区分を <b>' + label + '</b> へ改める。';
+    }else if(a.lv >= 4){
+      text += '<br>権限区分 <b>' + label + '</b>。';
+    }else{
+      const unmet = Staff.requirements(a).filter(r => !r.met && r.lv < 4).map(r => r.name + '（LV.' + r.lv + '）');
+      text += '<br>権限区分は <b>LEVEL ' + a.lv + '</b> のまま。';
+      fine = '未充足：' + unmet.join('・') + '。要件の充足はいつでも記録し、到達は順序に従う。';
+    }
+  }
+  $('#sealText').innerHTML = text;
+  $('#sealFine').textContent = fine;
+  $('#sealNo').textContent = ctx.staffNo;
+  const s = $('#seal');
+  s.classList.add('is-open');
+  s.setAttribute('aria-hidden','false');
+  $('#sealClose').focus();
+}
+function closeSeal(){
+  const s = $('#seal');
+  s.classList.remove('is-open');
+  s.setAttribute('aria-hidden','true');
+  if(!$('#field').disabled) $('#field').focus();
+}
+$('#sealClose').addEventListener('click', closeSeal);
+$('#seal').addEventListener('click', e => { if(e.target === e.currentTarget) closeSeal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('#seal').classList.contains('is-open')) closeSeal(); });
+
+async function run(){
+  if(busy || ctx.quota >= QUOTA_MAX) return;
+  const value = $('#field').value.trim();
+  if(!value){ $('#field').focus(); return; }
+
+  busy = true;
+  $('#go').disabled = true;
+  $('#field').disabled = true;
+  resetBoard();
+
+  log(value, 'me', ctx.staffNo);
+  $('#field').value = '';
+
+  ctx.quota++;
+  writeQuota(ctx.quota);
+  $('#quota').textContent = ctx.quota + ' / ' + QUOTA_MAX;
+
+  /* 直霊の座に審神者が着く */
+  $('#seatVal').textContent = ctx.staffNo;
+  $('#triad').classList.add('is-seated');
+
+  setVerdict('run','議','Deliberating');
+  $('#triad').classList.add('is-busy');
+  pulseWeb(true);
+  log('祝詞を受けた。祓を行う。');
+  startClock();
+  await wait(520);
+  log('三基に諮る。');
+
+  let result;
+  try{
+    result = await Verifier.submit(value, ctx);
+  }catch(err){
+    stopClock(); pulseWeb(false);
+    $('#triad').classList.remove('is-busy');
+    setVerdict('fail','絶','Severed');
+    log('本体に届かない。時をおいて奏上されたい。', 'ng');
+    setIdle(true);
+    return;
+  }
+
+  let agreed = 0;
+  for(let i = 0; i < NODES.length; i++){
+    const k = NODES[i];
+    setNode(k,'run','議');
+    setReply(k,'run','徴を立てている');
+    $('#ticks').querySelectorAll('i')[i*2].classList.add('on');
+    await wait(660);
+
+    const r = result.nodes[k];
+    if(r.ok) agreed++;
+    setNode(k, r.ok ? 'pass' : 'fail', r.ok ? '順' : '逆');
+    setReply(k, r.ok ? 'pass' : 'fail', r.msg);
+    $('#ticks').querySelectorAll('i')[i*2+1].classList.add('on');
+    $('#consensus').textContent = agreed + ' / 3';
+    await wait(300);
+  }
+
+  await wait(360);
+  stopClock(); pulseWeb(false);
+  $('#triad').classList.remove('is-busy');
+
+  if(result.verdict === 'pass'){
+    setVerdict('pass','顕','The Sign Appears');
+    log(result.note, 'ok');
+    const res = recordPass(result.k4);
+    if(res && res.first) log('要件の充足を職員証へ記録した。', 'ok');
+    setIdle(false);
+    await wait(500);
+    openSeal(res);
+  }else{
+    setVerdict('fail','晦','The Sign is Clouded');
+    log(result.note, 'ng');
+    setIdle(true);
+  }
+}
+
+$('#go').addEventListener('click', run);
+$('#field').addEventListener('keydown', e => { if(e.key === 'Enter') run(); });
+
+log('神籬に接続した。三基は鎮まっている。');
+if(!ctx.registered){
+  log('職員証が見当たらない。結界は開かない。職員登録局で資質検査を受けること。');
+}else if(rec.req && rec.req.cipher1){
+  log('貴殿の照合は既に記録されている。');
+}else{
+  log('自機関の記録に認められた疵について、該当する文書IDを奏上されたい。');
+}
+if(ctx.quota >= QUOTA_MAX) log('本日の奏上は尽きた。日を改められたい。', 'ng');
+setIdle(false);
+</script>
+</body>
+</html>

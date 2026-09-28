@@ -18,6 +18,11 @@
   /* 事業領域リストは記録パネルの右列いっぱいに敷く */
   .ah-record > .ah-ops{ margin-top:-6px }
 
+  /* 権限区分の一覧は本文列に収める */
+  .ah-clr{ margin-top:22px }
+  .ah-clr dl{ grid-template-columns:120px 1fr }
+  @media (max-width:640px){ .ah-clr dl{ grid-template-columns:1fr } }
+
   /* 定義テーブル下の英文注記 */
   .ah-spec + .ah-en{ margin-top:22px; padding-top:0; border-top:0 }
   .ah-spec + .ah-en b{ font-style:normal; font-weight:500; color:var(--ice-dim) }
@@ -234,6 +239,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="ah-body-col">
         <p>将来的には、独立した複数のプロジェクトを連結し、最終的に単一の大規模なユニバースへと収束させる構想を有しています。物語と現実の境界を曖昧に、QOLを上げ豊かな生活へ。</p>
         <p class="ah-en">Interweaving storylines that converge into a single expansive universe, developing interfaces that blur the boundary between fiction and reality.</p>
+      </div>
+    </section>
+
+    <!-- ══ 権限区分 ── LV.1〜5 のみ示す。付与要件は大図書館 CLR-001 に置く ══ -->
+    <section class="ah-record">
+      <i class="ah-corner ah-c-tl"></i><i class="ah-corner ah-c-br"></i><span class="ah-chip">CLEARANCE</span>
+      <h2>権限区分<em>Security Clearance</em></h2>
+      <div class="ah-body-col">
+        <p>当機構の記録は、閲覧者の権限区分に応じて開示されます。区分に満たない記録は、概要のみが示されます。</p>
+        <p class="ah-en">Records of the Organization are disclosed according to the reader's clearance. Below the required level, only a summary is shown.</p>
+        <div class="ah-spec ah-clr">
+        <dl>
+          <dt>LEVEL 1</dt>
+          <dd>登録のみ<br><span class="ah-sub">公開記録の閲覧</span></dd>
+          <dt>LEVEL 2</dt>
+          <dd>職員証所持者</dd>
+          <dt>LEVEL 3</dt>
+          <dd>課題達成者</dd>
+          <dt>LEVEL 4</dt>
+          <dd>暗号解読者</dd>
+          <dt>LEVEL 5</dt>
+          <dd>内部資格<br><span class="ah-sub">付与の要件は <a href="archive.html">大図書館</a> 所蔵の規程 CLR-001 に定める</span></dd>
+        </dl>
+        </div>
       </div>
     </section>
 

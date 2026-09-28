@@ -20,6 +20,9 @@
   function staff() { return window.AHStaff ? window.AHStaff.get() : null; }
   /* 未登録は LEVEL 1（公開可）として扱う */
   function myLv() { var r = staff(); return r ? r.lv : 1; }
+  /* LV.4 以上の本文は照合の記録（主鍵）が要る。適性検査で LV.4 に達しただけでは開かない */
+  function sealed() { var r = staff(); return !(r && r.seal && r.seal.c1); }
+  function canOpen(need) { return myLv() >= need && (need < 4 || !sealed()); }
   function lvName(lv) {
     var L = window.AHStaff && window.AHStaff.LABEL;
     return (L && L[lv]) ? L[lv].replace(/^LEVEL \d+ ／ /, '') : '';
@@ -36,7 +39,19 @@
     });
     return vaultP;
   }
+  /* LV.4 以上は、照合端末で開いた主鍵 K4 から導く（vault-build.mjs と同じ手順）。
+     職員証の LV だけ書き換えても K4 は得られず、本文は開かない */
   function keyFor(v, lv) {
+    if (lv >= 4 && !keys[lv]) {
+      var r = staff(), k4 = r && r.seal && r.seal.c1;
+      if (!k4) return Promise.reject(new Error('照合端末の封が解かれていない'));
+      keys[lv] = crypto.subtle.importKey('raw', b64u8(k4), 'HKDF', false, ['deriveKey'])
+        .then(function (base) {
+          return crypto.subtle.deriveKey(
+            { name: 'HKDF', hash: 'SHA-256', salt: enc.encode(v.kdf.salt), info: enc.encode('LV' + lv) },
+            base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+        });
+    }
     if (!keys[lv]) {
       keys[lv] = crypto.subtle.importKey('raw', enc.encode(PEPPER + '/LV' + lv), 'PBKDF2', false, ['deriveKey'])
         .then(function (base) {
@@ -75,7 +90,9 @@
       '<div class="vault-bars" aria-hidden="true">' + bars + '</div>' +
       '<p class="vault-note">本文は <b>LEVEL ' + needLv + '</b>' + (lvName(needLv) ? '（' + esc(lvName(needLv)) + '）' : '') + ' の権限で開示される。' +
       (r ? '貴殿の権限 LEVEL ' + have + '。' : '職員登録がない。') + '</p>' +
-      '<p class="vault-note">' + (r
+      '<p class="vault-note">' + (r && have >= needLv
+        ? '本文は照合の記録がある者にのみ開示する。 <a href="collation/">照合端末</a>'
+        : r
         ? '要件の充足状況は職員証の裏面に記す。 <a href="registry.html">職員登録局</a>'
         : '<a href="registry.html">職員登録局</a> で資質検査を受け、職員証の発行を受けること。') + '</p>' +
       '</div>';
@@ -97,14 +114,15 @@
     slot.className = 'vault-slot';
     body.appendChild(slot);
 
-    if (myLv() < need) { slot.innerHTML = lockedHTML(need, docId); return; }
+    if (!canOpen(need)) { slot.innerHTML = lockedHTML(need, docId); return; }
     slot.innerHTML = busyHTML();
     open(docId, myLv()).then(function (parts) {
       /* 開いている文書が変わっていたら書かない */
       if (document.getElementById('modal-id').textContent !== docId) return;
       slot.innerHTML = parts.map(function (p, i) { return p == null ? lockedHTML(need, docId) : p; }).join('');
     }).catch(function (e) {
-      slot.innerHTML = '<p class="vault-note">所蔵庫を開けなかった。（' + esc(e.message) + '）</p>';
+      slot.innerHTML = '<p class="vault-note">所蔵庫を開けなかった。（' + esc(e.message) + '）</p>' +
+        (/照合端末/.test(e.message) ? '<p class="vault-note"><a href="collation/">照合端末</a> で照合を済ませること。</p>' : '');
     });
   }
 
@@ -120,8 +138,8 @@
         chip.className = 'doc-lv';
         head.insertBefore(chip, head.querySelector('.doc-id'));
       }
-      var locked = have < need;
-      if (chip) { chip.textContent = 'LV.' + need; chip.classList.toggle('is-locked', locked); chip.title = locked ? '権限が足りない' : '閲覧できる'; }
+      var locked = !canOpen(need);
+      if (chip) { chip.textContent = 'LV.' + need; chip.classList.toggle('is-locked', locked); chip.title = !locked ? '閲覧できる' : have >= need ? '照合の記録が要る' : '権限が足りない'; }
       card.classList.toggle('is-locked', locked);
       var more = card.querySelector('.read-more');
       if (more) more.textContent = locked ? 'SEALED ✦' : 'ACCESS ✦';

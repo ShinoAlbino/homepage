@@ -11,7 +11,9 @@
    権限 LV は「達成した最高段」ではなく「下から連続して満たした
    要件の段数」で決まる（適性検査 仕様書 §4-6）。要件の充足は rec.req に
    時刻で記録し、LV は保存のたびにここで計算し直す。
-   適性検査を先に受けた者は LV.5 の要件を充足するが LV は 2 のままになる。
+   LV.4 と LV.5 は同じ二つの要件（照合1・適性検査）で決まる。どちらか一方で LV.4、
+   両方で LV.5（2026-09-27 改訂）。いずれも LV.3（課題）の達成が前提。
+   課題より先に適性検査を受けた者は要件を充足するが LV は 2 のままになる。
    この状態は隠さず、職員証に「充足済の要件」として併記する。
    ============================================================ */
 (function () {
@@ -30,14 +32,23 @@
     ACA: 'A.C.A.S.'
   };
 
-  /* 要件の段（§4-6）。上から順に、最初に満たさない段の一つ手前が LV。 */
+  /* 要件（§4-6）。lv は「その要件が最初に効く段」。tag は表示用 */
   var REQ = [
     { lv: 2, key: 'reg',     name: '職員登録',              how: '資質検査の完了' },
     { lv: 3, key: 'task',    name: '配属機関の課題',        how: '大図書館で配属機関の所蔵文書を末尾まで読む' },
-    { lv: 4, key: 'cipher1', name: '照合1（サイト内の暗号）', how: '照合端末の達成記録' },
-    { lv: 5, key: 'part2',   name: '適性検査の完了',        how: '判定が却下でなければ充足' },
+    { lv: 4, key: 'cipher1', name: '照合1（サイト内の暗号）', how: '照合端末の達成記録', href: 'collation/', tag: 'LV.4・5' },
+    { lv: 4, key: 'part2',   name: '適性検査の完了',        how: '判定が却下でなければ充足', href: 'aptitude/', tag: 'LV.4・5' },
     { lv: 6, key: 'task2',   name: '類型別 専任課題',       how: '適性検査の判定後に出題される課題' },
     { lv: 7, key: 'cipher2', name: '照合2（他媒体の符片）',  how: '照合端末の達成記録' }
+  ];
+  /* 段。下から順に、満たした最後の段が LV。any はいずれか一つ、all は全部 */
+  var TIER = [
+    { lv: 2, keys: ['reg'] },
+    { lv: 3, keys: ['task'] },
+    { lv: 4, keys: ['cipher1', 'part2'], any: true },
+    { lv: 5, keys: ['cipher1', 'part2'] },
+    { lv: 6, keys: ['task2'] },
+    { lv: 7, keys: ['cipher2'] }
   ];
   var LABEL = {
     1: 'LEVEL 1 ／ 登録のみ', 2: 'LEVEL 2 ／ 職員証所持者', 3: 'LEVEL 3 ／ 課題達成者',
@@ -56,17 +67,26 @@
   }
 
   function computeLv(rec) {
-    var lv = 1;
-    for (var i = 0; i < REQ.length; i++) {
-      if (rec.req && rec.req[REQ[i].key]) lv = REQ[i].lv; else break;
+    var req = (rec && rec.req) || {}, lv = 1;
+    for (var i = 0; i < TIER.length; i++) {
+      var t = TIER[i], has = function (k) { return !!req[k]; };
+      if (t.any ? t.keys.some(has) : t.keys.every(has)) lv = t.lv; else break;
     }
     return lv;
+  }
+
+  /* 未充足の要件のうち keys を満たしたと仮定した LV（職員証の裏面の見込み表示に使う） */
+  function projectLv(rec, keys) {
+    var req = {};
+    Object.keys((rec && rec.req) || {}).forEach(function (k) { req[k] = rec.req[k]; });
+    keys.forEach(function (k) { req[k] = 1; });
+    return computeLv({ req: req });
   }
 
   /* 要件ごとの充足状況。職員証の裏面と適性検査の入口に使う。 */
   function requirements(rec) {
     return REQ.map(function (r) {
-      return { lv: r.lv, key: r.key, name: r.name, how: r.how,
+      return { lv: r.lv, key: r.key, name: r.name, how: r.how, href: r.href || null, tag: r.tag || 'LV.' + r.lv,
                met: !!(rec && rec.req && rec.req[r.key]), at: rec && rec.req ? rec.req[r.key] : null };
     });
   }
@@ -130,6 +150,7 @@
     LABEL: LABEL,
     requirements: requirements,
     computeLv: computeLv,
+    projectLv: projectLv,
     get: read,
     set: write,
     clear: clear,

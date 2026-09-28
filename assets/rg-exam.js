@@ -333,14 +333,16 @@
       '<p class="rg-back-h">職員証 裏面 ／ 権限 LV.' + rec.lv + '</p>' +
       '<dl class="rg-back-dl">' +
         '<div><dt>充足済の要件</dt><dd>' + (met.map(function (r) {
-            return r.name + (r.lv > rec.lv ? '（LV.' + r.lv + ' の要件）' : '');
+            return r.name + (r.lv > rec.lv ? '（' + r.tag + ' の要件）' : '');
           }).join('、') || '—') + '</dd></div>' +
-        '<div><dt>未充足の要件</dt><dd>' + (unmet.map(function (r) { return r.name + '（LV.' + r.lv + ' ── ' + r.how + '）'; }).join('<br>') || '—') + '</dd></div>' +
+        '<div><dt>未充足の要件</dt><dd>' + (unmet.map(function (r) { return r.name + '（' + r.tag + ' ── ' + (r.href ? '<a href="' + r.href + '">' + r.how + '</a>' : r.how) + '）'; }).join('<br>') || '—') + '</dd></div>' +
       '</dl>';
     if (skipped.length) {
       var need = unmet.filter(function (r) { return r.lv < skipped[0].lv; });
-      html += '<p class="rg-fine">' + need.length + ' 件を満たした時点で、LV.' + skipped[0].lv + ' に到達する。要件の充足はいつでも記録し、到達は順序に従う。</p>';
+      var reach = window.AHStaff.projectLv(rec, need.map(function (r) { return r.key; }));
+      html += '<p class="rg-fine">' + need.length + ' 件を満たした時点で、LV.' + reach + ' に到達する。要件の充足はいつでも記録し、到達は順序に従う。</p>';
     }
+    html += '<p class="rg-fine">LV.4 は照合1・適性検査のいずれか一方、LV.5 は両方の充足で到達する。</p>';
     if (rec.transfers && rec.transfers.length) {
       html += '<p class="rg-back-h" style="margin-top:14px">異動履歴</p>' +
         rec.transfers.map(function (t) {
