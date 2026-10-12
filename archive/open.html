@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>開架閲覧室 ─ 大図書館 第4188分館 | Arca Hortus</title>
+<link rel="canonical" href="https://arcahortus.com/archive/open.html" />
+<link rel="icon" href="../images/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 共通ヘッダー・フッター用。body に ah-body を付けないので、地と本文は下の style のまま -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/ah-tokens.css" />
+<link rel="stylesheet" href="../assets/ah-common.css" />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700&family=Noto+Serif+JP:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F1E8; --paper-2:#EBE6D8; --sumi:#1E1B16; --sumi-soft:#554F45;
+  --rule:#C9BFA8; --rokusho:#4A6B5A; --shu:#8C2F20;
+  --rail:#232B26; --rail-2:#2D362F; --rail-text:#CFD6CC; --rail-dim:#7D8A80;
+  --redact:#1E1B16;
+  --mincho:"Zen Old Mincho","Noto Serif CJK JP","Noto Serif JP",serif;
+  --serif:"Noto Serif JP","Noto Serif CJK JP",serif;
+  --latin:"EB Garamond",Georgia,serif;
+  --mono:"Roboto Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--sumi);
+  font-family:var(--serif); font-size:15px; line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+}
+/* 共通ヘッダー・フッターは --mono を共通トークンのまま使う（上の :root で上書きしているため戻す）。半透明の地が紙に透けないよう共通の地色を敷く */
+.ah-site-head,.ah-site-foot{--mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace; background-color:var(--void)}
+/* ───────── 館銘 ───────── */
+.bar{
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  background:var(--rail); color:var(--rail-text);
+  padding:10px 20px; border-bottom:2px solid var(--rokusho);
+}
+.bar .mark{font-family:var(--mincho); font-size:15px; letter-spacing:.22em; white-space:nowrap}
+.bar .sub{font-family:var(--mono); font-size:10px; color:var(--rail-dim); letter-spacing:.14em}
+.bar .spacer{flex:1 1 auto}
+/* 開示率 */
+.rate{display:flex; align-items:center; gap:10px}
+.rate .lab{font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--rail-dim)}
+.rate .track{width:150px; height:6px; background:#131815; border:1px solid #3B463E; position:relative; overflow:hidden}
+.rate .fill{position:absolute; inset:0 auto 0 0; background:var(--rokusho); width:0; transition:width .5s cubic-bezier(.2,.7,.3,1)}
+.rate .num{font-family:var(--mono); font-size:13px; min-width:52px; text-align:right; color:#E7EDE8}
+/* ───────── 版面 ───────── */
+.wrap{display:grid; grid-template-columns:286px 1fr; min-height:calc(100vh - 86px)}
+/* 左 */
+.rail{background:var(--rail); color:var(--rail-text); display:flex; flex-direction:column; min-width:0}
+.terms{
+  display:block; margin:12px 14px 0; padding:9px 11px; text-decoration:none;
+  background:#2B1A17; border:1px solid #C0453A; border-left-width:3px;
+}
+.terms .h{
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.2em; color:#E0756A;
+  display:flex; align-items:center; gap:7px; margin-bottom:4px;
+}
+.terms .h::after{content:""; flex:1; height:1px; background:#6E2F28}
+.terms .h{margin-bottom:0}
+.terms{display:flex; align-items:center; gap:10px; padding:8px 11px}
+.terms .h{flex:1}
+.terms .g{font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:#C0453A; white-space:nowrap}
+.terms:hover{background:#3A211C; border-color:#E0756A}
+.terms:hover .g{color:#E0756A}
+.seek{padding:12px 14px; border-bottom:1px solid #39443B}
+.seek input{
+  width:100%; background:#131815; border:1px solid #3B463E; color:#E7EDE8;
+  font-family:var(--serif); font-size:13px; padding:7px 9px;
+}
+.seek input::placeholder{color:#5F6C63}
+.seek input:focus{outline:none; border-color:var(--rokusho)}
+.series{display:flex; flex-direction:column; border-bottom:1px solid #39443B}
+.series button{
+  display:grid; grid-template-columns:22px 1fr auto; align-items:center; gap:9px;
+  background:none; border:0; border-left:3px solid transparent; color:var(--rail-dim);
+  font-family:var(--mincho); font-size:13px; letter-spacing:.14em;
+  padding:8px 13px; cursor:pointer; text-align:left; width:100%;
+}
+.series button .sig{font-family:var(--latin); font-size:14px; color:#5F6C63}
+.series button .cnt{font-family:var(--mono); font-size:10px}
+.series button:hover{background:#2A332C; color:#E7EDE8}
+.series button[aria-selected="true"]{
+  background:var(--rail-2); color:#F2F6F1; border-left-color:var(--rokusho);
+}
+.series button[aria-selected="true"] .sig{color:var(--rokusho)}
+.list{flex:1 1 auto; overflow-y:auto; max-height:62vh}
+.list ol{list-style:none; margin:0; padding:0}
+.item{
+  display:grid; grid-template-columns:auto 1fr auto; align-items:baseline; gap:9px;
+  padding:7px 13px; cursor:pointer; border-left:3px solid transparent;
+  border-bottom:1px solid #2A332C;
+}
+.item:hover{background:#2A332C}
+.item[aria-current="true"]{background:#36423A; border-left-color:var(--rokusho)}
+.item .no{font-family:var(--mono); font-size:10px; color:#6C7A71}
+.item .nm{font-family:var(--mincho); font-size:13.5px; color:#DCE3DC; line-height:1.5}
+.item .nm em{font-style:normal; color:#7D8A80}
+.item .dot{width:7px; height:7px; border-radius:50%; align-self:center}
+.item.locked .nm{color:#5F6C63; letter-spacing:.2em}
+.d-kakunin{background:var(--rokusho)}
+.d-denbun{background:#8A8372}
+.d-mikakunin{background:var(--shu)}
+.d-shometsu{background:#4A3A36; box-shadow:inset 0 0 0 1px var(--shu)}
+.railfoot{padding:9px 14px; border-top:1px solid #39443B; font-family:var(--mono); font-size:10px; color:#5F6C63}
+/* 右 */
+.view{padding:26px 34px 70px; max-width:980px; min-width:0}
+.callplate{
+  display:inline-grid; gap:1px; background:var(--rule); border:1px solid var(--rule);
+  font-family:var(--mono); font-size:10.5px; text-align:center; margin-bottom:14px;
+}
+.callplate span{background:var(--paper); padding:2px 12px; letter-spacing:.1em}
+.head{display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; border-bottom:1px solid var(--rule); padding-bottom:10px}
+.head h1{font-family:var(--mincho); font-size:30px; font-weight:500; margin:0; letter-spacing:.06em; line-height:1.3}
+.head .yomi{font-size:12px; color:var(--sumi-soft); letter-spacing:.1em}
+.head .nomen{font-family:var(--latin); font-style:italic; font-size:19px; color:var(--sumi-soft)}
+.badge{
+  font-family:var(--mono); font-size:10px; letter-spacing:.16em; padding:2px 9px;
+  border:1px solid currentColor;
+}
+.b-kakunin{color:var(--rokusho)} .b-denbun{color:var(--sumi-soft)}
+.b-mikakunin{color:var(--shu)} .b-shometsu{color:var(--shu); text-decoration:line-through}
+.cols{display:grid; grid-template-columns:260px 1fr; gap:30px; margin-top:20px}
+/* 図版 */
+.plate{
+  aspect-ratio:1/1; border:1px solid var(--rule); background:var(--paper-2);
+  display:grid; place-content:center; text-align:center; gap:6px;
+}
+.plate .t{font-family:var(--mincho); font-size:14px; letter-spacing:.3em; color:#A2988290}
+.plate .o{font-family:var(--mono); font-size:10px; color:#A29882}
+/* 諸元 */
+.spec{margin-top:14px; border-top:1px solid var(--rule)}
+.spec div{display:grid; grid-template-columns:5.5em 1fr; gap:8px; padding:5px 0; border-bottom:1px solid var(--rule); font-size:12.5px}
+.spec dt{font-family:var(--mono); font-size:10px; letter-spacing:.1em; color:var(--sumi-soft); padding-top:3px}
+.spec dd{margin:0}
+/* 層 */
+.layer{margin-bottom:26px}
+.layer > h2{
+  font-family:var(--mono); font-size:10.5px; font-weight:400; letter-spacing:.24em;
+  color:var(--sumi-soft); margin:0 0 7px; display:flex; align-items:center; gap:10px;
+}
+.layer > h2::after{content:""; flex:1 1 auto; height:1px; background:var(--rule)}
+.layer > h2 .req{color:var(--shu); border:1px solid var(--shu); padding:0 6px; letter-spacing:.14em}
+.layer > h2 .ok{color:var(--rokusho); border:1px solid var(--rokusho); padding:0 6px; letter-spacing:.14em}
+.layer p{margin:0 0 .85em; text-align:justify; overflow-wrap:anywhere}
+.layer p:last-child{margin-bottom:0}
+.brief{font-size:16px; line-height:2}
+/* 黒塗り */
+.rd{
+  display:inline; background:var(--redact); color:transparent; user-select:none;
+  box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  padding:0 1px; cursor:help; border-radius:1px;
+  overflow-wrap:anywhere; word-break:break-all; line-break:anywhere;
+}
+.rd:hover{background:#3A322A}
+.reveal{animation:rev .55s ease both}
+@keyframes rev{from{background:var(--redact); color:transparent}
+  60%{background:#C9BFA8; color:transparent} to{background:transparent; color:inherit}}
+/* 出典 */
+.src{margin-top:30px; border-top:1px solid var(--rule); padding-top:11px; font-size:12px; color:var(--sumi-soft)}
+.src .k{font-family:var(--mono); font-size:10px; letter-spacing:.14em; display:block; margin-bottom:5px}
+.src a{color:var(--sumi); text-decoration:none; border-bottom:1px solid var(--rule); font-family:var(--mono); font-size:11.5px}
+.src a:hover{border-bottom-color:var(--sumi)}
+.src .closed{font-family:var(--mono); font-size:11.5px; color:#A29882}
+/* 朱注 */
+.shu{
+  margin-top:26px; border-left:2px solid var(--shu); padding:6px 0 6px 13px;
+  color:var(--shu); font-size:12.5px; line-height:1.85;
+}
+.shu b{font-family:var(--mono); font-size:10px; letter-spacing:.16em; display:block; font-weight:400}
+/* 差止 */
+.stop{border:1px solid var(--rule); padding:34px; text-align:center; background:var(--paper-2)}
+.stop .t{font-family:var(--mincho); font-size:19px; letter-spacing:.5em; margin-bottom:9px}
+.stop .d{font-family:var(--mono); font-size:10px; letter-spacing:.14em; color:var(--sumi-soft); margin-bottom:16px}
+.stop .m{font-size:13px; color:var(--sumi-soft)}
+.toast{
+  position:fixed; left:50%; bottom:26px; transform:translateX(-50%);
+  background:var(--rail); color:var(--rail-text); font-family:var(--mono); font-size:11.5px;
+  letter-spacing:.1em; padding:9px 18px; border:1px solid var(--rokusho);
+  opacity:0; pointer-events:none; transition:opacity .25s;
+}
+.toast.on{opacity:1}
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr}
+  .list{max-height:none}
+  .rail{border-bottom:2px solid var(--rokusho)}
+  .series{flex-direction:row; overflow-x:auto}
+  .series button{grid-template-columns:auto; gap:2px; padding:8px 12px; border-left:0; border-bottom:3px solid transparent; text-align:center}
+  .series button[aria-selected="true"]{border-left-color:transparent; border-bottom-color:var(--rokusho)}
+  .series button .cnt{display:none}
+  .view{padding:20px 16px 60px}
+  .cols{grid-template-columns:1fr; gap:20px}
+  .plate{max-width:240px}
+  .head h1{font-size:25px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s !important; transition-duration:.001s !important}
+}
+</style>
+</head>
+<body>
+
+  <header class="ah-site-head" data-root="../">
+    <div class="ah-mark"><a href="../index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="../about.html">About</a>
+      <a href="../recommend.html">TopPicks</a>
+      <a href="../nexus.html">Nexus</a>
+      <a href="../archive.html" class="ah-here" aria-current="page">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="../lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+      <a href="../weather/">Kanshodai<span class="ah-tag ah-t-ice">LIVE</span></a>
+    </nav>
+  </header>
+
+<div class="bar">
+  <span class="mark">開架閲覧室</span>
+  <span class="sub">GNA BR.4188 / OPEN STACKS</span>
+  <span class="spacer"></span>
+  <span class="rate">
+    <span class="lab">開示</span>
+    <span class="track"><span class="fill" id="fill"></span></span>
+    <span class="num" id="pct">—</span>
+  </span>
+</div>
+
+<div class="wrap">
+  <nav class="rail">
+    <a class="terms" href="terms.html">
+      <span class="h">資 料 利 用 規 程</span>
+      <span class="g">読む &#9656;</span>
+    </a>
+    <div class="seek"><input id="q" type="search" placeholder="名称・読み・請求記号で照会" aria-label="照会" /></div>
+    <div class="series" id="series" role="tablist"></div>
+    <div class="list"><ol id="list"></ol></div>
+    <div class="railfoot" id="foot">—</div>
+  </nav>
+  <main class="view" id="view" tabindex="-1"></main>
+</div>
+<div class="toast" id="toast"></div>
+
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="../index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="../privacy.html">プライバシーポリシー</a>
+        <a href="../terms.html">利用規約</a>
+        <a href="../maintenance.html">保守記録</a>
+        <a href="https://x.com/ArcaHortus" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
+
+<script src="../assets/ah-site.js"></script>
+<script src="../assets/ah-staff.js"></script>
+
+<script type="module">
+/* ============================================================
+   開架閲覧室
+   項目は data/open.json（標目・記述・諸元・参照）。
+   註記・秘匿は open-vault.json に封じてあり、権限が足りるときだけ端末内で開封する。
+     註記（第三種）… 権限区分＋固定ペッパーの鍵（難読化）
+     秘匿（第四種）… 照合端末で得た主鍵から導く鍵。職員証にのみ在る
+   黒塗りの幅と開示率は、open.json の note_len / secret_len（段落ごとの字数）で出す。
+   権限は ../js/clearance.js からのみ読む。
+   ============================================================ */
+import { clearance, sealKey } from '../js/clearance.js';
+
+var SERIES = [
+  {key:'bios',        sig:'B', name:'生 物'},
+  {key:'instrumentum',sig:'I', name:'器 物'},
+  {key:'lexicon',     sig:'L', name:'用 語'},
+  {key:'topos',       sig:'T', name:'地 名'},
+  {key:'persona',     sig:'P', name:'人 物'}
+];
+
+var DATA = [];
+
+/* ───────── 状態 ───────── */
+var STATUS = {
+  '確認':  {cls:'kakunin',   d:'d-kakunin',   b:'b-kakunin'},
+  '伝聞':  {cls:'denbun',    d:'d-denbun',    b:'b-denbun'},
+  '未確認':{cls:'mikakunin', d:'d-mikakunin', b:'b-mikakunin'},
+  '消滅':  {cls:'shometsu',  d:'d-shometsu',  b:'b-shometsu'}
+};
+var LAYERS = [
+  {k:'brief',  t:'標 目', lv:1},
+  {k:'detail', t:'記 述', lv:2},
+  {k:'note',   t:'註 記', lv:3},
+  {k:'secret', t:'秘 匿', lv:4}
+];
+var REQ = {1:'第一種', 2:'第二種', 3:'第三種', 4:'第四種'};
+
+var lv = clearance(), series = 'bios', cur = null, query = '', prevLv = Math.min(lv, 2);
+
+/* 層の段落ごとの字数。封じた層は open.json の *_len、開いた層は本文から数える */
+function paras(t){ return String(t||'').split('\n').filter(function(p){return p.length;}); }
+function lens(e, k){
+  if(typeof e[k]==='string') return paras(e[k]).map(function(p){return p.length;});
+  return e[k+'_len'] || [];
+}
+function total(a){ return a.reduce(function(x,y){return x+y;},0); }
+/* 層が開いているか。註記・秘匿は、権限に加えて開封できていること */
+function isOpen(e, L){ return lv>=L.lv && typeof e[L.k]==='string'; }
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* 黒塗り：文字数ぶんの幅を取る（段落ごとの字数から描く。本文は要らない） */
+function redact(ls, req){
+  return ls.filter(function(n){return n>0;}).map(function(n){
+    return '<p><span class="rd" data-req="'+req+'" role="img" aria-label="未開示（'+REQ[req]+'）">'
+      + new Array(n + 1).join('█') + '</span></p>';
+  }).join('');
+}
+function plain(text, cls, animate){
+  return text.split('\n').filter(function(p){return p.length;}).map(function(p){
+    return '<p class="'+(cls||'')+(animate?' reveal':'')+'">'+esc(p)+'</p>';
+  }).join('');
+}
+
+/* 開示率：読める文字数 / 全文字数 */
+function rate(){
+  var tot=0, got=0;
+  DATA.forEach(function(e){
+    if(e.listing==='差止') return;
+    LAYERS.forEach(function(L){
+      var n=total(lens(e,L.k));
+      tot+=n; if(isOpen(e,L)) got+=n;
+    });
+  });
+  return tot ? got/tot : 0;
+}
+function paintRate(){
+  var r=rate();
+  document.getElementById('fill').style.width=(r*100).toFixed(1)+'%';
+  document.getElementById('pct').textContent=(r*100).toFixed(1)+'%';
+}
+
+function matches(e){
+  if(!query) return true;
+  var q=query.toLowerCase();
+  return [e.name,e.reading,e.nomen,e.id,e.call.join('/')].concat(e.aliases||[])
+    .join(' ').toLowerCase().indexOf(q)>=0;
+}
+function inSeries(){ return DATA.filter(function(e){return e.series===series && matches(e);}); }
+
+function paintSeries(){
+  document.getElementById('series').innerHTML = SERIES.map(function(s){
+    var n=DATA.filter(function(e){return e.series===s.key;}).length;
+    return '<button role="tab" data-k="'+s.key+'" aria-selected="'+(s.key===series)+'">'
+      +'<span class="sig">'+s.sig+'</span><span>'+s.name+'</span><span class="cnt">'+n+'</span></button>';
+  }).join('');
+}
+function paintList(){
+  var rows=inSeries();
+  document.getElementById('list').innerHTML = rows.map(function(e){
+    if(e.listing==='差止'){
+      return '<li class="item locked" data-id="'+e.id+'" aria-current="'+(cur===e.id)+'">'
+        +'<span class="no">──</span><span class="nm">? ? ?</span><span class="dot"></span></li>';
+    }
+    var st=STATUS[e.status];
+    return '<li class="item" data-id="'+e.id+'" aria-current="'+(cur===e.id)+'">'
+      +'<span class="no">'+esc(e.id)+'</span>'
+      +'<span class="nm">'+esc(e.name)+(e.nomen?' <em>'+esc(e.nomen)+'</em>':'')+'</span>'
+      +'<span class="dot '+st.d+'" title="'+e.status+'"></span></li>';
+  }).join('');
+  document.getElementById('foot').textContent =
+    '登載 '+rows.length+' 件 ／ 当分館 開架 '+DATA.length+' 件';
+}
+
+function paintView(animate){
+  var e=DATA.filter(function(x){return x.id===cur;})[0];
+  var v=document.getElementById('view');
+  if(!e){ v.innerHTML='<p style="color:#554F45">項目を選択してください。</p>'; return; }
+
+  if(e.listing==='差止'){
+    v.innerHTML='<div class="stop"><div class="t">登載差止</div>'
+      +'<div class="d">4188 / P-__ / ──　　意匠管理部</div>'
+      +'<div class="m">本項の公開は管理者の判断により停止されている。</div></div>';
+    return;
+  }
+  var st=STATUS[e.status];
+  var h='';
+  h+='<div class="callplate">'+e.call.map(function(c){return '<span>'+esc(c)+'</span>';}).join('')+'</div>';
+  h+='<div class="head"><h1>'+esc(e.name)+'</h1>';
+  if(e.reading && e.reading!=='—') h+='<span class="yomi">'+esc(e.reading)+'</span>';
+  if(e.nomen) h+='<span class="nomen">'+esc(e.nomen)+'</span>';
+  h+='<span style="flex:1"></span><span class="badge '+st.b+'">'+esc(e.status)+'</span></div>';
+
+  h+='<div class="cols"><div>';
+  h+= e.plate ? '<img class="plate" src="'+esc(e.plate)+'" alt="">'
+    : '<div class="plate"><div class="t">図版未製</div><div class="o">'+esc(e.order)+'</div></div>';
+  if(e.spec && e.spec.length){
+    h+='<dl class="spec">'+e.spec.map(function(r){
+      return '<div><dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd></div>';}).join('')+'</dl>';
+  }
+  h+='</div><div>';
+
+  LAYERS.forEach(function(L){
+    var ls=lens(e,L.k);
+    var open=isOpen(e,L);
+    var empty=total(ls)===0;
+    if(empty && lv<L.lv) return;
+    h+='<section class="layer"><h2>'+L.t;
+    h+= L.lv>1 ? ' <span class="'+(open?'ok':'req')+'">'+REQ[L.lv]+'</span>' : '';
+    h+='</h2>';
+    if(empty){
+      h+='<p style="color:#A29882">（記述なし。本項の空欄は誤記ではない。）</p>';
+    } else if(open){
+      h+=plain(e[L.k], L.k==='brief'?'brief':'', animate && prevLv<L.lv);
+    } else {
+      h+=redact(ls, L.lv);
+    }
+    h+='</section>';
+  });
+
+  if(e.refs && e.refs.length){
+    h+='<div class="src"><span class="k">関連・出典</span>';
+    h+=e.refs.map(function(r){
+      if(r.k==='open') return '<a href="#" data-go="'+esc(r.t)+'">'+esc(r.t)+'　'+esc(r.l)+'</a>';
+      return lv>=3 && r.href
+        ? '<a href="'+esc(r.href)+'">'+esc(r.t)+'　'+esc(r.l)+'（閉架）</a>'
+        : '<span class="closed">'+esc(r.t)+'　閉架資料　第三種以上</span>';
+    }).join('<br />');
+    h+='</div>';
+  }
+  if(e.shu) h+='<div class="shu"><b>朱注　倫理委員会</b>'+esc(e.shu)+'</div>';
+  h+='</div></div>';
+  v.innerHTML=h;
+}
+
+var tid=null;
+function toast(m){
+  var t=document.getElementById('toast');
+  t.textContent=m; t.classList.add('on');
+  clearTimeout(tid); tid=setTimeout(function(){t.classList.remove('on');},2200);
+}
+function select(id, animate){ cur=id; paintList(); paintView(animate); }
+
+/* ───────── 事象 ───────── */
+document.getElementById('series').addEventListener('click',function(ev){
+  var b=ev.target.closest('button'); if(!b) return;
+  series=b.dataset.k; var f=inSeries()[0];
+  paintSeries(); select(f?f.id:null,false);
+});
+document.getElementById('list').addEventListener('click',function(ev){
+  var li=ev.target.closest('.item'); if(!li) return; select(li.dataset.id,false);
+});
+document.getElementById('view').addEventListener('click',function(ev){
+  var rd=ev.target.closest('.rd');
+  if(rd){
+    var need=Number(rd.dataset.req);
+    toast(lv<need ? '未開示　'+REQ[need]+'以上の権限を要する'
+      : need>=4 && !sealKey() ? '未開示　照合端末での照合を要する'
+      : '所蔵庫を照合している');
+    return; }
+  var go=ev.target.closest('[data-go]');
+  if(go){ ev.preventDefault();
+    var t=DATA.filter(function(x){return x.id===go.dataset.go;})[0];
+    if(t){ series=t.series; paintSeries(); select(t.id,false);
+      document.getElementById('view').scrollIntoView({block:'start'}); }
+    return; }
+});
+document.getElementById('q').addEventListener('input',function(ev){
+  query=ev.target.value.trim();
+  if(query){
+    var hit=DATA.filter(matches)[0];
+    if(hit && hit.series!==series){ series=hit.series; paintSeries(); }
+  }
+  paintList();
+  var rows=inSeries();
+  if(rows.length && !rows.some(function(r){return r.id===cur;})) select(rows[0].id,false);
+});
+document.addEventListener('keydown',function(ev){
+  if(ev.target.tagName==='INPUT') return;
+  if(ev.key!=='ArrowDown' && ev.key!=='ArrowUp') return;
+  var rows=inSeries(), i=rows.map(function(r){return r.id;}).indexOf(cur);
+  var n=ev.key==='ArrowDown' ? Math.min(i+1,rows.length-1) : Math.max(i-1,0);
+  if(rows[n]){ ev.preventDefault(); select(rows[n].id,false);
+    var el=document.querySelector('.item[aria-current="true"]');
+    if(el) el.scrollIntoView({block:'nearest'}); }
+});
+
+/* ───────── 開封 ───────── */
+/* 鍵の導出は archive/vault-build.mjs と一致させること（PEPPER・salt・反復回数・AAD） */
+var PEPPER = '箱庭次元研究機構／大図書館／全次元史実保護機構 第4188分館';
+var enc = new TextEncoder(), dec = new TextDecoder();
+function b64u8(s){ var bin=atob(s), u=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i); return u; }
+function keyFor(v, need){
+  if(need>=4){
+    var k4=sealKey();
+    if(!k4) return Promise.resolve(null);
+    return crypto.subtle.importKey('raw', b64u8(k4), 'HKDF', false, ['deriveKey']).then(function(base){
+      return crypto.subtle.deriveKey({name:'HKDF', hash:'SHA-256', salt:enc.encode(v.kdf.salt), info:enc.encode('LV'+need)},
+        base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+    });
+  }
+  return crypto.subtle.importKey('raw', enc.encode(PEPPER+'/LV'+need), 'PBKDF2', false, ['deriveKey']).then(function(base){
+    return crypto.subtle.deriveKey({name:'PBKDF2', hash:v.kdf.hash, salt:enc.encode(v.kdf.salt), iterations:v.kdf.iterations},
+      base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  });
+}
+function unseal(){
+  if(lv<3 || !window.crypto || !crypto.subtle) return Promise.resolve();
+  return fetch('open-vault.json', {cache:'no-cache'}).then(function(r){
+    if(!r.ok) throw new Error('open-vault '+r.status); return r.json();
+  }).then(function(v){
+    var ks={};
+    LAYERS.forEach(function(L){ if(L.lv>=3 && lv>=L.lv) ks[L.k]=keyFor(v, L.lv); });
+    var jobs=[];
+    DATA.forEach(function(e){
+      var it=v.items[e.id]; if(!it) return;
+      Object.keys(ks).forEach(function(k){
+        var p=it[k]; if(!p) return;
+        jobs.push(ks[k].then(function(key){
+          if(!key) return;
+          return crypto.subtle.decrypt({name:'AES-GCM', iv:b64u8(p.iv), additionalData:enc.encode('OPEN/'+e.id+'/'+k+'/'+p.lv)}, key, b64u8(p.ct))
+            .then(function(buf){ e[k]=dec.decode(buf); });
+        }).catch(function(){ /* 開かない層は黒塗りのまま */ }));
+      });
+    });
+    return Promise.all(jobs);
+  }).catch(function(){ toast('所蔵庫を開けなかった。註記・秘匿は黒塗りのまま表示する。'); });
+}
+
+fetch('data/open.json', {cache:'no-cache'}).then(function(r){
+  if(!r.ok) throw new Error('open.json '+r.status); return r.json();
+}).then(function(items){
+  DATA=items;
+  paintSeries(); paintRate(); select('B-01',false);
+  return unseal().then(function(){ paintRate(); paintView(true); prevLv=lv; });
+}).catch(function(){
+  document.getElementById('view').innerHTML='<p style="color:#554F45">目録を読み出せなかった。時間をおいて再度来館されたい。</p>';
+});
+</script>
+</body>
+</html>

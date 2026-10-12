@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>資料利用規程 ─ 大図書館 第4188分館 | Arca Hortus</title>
+<link rel="canonical" href="https://arcahortus.com/archive/terms.html" />
+<link rel="icon" href="../images/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 共通ヘッダー・フッター用。body に ah-body を付けないので、地と本文は下の style のまま -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=JetBrains+Mono:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/ah-tokens.css" />
+<link rel="stylesheet" href="../assets/ah-common.css" />
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700&family=Noto+Serif+JP:wght@300;400;600&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F1E8; --paper-2:#EBE6D8; --sumi:#1E1B16; --soft:#554F45;
+  --rule:#C9BFA8; --rokusho:#4A6B5A; --shu:#8C2F20; --rail:#232B26;
+  --mincho:"Zen Old Mincho","Noto Serif CJK JP","Noto Serif JP",serif;
+  --serif:"Noto Serif JP","Noto Serif CJK JP",serif;
+  --mono:"Roboto Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper); color:var(--sumi); font-family:var(--serif); font-size:15px; line-height:2.0}
+/* 共通ヘッダー・フッターは --mono を共通トークンのまま使う（上の :root で上書きしているため戻す）。半透明の地が紙に透けないよう共通の地色を敷く */
+.ah-site-head,.ah-site-foot{--mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace; background-color:var(--void)}
+/* 本文中のリンク（共通 CSS の a{color:var(--ice)} は紙の地では読めない） */
+.sheet a{color:var(--rokusho)}
+.bar{
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  background:var(--rail); color:#CFD6CC; padding:10px 20px; border-bottom:2px solid var(--rokusho);
+}
+.bar .mark{font-family:var(--mincho); font-size:15px; letter-spacing:.22em}
+.bar .sub{font-family:var(--mono); font-size:10px; color:#7D8A80; letter-spacing:.14em}
+.bar .spacer{flex:1}
+.bar a{color:#CFD6CC; font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-decoration:none; border-bottom:1px solid #4A5A4F}
+.bar a:hover{border-bottom-color:#CFD6CC}
+.sheet{max-width:780px; margin:0 auto; padding:34px 24px 90px}
+.docid{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; color:var(--soft); line-height:1.9; white-space:pre-line; border:1px solid var(--rule); padding:9px 13px; background:var(--paper-2)}
+h1{font-family:var(--mincho); font-size:30px; font-weight:500; letter-spacing:.1em; margin:26px 0 4px; line-height:1.4}
+.en{font-family:var(--mono); font-size:10.5px; letter-spacing:.2em; color:var(--soft); margin-bottom:26px}
+.intro{margin:4px 0 30px}
+.intro .big{font-family:var(--mincho); font-size:19px; line-height:2.05; letter-spacing:.03em; margin:0 0 1.1em}
+.intro p{font-size:15px; line-height:2.1; margin:0 0 1.15em}
+.intro .close{color:var(--soft); font-size:13.5px; line-height:1.95}
+.gist{border:1px solid var(--rule); background:var(--paper-2); padding:4px 18px 14px; margin:0 0 30px}
+.gist h3{font-family:var(--mono); font-size:10px; letter-spacing:.24em; color:var(--soft); margin:14px 0 10px; font-weight:400}
+.gist dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:7px 16px; align-items:baseline}
+.gist dt{font-family:var(--mincho); font-size:13.5px; letter-spacing:.04em; white-space:nowrap}
+.gist dd{margin:0; font-size:13.5px; line-height:1.85}
+.gist dd.y{color:var(--rokusho)} .gist dd.n{color:var(--shu)}
+.lead{border-left:2px solid var(--rokusho); padding:4px 0 4px 15px; color:var(--soft); font-size:13px; line-height:1.9; margin-bottom:34px}
+h2{
+  font-family:var(--mincho); font-size:17px; font-weight:500; letter-spacing:.09em;
+  margin:40px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--rule);
+  display:flex; align-items:baseline; gap:12px;
+}
+h2 .n{font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--rokusho)}
+h3{font-family:var(--mincho); font-size:14.5px; font-weight:500; letter-spacing:.06em; margin:24px 0 7px; color:var(--soft)}
+p{margin:0 0 1em; text-align:justify}
+ol.cl{counter-reset:cl; list-style:none; margin:0 0 1em; padding:0}
+ol.cl > li{counter-increment:cl; position:relative; padding-left:2.4em; margin-bottom:.7em}
+ol.cl > li::before{
+  content:counter(cl); position:absolute; left:0; top:.15em;
+  font-family:var(--mono); font-size:11px; color:var(--soft);
+  border:1px solid var(--rule); width:1.7em; height:1.7em; display:grid; place-content:center;
+}
+ul.d{list-style:none; margin:.3em 0 1em; padding:0}
+ul.d li{position:relative; padding-left:1.3em; margin-bottom:.4em}
+ul.d li::before{content:"─"; position:absolute; left:0; color:var(--rule)}
+table{width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13.5px}
+th,td{border:1px solid var(--rule); padding:8px 11px; text-align:left; vertical-align:top; line-height:1.8}
+th{background:var(--paper-2); font-family:var(--mincho); font-weight:500; letter-spacing:.06em; font-size:13px}
+td.y{color:var(--rokusho)} td.n{color:var(--shu)}
+.warn{
+  border:2px solid var(--shu); background:#F7EDEA; padding:16px 19px; margin:20px 0;
+}
+.warn .h{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.2em; color:var(--shu);
+  margin-bottom:8px; display:flex; align-items:center; gap:9px;
+}
+.warn .h::after{content:""; flex:1; height:1px; background:#D9B6AE}
+.warn p:last-child{margin-bottom:0}
+.note{background:var(--paper-2); border-left:2px solid var(--rule); padding:12px 16px; margin:16px 0; font-size:13.5px; color:var(--soft)}
+.note p:last-child{margin-bottom:0}
+.shu{border-left:2px solid var(--shu); padding:7px 0 7px 15px; color:var(--shu); font-size:13px; line-height:1.9; margin:40px 0 0}
+.shu b{font-family:var(--mono); font-size:10px; letter-spacing:.16em; display:block; font-weight:400; margin-bottom:3px}
+.foot{margin-top:50px; border-top:1px solid var(--rule); padding-top:14px; font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; color:var(--soft); line-height:2}
+code{font-family:var(--mono); font-size:12.5px; background:var(--paper-2); padding:1px 5px; border:1px solid var(--rule)}
+em.q{font-style:normal; background:linear-gradient(transparent 62%, #D9B6AE 62%)}
+@media (max-width:620px){
+  .sheet{padding:22px 16px 70px} h1{font-size:24px}
+  table{font-size:12.5px} th,td{padding:7px 8px}
+}
+</style>
+</head>
+<body>
+
+  <header class="ah-site-head" data-root="../">
+    <div class="ah-mark"><a href="../index.html"><b>ArcaHortus</b><span>箱庭機構</span></a></div>
+    <nav class="ah-site-nav" aria-label="メインナビゲーション">
+      <a href="../about.html">About</a>
+      <a href="../recommend.html">TopPicks</a>
+      <a href="../nexus.html">Nexus</a>
+      <a href="../archive.html" class="ah-here" aria-current="page">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="../lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
+      <a href="../weather/">Kanshodai<span class="ah-tag ah-t-ice">LIVE</span></a>
+    </nav>
+  </header>
+
+<div class="bar">
+  <span class="mark">大図書館</span>
+  <span class="sub">GNA BR.4188 / TERMS OF USE</span>
+  <span class="spacer"></span>
+  <a href="open.html">&#9666; 開架閲覧室へ戻る</a>
+</div>
+
+<div class="sheet">
+
+<div class="docid">Document ID: AH-LGL-T03 / Version 1.0.0 / 2026.10.03 制定
+ITEM # AH-L03 ／ OBJECT CLASS SAFE ／ CLEARANCE LEVEL 1
+ISSUED BY 箱庭次元研究機構 法務・意匠管理部 ／ SITE 全次元史実保護機構 第4188分館</div>
+
+<h1>資料利用規程</h1>
+<div class="en">T E R M S &nbsp; F O R &nbsp; U S E &nbsp; O F &nbsp; H O L D I N G S</div>
+
+<div class="intro">
+<p class="big">当館が公開する資料は、創作にご利用・ご活用いただくことが可能です。</p>
+
+<p>生物・器物・用語・地名・人物の各系統について、箱庭次元研究機構が観測・記録した内容を設定資料として掲載しています。小説、漫画、イラスト、音楽、映像、ゲームその他、形式は問いません。非営利の二次創作であれば、事前のご連絡なくご利用いただけます。</p>
+
+<p>また当機構は、お寄せいただいた創作物を<b>一個の箱庭世界として記録する制度</b>を設けています。当機構は世界を創造する組織ではなく、発生した世界を観測し、記録する組織です。ご申請のあった作品には観測記録番号を付し、当館に登載します。作品の権利は作者に帰属します。ただし、本コンテンツに由来する設定・名称・意匠についての権利は当機構に留保されます（第11条）。</p>
+
+<p>資料は四つの層からなり、取得された権限の段階に応じて開示範囲が広がります。第三種までの記述には、創作上の制限を設けていません。制限があるのは、本編で未公表の一層のみです。</p>
+
+<p class="close">以下、取扱いの詳細を定めます。</p>
+</div>
+
+<div class="gist">
+<h3>要 点</h3>
+<dl>
+<dt>非営利の二次創作</dt><dd class="y">自由です。事前のご連絡は要りません。</dd>
+<dt>設定資料としての利用</dt><dd class="y">標目・記述・註記は、ご自由にお使いいただけます。</dd>
+<dt>作品の登載</dt><dd class="y">申請制です。作品の権利は作者に帰属し、取下げも承ります。</dd>
+<dt>許諾のない商用利用</dt><dd class="n">できません。ただし同人頒布は商用利用に当たりません。</dd>
+<dt>秘匿（第四種）</dt><dd class="n">作品にお使いいただけますが、種明かしはできません。</dd>
+<dt>登載差止の項目</dt><dd class="n">お使いいただけません。</dd>
+</dl>
+</div>
+
+<div class="lead">
+本規程は、大図書館（全次元史実保護機構 第4188分館）が収蔵する資料について、<b>利用規約 第3条（二次創作ガイドライン）を具体化する下位規程</b>です。上位は <a href="../terms.html">利用規約</a> および <a href="../privacy.html">プライバシーポリシー</a> であり、本規程がこれらと矛盾する場合は上位が優先します。本規程に定めのない事項は上位規約によります。
+</div>
+
+<!-- ───────── 第1条 ───────── -->
+<h2><span class="n">第 1 条</span>適用範囲</h2>
+<ol class="cl">
+<li>本規程は、大図書館が収蔵する次のものに適用します。
+  <ul class="d">
+    <li>開架閲覧室の各項目（標目・記述・註記・秘匿の各層、諸元、図版）</li>
+    <li>閉架書庫の各資料（本文、書誌、伏字の下にある記載）</li>
+    <li>分類記号・請求記号その他の識別記号、および文書書式</li>
+  </ul>
+</li>
+<li>大図書館の外にある本コンテンツ（各機関の公式頁、作品本編、配信等）には、上位の利用規約が直接適用されます。</li>
+</ol>
+
+<!-- ───────── 第2条 ───────── -->
+<h2><span class="n">第 2 条</span>用語</h2>
+<table>
+<tr><th style="width:7.5em">語</th><th>意味</th></tr>
+<tr><td>開架</td><td>開架閲覧室。事典としての記述を収める。</td></tr>
+<tr><td>閉架</td><td>閉架書庫（記録保管庫）。機関が作成した文書そのものを収める。</td></tr>
+<tr><td>層</td><td>開架の一項目を構成する四段の記述。標目・記述・註記・秘匿。</td></tr>
+<tr><td>標目</td><td>第一層。名称・状態・概要。権限を要しない。</td></tr>
+<tr><td>記述</td><td>第二層。本文。第二種以上。</td></tr>
+<tr><td>註記</td><td>第三層。機構の所見および未公表の設定。第三種以上。</td></tr>
+<tr><td>秘匿</td><td>第四層。第四種以上。本規程 第5条の制限がかかる唯一の層。</td></tr>
+<tr><td>登載差止</td><td>管理者の判断により公開を停止した項目。第6条。</td></tr>
+</table>
+
+<!-- ───────── 第3条 ───────── -->
+<h2><span class="n">第 3 条</span>閲覧</h2>
+<ol class="cl">
+<li>閲覧そのものに制限はありません。権限は、所定の手続を踏めばどなたでも取得できます。審査も推薦も要しません。</li>
+<li>閲覧記録は、ご利用の端末内にのみ保存されます。外部へ送信されることはありません。</li>
+<li>権限の取得は無償です。対価を求めることはありません。</li>
+</ol>
+
+<!-- ───────── 第4条 ───────── -->
+<h2><span class="n">第 4 条</span>二次創作における利用</h2>
+<p>利用規約 第3条のとおり、<b>非営利かつ品位を損なわない範囲での二次創作を歓迎します。事前のご連絡は不要です。</b>本条はその範囲を、大図書館の資料について具体的に定めるものです。</p>
+
+<table>
+<tr><th style="width:6.5em">層</th><th style="width:5.5em">必要権限</th><th>二次創作での利用</th></tr>
+<tr><td>標 目</td><td>第一種</td><td class="y">ご自由にお使いいただけます。</td></tr>
+<tr><td>記 述</td><td>第二種</td><td class="y">ご自由にお使いいただけます。</td></tr>
+<tr><td>註 記</td><td>第三種</td><td class="y">ご自由にお使いいただけます。設定の解説・考察を公表することもできます。</td></tr>
+<tr><td>秘 匿</td><td>第四種</td><td class="n">作品にお使いいただけますが、<b>種明かしはできません</b>。第5条。</td></tr>
+<tr><td>閉架資料</td><td>第三種／第四種</td><td class="y">内容を素材としてお使いいただけます。ただし本文の全文転載はできません（第10条）。</td></tr>
+<tr><td>登載差止</td><td>―</td><td class="n">対象そのものをお使いいただけません。第6条。</td></tr>
+</table>
+
+<div class="note">
+<p><b>権限を上げるほど、使える設定が増えます。</b>これが権限制度の目的です。読めるのに使えない層は、秘匿の一層だけであり、それも使用そのものは禁じていません。</p>
+</div>
+
+<!-- ───────── 第5条 ───────── -->
+<h2><span class="n">第 5 条</span>秘匿の取扱い</h2>
+
+<div class="warn">
+<div class="h">前 提</div>
+<p>本規程にいう「秘匿」は、<b>法律上の機密ではありません。</b>利用規約 第1条第3項のとおり、当拠点における「機密」「収容」等の表記は演出であり、現実の権利義務に影響しません。</p>
+<p>秘匿の制限は、<b>二次創作を許諾するにあたっての条件</b>です。各箱庭世界の設定が相互に矛盾しないよう保つための措置であり、ある事柄は、ある読者にとって既知であっても、別の作品においてはいまだ公表されていない場合があります。</p><p style="margin-bottom:0">公表の順序が入れ替わると、世界どうしの整合が取れなくなります。秘匿の層を設けているのは、この順序を保つためです。</p>
+</div>
+
+<h3>第5条の1　できること</h3>
+<ul class="d">
+<li>秘匿の内容を踏まえた物語・描写・演出。結果として秘匿と整合する作品を書くこと</li>
+<li>秘匿に由来する示唆・伏線・違和感を作中に置くこと</li>
+<li>秘匿を知ったうえで、知らない読者にも成立する作品を作ること</li>
+</ul>
+
+<h3>第5条の2　できないこと（種明かし）</h3>
+<p>次のいずれかに当たる形で、秘匿の内容を<b>命題として述べること</b>はご遠慮ください。</p>
+<ul class="d">
+<li>地の文、説明、解説、設定資料、あとがき、投稿文、紹介文、タグ等での明示</li>
+<li>「○○の正体は△△である」「実は○○だった」という形の断定</li>
+<li>秘匿の原文の引用・転載・要約の公開</li>
+<li>作品の外（SNS・配信・感想等）での解説</li>
+</ul>
+
+<div class="note">
+<p><b>判定の目安。</b><em class="q">その作品だけを読んだ方が、秘匿の内容を事実として知ることになるか。</em>なるのであれば種明かしに当たります。ならないのであれば当たりません。</p>
+<p style="margin-bottom:0">迷われた場合は、そのままお書きいただいて構いません。本規程は萎縮させるためのものではありません。</p>
+</div>
+
+<h3>第5条の3　制限の解除</h3>
+<ol class="cl">
+<li>秘匿の内容が作品本編・公式発表等により公表されたときは、当該の層は註記へ降り、本条の制限は解けます。</li>
+<li>解除は大図書館の更新履歴に掲示します。解除された事項については、既に公開された作品にさかのぼって不利益が及ぶことはありません。</li>
+<li>公表前に秘匿へ到達された方が、公表後に改めて作品を公開されることを妨げません。</li>
+</ol>
+
+<!-- ───────── 第6条 ───────── -->
+<h2><span class="n">第 6 条</span>登載差止</h2>
+<ol class="cl">
+<li>「登載差止」と表示された項目の対象は、二次創作にお使いいただけません。名称・設定・来歴のいずれについても同様です。</li>
+<li>差止は権限によって解けません。権限の不足ではなく、公開そのものの停止だからです。</li>
+<li>差止の理由は開示しません。解除する場合は更新履歴に掲示します。</li>
+</ol>
+
+<!-- ───────── 第7条 ───────── -->
+<h2><span class="n">第 7 条</span>商用利用</h2>
+<ol class="cl">
+<li>許諾なく商用利用を行うことはできません（利用規約 第2条・第3条）。</li>
+<li>ただし利用規約 第3条のとおり、<b>同人活動の慣行上相当と認められる範囲の頒布は、商用利用に当たりません。</b>即売会・通信販売・委託販売における有償頒布、および制作費相当の対価の収受は、この範囲に含まれます。</li>
+<li>次は許諾を要します。
+  <ul class="d">
+    <li>法人その他の団体による利用</li>
+    <li>量産品・一般流通を前提とする物販</li>
+    <li>広告・プロモーション・企業活動に付随する利用</li>
+    <li>有償の学習教材・配信者向け素材等としての提供</li>
+  </ul>
+</li>
+<li>投げ銭、支援サイトの会員向け先行公開、動画の収益化は、二次創作に付随する限りにおいて許諾を要しません。</li>
+</ol>
+
+<!-- ───────── 第8条 ───────── -->
+<h2><span class="n">第 8 条</span>表現の範囲</h2>
+
+<h3>第8条の1　暴力・シリアスな表現</h3>
+<ol class="cl">
+<li>暴力、死、喪失、崩壊、精神的な苦痛といった、物語上のシリアスな表現については、<b>制限を設けていません。</b>箱庭世界の設定は、もとよりそうした主題を含んでいます。</li>
+<li>閲覧者への配慮が必要とお考えの場合は、作者のご判断で注意書きを添えてください。当館から要件を課すものではありません。</li>
+</ol>
+
+<h3>第8条の2　性的表現</h3>
+<ol class="cl">
+<li>性的表現を含む二次創作は、<b>適切なゾーニングを行うことを条件に認めます。</b></li>
+<li>条件は次のとおりです。
+  <ul class="d">
+    <li>年齢制限の明示、および年齢確認・閲覧制限の設定</li>
+    <li>検索・一覧等から不意に目に入らないようにすること</li>
+    <li>当拠点の公式発表・公認であると誤認させないこと（第9条）</li>
+    <li><b>当拠点（arcahortus.com）および作品本編への直接のリンクを、当該作品内に置かないこと</b></li>
+  </ul>
+</li>
+<li>最後の一点は、当拠点に年齢制限を設けていないための条件です。作品から当拠点へ直接の動線があると、ゾーニングが意味を成さなくなります。</li>
+</ol>
+
+<h3>第8条の3　認められない表現</h3>
+<ol class="cl">
+<li><b>法令に違反する表現は、ゾーニングの有無にかかわらず行えません。</b>児童ポルノに該当するものを含みます。</li>
+<li>実在の人物を想起させる表現、および現実の被害を題材とする表現は、表現の種別を問わずお控えください。</li>
+</ol>
+
+<!-- ───────── 第9条 ───────── -->
+<h2><span class="n">第 9 条</span>公式との誤認の防止</h2>
+<p>大図書館の資料は、現実の文書に似せた体裁を取っています。この体裁がそのまま持ち出されると、公式の発表と見分けがつかなくなります。次の点にご配慮ください。</p>
+<ol class="cl">
+<li><b>実在する分類記号を、架空の資料に付さないこと。</b><code>AH-4188-0121-A</code> のように現に当館が用いている記号を、二次創作上の文書へ流用しないでください。</li>
+<li>二次創作で文書を作られる場合は、分類記号の末尾に <code>-X</code> を付すか、<code>AH-0000-</code> で始まる番号をお使いください。いずれも当館は発行しません。</li>
+<li>各機関の紋章・ロゴ・文書書式をそのまま用いた文書を、注記なく公開しないこと（第10条）。</li>
+<li>公式の発表・公認・提携であると述べないこと。これは利用規約 第5条の禁止事項です。</li>
+</ol>
+<div class="note"><p style="margin-bottom:0">著作権表示 <code>&copy; ArcaHortus</code> を添えるか、当拠点（arcahortus.com）へのリンクを置いていただければ、ほとんどの場合それで足ります。</p></div>
+
+<!-- ───────── 第10条 ───────── -->
+<h2><span class="n">第 10 条</span>図版・素材・原文</h2>
+<ol class="cl">
+<li>図版、紋章、ロゴ、音声、プログラムを、そのまままたは軽微な改変のみで用いることはできません（利用規約 第3条）。描き起こし・作り直しは自由です。</li>
+<li>資料本文の全文転載はできません。論評・紹介に必要な範囲の引用は、出所（分類記号）を明示していただければ可能です。</li>
+<li>「図版未製」の枠について、ご自身の作画を公開していただくことを歓迎します。当館での採用をご希望の場合は、第12条の申請をご利用ください。</li>
+</ol>
+
+<!-- ───────── 第11条 ───────── -->
+<h2><span class="n">第 11 条</span>制作手段と出所の表示</h2>
+
+<p><b>創作の道具・媒体は問いません。</b>どの手段を用いたかを理由に、二次創作を制限することはありません。</p>
+
+<p>お願いしたいのは、道具ではなく<b>出所です。</b></p>
+
+<ol class="cl">
+<li>本コンテンツに依拠した作品を公開されるときは、<b>著作権表示 <code>&copy; ArcaHortus</code> を添えるか、当拠点（arcahortus.com）へのリンクを置いてください。</b>置く場所は、説明欄でも、タグでも、あとがきでも構いません。</li>
+<li>本コンテンツに由来する設定・名称・意匠を、<b>出所を伏せてご自身の創作として公表しないでください。</b>本条で申し上げたいのは、この一点です。</li>
+<li>あわせて分類記号を引いていただけると、典拠が明確になります（例：<code>4188/B-02</code>）。</li>
+</ol>
+
+<div class="note">
+<p><b>権利の所在。</b>お作りいただいた作品そのもの──文章、絵、構成、独自の登場人物──の権利は作者に帰属します。一方、作中に現れる当機構の設定・名称・意匠（たとえば〈狭間鯱〉〈クラヴィス・ロア〉〈第4188分館〉）についての権利は、当機構に留保されます。</p>
+<p style="margin-bottom:0">また、二次的著作物の利用に関しては、著作権法第28条により、当機構も作者と同一の種類の権利を有します。出所の表示をお願いしているのは、この区別を保つためです。</p>
+</div>
+
+<!-- ───────── 第12条 ───────── -->
+<h2><span class="n">第 12 条</span>掲載の申請（意匠申請窓口）</h2>
+<p>お作りいただいた二次創作を、<b>当機構が観測した一個の箱庭世界として大図書館へ登載すること</b>があります。登載は申請に基づいて行い、当館から一方的に行うことはありません。</p>
+<ol class="cl">
+<li>申請は意匠申請窓口で受け付けます。受理した場合は受理番号を発行し、世界には観測記録番号（<code>ARCA-XXX</code>）を付します。</li>
+<li>登載しても、<b>当該作品の権利は作者の方に残ります。</b>当館が取得するのは、大図書館への掲載および紹介に必要な範囲の、非独占・無償の利用許諾のみです。ただし、作品に含まれる当機構由来の設定・名称・意匠についての権利は、第11条のとおり当機構に留保されます。</li>
+<li>掲載にあたり、作者名義・初出・連絡先を表示します。表示を望まれない場合はその旨お申し出ください。</li>
+<li>当館は作品を改変しません。紹介文の作成にあたっては、事前に内容をご確認いただきます。</li>
+<li><b>取下げはいつでも、理由を問わず承ります。</b>お申し出から速やかに掲載を取り下げます。取下げ後は、当該世界の記録を「観測を終了した」ものとして扱います。</li>
+<li>当館は、登載した作品に含まれる設定・名称・事象を、<b>当機構の公式設定として採り入れることがあります。</b>採用する場合は、事前に作者へご連絡し、同意を得たうえで行います。</li>
+<li><b>公式設定として確定した事項は、作品の取下げ後も撤回できません。</b>作品の掲載は取り下げられますが、公式設定となった事項は、以後当機構の世界の一部として残ります。</li>
+<li>公式設定への採用を望まれない場合は、ご申請の際にその旨をお申し出ください。採用の対象から除きます。</li>
+<li>受理しない場合があります。理由は申請者にのみお伝えします。</li>
+</ol>
+<div class="note"><p style="margin-bottom:0">ご申請のない作品を当館が掲載することはありません。</p></div>
+
+<!-- ───────── 第13条 ───────── -->
+<h2><span class="n">第 13 条</span>訂正・削除の求め</h2>
+<ol class="cl">
+<li>大図書館の記載に誤りがある場合、どなたでもご指摘いただけます。</li>
+<li>ご自身に関する記載、またはご自身の権利に関わる記載について、訂正または削除を求めることができます。</li>
+<li>当館は資料を削除せず、状態の変更と追記によって対応することを原則とします。ただし権利侵害に当たる場合はこの限りではありません。</li>
+</ol>
+
+<!-- ───────── 第14条 ───────── -->
+<h2><span class="n">第 14 条</span>本規程の性質</h2>
+<ol class="cl">
+<li>当拠点はフィクションを含むエンターテインメントサイトです。「機密」「収容」「権限」「差止」等の表記は演出であり、現実の権利義務に影響しません（利用規約 第1条第3項）。</li>
+<li>現実に効力を有する条件は、利用規約・プライバシーポリシー、および本規程のうち著作物の利用に関する定めです。</li>
+<li>本規程に反する利用があった場合、当館がまず行うのはご連絡です。直ちに法的手段に訴えることはしません。</li>
+<li>ただし、<b>法令に違反する行為、および当機構または第三者の権利を侵害する行為</b>については、この限りではありません。本規程の改定の前後を問わず、また事前のご連絡を経ることなく、法的措置を講じる場合があります。</li>
+</ol>
+
+<!-- ───────── 第15条 ───────── -->
+<h2><span class="n">第 15 条</span>改定</h2>
+<ol class="cl">
+<li>本規程は改定することがあります。改定する場合は効力発生日を定め、大図書館の更新履歴に掲示します。</li>
+<li>改定は将来に向かってのみ効力を生じます。改定前に公開された二次創作が、改定によって遡って本規程に反することはありません。ただし、第14条第4項に定める行為については、この限りではありません。</li>
+</ol>
+
+<div class="shu">
+<b>朱注　箱庭世界倫理委員会</b>
+本規程 第5条について。当委員会は、世界間の整合を理由として記録の公開範囲を定めることを、本来の在り方とは認めない。ただし本件につき是正を求めるものではない。
+</div>
+
+<div class="foot">
+制定 2026.10.03 ／ 箱庭次元研究機構 法務・意匠管理部<br />
+上位規程 ── 利用規約 AH-LGL-T02 ／ プライバシーポリシー<br />
+実施 ── 全次元史実保護機構 第4188分館 索引部
+</div>
+
+</div>
+
+  <footer class="ah-site-foot">
+    <div class="ah-foot-grid">
+      <div>
+        <div class="ah-foot-mark"><a href="../index.html">ArcaHortus</a></div>
+        <p class="ah-foot-credit">&copy; ArcaHortus. All rights reserved. Designed with curiosity by ArcaHortus 🧪</p>
+      </div>
+      <nav class="ah-foot-links" aria-label="フッターナビゲーション">
+        <a href="../privacy.html">プライバシーポリシー</a>
+        <a href="../terms.html">利用規約</a>
+        <a href="../maintenance.html">保守記録</a>
+        <a href="https://x.com/ArcaHortus" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="ah-foot-sess" aria-hidden="true">
+      <span>SESSION: <span id="ah-session-id">AH-0000-0000</span></span>
+      <span>OBSERVER: <i class="ah-redact" style="min-width:52px;height:9px"></i></span>
+      <span>MEMORY PROTOCOL: STANDBY</span>
+      <span>世界は、まだ記述の途中です。</span>
+    </div>
+  </footer>
+
+<script src="../assets/ah-site.js"></script>
+<script src="../assets/ah-staff.js"></script>
+</body>
+</html>
