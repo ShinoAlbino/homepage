@@ -97,8 +97,8 @@ async function seal(docId, lv, html) {
   return { lv, iv: b64(iv), ct: b64(new Uint8Array(ct)) };
 }
 
-/* 封じる文書と権限は archive.html の data-vault / data-lv から読む（正本を一つにする） */
-const page = readFileSync(join(ROOT, 'archive.html'), 'utf8');
+/* 封じる文書と権限は閉架（archive/closed.html）の data-vault / data-lv から読む（正本を一つにする） */
+const page = readFileSync(join(HERE, 'closed.html'), 'utf8');
 const targets = [];
 for (const m of page.matchAll(/<article class="archive-card"[^>]*>/g)) {
   const tag = m[0];

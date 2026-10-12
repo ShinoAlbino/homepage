@@ -7,21 +7,27 @@
    - 提携機関カードに、配属機関と課題（LV.3 の要件）の状態を示す
 
    権限の正本は assets/ah-staff.js（職員証）。ここは読むだけで、書かない。
+   権限 LV と照合の主鍵は js/clearance.js から読む（受付・開架と共用）。
+   archive/closed.html から type="module" で読み込む。モジュールは DOMContentLoaded より
+   前に評価されるので、archive.js の openFromHash より先に window.ArchiveAccess が立つ。
    ============================================================ */
+import { clearance, sealKey } from '../js/clearance.js';
+
 (function () {
   'use strict';
 
   var PEPPER = '箱庭次元研究機構／大図書館／全次元史実保護機構 第4188分館';
-  var VAULT_URL = 'archive/vault.json';
+  var VAULT_URL = new URL('vault.json', import.meta.url).href;
+  var ROOT = '../';      // closed.html から見たサイトの根
   var enc = new TextEncoder(), dec = new TextDecoder();
   var vaultP = null;     // vault.json の読み込み（一度だけ）
   var keys = {};         // lv → CryptoKey の Promise
 
   function staff() { return window.AHStaff ? window.AHStaff.get() : null; }
   /* 未登録は LEVEL 1（公開可）として扱う */
-  function myLv() { var r = staff(); return r ? r.lv : 1; }
+  function myLv() { return clearance(); }
   /* LV.4 以上の本文は照合の記録（主鍵）が要る。適性検査で LV.4 に達しただけでは開かない */
-  function sealed() { var r = staff(); return !(r && r.seal && r.seal.c1); }
+  function sealed() { return !sealKey(); }
   function canOpen(need) { return myLv() >= need && (need < 4 || !sealed()); }
   function lvName(lv) {
     var L = window.AHStaff && window.AHStaff.LABEL;
@@ -43,7 +49,7 @@
      職員証の LV だけ書き換えても K4 は得られず、本文は開かない */
   function keyFor(v, lv) {
     if (lv >= 4 && !keys[lv]) {
-      var r = staff(), k4 = r && r.seal && r.seal.c1;
+      var k4 = sealKey();
       if (!k4) return Promise.reject(new Error('照合端末の封が解かれていない'));
       keys[lv] = crypto.subtle.importKey('raw', b64u8(k4), 'HKDF', false, ['deriveKey'])
         .then(function (base) {
@@ -91,10 +97,10 @@
       '<p class="vault-note">本文は <b>LEVEL ' + needLv + '</b>' + (lvName(needLv) ? '（' + esc(lvName(needLv)) + '）' : '') + ' の権限で開示される。' +
       (r ? '貴殿の権限 LEVEL ' + have + '。' : '職員登録がない。') + '</p>' +
       '<p class="vault-note">' + (r && have >= needLv
-        ? '本文は照合の記録がある者にのみ開示する。 <a href="collation/">照合端末</a>'
+        ? '本文は照合の記録がある者にのみ開示する。 <a href="' + ROOT + 'collation/">照合端末</a>'
         : r
-        ? '要件の充足状況は職員証の裏面に記す。 <a href="registry.html">職員登録局</a>'
-        : '<a href="registry.html">職員登録局</a> で資質検査を受け、職員証の発行を受けること。') + '</p>' +
+        ? '要件の充足状況は職員証の裏面に記す。 <a href="' + ROOT + 'registry.html">職員登録局</a>'
+        : '<a href="' + ROOT + 'registry.html">職員登録局</a> で資質検査を受け、職員証の発行を受けること。') + '</p>' +
       '</div>';
   }
   function busyHTML() {
@@ -122,7 +128,7 @@
       slot.innerHTML = parts.map(function (p, i) { return p == null ? lockedHTML(need, docId) : p; }).join('');
     }).catch(function (e) {
       slot.innerHTML = '<p class="vault-note">所蔵庫を開けなかった。（' + esc(e.message) + '）</p>' +
-        (/照合端末/.test(e.message) ? '<p class="vault-note"><a href="collation/">照合端末</a> で照合を済ませること。</p>' : '');
+        (/照合端末/.test(e.message) ? '<p class="vault-note"><a href="' + ROOT + 'collation/">照合端末</a> で照合を済ませること。</p>' : '');
     });
   }
 

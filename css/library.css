@@ -1,0 +1,142 @@
+/* ============================================================
+   ArcaHortus / 大図書館 受付  （archive.html）
+
+   開架閲覧室（archive/open.html）と同じ紙と緑青の系統。閉架の archive/archive.css は
+   読み込まない（共有すると二つの部屋が似はじめる）。
+   共通ヘッダー・フッター（assets/ah-common.css）は body.ah-body を付けずに載せる。
+   ============================================================ */
+:root{
+  --paper:#F4F1E8; --paper-2:#EBE6D8; --sumi:#1E1B16; --sumi-soft:#554F45;
+  --rule:#C9BFA8; --rokusho:#4A6B5A; --shu:#8C2F20;
+  --lib-rail:#232B26; --lib-rail-2:#2D362F; --lib-rail-text:#CFD6CC; --lib-rail-dim:#7D8A80;
+  --mincho:"Zen Old Mincho","Noto Serif CJK JP","Noto Serif JP",serif;
+  --serif:"Noto Serif JP","Noto Serif CJK JP",serif;
+  --latin:"EB Garamond",Georgia,serif;
+  --lib-mono:"Roboto Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body.lib{
+  background:var(--paper); color:var(--sumi);
+  font-family:var(--serif); font-size:15px; line-height:1.9;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+/* 共通ヘッダー・フッターの半透明の地が紙に透けないよう、共通の地色を敷く */
+.ah-site-head,.ah-site-foot{background-color:var(--void)}
+.ah-site-foot{margin-top:0}
+
+/* ───────── 館銘 ───────── */
+.bar{
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  background:var(--lib-rail); color:var(--lib-rail-text);
+  padding:10px 20px; border-bottom:2px solid var(--rokusho);
+}
+.bar .mark{font-family:var(--mincho); font-size:15px; letter-spacing:.22em; white-space:nowrap}
+.bar .sub{font-family:var(--lib-mono); font-size:10px; color:var(--lib-rail-dim); letter-spacing:.14em}
+.bar .spacer{flex:1 1 auto}
+.bar button{
+  font-family:var(--lib-mono); font-size:11px; letter-spacing:.14em; cursor:pointer;
+  background:#131815; color:#E7EDE8; border:1px solid #3B463E; padding:5px 12px;
+}
+.bar button:hover{border-color:var(--rokusho)}
+
+/* ───────── 版面 ───────── */
+.desk{max-width:1020px; margin:0 auto; padding:30px 24px 80px}
+.docid{
+  font-family:var(--lib-mono); font-size:10.5px; letter-spacing:.1em; color:var(--sumi-soft);
+  line-height:1.9; white-space:pre-line; border:1px solid var(--rule); padding:9px 13px; background:var(--paper-2);
+}
+.plaque h1{font-family:var(--mincho); font-size:32px; font-weight:500; letter-spacing:.14em; margin:26px 0 2px; line-height:1.4}
+.plaque .en{font-family:var(--lib-mono); font-size:10.5px; letter-spacing:.22em; color:var(--sumi-soft)}
+.plaque .lead{margin:18px 0 0; max-width:46em; text-align:justify}
+.plaque .lead b{font-weight:600}
+.who{margin-top:14px; font-family:var(--lib-mono); font-size:11px; letter-spacing:.1em; color:var(--sumi-soft)}
+.who a{color:var(--rokusho)}
+
+.sec{margin-top:40px}
+.sec > h2{
+  font-family:var(--lib-mono); font-size:10.5px; font-weight:400; letter-spacing:.24em;
+  color:var(--sumi-soft); margin:0 0 12px; display:flex; align-items:center; gap:10px;
+}
+.sec > h2::after{content:""; flex:1 1 auto; height:1px; background:var(--rule)}
+
+/* 二つの書架 */
+.rooms{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+.room{
+  display:flex; flex-direction:column; gap:8px; text-decoration:none; color:var(--sumi);
+  border:1px solid var(--rule); background:var(--paper-2); padding:18px 20px 16px; border-top:3px solid var(--rokusho);
+  transition:border-color .2s, background .2s;
+}
+.room.closed{border-top-color:var(--lib-rail)}
+.room:hover{background:#E4DECD; border-color:var(--sumi-soft)}
+.room .k{font-family:var(--lib-mono); font-size:10px; letter-spacing:.2em; color:var(--sumi-soft)}
+.room h3{font-family:var(--mincho); font-size:22px; font-weight:500; letter-spacing:.12em; margin:0}
+.room h3 small{font-size:12px; letter-spacing:.06em; color:var(--sumi-soft); margin-left:8px}
+.room p{margin:0; font-size:13.5px; line-height:1.85; text-align:justify}
+.room .note{font-size:12px; color:var(--sumi-soft)}
+.room .go{margin-top:auto; padding-top:6px; font-family:var(--lib-mono); font-size:11px; letter-spacing:.16em; color:var(--rokusho)}
+.req{display:flex; flex-wrap:wrap; gap:6px; margin:2px 0}
+.req span{
+  font-family:var(--lib-mono); font-size:10px; letter-spacing:.1em; padding:1px 8px;
+  border:1px solid var(--rule); background:var(--paper); white-space:nowrap;
+}
+.req span.ok{border-color:var(--rokusho); color:var(--rokusho)}
+.req span.ng{color:#A29882}
+
+/* 館内掲示・新着 */
+.board{list-style:none; margin:0; padding:0; border-top:1px solid var(--rule)}
+.board li{display:grid; grid-template-columns:7.5em 1fr; gap:4px 14px; padding:8px 2px; border-bottom:1px solid var(--rule); font-size:13.5px}
+.board .c{font-family:var(--lib-mono); font-size:11px; letter-spacing:.06em; color:var(--sumi-soft); padding-top:2px}
+.board a{color:var(--sumi); text-decoration:none; border-bottom:1px solid var(--rule)}
+.board a:hover{border-bottom-color:var(--sumi)}
+.board .s{grid-column:2; font-size:12px; color:var(--sumi-soft)}
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:28px}
+
+/* ───────── 請求票 ───────── */
+.slip-wrap{
+  position:fixed; inset:0; z-index:60; display:none; place-items:center; padding:16px;
+  background:rgba(20,22,18,.55);
+}
+.slip-wrap.on{display:grid}
+.slip{
+  width:min(520px,100%); max-height:calc(100vh - 32px); overflow:auto;
+  background:var(--paper); color:var(--sumi); border:1px solid var(--sumi-soft);
+  box-shadow:0 18px 50px rgba(0,0,0,.35);
+}
+.slip-h{display:flex; align-items:baseline; gap:12px; padding:14px 18px 10px; border-bottom:2px solid var(--sumi)}
+.slip-h .org{font-family:var(--lib-mono); font-size:10px; letter-spacing:.14em; color:var(--sumi-soft); display:block}
+.slip-h h2{font-family:var(--mincho); font-size:21px; font-weight:500; letter-spacing:.5em; margin:2px 0 0}
+.slip-h .no{margin-left:auto; font-family:var(--lib-mono); font-size:12px; white-space:nowrap}
+.slip-h .x{background:none; border:0; font-size:18px; cursor:pointer; color:var(--sumi-soft); padding:0 0 0 6px}
+.slip-b{padding:6px 18px 4px}
+.slip-b .row{display:grid; grid-template-columns:5.5em 1fr; gap:4px 12px; align-items:baseline; padding:10px 0; border-bottom:1px solid var(--rule)}
+.slip-b label,.slip-b .lab{font-family:var(--mincho); font-size:13.5px; letter-spacing:.2em}
+.slip-b input{
+  width:100%; font-family:var(--serif); font-size:14px; padding:6px 8px; color:var(--sumi);
+  background:#FBF9F3; border:1px solid var(--rule);
+}
+.slip-b input:focus{outline:none; border-color:var(--rokusho)}
+.slip-b .hint{grid-column:2; font-size:11.5px; color:var(--sumi-soft); line-height:1.6}
+.slip-b .sig{font-family:var(--lib-mono); font-size:13px; letter-spacing:.08em}
+.slip-f{display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:14px 18px 18px}
+.slip-f button{
+  font-family:var(--mincho); font-size:14px; letter-spacing:.2em; cursor:pointer;
+  padding:10px 8px; border:1px solid var(--sumi); background:var(--paper-2); color:var(--sumi);
+}
+.slip-f button:hover{background:#E4DECD}
+.slip-f button.closed{background:var(--lib-rail); color:#E7EDE8; border-color:var(--lib-rail)}
+.slip-f button.closed:hover{background:var(--lib-rail-2)}
+.slip-f button:disabled{opacity:.55; cursor:wait}
+.slip-msg{min-height:1.6em; margin:0 18px 14px; font-size:13px; color:var(--rokusho)}
+.slip-msg.ng{color:var(--shu)}
+
+@media (max-width:760px){
+  .rooms,.cols{grid-template-columns:1fr}
+  .desk{padding:22px 16px 60px}
+  .plaque h1{font-size:26px}
+  .board li{grid-template-columns:1fr}
+  .board .s{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s !important; transition-duration:.001s !important}
+}

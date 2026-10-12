@@ -42,6 +42,8 @@ body{
 .bar .mark{font-family:var(--mincho); font-size:15px; letter-spacing:.22em; white-space:nowrap}
 .bar .sub{font-family:var(--mono); font-size:10px; color:var(--rail-dim); letter-spacing:.14em}
 .bar .spacer{flex:1 1 auto}
+.bar a.desk{color:var(--rail-text); font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-decoration:none; border-bottom:1px solid #4A5A4F; white-space:nowrap}
+.bar a.desk:hover{border-bottom-color:var(--rail-text)}
 /* 開示率 */
 .rate{display:flex; align-items:center; gap:10px}
 .rate .lab{font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--rail-dim)}
@@ -210,13 +212,14 @@ body{
       <a href="../about.html">About</a>
       <a href="../recommend.html">TopPicks</a>
       <a href="../nexus.html">Nexus</a>
-      <a href="../archive.html" class="ah-here" aria-current="page">Archive<span class="ah-tag ah-t-brass">LV.4</span></a>
+      <a href="../archive.html" class="ah-here" aria-current="page">Archive<span class="ah-tag ah-t-brass">LV.1</span></a>
       <a href="../lab/index.html">Laboratory<span class="ah-tag ah-t-verdant">EXP</span></a>
       <a href="../weather/">Kanshodai<span class="ah-tag ah-t-ice">LIVE</span></a>
     </nav>
   </header>
 
 <div class="bar">
+  <a class="desk" href="../archive.html">&#9666; 受付</a>
   <span class="mark">開架閲覧室</span>
   <span class="sub">GNA BR.4188 / OPEN STACKS</span>
   <span class="spacer"></span>
@@ -540,7 +543,18 @@ fetch('data/open.json', {cache:'no-cache'}).then(function(r){
   if(!r.ok) throw new Error('open.json '+r.status); return r.json();
 }).then(function(items){
   DATA=items;
-  paintSeries(); paintRate(); select('B-01',false);
+  /* ?call=4188/B-02/ｵﾙ または ?call=B-02 で該当項目を開く（受付からの転送） */
+  var want=(new URLSearchParams(location.search).get('call')||'').trim(), hit=null;
+  if(want){
+    var w=want.normalize('NFKC').toUpperCase();
+    hit=DATA.filter(function(e){
+      var c=e.call.join('/').normalize('NFKC').toUpperCase();
+      return c===w || e.id===w || c.indexOf(w+'/')===0 || ('4188/'+e.id)===w;
+    })[0]||null;
+    if(hit) series=hit.series;
+  }
+  paintSeries(); paintRate(); select(hit?hit.id:'B-01',false);
+  if(want && !hit) toast('該当する記号は当分館の目録に存在しない。');
   return unseal().then(function(){ paintRate(); paintView(true); prevLv=lv; });
 }).catch(function(){
   document.getElementById('view').innerHTML='<p style="color:#554F45">目録を読み出せなかった。時間をおいて再度来館されたい。</p>';
