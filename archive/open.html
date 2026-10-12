@@ -280,6 +280,7 @@ body{
    権限は ../js/clearance.js からのみ読む。
    ============================================================ */
 import { clearance, sealKey } from '../js/clearance.js';
+import { findOpen, logView } from '../js/library.js';
 
 var SERIES = [
   {key:'bios',        sig:'B', name:'生 物'},
@@ -452,6 +453,11 @@ function toast(m){
   clearTimeout(tid); tid=setTimeout(function(){t.classList.remove('on');},2200);
 }
 function select(id, animate){ cur=id; paintList(); paintView(animate); }
+/* 閲覧記録（端末内のみ）。閲覧者が自ら開いた項目だけを記す。差止は記さない */
+function viewed(id){
+  var e=DATA.filter(function(x){return x.id===id;})[0];
+  if(e && e.listing!=='差止') logView(e.call.join('/'));
+}
 
 /* ───────── 事象 ───────── */
 document.getElementById('series').addEventListener('click',function(ev){
@@ -460,7 +466,7 @@ document.getElementById('series').addEventListener('click',function(ev){
   paintSeries(); select(f?f.id:null,false);
 });
 document.getElementById('list').addEventListener('click',function(ev){
-  var li=ev.target.closest('.item'); if(!li) return; select(li.dataset.id,false);
+  var li=ev.target.closest('.item'); if(!li) return; select(li.dataset.id,false); viewed(li.dataset.id);
 });
 document.getElementById('view').addEventListener('click',function(ev){
   var rd=ev.target.closest('.rd');
@@ -473,7 +479,7 @@ document.getElementById('view').addEventListener('click',function(ev){
   var go=ev.target.closest('[data-go]');
   if(go){ ev.preventDefault();
     var t=DATA.filter(function(x){return x.id===go.dataset.go;})[0];
-    if(t){ series=t.series; paintSeries(); select(t.id,false);
+    if(t){ series=t.series; paintSeries(); select(t.id,false); viewed(t.id);
       document.getElementById('view').scrollIntoView({block:'start'}); }
     return; }
 });
@@ -492,7 +498,7 @@ document.addEventListener('keydown',function(ev){
   if(ev.key!=='ArrowDown' && ev.key!=='ArrowUp') return;
   var rows=inSeries(), i=rows.map(function(r){return r.id;}).indexOf(cur);
   var n=ev.key==='ArrowDown' ? Math.min(i+1,rows.length-1) : Math.max(i-1,0);
-  if(rows[n]){ ev.preventDefault(); select(rows[n].id,false);
+  if(rows[n]){ ev.preventDefault(); select(rows[n].id,false); viewed(rows[n].id);
     var el=document.querySelector('.item[aria-current="true"]');
     if(el) el.scrollIntoView({block:'nearest'}); }
 });
@@ -546,14 +552,11 @@ fetch('data/open.json', {cache:'no-cache'}).then(function(r){
   /* ?call=4188/B-02/ｵﾙ または ?call=B-02 で該当項目を開く（受付からの転送） */
   var want=(new URLSearchParams(location.search).get('call')||'').trim(), hit=null;
   if(want){
-    var w=want.normalize('NFKC').toUpperCase();
-    hit=DATA.filter(function(e){
-      var c=e.call.join('/').normalize('NFKC').toUpperCase();
-      return c===w || e.id===w || c.indexOf(w+'/')===0 || ('4188/'+e.id)===w;
-    })[0]||null;
+    hit=findOpen(DATA, want);
     if(hit) series=hit.series;
   }
   paintSeries(); paintRate(); select(hit?hit.id:'B-01',false);
+  if(hit) viewed(hit.id);
   if(want && !hit) toast('該当する記号は当分館の目録に存在しない。');
   return unseal().then(function(){ paintRate(); paintView(true); prevLv=lv; });
 }).catch(function(){

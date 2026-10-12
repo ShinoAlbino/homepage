@@ -89,6 +89,29 @@ SITE 全次元史実保護機構 第4188分館</div>
     </section>
 
     <div class="cols">
+      <!-- 3. 分類記号照会（§5） -->
+      <section class="sec" aria-labelledby="h-ask">
+        <h2 id="h-ask">分 類 記 号 照 会</h2>
+        <form class="ask" id="ask" autocomplete="off">
+          <label for="ask-q" class="vh">分類記号・請求記号・名称</label>
+          <input id="ask-q" type="search" placeholder="4188/B-02/ｵﾙ　AH-4188-0121-A　REG-001　名称・読み" />
+          <button type="submit">照会</button>
+        </form>
+        <p class="ask-hint">開架の請求記号・閉架の資料番号・所蔵文書の分類記号を受け付ける。名称・読み・別名による照会は開架に限る。</p>
+        <div class="ask-out" id="ask-out" role="status" aria-live="polite"></div>
+      </section>
+
+      <!-- 4. 閲覧記録（§6） -->
+      <section class="sec" aria-labelledby="h-log">
+        <h2 id="h-log">閲 覧 記 録</h2>
+        <p class="log-n">閲覧記録　<b id="log-n">0</b> 件<span class="log-cap">（直近 50 件まで保存）</span></p>
+        <ul class="board" id="log-list"></ul>
+        <button type="button" class="wipe" id="log-wipe">閲覧記録を抹消する</button>
+        <p class="log-msg" id="log-msg" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+
+    <div class="cols">
       <!-- 館内掲示（規程・便覧）── 閉架の一覧を経由させない -->
       <section class="sec" aria-labelledby="h-board">
         <h2 id="h-board">館 内 掲 示 ── 規程・便覧</h2>
@@ -115,6 +138,8 @@ SITE 全次元史実保護機構 第4188分館</div>
         </ul>
       </section>
     </div>
+
+    <p class="privacy">閲覧記録はご利用の端末内にのみ保存され、外部へ送信されません。</p>
 
   </main>
 
@@ -184,7 +209,7 @@ SITE 全次元史実保護機構 第4188分館</div>
      請求票は初回のみ自動で開く。票番は受付に来るたびに 1 増える。
      ah.lib.entry.v1 … 通過の有無（真偽値）のみ。ah.lib.slip.v1 … 票番。権限・氏名は保存しない。
      ============================================================ */
-  import { routeOf, classify, PAGES } from './js/library.js';
+  import { routeOf, inquire, classify, readLog, clearLog, PAGES } from './js/library.js';
   import { clearance, staffNo } from './js/clearance.js';
 
   const to = routeOf(location);
@@ -236,20 +261,23 @@ SITE 全次元史実保護機構 第4188分館</div>
     wrap.addEventListener('click', (e) => { if (e.target === wrap) closeSlip(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && wrap.classList.contains('on')) closeSlip(); });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const room = (e.submitter && e.submitter.value) || 'open';
       const raw = document.getElementById('slip-call').value;
       let href = room === 'open' ? PAGES.open : PAGES.closed;
       if (raw.trim()) {
-        const c = classify(raw);
-        if (!c || c.kind === 'unknown') {
-          msg.textContent = '該当する記号は当分館の目録に存在しない。'; msg.className = 'slip-msg ng';
+        /* 記号があれば照会窓と同じ判定を通す。開架の記号は即座に開架へ */
+        let r;
+        try { r = await inquire(raw, clearance()); }
+        catch (_) { msg.textContent = '目録を読み出せなかった。'; msg.className = 'slip-msg ng'; return; }
+        if (r.type !== 'go') {
+          msg.textContent = r.type === 'list' ? '記号を記入されたい。名称による照会は受付の照会窓で受け付ける。' : r.text;
+          msg.className = 'slip-msg ng';
           return;
         }
-        href = c.href;
-        /* 開架の記号は即座に開架へ。閉架の資料・所蔵文書は閉架の手続きを通す */
-        if (c.kind === 'call') { location.href = href; return; }
+        href = r.href;
+        if (r.room === 'open') { location.href = href; return; }
       } else if (room === 'open') {
         location.href = href; return;
       }
@@ -259,6 +287,49 @@ SITE 全次元史実保護機構 第4188分館</div>
     });
 
     if (store('ah.lib.entry.v1') !== 'true') openSlip();
+
+    /* ── 照会窓 ── */
+    const out = document.getElementById('ask-out');
+    document.getElementById('ask').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const q = document.getElementById('ask-q').value;
+      if (!q.trim()) { out.textContent = ''; return; }
+      out.className = 'ask-out'; out.textContent = '目録を照合している…';
+      let r;
+      try { r = await inquire(q, clearance()); }
+      catch (_) { out.className = 'ask-out ng'; out.textContent = '目録を読み出せなかった。時間をおいて再度照会されたい。'; return; }
+      if (r.type === 'go') {
+        out.textContent = r.room === 'closed' ? '請求を受理した。閲覧記録は保存される。' : '開架閲覧室へ案内する。';
+        setTimeout(() => { location.href = r.href; }, r.room === 'closed' ? 900 : 0);
+      } else if (r.type === 'list') {
+        out.innerHTML = '<p>開架に ' + r.items.length + ' 件の候補がある。</p><ul class="board">' + r.items.map((x) =>
+          '<li><span class="c">' + esc(x.call) + '</span><a href="' + esc(x.href) + '">' + esc(x.name) + '</a></li>').join('') + '</ul>';
+      } else {
+        out.className = 'ask-out ng'; out.textContent = r.text;
+      }
+    });
+
+    /* ── 閲覧記録 ── */
+    const logN = document.getElementById('log-n'), logList = document.getElementById('log-list');
+    function paintLog() {
+      const a = readLog();
+      logN.textContent = a.length;
+      logList.innerHTML = a.length ? a.slice(-5).reverse().map((x) => {
+        const c = classify(x.call), d = new Date(x.at);
+        const t = d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + String(d.getDate()).padStart(2, '0') +
+          ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+        return '<li><span class="c">' + t + '</span>' + (c && c.href ? '<a href="' + esc(c.href) + '">' + esc(x.call) + '</a>' : esc(x.call)) + '</li>';
+      }).join('') : '<li><span class="c">—</span><span>記録はない。</span></li>';
+    }
+    paintLog();
+    document.getElementById('log-wipe').addEventListener('click', () => {
+      clearLog(); paintLog();
+      document.getElementById('log-msg').textContent = '抹消した。分館の控えは残る。';
+    });
+    addEventListener('storage', (e) => { if (e.key === 'ah.lib.log.v1' || e.key === null) paintLog(); });
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   }
   </script>
 </body>

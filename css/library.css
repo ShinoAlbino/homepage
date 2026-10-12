@@ -140,3 +140,30 @@ body.lib{
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001s !important; transition-duration:.001s !important}
 }
+
+/* ───────── 照会窓・閲覧記録（§5 §6） ───────── */
+.vh{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.ask{display:flex; gap:8px}
+.ask input{
+  flex:1 1 auto; min-width:0; font-family:var(--serif); font-size:14px; padding:7px 9px; color:var(--sumi);
+  background:#FBF9F3; border:1px solid var(--rule);
+}
+.ask input:focus{outline:none; border-color:var(--rokusho)}
+.ask button,.wipe{
+  font-family:var(--mincho); font-size:13.5px; letter-spacing:.2em; cursor:pointer;
+  padding:7px 14px; border:1px solid var(--sumi); background:var(--paper-2); color:var(--sumi);
+}
+.ask button:hover,.wipe:hover{background:#E4DECD}
+.ask-hint{margin:8px 0 0; font-size:12px; color:var(--sumi-soft); line-height:1.7}
+.ask-out{margin-top:10px; font-size:13.5px; color:var(--rokusho); min-height:1.6em}
+.ask-out.ng{color:var(--shu)}
+.ask-out p{margin:0 0 6px}
+.log-n{margin:0 0 8px; font-size:13.5px}
+.log-n b{font-family:var(--lib-mono); font-weight:400; font-size:15px}
+.log-cap{font-size:11.5px; color:var(--sumi-soft); margin-left:6px}
+.wipe{margin-top:12px; font-size:12.5px; letter-spacing:.12em; padding:5px 12px}
+.log-msg{margin:8px 0 0; font-size:12.5px; color:var(--rokusho); min-height:1.4em}
+.privacy{
+  margin:46px 0 0; padding-top:14px; border-top:1px solid var(--rule);
+  font-family:var(--lib-mono); font-size:11px; letter-spacing:.08em; color:var(--sumi-soft);
+}

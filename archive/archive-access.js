@@ -12,6 +12,7 @@
    前に評価されるので、archive.js の openFromHash より先に window.ArchiveAccess が立つ。
    ============================================================ */
 import { clearance, sealKey } from '../js/clearance.js';
+import { logView } from '../js/library.js';
 
 (function () {
   'use strict';
@@ -113,6 +114,7 @@ import { clearance, sealKey } from '../js/clearance.js';
     var badge = document.getElementById('modal-security');
     var need = Number(card.getAttribute('data-lv') || 1);
     if (badge) badge.textContent = (card.getAttribute('data-security') || '').toUpperCase() + ' ／ LV.' + need;
+    logView(card.getAttribute('data-doc-id'));   // 閲覧記録（端末内のみ。§6）
     if (card.getAttribute('data-vault') !== '1') return;
 
     var docId = card.getAttribute('data-doc-id');

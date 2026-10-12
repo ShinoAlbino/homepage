@@ -62,3 +62,96 @@ export function routeOf(loc) {
   if (call) return PAGES.open + '?call=' + encodeURIComponent(call.trim());
   return null;
 }
+
+/* ── 目録（照会窓 §5）───────────────────────────────────
+   開架は archive/data/open.json、閉架の要求権限は archive/closed.html の data-lv が正本。
+   どちらも同一オリジンの静的ファイルを読むだけで、何も送らない。 */
+const REQ = { 1: '第一種', 2: '第二種', 3: '第三種', 4: '第四種', 5: '第五種', 6: '第六種', 7: '第七種' };
+let openP = null, closedP = null;
+export function openCatalog() {
+  if (!openP) openP = fetch(at('archive/data/open.json'), { cache: 'no-cache' })
+    .then((r) => { if (!r.ok) throw new Error('open.json ' + r.status); return r.json(); })
+    .catch((e) => { openP = null; throw e; });
+  return openP;
+}
+export function closedLevels() {
+  if (!closedP) closedP = fetch(PAGES.closed, { cache: 'no-cache' })
+    .then((r) => { if (!r.ok) throw new Error('closed ' + r.status); return r.text(); })
+    .then((html) => {
+      const lv = {};
+      for (const m of html.matchAll(/<article class="archive-card"[^>]*>/g)) {
+        const id = m[0].match(/data-doc-id="([^"]+)"/), n = m[0].match(/data-lv="(\d+)"/);
+        if (id) lv[id[1]] = n ? Number(n[1]) : 1;
+      }
+      return lv;
+    })
+    .catch((e) => { closedP = null; throw e; });
+  return closedP;
+}
+
+/* 開架の請求記号（4188/B-02/ｵﾙ・4188/B-02・B-02）に当たる項目 */
+export function findOpen(items, raw) {
+  const w = String(raw || '').trim().normalize('NFKC').toUpperCase();
+  if (!w) return null;
+  return items.filter((e) => {
+    const c = e.call.join('/').normalize('NFKC').toUpperCase();
+    return c === w || e.id === w || c.indexOf(w + '/') === 0 || ('4188/' + e.id) === w;
+  })[0] || null;
+}
+
+/* 照会。結果は四種
+     { type:'go',   href, room }        資料へ進める
+     { type:'deny', text }              閉架資料。存在は認めるが書名は出さない
+     { type:'list', items:[{call,id,name,href}] }  開架の名称・読み・別名の部分一致
+     { type:'none', text }              目録に無い */
+const NONE = { type: 'none', text: '該当する記号は当分館の目録に存在しない。' };
+export async function inquire(raw, lv) {
+  const q = String(raw || '').trim();
+  if (!q) return NONE;
+  const c = classify(q);
+  /* 閉架：資料の区分で権限を判定する。所蔵文書は閉架一覧上のカード（PCT-xx）の区分に従う */
+  if (c && (c.kind === 'holding' || c.kind === 'card')) {
+    const lvs = await closedLevels();
+    const card = c.kind === 'holding' ? HOLDINGS[c.id].card : c.id;
+    if (!(card in lvs)) return NONE;
+    if (lv < lvs[card]) return { type: 'deny', text: c.id + ' は閉架資料である。請求には' + (REQ[lvs[card]] || 'それ以上') + '以上の権限を要する。' };
+    return { type: 'go', href: c.href, room: 'closed' };
+  }
+  if (c && c.kind === 'unknown') return NONE;
+  const items = await openCatalog();
+  if (c && c.kind === 'call') {
+    const e = findOpen(items, q);
+    return e ? { type: 'go', href: PAGES.open + '?call=' + encodeURIComponent(e.call.join('/')), room: 'open' } : NONE;
+  }
+  const k = q.normalize('NFKC').toLowerCase();
+  const hits = items.filter((e) => e.listing !== '差止' && [e.name, e.reading, e.nomen].concat(e.aliases || [])
+    .some((s) => s && s !== '—' && String(s).normalize('NFKC').toLowerCase().indexOf(k) >= 0));
+  if (!hits.length) return NONE;
+  return { type: 'list', items: hits.slice(0, 10).map((e) => ({
+    call: e.call.join('/'), id: e.id, name: e.name,
+    href: PAGES.open + '?call=' + encodeURIComponent(e.call.join('/'))
+  })) };
+}
+
+/* ── 閲覧記録（§6）───────────────────────────────────
+   ah.lib.log.v1 = [{ call, at }]（古い順）。直近 50 件まで。端末の外へは一切出さない。 */
+const LOG_KEY = 'ah.lib.log.v1', LOG_MAX = 50;
+export function readLog() {
+  try {
+    const a = JSON.parse(localStorage.getItem(LOG_KEY) || '[]');
+    return Array.isArray(a) ? a.filter((x) => x && typeof x.call === 'string' && Number.isFinite(x.at)) : [];
+  } catch (_) { return []; }
+}
+export function logView(call) {
+  if (!call) return;
+  try {
+    const a = readLog();
+    const last = a[a.length - 1];
+    if (last && last.call === call) return;      // 同じ資料を続けて開いたときは一件とする
+    a.push({ call: String(call), at: Date.now() });
+    localStorage.setItem(LOG_KEY, JSON.stringify(a.slice(-LOG_MAX)));
+  } catch (_) { /* 保存できない環境では記録しない */ }
+}
+export function clearLog() {
+  try { localStorage.removeItem(LOG_KEY); } catch (_) {}
+}
